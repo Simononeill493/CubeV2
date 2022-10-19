@@ -3,7 +3,10 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.SqlTypes;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,43 +15,56 @@ namespace CubeV2
 {
     internal class Game
     {
-        public void RerollBoard()
-        {
-            CurrentTemplate = CurrentTemplateTemplate.GenerateTemplate();
-        }
+        public bool GameWon => WinCondition.Check(CurrentBoard);
+        public BoardWinCondition WinCondition = BoardWinCondition.None;
 
-        public void ResetBoard()
-        {
-            CurrentBoard = CurrentTemplate.GenerateBoard();
-        }
+        public Board CurrentBoard { get; private set; }
+        private BoardTemplate CurrentTemplate;
+        private BoardTemplateTemplate CurrentTemplateTemplate;
 
-        public void TickBoard()
-        {
-            CurrentBoard.Tick();
+        public void SetTemplateTemplate(BoardTemplateTemplate templateTemplate) => CurrentTemplateTemplate = templateTemplate;
+        public void ResetBoardTemplate() => CurrentTemplate = CurrentTemplateTemplate.GenerateTemplate();
+        public void ResetBoard() => SetBoard(CurrentTemplate.GenerateBoard());
 
-            GameWon = CurrentTemplateTemplate.WinCondition.Check(CurrentBoard);
-        }
-
-        public bool GameWon = false;
-
-        public Board CurrentBoard;
-        public BoardTemplate CurrentTemplate;
-        public BoardTemplateTemplate CurrentTemplateTemplate;
-
+        public void SetBoard(Board b) => CurrentBoard = b;
+        public void TickBoard() => CurrentBoard.Tick();
     }
 
     public abstract class BoardWinCondition
     {
         public abstract bool Check(Board board);
+
+        public static BoardWinCondition None => new NoWinCondition();
     }
+
+    public class NoWinCondition : BoardWinCondition
+    {
+        public override bool Check(Board board) => false;
+    }
+
+    public class GoalWinCondition : BoardWinCondition
+    {
+        string _toEnterGoalId;
+
+        public GoalWinCondition(string toEnterGoalId)
+        {
+            _toEnterGoalId = toEnterGoalId;
+        }
+
+        public override bool Check(Board board)
+        {
+            return board.Entities[_toEnterGoalId].HasTag(Config.GoalTag);
+        }
+
+    }
+
+
 
     public class BoardTemplateTemplate
     {
         public int Width;
         public int Height;
         public List<EntityTemplate> Entities = new List<EntityTemplate>();
-
-        public BoardWinCondition WinCondition;
 
         public BoardTemplate GenerateTemplate()
         {
@@ -90,18 +106,43 @@ namespace CubeV2
 
     public class EntityTemplate
     {
+        public string Id { get; }
+        public SpecialEntityTag SpecialTag;
+
         public string Sprite;
         public List<Instruction> Instructions = new List<Instruction>();
 
+        public EntityTemplate(string id,SpecialEntityTag specialTag = SpecialEntityTag.None)
+        {
+            Id = id;
+            SpecialTag = specialTag;
+        }
+
         public Entity GenerateEntity()
         {
-            return new Entity(Sprite) { Instructions = this.Instructions };
+            switch (SpecialTag)
+            {
+                case SpecialEntityTag.None:
+                    return new Entity(Id, Sprite) { Instructions = this.Instructions };
+                case SpecialEntityTag.Goal:
+                    return new GoalEntity(Id, Sprite) { Instructions = this.Instructions };
+                default:
+                    throw new Exception("Generating unrecognized entity type");
+            }
+        }
+
+        public enum SpecialEntityTag
+        {
+            None,
+            Goal
         }
     }
 
 
     public class Board
     {
+        public Dictionary<string, Entity> Entities = new Dictionary<string, Entity>();
+
         public Dictionary<Vector2Int, Tile> TilesVector = new Dictionary<Vector2Int, Tile>();
         public List<Tile> TilesLinear = new List<Tile>();
 
@@ -147,7 +188,7 @@ namespace CubeV2
                 }
             }
         }
-    
+
         public void TryMoveEntity(Entity entity,Vector2Int newLocation)
         {
             if(!TilesVector.ContainsKey(newLocation))
@@ -155,9 +196,17 @@ namespace CubeV2
                 return;
             }
 
-            if(TilesVector[newLocation].Contents != null)
+            var currentContents = TilesVector[newLocation].Contents;
+            if (currentContents != null)
             {
-                return;
+                if(currentContents.TryBeCollected(entity))
+                {
+                    RemoveFromBoard(currentContents);
+                }
+                else
+                {
+                    return;
+                }
             }
 
             RemoveFromBoard(entity);
@@ -176,8 +225,16 @@ namespace CubeV2
                 Console.WriteLine("Warning: Entity is not in tile that its location data is pointing to.");
             }
 
+            if (!Entities.ContainsKey(entity.Id))
+            {
+                Console.WriteLine("Warning: Entity is not in entity list that it is being removed from.");
+            }
+
+
             TilesVector[entity.Location].Contents = null;
             entity.Location = Vector2Int.MinusOne;
+
+            Entities.Remove(entity.Id);
         }
 
         public void AddToBoard(Entity entity, Vector2Int location)
@@ -192,9 +249,15 @@ namespace CubeV2
                 Console.WriteLine("Warning: Entity is being moved to tile which is not empty.");
             }
 
+            if(Entities.ContainsKey(entity.Id))
+            {
+                Console.WriteLine("Warning: An entity with this ID already exists in this board.");
+            }
+
             TilesVector[location].Contents = entity;
             entity.Location = location;
 
+            Entities[entity.Id] = entity;
         }
     }
 
@@ -206,15 +269,21 @@ namespace CubeV2
 
     public class Entity
     {
+        public string Id { get; }
         public string Sprite;
 
         public Orientation Orientation;
         public Vector2Int Location = Vector2Int.MinusOne;
+
         public List<Instruction> Instructions = new List<Instruction>();
         public int InstructionCounter;
 
-        public Entity(string sprite)
+        public List<string> Tags = new List<string>();
+        public bool HasTag(string tag) => Tags.Contains(tag);
+
+        public Entity(string id,string sprite)
         {
+            Id = id;
             Sprite = sprite;
         }
 
@@ -231,7 +300,19 @@ namespace CubeV2
             var newLocation = Location + direction.XYOffset();
             GameInterface.TryMoveEntity(this, newLocation);
         }
-        
+
+        public virtual bool TryBeCollected(Entity collector) => false;
+    }
+
+    public class GoalEntity : Entity
+    {
+        public GoalEntity(string id, string sprite) : base(id, sprite) {}
+
+        public override bool TryBeCollected(Entity collector)
+        {
+            collector.Tags.Add(Config.GoalTag);
+            return true;
+        }
     }
 
     public abstract class IVariable

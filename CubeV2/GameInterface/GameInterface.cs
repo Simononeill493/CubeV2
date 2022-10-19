@@ -14,19 +14,16 @@ namespace CubeV2
     {
         public static List<IVariable> VariableOptions = new List<IVariable>();
         public static List<Instruction> FocusedInstructions;
-        public static int FocusedInstruction;
-        public static int FocusedVariable;
+        public static int FocusedInstruction = -1;
+        public static int FocusedVariable = -1;
 
-        public static void ChangeFocusedVariable(int optionIndex)
+
+        public static void AssignValueToFocusedVariable(int optionIndex)
         {
-            if(optionIndex < VariableOptions.Count)
+            if(FocusedVariableExists & (optionIndex < VariableOptions.Count))
             {
                 var newVariable = VariableOptions[optionIndex];
-
-                if(VariableExists(FocusedInstruction, FocusedVariable))
-                {
-                    FocusedInstructions[FocusedInstruction].Variables[FocusedVariable] = newVariable;
-                }
+                FocusedInstructions[FocusedInstruction].Variables[FocusedVariable] = newVariable;
             }
         }
 
@@ -42,12 +39,12 @@ namespace CubeV2
             }
         }
 
-        public static IVariable GetVariable(int instructionIndex,int variableIndex)=> FocusedInstructions[instructionIndex].Variables[variableIndex];
+        public static IVariable GetVariable(int instructionIndex, int variableIndex) => FocusedInstructions[instructionIndex].Variables[variableIndex];
 
-
+        public static bool FocusedVariableExists => VariableExists(FocusedInstruction, FocusedVariable);
         public static bool VariableExists(int instructionIndex, int variableIndex)
         {
-            if (InstructionExists(instructionIndex) && FocusedInstructions[instructionIndex].VariableCount > variableIndex)
+            if (InstructionExists(instructionIndex) && (FocusedInstructions[instructionIndex].VariableCount > variableIndex) && variableIndex >= 0)
             {
                 return true;
             }
@@ -56,7 +53,7 @@ namespace CubeV2
         }
         public static bool InstructionExists(int instructionIndex)
         {
-            if (FocusedInstructions != null && FocusedInstructions.Count > instructionIndex)
+            if (FocusedInstructions != null && (FocusedInstructions.Count > instructionIndex) && instructionIndex>=0)
             {
                 return true;
             }
@@ -70,6 +67,7 @@ namespace CubeV2
 
 
         private static Game _game;
+        public static bool IsGameWon => _game.GameWon;
 
         private static bool BoardRunning;
         public static TimeSpan BoardUpdateRate;
@@ -86,19 +84,12 @@ namespace CubeV2
         {
             _game = new Game();
         }
-        
-        
-        
-        
-        
-        
-        
-        public static void ManualSetBoard(Board b)
-        {
-            _game.CurrentBoard = b;
-        }
 
-        public static void RerollBoard() => _game.RerollBoard();
+
+
+        public static void ManualSetBoard(Board b) => _game.SetBoard(b);
+
+        public static void ResetBoardTemplate() => _game.ResetBoardTemplate();
         public static void ResetBoard() => _game.ResetBoard();
 
         public static void PauseBoard() => BoardRunning = false;
@@ -121,12 +112,6 @@ namespace CubeV2
                 }
             }
         }
-
-
-
-
-
-
 
         public static void TryMoveEntity(Entity e, Vector2Int location)
         {
@@ -156,11 +141,13 @@ namespace CubeV2
         private static Game _createDemoGame()
         {
             var game = new Game();
-            var player = new EntityTemplate() { Sprite = DrawUtils.PlayerSprite };
+            var player = new EntityTemplate("Player") { Sprite = DrawUtils.PlayerSprite };
 
-            game.CurrentTemplateTemplate = _createDemoTemplateTemplate(player);
-            game.RerollBoard();
+            game.SetTemplateTemplate(_createDemoTemplateTemplate(player));
+            game.ResetBoardTemplate();
             game.ResetBoard();
+
+            game.WinCondition = new GoalWinCondition(player.Id);
 
             FocusedInstructions = player.Instructions;
 
@@ -172,15 +159,15 @@ namespace CubeV2
             var templateTemplate = new BoardTemplateTemplate() { Width = Config.GameGridWidth, Height = Config.GameGridHeight };
 
             player.Instructions = new List<Instruction>() { new MoveInstruction(RelativeDirection.Backward) };
+
             templateTemplate.Entities.Add(player);
 
-            var wall = new EntityTemplate() { Sprite = DrawUtils.WallSprite };
             for (int i=0;i<10;i++)
             {
-                templateTemplate.Entities.Add(wall);
+                templateTemplate.Entities.Add(new EntityTemplate("Wall_" + i) { Sprite = DrawUtils.WallSprite });
             }
 
-            templateTemplate.Entities.Add(new EntityTemplate() { Sprite = DrawUtils.GoalSprite });
+            templateTemplate.Entities.Add(new EntityTemplate("Goal",EntityTemplate.SpecialEntityTag.Goal) { Sprite = DrawUtils.GoalSprite });
 
             return templateTemplate;
         }

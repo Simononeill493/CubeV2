@@ -16,7 +16,6 @@ namespace CubeV2
         public override Vector2 Size => _size;
         private Vector2 _size;
 
-        public Microsoft.Xna.Framework.Color Color;
         public float Layer;
 
         public RectangleAppearance(int width, int height, Microsoft.Xna.Framework.Color color, float layer) : this(new Vector2(width, height), color, layer) { }

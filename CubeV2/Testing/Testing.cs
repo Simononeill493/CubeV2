@@ -16,7 +16,7 @@ namespace CubeV2
             GameWrapper.DoDraw = false;
 
             var testBoard = new Board(3, 3);
-            var testEntity = new Entity(null);
+            var testEntity = new Entity("TestEntity",null);
             testBoard.AddToBoard(testEntity, new Vector2Int(0, 0));
 
             if (testBoard.TilesVector[Vector2Int.Zero].Contents!=testEntity)

@@ -30,11 +30,12 @@ namespace CubeV2
             gameGrid.Offset = new Vector2(Config.InstructionPanelWidth + Config.SelectorPanelWidth, 0);
 
 
+
             var rerollButton = new UIElement(Config.RerollButtonName);
             rerollButton.Appearance = MultiAppearance.Create(new RectangleAppearance(Config.GameControlButtonSize, Color.AliceBlue, DrawUtils.UILayer2), new TextAppearance(Color.Black, DrawUtils.UILayer3, "Reroll"));
             rerollButton.Offset = new Vector2(Config.InstructionPanelWidth + Config.SelectorPanelWidth + 250, Config.DefaultScreenHeight - Config.GameControlButtonSize.Y);
             rerollButton.Clickable = true;
-            rerollButton.OnLeftClick += (i) => { GameInterface.RerollBoard(); GameInterface.ResetBoard(); GameInterface.PauseBoard(); };
+            rerollButton.OnLeftClick += (i) => { GameInterface.ResetBoardTemplate(); GameInterface.ResetBoard(); GameInterface.PauseBoard(); };
 
             var goButton = new UIElement(Config.GoButtonName);
             goButton.Appearance = MultiAppearance.Create(new RectangleAppearance(Config.GameControlButtonSize, Color.AliceBlue, DrawUtils.UILayer2), new TextAppearance(Color.Black, DrawUtils.UILayer3,"Go"));
@@ -49,8 +50,13 @@ namespace CubeV2
             resetButton.Clickable = true;
             resetButton.OnLeftClick += (i) => { GameInterface.ResetBoard(); GameInterface.PauseBoard(); };
 
+            var winText = new UIElement(Config.WinTextName);
+            winText.Offset = new Vector2(Config.InstructionPanelWidth + Config.SelectorPanelWidth+350, Config.DefaultScreenHeight - (Config.GameControlButtonSize.Y*1.5f));
+            winText.Appearance = new TextAppearance(new Color(255,58,200), DrawUtils.UILayer1, "A winner is you!");
+            winText.SetEnabledCondition(() => GameInterface.IsGameWon);
 
-            topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid,rerollButton,goButton,resetButton);
+
+            topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid,rerollButton,goButton,resetButton,winText);
 
 
 
@@ -76,6 +82,7 @@ namespace CubeV2
 
             var variableGrid = _makeVariablesGrid();
             variableGrid.Offset = new Vector2(20, 20);
+            variableGrid.SetEnabledCondition(() => GameInterface.FocusedVariableExists);
 
             selectorPanel.AddChildren(variableGrid);
 
@@ -95,7 +102,7 @@ namespace CubeV2
             var tilePadding = 3;
 
             var gameGrid = UIGrid.Make(Config.VariableGridName, 4, 7, Config.TileBaseSize*Config.VariableSelectionTileScale, Config.TileBaseSize * Config.VariableSelectionTileScale, tilePadding, Config.SelectionTileVariableColor, DrawUtils.UILayer2, new VariableTileAppearanceFactory_ForSelectionGrid(Config.VariableSelectionTileScale,DrawUtils.UILayer3));
-            gameGrid.TileLeftClicked += (input, index) => GameInterface.ChangeFocusedVariable(index);
+            gameGrid.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedVariable(index);
             return gameGrid;
         }
 
@@ -118,25 +125,32 @@ namespace CubeV2
         private static UIElement _makeInstructionTile(int instructionIndex)
         {
             var slot = new UIElement(Config.InstructionSlotName + '_' + instructionIndex);
-            slot.Offset = new Vector2(0, (Config.InstructionTileInternalPadding + Config.InstructionTileSize.Y) * instructionIndex);
-            slot.Appearance = MultiAppearance.Create(new RectangleAppearance(Config.InstructionTileSize, Config.InstructionTileColor, DrawUtils.UILayer2), new InstructionTileAppearance(instructionIndex));
 
-            for(int variableIndex = 0; variableIndex < Config.InstructionMaxNumVariables; variableIndex++)
+            var slotBackground = new RectangleAppearance(Config.InstructionTileSize, Config.InstructionTileColor, DrawUtils.UILayer2);
+            slotBackground.OverrideColor(() => (GameInterface.FocusedInstruction == instructionIndex) ? Config.InstructionTileHighlightColor : Config.InstructionTileColor);
+            slot.Appearance = MultiAppearance.Create(slotBackground, new InstructionTileAppearance(instructionIndex));
+            slot.Offset = new Vector2(0, (Config.InstructionTileInternalPadding + Config.InstructionTileSize.Y) * instructionIndex);
+
+            slot.Clickable = true;
+            slot.OnLeftClick += (i) => { GameInterface.FocusedInstruction = instructionIndex; };
+
+
+            for (int variableIndex = 0; variableIndex < Config.InstructionMaxNumVariables; variableIndex++)
             {
                 var variableTile = new UIElement(Config.InstructionVariableTileName + "_" + instructionIndex + "_" + variableIndex);
-                var background = new RectangleAppearance(Config.TileBaseSize * Config.InstructionTileVariableScale, Config.TileBaseSize * Config.InstructionTileVariableScale, Color.White, DrawUtils.UILayer3);
+                var tileBackground = new RectangleAppearance(Config.TileBaseSize * Config.InstructionTileVariableScale, Config.TileBaseSize * Config.InstructionTileVariableScale, Config.InstructionTileAssignedVariableColor, DrawUtils.UILayer3);
                 var appearance = new VariableTileAppearance_Instruction(instructionIndex,variableIndex, Config.InstructionTileVariableScale,DrawUtils.UILayer4);
 
                 variableTile.Offset = new Vector2((Config.TileBaseSize * Config.InstructionTileVariableScale+20) * variableIndex, 20);
-                variableTile.Appearance = MultiAppearance.Create(background, appearance);
+                variableTile.Appearance = MultiAppearance.Create(tileBackground, appearance);
 
                 var variableIndexCaptured = variableIndex;
 
                 variableTile.Clickable = true;
                 variableTile.AddLeftClickAction((i) => { GameInterface.FocusVariable(instructionIndex, variableIndexCaptured); });
-
-
                 variableTile.SetEnabledCondition(() => GameInterface.VariableExists(instructionIndex, variableIndexCaptured));
+
+                tileBackground.OverrideColor(() => (GameInterface.FocusedInstruction == instructionIndex & GameInterface.FocusedVariable == variableIndexCaptured) ? Config.InstructionTileAssignedVariableHighlightColor : Config.InstructionTileAssignedVariableColor);
 
                 slot.AddChildren(variableTile);
             }

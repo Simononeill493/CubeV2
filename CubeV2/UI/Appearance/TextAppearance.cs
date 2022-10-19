@@ -19,7 +19,6 @@ namespace CubeV2
         public Func<string> GetText;
 
         public override Vector2 Size => Vector2.Zero;
-        public Microsoft.Xna.Framework.Color Color;
         public float Layer;
 
         public TextAppearance(Color color, float layer)

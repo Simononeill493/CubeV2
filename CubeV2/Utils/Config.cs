@@ -39,7 +39,12 @@ namespace CubeV2
         public static Color TileBackgroundColor = new Color(32, 26, 26);
         public static Color InstructionPanelColor = new Color(155,73,80);
         public static Color SelectorPanelColor = new Color(103, 36, 31);
+
         public static Color InstructionTileColor = new Color(103, 36, 31);
+        public static Color InstructionTileHighlightColor = new Color(31, 103, 83);
+        public static Color InstructionTileAssignedVariableColor = Color.White;
+        public static Color InstructionTileAssignedVariableHighlightColor = new Color(200,255,215);
+
         public static Color InstructionTileVariableColor = new Color(240, 240, 240);
         public static Color SelectionTileVariableColor = new Color(132, 126, 126);
 
@@ -59,6 +64,9 @@ namespace CubeV2
         public static string GameGridName = "GameGrid";
         public static string VariableGridName = "VariableGrid";
         public static string InstructionVariableTileName = "InstructionVariableTile";
+        public static string WinTextName = "WinText";
+
+        public static string GoalTag = "EnteredGoal";
 
         public static void Load() 
         {
