@@ -19,7 +19,10 @@ namespace CubeV2
         private static string _generateTileID(string gridId, int x, int y) => gridId + '_' + x + '_' + y;
         private static Vector2 _generateTileOffset(int x, int y, int width, int height, int padding) => new Vector2(((width + padding) * x) + padding, ((height + padding) * y) + padding);
 
-        public static UIGrid Make(string id, int gridWidth, int gridHeight, int tileWidth, int tileHeight, int internalPadding, Color color, float layer, TileAppearanceFactory appearanceFactory)
+        public static UIGrid Make(string id, Vector2Int gridSize, Vector2Int tileSize, int internalPadding, Color tileBackgroundColor, float layer, TileAppearanceFactory appearanceFactory)
+         => Make(id, gridSize.X, gridSize.Y, tileSize.X, tileSize.Y, internalPadding, tileBackgroundColor, layer, appearanceFactory);
+            
+        public static UIGrid Make(string id, int gridWidth, int gridHeight, int tileWidth, int tileHeight, int internalPadding, Color tileBackgroundColor, float layer, TileAppearanceFactory appearanceFactory)
         {
             var grid = new UIGrid(id);
             grid.Appearance = new NoAppearance();
@@ -33,7 +36,7 @@ namespace CubeV2
                     var tileId = _generateTileID(id, x, y);
                     var tileContentsAppearance = appearanceFactory.Create(index);
 
-                    var tile = _makeTile(tileId, tileWidth, tileHeight, color, layer, tileContentsAppearance);
+                    var tile = _makeTile(tileId, tileWidth, tileHeight, tileBackgroundColor, layer, tileContentsAppearance);
                     tile.Offset = _generateTileOffset(x, y, tileWidth, tileHeight, internalPadding);
 
                     int indexCaptured = index;
@@ -65,16 +68,25 @@ namespace CubeV2
 
     public abstract class TileAppearanceFactory
     {
+        protected float _layer;
+
+        public TileAppearanceFactory(float layer)
+        {
+            _layer = layer;
+        }
+
         public abstract TileAppearance Create(int index);
     }
 
     public abstract class TileAppearance : Appearance
     {
-        public TileAppearance(int index)
+        public TileAppearance(int index,float layer)
         {
             Index = index;
+            _layer = layer;
         }
 
         public int Index;
+        protected float _layer;
     }
 }

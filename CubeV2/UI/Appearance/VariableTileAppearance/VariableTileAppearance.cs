@@ -12,12 +12,10 @@ namespace CubeV2
     public class VariableTileAppearanceFactory_ForSelectionGrid : TileAppearanceFactory
     {
         private int _scale;
-        private float _layer;
 
-        public VariableTileAppearanceFactory_ForSelectionGrid(int scale,float layer)
+        public VariableTileAppearanceFactory_ForSelectionGrid(int scale,float layer) : base(layer)
         {
             _scale = scale;
-            _layer = layer;
         }
 
         public override TileAppearance Create(int index)
@@ -30,9 +28,8 @@ namespace CubeV2
     {
         public override Vector2 Size => Vector2.Zero;
         private int _scale;
-        private float _layer;
 
-        public VariableTileAppearance(int gridIndex, int scale,float layer) : base(gridIndex)
+        public VariableTileAppearance(int gridIndex, int scale,float layer) : base(gridIndex,layer)
         {
             _scale = scale;
         }

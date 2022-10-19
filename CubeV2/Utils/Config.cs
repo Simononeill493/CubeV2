@@ -10,6 +10,8 @@ namespace CubeV2
 {
     internal class Config
     {
+        public static bool KnowAllInstructionsByDefault = true;
+
         public static int DefaultScreenWidth = 1550;
         public static int DefaultScreenHeight = 800;
 
@@ -24,6 +26,9 @@ namespace CubeV2
         public static int TileScale = 7;
         public static int VariableSelectionTileScale = 4;
         public static int InstructionTileVariableScale = 3;
+
+        public static Vector2 InstructionSelectorTileSize = new Vector2(200, 75);
+        public static Color InstructionSelectorTileColor = Color.White;
 
         public static Vector2 GameControlButtonSize = new Vector2(100, 60);
         public static Vector2 InstructionTileSize = new Vector2(200, 100);
@@ -63,6 +68,7 @@ namespace CubeV2
         public static string ResetButtonName = "ResetButton";
         public static string GameGridName = "GameGrid";
         public static string VariableGridName = "VariableGrid";
+        public static string InstructionSelectorGridName = "InstructionSelectorGrid";
         public static string InstructionVariableTileName = "InstructionVariableTile";
         public static string WinTextName = "WinText";
 

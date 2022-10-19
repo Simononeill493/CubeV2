@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace CubeV2
 {
     internal class InstructionTileAppearance : TileAppearance
     {
-        public InstructionTileAppearance(int index) : base(index){}
+        public InstructionTileAppearance(int index,float layer) : base(index,layer){}
 
         public override Vector2 Size => Config.InstructionTileSize;
 
@@ -24,7 +25,7 @@ namespace CubeV2
                 name = GameInterface.FocusedInstructions[Index].Name;
             }
 
-            spriteBatch.DrawString(DrawUtils.PressStart2PFont, name, position, Color.White);
+            DrawUtils.DrawText(spriteBatch, DrawUtils.PressStart2PFont, name, position, Color.White, _layer);
         }
     }
 }

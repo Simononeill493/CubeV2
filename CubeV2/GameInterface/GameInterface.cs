@@ -13,7 +13,12 @@ namespace CubeV2
     internal class GameInterface
     {
         public static List<IVariable> VariableOptions = new List<IVariable>();
+        public static List<Instruction> SelectableInstructions => _game?.KnownInstructions;
+
         public static List<Instruction> FocusedInstructions;
+
+
+
         public static int FocusedInstruction = -1;
         public static int FocusedVariable = -1;
 
@@ -26,6 +31,16 @@ namespace CubeV2
                 FocusedInstructions[FocusedInstruction].Variables[FocusedVariable] = newVariable;
             }
         }
+
+        internal static void AssignValueToFocusedInstruction(int selectableInstructionIndex)
+        {
+            if(SelectableInstructionExists(selectableInstructionIndex) & InstructionExists(FocusedInstruction))
+            {
+                var toSet = SelectableInstructions[selectableInstructionIndex].GenerateNew();
+                FocusedInstructions[FocusedInstruction] = toSet;
+            }
+        }
+
 
         public static void FocusVariable(int instructionIndex, int variableIndex)
         {
@@ -42,6 +57,8 @@ namespace CubeV2
         public static IVariable GetVariable(int instructionIndex, int variableIndex) => FocusedInstructions[instructionIndex].Variables[variableIndex];
 
         public static bool FocusedVariableExists => VariableExists(FocusedInstruction, FocusedVariable);
+        public static bool FocusedInstructionExists => InstructionExists(FocusedInstruction);
+
         public static bool VariableExists(int instructionIndex, int variableIndex)
         {
             if (InstructionExists(instructionIndex) && (FocusedInstructions[instructionIndex].VariableCount > variableIndex) && variableIndex >= 0)
@@ -60,6 +77,15 @@ namespace CubeV2
 
             return false;
 
+        }
+        public static bool SelectableInstructionExists(int instructionIndex)
+        {
+            if (SelectableInstructions != null && (SelectableInstructions.Count > instructionIndex) && instructionIndex >= 0)
+            {
+                return true;
+            }
+
+            return false;
         }
 
 

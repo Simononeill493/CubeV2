@@ -11,15 +11,22 @@ namespace CubeV2
 {
     public class GameTileAppearanceFactory : TileAppearanceFactory
     {
+        private float _spriteLayer;
+
+        public GameTileAppearanceFactory(float groundLayer,float spriteLayer) : base(groundLayer)
+        {
+            _spriteLayer = spriteLayer;
+        }
+
         public override TileAppearance Create(int index)
         {
-            return new GameTileAppearance(index);
+            return new GameTileAppearance(index,_layer, _spriteLayer);
         }
     }
 
     public class GameTileAppearance : TileAppearance
     {
-        public GameTileAppearance(int gridIndex) : base(gridIndex){}
+        public GameTileAppearance(int gridIndex,float groundLayer,float spriteLayer) : base(gridIndex, groundLayer) {}
 
         public override Vector2 Size => Vector2.Zero;
 

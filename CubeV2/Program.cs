@@ -10,6 +10,7 @@ internal class Program
         DirectionUtils.Init();
         KeyUtils.Init();
         Config.Load();
+        InstructionDatabase.Load();
 
         Testing.Go();
 

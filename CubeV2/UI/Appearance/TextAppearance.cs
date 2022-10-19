@@ -34,7 +34,7 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            spriteBatch.DrawString(DrawUtils.PressStart2PFont, GetText(), position, Color, 0, Vector2.Zero, 1, SpriteEffects.None, Layer);
+            DrawUtils.DrawText(spriteBatch, DrawUtils.PressStart2PFont, GetText(), position, Color, Layer);
         }
     }
 }

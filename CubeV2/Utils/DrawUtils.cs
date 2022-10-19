@@ -75,7 +75,11 @@ namespace CubeV2.Utils
         public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position,float scale,float layer,Color color)
         {
             spriteBatch.Draw(SpritesDict[spriteName], position, null, color, 0, Vector2.Zero, scale, SpriteEffects.None, layer);
+        }
 
+        public static void DrawText(SpriteBatch spriteBatch,SpriteFont font,string text,Vector2 position,Color color,float layer)
+        {
+            spriteBatch.DrawString(font, text, position, color, 0, Vector2.Zero, 1, SpriteEffects.None, layer);
         }
 
         public static string VariableToSprite(IVariable variable)

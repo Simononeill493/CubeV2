@@ -20,6 +20,12 @@ namespace CubeV2
         {
             _alwaysEnabled = false;
             _isEnabled = condition;
+
+            //TODO: uhmmmmm this is bad
+            foreach (var child in _children)
+            {
+                child.SetEnabledCondition(_isEnabled);
+            }
         }
 
         public bool Clickable = false;
@@ -38,9 +44,21 @@ namespace CubeV2
             ID = id;
             AllUIElements.AddUIElement(this, id);
         }
+        public void AddChildren(params UIElement[] children) => AddChildren(children.ToList());
 
-        public void AddChildren(List<UIElement> children) => _children.AddRange(children);
-        public void AddChildren(params UIElement[] children) => _children.AddRange(children);
+        public void AddChildren(List<UIElement> children)
+        {
+            //TODO: ehehehehe...
+            if(!_alwaysEnabled)
+            {
+                foreach (var child in children)
+                {
+                    child.SetEnabledCondition(_isEnabled);
+                }
+            }
+
+            _children.AddRange(children);
+        }
 
         public virtual void Draw(SpriteBatch spriteBatch, Vector2 parentOffset)
         {

@@ -28,6 +28,16 @@ namespace CubeV2
 
         public void SetBoard(Board b) => CurrentBoard = b;
         public void TickBoard() => CurrentBoard.Tick();
+
+        public List<Instruction> KnownInstructions = new List<Instruction>();
+
+        public Game()
+        {
+            if (Config.KnowAllInstructionsByDefault)
+            {
+                KnownInstructions = InstructionDatabase.GetAll();
+            }
+        }
     }
 
     public abstract class BoardWinCondition
@@ -71,7 +81,7 @@ namespace CubeV2
             var coords = Vector2Int.GetRandomUniqueCoords(Width, Height, Entities.Count);
             var entitiesDict = new Dictionary<Vector2Int, EntityTemplate>();
 
-            for(int i=0;i<Entities.Count;i++)
+            for (int i = 0; i < Entities.Count; i++)
             {
                 entitiesDict[coords[i]] = Entities[i];
             }
@@ -112,7 +122,7 @@ namespace CubeV2
         public string Sprite;
         public List<Instruction> Instructions = new List<Instruction>();
 
-        public EntityTemplate(string id,SpecialEntityTag specialTag = SpecialEntityTag.None)
+        public EntityTemplate(string id, SpecialEntityTag specialTag = SpecialEntityTag.None)
         {
             Id = id;
             SpecialTag = specialTag;
@@ -182,16 +192,16 @@ namespace CubeV2
             var entities = TilesVector.Values.Select(t => t.Contents).ToList();
             foreach (var entity in entities)
             {
-                if(entity != null)
+                if (entity != null)
                 {
                     entity.Tick();
                 }
             }
         }
 
-        public void TryMoveEntity(Entity entity,Vector2Int newLocation)
+        public void TryMoveEntity(Entity entity, Vector2Int newLocation)
         {
-            if(!TilesVector.ContainsKey(newLocation))
+            if (!TilesVector.ContainsKey(newLocation))
             {
                 return;
             }
@@ -199,7 +209,7 @@ namespace CubeV2
             var currentContents = TilesVector[newLocation].Contents;
             if (currentContents != null)
             {
-                if(currentContents.TryBeCollected(entity))
+                if (currentContents.TryBeCollected(entity))
                 {
                     RemoveFromBoard(currentContents);
                 }
@@ -239,7 +249,7 @@ namespace CubeV2
 
         public void AddToBoard(Entity entity, Vector2Int location)
         {
-            if(entity.Location!=Vector2Int.MinusOne)
+            if (entity.Location != Vector2Int.MinusOne)
             {
                 Console.WriteLine("Warning: Entity already has a location");
             }
@@ -249,7 +259,7 @@ namespace CubeV2
                 Console.WriteLine("Warning: Entity is being moved to tile which is not empty.");
             }
 
-            if(Entities.ContainsKey(entity.Id))
+            if (Entities.ContainsKey(entity.Id))
             {
                 Console.WriteLine("Warning: An entity with this ID already exists in this board.");
             }
@@ -281,7 +291,7 @@ namespace CubeV2
         public List<string> Tags = new List<string>();
         public bool HasTag(string tag) => Tags.Contains(tag);
 
-        public Entity(string id,string sprite)
+        public Entity(string id, string sprite)
         {
             Id = id;
             Sprite = sprite;
@@ -289,11 +299,13 @@ namespace CubeV2
 
         public void Tick()
         {
-            for(int InstructionCounter = 0; InstructionCounter < Instructions.Count; InstructionCounter++)
+            for (int InstructionCounter = 0; InstructionCounter < Instructions.Count; InstructionCounter++)
             {
                 Instructions[InstructionCounter].Run(this);
             }
         }
+
+        public void TryMove(RelativeDirection direction) => TryMove(DirectionUtils.ToCardinal(Orientation, direction));
 
         public void TryMove(CardinalDirection direction)
         {
@@ -306,7 +318,7 @@ namespace CubeV2
 
     public class GoalEntity : Entity
     {
-        public GoalEntity(string id, string sprite) : base(id, sprite) {}
+        public GoalEntity(string id, string sprite) : base(id, sprite) { }
 
         public override bool TryBeCollected(Entity collector)
         {
@@ -404,6 +416,36 @@ namespace CubeV2
         Direction
     }
 
+    public static class InstructionDatabase
+    {
+        private static List<Instruction> _masterList;
+
+        public static void Load()
+        {
+            _loadMasterList();
+        }
+
+        private static void _loadMasterList()
+        {
+            _masterList = new List<Instruction>();
+
+            _masterList.Add(new MoveInstruction());
+            _masterList.Add(new MoveRandomlyInstruction());
+
+        }
+
+        public static List<Instruction> GetAll()
+        {
+            var output = new List<Instruction>();
+            foreach(var inst in _masterList)
+            {
+                output.Add(inst.GenerateNew());
+            }
+            return output;
+        }
+    }
+
+
     public abstract class Instruction
     {
         public IVariable[] Variables;
@@ -420,6 +462,8 @@ namespace CubeV2
         }
 
         public abstract void Run(Entity entity);
+
+        public abstract Instruction GenerateNew();
     }
 
     public class MoveInstruction : Instruction
@@ -442,8 +486,23 @@ namespace CubeV2
                 return;
             }
 
-            var directionToMove = DirectionUtils.ToCardinal(entity.Orientation, (RelativeDirection)direction);
-            entity.TryMove(directionToMove);
+            entity.TryMove((RelativeDirection)direction);
+        }
+
+        public override Instruction GenerateNew() => new MoveInstruction();
+    }
+
+    public class MoveRandomlyInstruction : Instruction
+    {
+        public override string Name => "Move Randomly";
+
+        public override int VariableCount => 0;
+
+        public override Instruction GenerateNew() => new MoveRandomlyInstruction();
+
+        public override void Run(Entity entity)
+        {
+            entity.TryMove(RandomUtils.RandomRelative());
         }
     }
 }

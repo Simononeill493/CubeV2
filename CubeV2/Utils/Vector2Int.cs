@@ -32,6 +32,12 @@ namespace CubeV2
             Y = y;
         }
 
+        public Vector2Int(Vector2 vector2) : this()
+        {
+            X = (int)vector2.X;
+            Y = (int)vector2.Y;
+        }
+
         public Vector2Int Absolute => new Vector2Int(Math.Abs(X), Math.Abs(Y));
         public Vector2Int ToOnes()
         {
