@@ -28,7 +28,7 @@ namespace CubeV2.UI.Appearance.InstructionSelectionTileAppearance
                 name = GameInterface.SelectableInstructions[Index].Name;
             }
 
-            DrawUtils.DrawText(spriteBatch, DrawUtils.PressStart2PFont, name, position + _textOffset, Color.Black, _layer);
+            DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, name, position + _textOffset, Color.Black, 1, _layer);
         }
     }
 

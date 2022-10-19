@@ -24,7 +24,6 @@ namespace CubeV2
         private static Dictionary<CardinalDirection, bool> _diagonalsDict;
         private static Dictionary<CardinalDirection, (CardinalDirection left, CardinalDirection right)> _parallelDict;
 
-        private static Dictionary<RelativeDirection,string> _spritesDict;
 
 
         public static CardinalDirection Reverse(this CardinalDirection direction) => _reverseDict[direction];
@@ -84,18 +83,6 @@ namespace CubeV2
                 [CardinalDirection.SouthEast] = (CardinalDirection.NorthEast, CardinalDirection.SouthWest),
                 [CardinalDirection.NorthWest] = (CardinalDirection.SouthWest, CardinalDirection.NorthEast),
                 [CardinalDirection.SouthWest] = (CardinalDirection.SouthEast, CardinalDirection.NorthWest)
-            };
-
-            _spritesDict = new Dictionary<RelativeDirection, string>
-            {
-                [RelativeDirection.Forward] = DrawUtils.UpSprite,
-                [RelativeDirection.Backward] = DrawUtils.DownSprite,
-                [RelativeDirection.Left] = DrawUtils.LeftSprite,
-                [RelativeDirection.Right] = DrawUtils.RightSprite,
-                [RelativeDirection.ForwardRight] = DrawUtils.UpRightSprite,
-                [RelativeDirection.BackwardRight] = DrawUtils.DownRightSprite,
-                [RelativeDirection.ForwardLeft] = DrawUtils.UpLeftSprite,
-                [RelativeDirection.BackwardLeft] = DrawUtils.DownLeftSprite
             };
         }
 
@@ -162,6 +149,5 @@ namespace CubeV2
             return res >= 0 ? res : res + m;
         }
 
-        public static string Sprite(this RelativeDirection dir) => _spritesDict[dir];
     }
 }

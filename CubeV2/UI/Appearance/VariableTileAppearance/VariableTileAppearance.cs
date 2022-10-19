@@ -39,7 +39,7 @@ namespace CubeV2
             var variable = GetSource();
             if(variable!=null)
             {
-                DrawUtils.DrawSprite(spriteBatch, DrawUtils.VariableToSprite(variable), position, _scale, _layer);
+                DrawUtils.DrawVariable(spriteBatch, variable, position, _scale, _layer);
             }
         }
 

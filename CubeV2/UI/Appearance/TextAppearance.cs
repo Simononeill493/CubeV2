@@ -20,6 +20,7 @@ namespace CubeV2
 
         public override Vector2 Size => Vector2.Zero;
         public float Layer;
+        public float Scale = 1;
 
         public TextAppearance(Color color, float layer)
         {
@@ -34,7 +35,7 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            DrawUtils.DrawText(spriteBatch, DrawUtils.PressStart2PFont, GetText(), position, Color, Layer);
+            DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, GetText(), position, Color, Scale, Layer);
         }
     }
 }

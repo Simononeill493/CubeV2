@@ -11,6 +11,7 @@ namespace CubeV2
     internal class Config
     {
         public static bool KnowAllInstructionsByDefault = true;
+        public static int EntityMaxVariables = 3;
 
         public static int DefaultScreenWidth = 1550;
         public static int DefaultScreenHeight = 800;

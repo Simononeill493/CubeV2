@@ -25,7 +25,7 @@ namespace CubeV2
                 name = GameInterface.FocusedInstructions[Index].Name;
             }
 
-            DrawUtils.DrawText(spriteBatch, DrawUtils.PressStart2PFont, name, position, Color.White, _layer);
+            DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, name, position, Color.White,1, _layer);
         }
     }
 }
