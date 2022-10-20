@@ -17,11 +17,9 @@ namespace CubeV2
 
         public static List<Instruction> FocusedInstructions;
 
-
-
         public static int FocusedInstruction = -1;
         public static int FocusedVariable = -1;
-
+        public static int FocusedOutput = -1;
 
         public static void AssignValueToFocusedVariable(int optionIndex)
         {
@@ -41,6 +39,15 @@ namespace CubeV2
             }
         }
 
+        public static void FocusInstruction(int instructionIndex)
+        {
+            if (InstructionExists(instructionIndex))
+            {
+                FocusedInstruction = instructionIndex;
+                FocusedVariable = -1;
+                FocusedOutput = -1;
+            }
+        }
 
         public static void FocusVariable(int instructionIndex, int variableIndex)
         {
@@ -51,17 +58,42 @@ namespace CubeV2
 
                 FocusedInstruction = instructionIndex;
                 FocusedVariable = variableIndex;
+                FocusedOutput = -1;
             }
         }
 
+        public static void FocusOutput(int instructionIndex, int outputIndex)
+        {
+            if (OutputExists(instructionIndex, outputIndex))
+            {
+                //VariableOptions.Clear();
+                //VariableOptions.AddRange(VariableOptionsGenerator.GetAllVariableOptions());
+
+                FocusedInstruction = instructionIndex;
+                FocusedVariable = -1;
+                FocusedOutput = outputIndex;
+            }
+        }
+
+
         public static IVariable GetVariable(int instructionIndex, int variableIndex) => FocusedInstructions[instructionIndex].Variables[variableIndex];
 
+        public static bool FocusedOutputExists => OutputExists(FocusedInstruction, FocusedOutput);
         public static bool FocusedVariableExists => VariableExists(FocusedInstruction, FocusedVariable);
         public static bool FocusedInstructionExists => InstructionExists(FocusedInstruction);
 
+        public static bool OutputExists(int instructionIndex, int outputIndex)
+        {
+            if (InstructionExists(instructionIndex) && outputIndex >= 0 && (FocusedInstructions[instructionIndex].OutputCount > outputIndex))
+            {
+                return true;
+            }
+
+            return false;
+        }
         public static bool VariableExists(int instructionIndex, int variableIndex)
         {
-            if (InstructionExists(instructionIndex) && (FocusedInstructions[instructionIndex].VariableCount > variableIndex) && variableIndex >= 0)
+            if (InstructionExists(instructionIndex) && variableIndex >= 0 && (FocusedInstructions[instructionIndex].VariableCount > variableIndex))
             {
                 return true;
             }
@@ -70,7 +102,7 @@ namespace CubeV2
         }
         public static bool InstructionExists(int instructionIndex)
         {
-            if (FocusedInstructions != null && (FocusedInstructions.Count > instructionIndex) && instructionIndex>=0)
+            if (FocusedInstructions != null && instructionIndex >= 0 && (FocusedInstructions.Count > instructionIndex))
             {
                 return true;
             }

@@ -108,7 +108,7 @@ namespace CubeV2.Utils
                     return;
                 case IVariableType.StoredVariable:
                     var index = ((StoredVariableVariable)variable).VariableIndex;
-                    DrawString(spriteBatch, PressStart2PFont, index.ToString(), position, Color.White, scale, layer);
+                    DrawString(spriteBatch, PressStart2PFont, index.ToString(), position, Color.Magenta, scale, layer);
                     return;
                 default:
                     _drawSpriteVariable(spriteBatch, PlayerSprite, position, scale, layer);

@@ -28,12 +28,12 @@ namespace CubeV2
             }
         }
 
-        public bool Clickable = false;
-        public event Action<UserInput> OnLeftClick;
-        public event Action<UserInput> OnRightClick;
+        public bool Clickable { get; private set; } = false;
+        private event Action<UserInput> OnLeftClick;
+        private event Action<UserInput> OnRightClick;
 
         public Vector2 Offset;
-        public Vector2 Position;
+        private Vector2 Position;
 
         public Appearance Appearance;
 
@@ -74,8 +74,16 @@ namespace CubeV2
             }
         }
 
-        public void AddLeftClickAction(Action<UserInput> action) => OnLeftClick += action;
-        public void AdRightClickAction(Action<UserInput> action) => OnRightClick += action;
+        public void AddLeftClickAction(Action<UserInput> action)
+        {
+            Clickable = true;
+            OnLeftClick += action;
+        }
+        public void AddRightClickAction(Action<UserInput> action)
+        {
+            Clickable = true;
+            OnRightClick += action;
+        }
 
         public void TryLeftClick(UserInput input)
         {

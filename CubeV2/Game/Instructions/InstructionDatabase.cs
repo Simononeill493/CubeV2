@@ -17,6 +17,10 @@ namespace CubeV2
 
             _masterList.Add(new MoveInstruction());
             _masterList.Add(new MoveRandomlyInstruction());
+            _masterList.Add(new HitInstruction());
+            _masterList.Add(new PingInstruction());
+            _masterList.Add(new ScanInstruction());
+            _masterList.Add(new TurnInstruction());
 
         }
 

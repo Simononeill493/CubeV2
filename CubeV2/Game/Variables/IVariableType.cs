@@ -4,5 +4,6 @@
     {
         Direction,
         StoredVariable,
+        EntityType,
     }
 }

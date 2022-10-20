@@ -38,6 +38,7 @@ namespace CubeV2
         public static int InstructionTileInternalPadding = 10;
         public static int InstructionTileTopPadding = 50;
         public static int InstructionMaxNumVariables = 3;
+        public static int InstructionMaxNumOutputs = 2;
 
         public static int InstructionControlButtonsTopPadding = 15;
 
@@ -61,6 +62,7 @@ namespace CubeV2
         public static string InstructionPanelName = "InstructionPanel";
         public static string SelectorPanelName = "SelectorPanel";
         public static string InstructionSlotName = "InstructionSlot";
+        public static string InstructionOutputTileName = "InstructionOutputTile";
         public static string InstructionName = "Instruction";
         public static string AddInstructionButtonName = "AddInstructionButton";
         public static string RemoveInstructionButtonName = "RemoveInstructionButton";

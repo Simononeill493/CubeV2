@@ -40,8 +40,8 @@ namespace CubeV2
                     tile.Offset = _generateTileOffset(x, y, tileWidth, tileHeight, internalPadding);
 
                     int indexCaptured = index;
-                    tile.OnLeftClick += (input) => { grid.TileLeftClicked?.Invoke(input, indexCaptured); };
-                    tile.OnRightClick += (input) => { grid.TileRightClicked?.Invoke(input, indexCaptured); };
+                    tile.AddLeftClickAction((input) => { grid.TileLeftClicked?.Invoke(input, indexCaptured); });
+                    tile.AddRightClickAction((input) => { grid.TileRightClicked?.Invoke(input, indexCaptured); });
 
                     grid.AddChildren(tile);
                     index++;
@@ -56,7 +56,6 @@ namespace CubeV2
 
             var tileBackground = new RectangleAppearance(width, height, color, layer);
             tile.Appearance = MultiAppearance.Create(tileBackground, tileAppearance);
-            tile.Clickable = true;
 
             return tile;
         }

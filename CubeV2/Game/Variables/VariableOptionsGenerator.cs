@@ -35,6 +35,8 @@ namespace CubeV2
                         options.Add(new StoredVariableVariable(i));
                     }
                     break;
+                case IVariableType.EntityType:
+                    break;
                 default:
                     throw new Exception("Make sure all variable types are handled");
             }
