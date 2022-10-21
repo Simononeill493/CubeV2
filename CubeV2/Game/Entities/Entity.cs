@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 
 namespace CubeV2
@@ -36,7 +37,14 @@ namespace CubeV2
                 {
                     if (currentInstruction.OutputTargets[i] >= 0)
                     {
-                        Variables[currentInstruction.OutputTargets[i]] = currentInstruction.Outputs[i];
+                        var output = currentInstruction.Outputs[i];
+                        if(output.DefaultType==IVariableType.StoredVariable)
+                        {
+                            //We can't store variable references in variables yet. causes overflow. too meta lol
+                            continue;
+                        }
+
+                        Variables[currentInstruction.OutputTargets[i]] = output;
                     }
                 }
             }
