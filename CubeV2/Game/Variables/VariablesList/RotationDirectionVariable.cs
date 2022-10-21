@@ -21,16 +21,14 @@ namespace CubeV2
             switch (variableType)
             {
                 case IVariableType.RotationDirection:
-                    return RotationDirection;
                 case IVariableType.Integer:
-                    return (int)RotationDirection;
-
+                    return RotationDirection;
                 default:
                     return null;
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch, IVariable variable, Vector2 position, int scale, float layer)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position, int scale, float layer)
         {
             var str = "";
             if (RotationDirection == RotationDirection.Right)

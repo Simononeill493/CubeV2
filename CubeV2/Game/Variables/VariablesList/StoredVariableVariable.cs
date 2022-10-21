@@ -9,7 +9,7 @@ namespace CubeV2
     public class StoredVariableVariable : IVariable
     {
         public override IVariableType DefaultType => IVariableType.StoredVariable;
-        public override List<IVariableType> ValidTypes { get; } = VariableUtils.GetAllTypes().ToList();
+        public override List<IVariableType> ValidTypes { get; } = VariableUtils.GetAllVariableTypes().ToList();
 
         public int VariableIndex { get; }
 
@@ -29,7 +29,7 @@ namespace CubeV2
             return null;
         }
 
-        public override void Draw(SpriteBatch spriteBatch, IVariable variable, Vector2 position, int scale, float layer)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position, int scale, float layer)
         {
             DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, VariableIndex.ToString(), position, Color.Magenta, scale, layer);
 

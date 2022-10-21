@@ -12,17 +12,9 @@ namespace CubeV2
             game.ResetBoardTemplate();
             game.ResetBoard();
 
-            game.WinCondition = new GoalWinCondition(player.Id);
+            game.WinCondition = new GoalWinCondition(EntityDatabase.PlayerName);
 
             return game;
-        }
-
-        public static EntityTemplate CreateDemoPlayer()
-        {
-            var player = new EntityTemplate("Player") { Sprite = DrawUtils.PlayerSprite };
-            player.Instructions = new List<Instruction>() { new MoveInstruction(RelativeDirection.Backward) };
-
-            return player;
         }
 
         private static BoardTemplateTemplate _createDemoTemplateTemplate(EntityTemplate player)
@@ -32,10 +24,13 @@ namespace CubeV2
             
             for (int i = 0; i < 40; i++)
             {
-                templateTemplate.Entities.Add(new EntityTemplate("Wall_" + i) { Sprite = DrawUtils.WallSprite });
+                templateTemplate.Entities.Add(EntityDatabase.GetTemplate(EntityDatabase.WallName));
             }
 
-            templateTemplate.Entities.Add(new EntityTemplate("Goal", EntityTemplate.SpecialEntityTag.Goal) { Sprite = DrawUtils.GoalSprite });
+            for (int i = 0; i < 10; i++)
+            {
+                templateTemplate.Entities.Add(EntityDatabase.GetTemplate(EntityDatabase.GoalName));
+            }
 
             return templateTemplate;
         }

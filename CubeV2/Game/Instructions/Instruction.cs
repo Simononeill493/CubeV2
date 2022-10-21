@@ -30,7 +30,7 @@
             }
         }
 
-        public abstract void Run(Entity caller);
+        public abstract void Run(Entity caller,Board board);
 
         public abstract Instruction GenerateNew();
     }

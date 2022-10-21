@@ -11,10 +11,10 @@
 
         public MoveInstruction(RelativeDirection dir) : base()
         {
-            Variables[0] = new StaticDirectionVariable(dir);
+            Variables[0] = new RelativeDirectionVariable(dir);
         }
 
-        public override void Run(Entity caller)
+        public override void Run(Entity caller, Board board)
         {
             var direction = Variables[0]?.Convert(caller, IVariableType.RelativeDirection);
             if (direction == null)

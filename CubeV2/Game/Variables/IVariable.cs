@@ -12,6 +12,6 @@ namespace CubeV2
 
         public abstract object Convert(Entity caller,IVariableType variableType);
 
-        public abstract void Draw(SpriteBatch spriteBatch, IVariable variable, Vector2 position, int scale, float layer);
+        public abstract void Draw(SpriteBatch spriteBatch, Vector2 position, int scale, float layer);
     }
 }

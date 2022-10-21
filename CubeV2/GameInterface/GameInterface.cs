@@ -176,7 +176,7 @@ namespace CubeV2
 
         public static void InitializeDemoGame()
         {
-            var demoPlayer = DemoGameGenerator.CreateDemoPlayer();
+            var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.PlayerName);
             _focusedInstructions = demoPlayer.Instructions;
 
             _game = DemoGameGenerator.CreateDemoGame(demoPlayer);

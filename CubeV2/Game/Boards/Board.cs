@@ -7,6 +7,7 @@ namespace CubeV2
     public class Board
     {
         public Dictionary<string, Entity> Entities = new Dictionary<string, Entity>();
+        public Dictionary<string, List<Entity>> EntityTypes = new Dictionary<string, List<Entity>>();
 
         public Dictionary<Vector2Int, Tile> TilesVector = new Dictionary<Vector2Int, Tile>();
         public List<Tile> TilesLinear = new List<Tile>();
@@ -49,7 +50,7 @@ namespace CubeV2
             {
                 if (entity != null)
                 {
-                    entity.Tick();
+                    entity.Tick(this);
                 }
             }
         }
@@ -66,7 +67,7 @@ namespace CubeV2
             {
                 if (currentContents.TryBeCollected(entity))
                 {
-                    RemoveFromBoard(currentContents);
+                    RemoveEntityFromBoard(currentContents);
                 }
                 else
                 {
@@ -74,11 +75,23 @@ namespace CubeV2
                 }
             }
 
-            RemoveFromBoard(entity);
-            AddToBoard(entity, newLocation);
+            RemoveEntityFromCurrentTile(entity);
+            AddEntityToTile(entity, newLocation);
         }
 
-        public void RemoveFromBoard(Entity entity)
+        public void RemoveEntityFromBoard(Entity entity)
+        {
+            RemoveEntityFromCurrentTile(entity);
+
+            if (!Entities.ContainsKey(entity.EntityID))
+            {
+                Console.WriteLine("Warning: Entity is not in entity list that it is being removed from.");
+            }
+
+            Entities.Remove(entity.EntityID);
+            _removeFromEntityTypesDict(entity);
+        }
+        public void RemoveEntityFromCurrentTile(Entity entity)
         {
             if (!TilesVector.ContainsKey(entity.Location))
             {
@@ -90,39 +103,81 @@ namespace CubeV2
                 Console.WriteLine("Warning: Entity is not in tile that its location data is pointing to.");
             }
 
-            if (!Entities.ContainsKey(entity.Id))
-            {
-                Console.WriteLine("Warning: Entity is not in entity list that it is being removed from.");
-            }
-
-
             TilesVector[entity.Location].Contents = null;
             entity.Location = Vector2Int.MinusOne;
-
-            Entities.Remove(entity.Id);
         }
 
-        public void AddToBoard(Entity entity, Vector2Int location)
+        public void AddEntityToBoard(Entity entity, Vector2Int tileToAddTo)
+        {
+            if (Entities.ContainsKey(entity.EntityID))
+            {
+                Console.WriteLine("Warning: An entity with this ID already exists in this board.");
+            }
+
+            Entities[entity.EntityID] = entity;
+
+            AddEntityToTile(entity, tileToAddTo);
+            _addToEntityTypesDict(entity);
+        }
+        public void AddEntityToTile(Entity entity, Vector2Int tileToAddTo)
         {
             if (entity.Location != Vector2Int.MinusOne)
             {
                 Console.WriteLine("Warning: Entity already has a location");
             }
 
-            if (TilesVector[location].Contents != null)
+            if (TilesVector[tileToAddTo].Contents != null)
             {
                 Console.WriteLine("Warning: Entity is being moved to tile which is not empty.");
             }
 
-            if (Entities.ContainsKey(entity.Id))
+
+            TilesVector[tileToAddTo].Contents = entity;
+            entity.Location = tileToAddTo;
+
+        }
+
+        private void _addToEntityTypesDict(Entity entity)
+        {
+            if(!EntityTypes.ContainsKey(entity.TemplateID))
             {
-                Console.WriteLine("Warning: An entity with this ID already exists in this board.");
+                EntityTypes[entity.TemplateID] = new List<Entity>();
             }
 
-            TilesVector[location].Contents = entity;
-            entity.Location = location;
+            if (EntityTypes[entity.TemplateID].Contains(entity))
+            {
+                Console.WriteLine("Warning: entity already exists in EntityTypes dict.");
+                return;
+            }
 
-            Entities[entity.Id] = entity;
+            EntityTypes[entity.TemplateID].Add(entity);
         }
+        private void _removeFromEntityTypesDict(Entity entity)
+        {
+            if (!EntityTypes.ContainsKey(entity.TemplateID))
+            {
+                Console.WriteLine("Warning: TemplateID does not exist in EntityTypes dict.");
+                return;
+            }
+
+            if (!EntityTypes[entity.TemplateID].Contains(entity))
+            {
+                Console.WriteLine("Warning: entity does not exist in EntityTypes dict that it's being removed from.");
+                return;
+            }
+
+            EntityTypes[entity.TemplateID].Remove(entity);
+        }
+
+        public List<Entity> LocateEntityType(string templateID)
+        {
+            if(!EntityTypes.ContainsKey(templateID))
+            {
+                return new List<Entity>();
+            }
+
+            return EntityTypes[templateID];
+        }
+
     }
 }

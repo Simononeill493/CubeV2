@@ -1,4 +1,6 @@
-﻿namespace CubeV2
+﻿using System.Linq;
+
+namespace CubeV2
 {
     public class PingInstruction : Instruction
     {
@@ -8,11 +10,18 @@
 
         public override Instruction GenerateNew() => new PingInstruction();
 
-        public override void Run(Entity caller)
+        public override void Run(Entity caller, Board board)
         {
-            throw new System.NotImplementedException();
+            var targetTemplate = Variables[0]?.Convert(caller, IVariableType.EntityType);
+            if(targetTemplate != null)
+            {
+                var targetEntities = board.LocateEntityType(((EntityTemplate)targetTemplate).TemplateID);
+                var targetEntity = targetEntities.FirstOrDefault();
+                if(targetEntity!=null)
+                {
+                    Outputs[0] = new CardinalDirectionVariable(caller.Location.ApproachDirection(targetEntity.Location));
+                }
+            }
         }
     }
-
-
 }

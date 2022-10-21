@@ -38,7 +38,7 @@ namespace CubeV2
             var variable = GetSource();
             if(variable!=null)
             {
-                variable.Draw(spriteBatch, variable, position, _scale, _layer);
+                variable.Draw(spriteBatch, position, _scale, _layer);
             }
         }
 

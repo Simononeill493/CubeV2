@@ -17,13 +17,13 @@ namespace CubeV2
 
         //public static int GameGridWidth = 1;
         //public static int GameGridHeight = 1;
-        public static int GameGridWidth = 14;
-        public static int GameGridHeight = 10;
+        public static int GameGridWidth = 28;
+        public static int GameGridHeight = 20;
 
         public static int GameGridPadding = 2;
 
         public static Vector2 TileBaseSize = new Vector2(16,16);
-        public static int TileScale = 4;
+        public static int TileScale = 2;
         public static int VariableSelectionTileScale = 4;
         public static int InstructionTileVariableScale = 3;
 

@@ -5,6 +5,6 @@ namespace CubeV2
 {
     public static class VariableUtils
     {
-        public static IEnumerable<IVariableType> GetAllTypes() => typeof(IVariableType).GetEnumValues().Cast<IVariableType>();
+        public static IEnumerable<IVariableType> GetAllVariableTypes() => typeof(IVariableType).GetEnumValues().Cast<IVariableType>();
     }
 }

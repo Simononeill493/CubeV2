@@ -16,7 +16,7 @@ namespace CubeV2
 
         public override Instruction GenerateNew() => new StoreDataInstruction();
 
-        public override void Run(Entity caller)
+        public override void Run(Entity caller, Board board)
         {
             Outputs[0] = Variables[0];
         }

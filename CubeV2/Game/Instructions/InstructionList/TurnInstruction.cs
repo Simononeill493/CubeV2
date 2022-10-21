@@ -8,11 +8,13 @@
 
         public override Instruction GenerateNew() => new TurnInstruction();
 
-        public override void Run(Entity caller)
+        public override void Run(Entity caller, Board board)
         {
-            throw new System.NotImplementedException();
+            var orientation = Variables[0]?.Convert(caller, IVariableType.Orientation);
+            if(orientation!=null)
+            {
+                caller.SetOrientation((Orientation)orientation);
+            }
         }
     }
-
-
 }

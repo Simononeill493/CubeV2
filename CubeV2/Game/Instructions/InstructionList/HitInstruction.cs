@@ -8,7 +8,7 @@
 
         public override Instruction GenerateNew() => new HitInstruction();
 
-        public override void Run(Entity caller)
+        public override void Run(Entity caller, Board board)
         {
             throw new System.NotImplementedException();
         }

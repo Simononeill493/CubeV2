@@ -5,11 +5,13 @@ namespace CubeV2
 {
     public static class VariableOptionsGenerator
     {
-        public static List<IVariable> GetAllVariableOptions()
+        public static List<IVariable> GetAllVariableOptions() => GetVariableOptions(VariableUtils.GetAllVariableTypes());
+
+        public static List<IVariable> GetVariableOptions(IEnumerable<IVariableType> variableTypes)
         {
             var options = new List<IVariable>();
 
-            foreach (IVariableType variableType in VariableUtils.GetAllTypes())
+            foreach (IVariableType variableType in variableTypes)
             {
                 options.AddRange(GetVariableOptions(variableType));
             }
@@ -26,7 +28,7 @@ namespace CubeV2
                 case IVariableType.RelativeDirection:
                     foreach (var i in DirectionUtils.Relatives)
                     {
-                        options.Add(new StaticDirectionVariable(i));
+                        options.Add(new RelativeDirectionVariable(i));
                     }
                     options.Add(new RandomDirectionVariable());
                     break;
@@ -37,12 +39,18 @@ namespace CubeV2
                     }
                     break;
                 case IVariableType.EntityType:
+                    foreach(var template in EntityDatabase.GetAll())
+                    {
+                        options.Add(new EntityTypeVariable(template));
+                    }
                     break;
                 case IVariableType.RotationDirection:
                     options.Add(new RotationDirectionVariable(RotationDirection.Left));
                     options.Add(new RotationDirectionVariable(RotationDirection.Right));
                     break;
                 case IVariableType.Integer:
+                case IVariableType.Orientation:
+                case IVariableType.CardinalDirection:
                     break;
                 default:
                     throw new Exception("Make sure all variable types are handled");

@@ -6,7 +6,9 @@ namespace CubeV2
 {
     public class Entity
     {
-        public string Id { get; }
+        public string TemplateID { get; }
+        public string EntityID { get; }
+
         public string Sprite;
 
         public Orientation Orientation;
@@ -20,18 +22,19 @@ namespace CubeV2
         public List<string> Tags = new List<string>();
         public bool HasTag(string tag) => Tags.Contains(tag);
 
-        public Entity(string id, string sprite)
+        public Entity(string templateID, string entityID, string sprite)
         {
-            Id = id;
+            TemplateID = templateID;
+            EntityID = entityID;
             Sprite = sprite;
         }
 
-        public void Tick()
+        public void Tick(Board currentBoard)
         {
             for (int InstructionCounter = 0; InstructionCounter < Instructions.Count; InstructionCounter++)
             {
                 var currentInstruction = Instructions[InstructionCounter];
-                currentInstruction.Run(this);
+                currentInstruction.Run(this, currentBoard);
                 
                 for(int i=0;i<currentInstruction.OutputCount;i++)
                 {
@@ -62,6 +65,12 @@ namespace CubeV2
         {
             Orientation = Orientation.Rotate(rotation);
         }
+
+        public void SetOrientation(Orientation orientation)
+        {
+            Orientation = orientation;
+        }
+
 
         public virtual bool TryBeCollected(Entity collector) => false;
     }

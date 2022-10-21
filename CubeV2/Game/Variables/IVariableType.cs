@@ -3,9 +3,11 @@
     public enum IVariableType
     {
         RelativeDirection,
+        CardinalDirection,
         StoredVariable,
         EntityType,
         RotationDirection,
-        Integer
+        Integer,
+        Orientation,
     }
 }

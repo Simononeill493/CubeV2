@@ -1,17 +1,25 @@
-﻿namespace CubeV2
+﻿using System.Linq;
+using System.Reflection.Metadata;
+
+namespace CubeV2
 {
     public class GoalWinCondition : BoardWinCondition
     {
-        string _toEnterGoalId;
+        string _entityTypeToCheck;
 
-        public GoalWinCondition(string toEnterGoalId)
+        public GoalWinCondition(string entityTypeToCheck)
         {
-            _toEnterGoalId = toEnterGoalId;
+            _entityTypeToCheck = entityTypeToCheck;
         }
 
         public override bool Check(Board board)
         {
-            return board.Entities[_toEnterGoalId].HasTag(Config.GoalTag);
+            if(!board.EntityTypes.ContainsKey(_entityTypeToCheck))
+            {
+                return false;
+            }
+
+            return board.EntityTypes[_entityTypeToCheck].Any(t=>t.HasTag(Config.GoalTag));
         }
 
     }

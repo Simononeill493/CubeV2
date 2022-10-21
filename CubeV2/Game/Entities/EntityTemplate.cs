@@ -5,7 +5,9 @@ namespace CubeV2
 {
     public class EntityTemplate
     {
-        public string Id { get; }
+        public string TemplateID { get; }
+        private static int _sessionEntityCount;
+
         public SpecialEntityTag SpecialTag;
 
         public string Sprite;
@@ -13,7 +15,7 @@ namespace CubeV2
 
         public EntityTemplate(string id, SpecialEntityTag specialTag = SpecialEntityTag.None)
         {
-            Id = id;
+            TemplateID = id;
             SpecialTag = specialTag;
         }
 
@@ -22,9 +24,9 @@ namespace CubeV2
             switch (SpecialTag)
             {
                 case SpecialEntityTag.None:
-                    return new Entity(Id, Sprite) { Instructions = this.Instructions };
+                    return new Entity(TemplateID, _sessionEntityCount++.ToString(), Sprite) { Instructions = this.Instructions };
                 case SpecialEntityTag.Goal:
-                    return new GoalEntity(Id, Sprite) { Instructions = this.Instructions };
+                    return new GoalEntity(TemplateID, _sessionEntityCount++.ToString(), Sprite) { Instructions = this.Instructions };
                 default:
                     throw new Exception("Generating unrecognized entity type");
             }

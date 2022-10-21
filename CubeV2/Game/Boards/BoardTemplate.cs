@@ -14,7 +14,7 @@ namespace CubeV2
 
             foreach (var entity in Entities)
             {
-                board.AddToBoard(entity.Value.GenerateEntity(), entity.Key);
+                board.AddEntityToBoard(entity.Value.GenerateEntity(), entity.Key);
             }
 
             return board;

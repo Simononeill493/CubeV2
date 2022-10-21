@@ -11,6 +11,7 @@ internal class Program
         DirectionUtils.Init();
         KeyUtils.Init();
         InstructionDatabase.Load();
+        EntityDatabase.Load();
 
         Testing.Go();
 
