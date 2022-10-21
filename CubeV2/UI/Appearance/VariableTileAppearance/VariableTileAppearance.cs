@@ -1,5 +1,4 @@
-﻿using CubeV2.Utils;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -39,7 +38,7 @@ namespace CubeV2
             var variable = GetSource();
             if(variable!=null)
             {
-                DrawUtils.DrawVariable(spriteBatch, variable, position, _scale, _layer);
+                variable.Draw(spriteBatch, variable, position, _scale, _layer);
             }
         }
 
@@ -51,16 +50,7 @@ namespace CubeV2
     {
         public VariableTileAppearance_Grid(int gridIndex,int scale,float layer) : base(gridIndex,scale,layer){}
 
-        public override IVariable GetSource()
-        {
-            if(GameInterface.VariableOptions.Count> Index)
-            {
-                return GameInterface.VariableOptions[Index];
-            }
-
-            return null;
-        }
-
+        public override IVariable GetSource() => GameInterface.GetVariableOption(Index);
     }
 
     public class VariableTileAppearance_Instruction : VariableTileAppearance

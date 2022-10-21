@@ -16,7 +16,7 @@
 
         public override void Run(Entity caller)
         {
-            var direction = Variables[0]?.Convert(caller, IVariableType.Direction);
+            var direction = Variables[0]?.Convert(caller, IVariableType.RelativeDirection);
             if (direction == null)
             {
                 return;

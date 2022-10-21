@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 
 namespace CubeV2
 {
@@ -8,5 +11,7 @@ namespace CubeV2
         public abstract List<IVariableType> ValidTypes { get; }
 
         public abstract object Convert(Entity caller,IVariableType variableType);
+
+        public abstract void Draw(SpriteBatch spriteBatch, IVariable variable, Vector2 position, int scale, float layer);
     }
 }

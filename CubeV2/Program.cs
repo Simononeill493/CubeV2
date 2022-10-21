@@ -6,10 +6,10 @@ internal class Program
 {
     private static void Main(string[] args)
     {
+        Config.Load();
         RandomUtils.Init();
         DirectionUtils.Init();
         KeyUtils.Init();
-        Config.Load();
         InstructionDatabase.Load();
 
         Testing.Go();

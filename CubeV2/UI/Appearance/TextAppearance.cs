@@ -1,15 +1,6 @@
-﻿using CubeV2.Utils;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Formats.Asn1.AsnWriter;
-using static System.Net.Mime.MediaTypeNames;
 using Color = Microsoft.Xna.Framework.Color;
 
 namespace CubeV2

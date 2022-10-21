@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.VisualBasic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -12,11 +13,10 @@ using System.Threading.Tasks;
 using static System.Formats.Asn1.AsnWriter;
 using Color = Microsoft.Xna.Framework.Color;
 
-namespace CubeV2.Utils
+namespace CubeV2
 {
     public static class DrawUtils
     {
-
         public const string EnemySprite = "Enemy";
         public const string GoalSprite = "Goal";
         public const string GroundSprite = "Ground";
@@ -85,11 +85,11 @@ namespace CubeV2.Utils
             };
         }
 
-        public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position, float scale, float layer) => DrawSprite(spriteBatch, spriteName, position, scale, layer, Color.White);
+        public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position, float scale, float rotation, Vector2 rotationOrigin, float layer) => DrawSprite(spriteBatch, spriteName, position, scale, rotation, rotationOrigin, layer, Color.White);
 
-        public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position,float scale,float layer,Color color)
+        public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position,float scale, float rotation, Vector2 rotationOrigin,float layer,Color color)
         {
-            spriteBatch.Draw(SpritesDict[spriteName], position, null, color, 0, Vector2.Zero, scale, SpriteEffects.None, layer);
+            spriteBatch.Draw(SpritesDict[spriteName], position, null, color, rotation, rotationOrigin, scale, SpriteEffects.None, layer);
         }
 
         public static void DrawString(SpriteBatch spriteBatch,SpriteFont font,string text,Vector2 position,Color color,float scale,float layer)
@@ -97,31 +97,56 @@ namespace CubeV2.Utils
             spriteBatch.DrawString(font, text, position, color, 0, Vector2.Zero, scale, SpriteEffects.None, layer);
         }
 
-
-        public static void DrawVariable(SpriteBatch spriteBatch, IVariable variable,Vector2 position,int scale,float layer)
+        public static void DrawEntity(SpriteBatch spriteBatch, Entity entity, Vector2 position, float scale, float layer)
         {
-            switch (variable.DefaultType)
+            var rotBase = Math.PI / 4;
+            float rotation = 0;
+            Vector2 rotationOffset = Vector2.Zero;
+
+            switch (entity.Orientation)
             {
-                case IVariableType.Direction:
-                    var directionSprite = ((RelativeDirection)variable.Convert(null, IVariableType.Direction)).Sprite();
-                    _drawSpriteVariable(spriteBatch, directionSprite, position, scale, layer);
-                    return;
-                case IVariableType.StoredVariable:
-                    var index = ((StoredVariableVariable)variable).VariableIndex;
-                    DrawString(spriteBatch, PressStart2PFont, index.ToString(), position, Color.Magenta, scale, layer);
-                    return;
-                default:
-                    _drawSpriteVariable(spriteBatch, PlayerSprite, position, scale, layer);
-                    return;
-            }
-        }
+                case Orientation.Top:
+                    break;
+                case Orientation.TopRight:
+                    rotation = (float)(rotBase * 1);
+                    rotationOffset = new Vector2(8, -4) * Config.TileScale;
+                    break;
+                case Orientation.Right:
+                    rotation = (float)(rotBase*2);
+                    rotationOffset = new Vector2(16, 0) * Config.TileScale;
 
-        private static void _drawSpriteVariable(SpriteBatch spriteBatch, string sprite, Vector2 position, int scale, float layer)
-        {
-            DrawSprite(spriteBatch, sprite, position, scale, layer);
+                    break;
+                case Orientation.BottomRight:
+                    rotation = (float)(rotBase * 3);
+                    rotationOffset = new Vector2(19, 8) * Config.TileScale;
+
+                    break;
+                case Orientation.Bottom:
+                    rotation = (float)(rotBase * 4);
+                    rotationOffset = new Vector2(16, 16) * Config.TileScale;
+
+                    break;
+                case Orientation.BottomLeft:
+                    rotation = (float)(rotBase * 5);
+                    rotationOffset = new Vector2(8, 20) * Config.TileScale;
+
+                    break;
+                case Orientation.Left:
+                    rotation = (float)(rotBase * 6);
+                    rotationOffset = new Vector2(0, 16) * Config.TileScale;
+
+                    break;
+                case Orientation.TopLeft:
+                    rotation = (float)(rotBase * 7);
+                    rotationOffset = new Vector2(-3, 8) * Config.TileScale;
+                    break;    
+                default:
+                    throw new Exception();
+            }
+
+            DrawSprite(spriteBatch, entity.Sprite, position + rotationOffset, scale, rotation, Vector2.Zero, layer);
         }
 
         public static string Sprite(this RelativeDirection dir) => _directionSpriteLookup[dir];
-        //public static string Sprite(this int i) => _numberSpriteLookup[i];
     }
 }

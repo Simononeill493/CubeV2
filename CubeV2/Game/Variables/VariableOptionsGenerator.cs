@@ -23,11 +23,12 @@ namespace CubeV2
 
             switch (variableType)
             {
-                case IVariableType.Direction:
+                case IVariableType.RelativeDirection:
                     foreach (var i in DirectionUtils.Relatives)
                     {
                         options.Add(new StaticDirectionVariable(i));
                     }
+                    options.Add(new RandomDirectionVariable());
                     break;
                 case IVariableType.StoredVariable:
                     for(int i=0;i<Config.InstructionMaxNumVariables;i++)
@@ -36,6 +37,12 @@ namespace CubeV2
                     }
                     break;
                 case IVariableType.EntityType:
+                    break;
+                case IVariableType.RotationDirection:
+                    options.Add(new RotationDirectionVariable(RotationDirection.Left));
+                    options.Add(new RotationDirectionVariable(RotationDirection.Right));
+                    break;
+                case IVariableType.Integer:
                     break;
                 default:
                     throw new Exception("Make sure all variable types are handled");

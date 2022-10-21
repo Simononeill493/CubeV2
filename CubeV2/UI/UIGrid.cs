@@ -25,7 +25,6 @@ namespace CubeV2
         public static UIGrid Make(string id, int gridWidth, int gridHeight, int tileWidth, int tileHeight, int internalPadding, Color tileBackgroundColor, float layer, TileAppearanceFactory appearanceFactory)
         {
             var grid = new UIGrid(id);
-            grid.Appearance = new NoAppearance();
 
             int index = 0;
 
@@ -37,7 +36,7 @@ namespace CubeV2
                     var tileContentsAppearance = appearanceFactory.Create(index);
 
                     var tile = _makeTile(tileId, tileWidth, tileHeight, tileBackgroundColor, layer, tileContentsAppearance);
-                    tile.Offset = _generateTileOffset(x, y, tileWidth, tileHeight, internalPadding);
+                    tile.SetOffset(_generateTileOffset(x, y, tileWidth, tileHeight, internalPadding));
 
                     int indexCaptured = index;
                     tile.AddLeftClickAction((input) => { grid.TileLeftClicked?.Invoke(input, indexCaptured); });
@@ -55,7 +54,7 @@ namespace CubeV2
             var tile = new UIElement(id);
 
             var tileBackground = new RectangleAppearance(width, height, color, layer);
-            tile.Appearance = MultiAppearance.Create(tileBackground, tileAppearance);
+            tile.AddAppearances(tileBackground, tileAppearance);
 
             return tile;
         }

@@ -2,8 +2,10 @@
 {
     public enum IVariableType
     {
-        Direction,
+        RelativeDirection,
         StoredVariable,
         EntityType,
+        RotationDirection,
+        Integer
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace CubeV2
 {
-    public class MoveRandomlyInstruction : Instruction
+    /*public class MoveRandomlyInstruction : Instruction
     {
         public override string Name => "Move Randomly";
 
@@ -13,5 +13,5 @@
         {
             caller.TryMove(RandomUtils.RandomRelative());
         }
-    }
+    }*/
 }

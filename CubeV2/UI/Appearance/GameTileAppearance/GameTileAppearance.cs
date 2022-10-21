@@ -1,5 +1,4 @@
-﻿using CubeV2.Utils;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -32,12 +31,12 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            DrawUtils.DrawSprite(spriteBatch, DrawUtils.GroundSprite, position, Config.TileScale, DrawUtils.UILayer2);
+            DrawUtils.DrawSprite(spriteBatch, DrawUtils.GroundSprite, position, Config.TileScale, 0, Vector2.Zero, DrawUtils.UILayer2);
 
             var contents = GameInterface.GetTile(this.Index).Contents;
             if (contents!=null)
             {
-                DrawUtils.DrawSprite(spriteBatch, contents.Sprite, position, Config.TileScale, DrawUtils.UILayer3);
+                DrawUtils.DrawEntity(spriteBatch, contents, position, Config.TileScale, DrawUtils.UILayer3);
             }
         }
     }

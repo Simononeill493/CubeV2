@@ -1,13 +1,13 @@
-﻿using CubeV2.Utils;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
-namespace CubeV2.UI.Appearance.InstructionSelectionTileAppearance
+namespace CubeV2
 {
     internal class InstructionSelectionTileAppearance : TileAppearance
     {
@@ -18,17 +18,15 @@ namespace CubeV2.UI.Appearance.InstructionSelectionTileAppearance
             _layer = layer;
         }
 
-        public override Vector2 Size => Config.InstructionSelectorTileSize;
+        public override Vector2 Size => Config.InstructionOptionTileSize;
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            var name = "";
-            if (GameInterface.SelectableInstructionExists(Index))
+            var instructionOption = GameInterface.GetInstructionOption(Index);
+            if (instructionOption!=null)
             {
-                name = GameInterface.SelectableInstructions[Index].Name;
+                DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, instructionOption.Name, position + _textOffset, Color.Black, 1, _layer);
             }
-
-            DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, name, position + _textOffset, Color.Black, 1, _layer);
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Specialized;
 
 namespace CubeV2
 {
@@ -28,7 +29,16 @@ namespace CubeV2
         {
             for (int InstructionCounter = 0; InstructionCounter < Instructions.Count; InstructionCounter++)
             {
-                Instructions[InstructionCounter].Run(this);
+                var currentInstruction = Instructions[InstructionCounter];
+                currentInstruction.Run(this);
+                
+                for(int i=0;i<currentInstruction.OutputCount;i++)
+                {
+                    if (currentInstruction.OutputTargets[i] >= 0)
+                    {
+                        Variables[currentInstruction.OutputTargets[i]] = currentInstruction.Outputs[i];
+                    }
+                }
             }
         }
 
@@ -38,6 +48,11 @@ namespace CubeV2
         {
             var newLocation = Location + direction.XYOffset();
             GameInterface.TryMoveEntity(this, newLocation);
+        }
+
+        public void Rotate(int rotation)
+        {
+            Orientation = Orientation.Rotate(rotation);
         }
 
         public virtual bool TryBeCollected(Entity collector) => false;

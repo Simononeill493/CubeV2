@@ -10,6 +10,8 @@ namespace CubeV2
 {
     public abstract class Appearance
     {
+        public static Appearance NoAppearance = new NoAppearance();
+
         public abstract Vector2 Size { get; }
 
         public Color Color

@@ -1,5 +1,4 @@
-﻿using CubeV2.Utils;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -23,8 +22,8 @@ namespace CubeV2
         {
             _graphics = new GraphicsDeviceManager(this);
 
-            _graphics.PreferredBackBufferWidth = Config.DefaultScreenWidth;
-            _graphics.PreferredBackBufferHeight = Config.DefaultScreenHeight;
+            _graphics.PreferredBackBufferWidth = (int)Config.ScreenSize.X;
+            _graphics.PreferredBackBufferHeight = (int)Config.ScreenSize.Y;
             _graphics.ApplyChanges();
 
             Content.RootDirectory = "Content";
