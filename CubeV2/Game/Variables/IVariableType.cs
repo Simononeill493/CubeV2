@@ -2,6 +2,7 @@
 {
     public enum IVariableType
     {
+        _null,
         RelativeDirection,
         CardinalDirection,
         StoredVariable,
@@ -9,5 +10,6 @@
         RotationDirection,
         Integer,
         Orientation,
+        Tile
     }
 }

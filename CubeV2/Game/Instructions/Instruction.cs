@@ -2,15 +2,18 @@
 {
     public abstract class Instruction
     {
+        public abstract int VariableCount { get; }
         public IVariable[] Variables;
 
-        public int[] OutputTargets;
+        public abstract int OutputCount { get; }
         public IVariable[] Outputs;
+        public int[] OutputTargets;
+
+
+        public virtual int ControlOutputCount { get; } = 0;
+        public int[] ControlOutputs;
 
         public abstract string Name { get; }
-
-        public abstract int VariableCount { get; }
-        public abstract int OutputCount { get; }
 
         public Instruction()
         {
@@ -22,11 +25,22 @@
 
             OutputTargets = new int[Config.InstructionMaxNumOutputs];
             Outputs = new IVariable[Config.InstructionMaxNumOutputs];
+            ControlOutputs = new int[Config.InstructionMaxNumControlOutputs];
 
             for (int i = 0; i < Config.InstructionMaxNumOutputs; i++)
             {
                 OutputTargets[i] = -1;
                 Outputs[i] = null;
+            }
+
+            for (int i = 0; i < Config.InstructionMaxNumControlOutputs; i++)
+            {
+                ControlOutputs[i] = -1;
+            }
+
+            if (OutputCount > 0 && ControlOutputCount > 0)
+            {
+                throw new System.Exception("Can't (currently) have an instruction with both control and outputs.");
             }
         }
 

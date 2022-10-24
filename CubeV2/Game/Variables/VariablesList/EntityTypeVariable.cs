@@ -36,5 +36,16 @@ namespace CubeV2
         {
             DrawUtils.DrawSprite(spriteBatch, _template.Sprite, position, scale, 0, Vector2.Zero,layer);
         }
+
+        public override bool IVariableEquals(Entity caller, IVariable other)
+        {
+            var otherConverted = other.Convert(caller, IVariableType.EntityType);
+            if (otherConverted != null)
+            {
+                return ((EntityTemplate)otherConverted).TemplateID == _template.TemplateID;
+            }
+            return false;
+        }
+
     }
 }

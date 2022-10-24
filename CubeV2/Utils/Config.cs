@@ -17,13 +17,13 @@ namespace CubeV2
 
         //public static int GameGridWidth = 1;
         //public static int GameGridHeight = 1;
-        public static int GameGridWidth = 28;
-        public static int GameGridHeight = 20;
+        public static int GameGridWidth = 14;
+        public static int GameGridHeight = 10;
 
         public static int GameGridPadding = 2;
 
         public static Vector2 TileBaseSize = new Vector2(16,16);
-        public static int TileScale = 2;
+        public static int TileScale = 4;
         public static int VariableSelectionTileScale = 4;
         public static int InstructionTileVariableScale = 3;
 
@@ -33,7 +33,8 @@ namespace CubeV2
         public static int InstructionTileTopPadding = 50;
         public static int InstructionMaxNumVariables = 3;
         public static int InstructionMaxNumOutputs = 2;
-
+        public static int InstructionMaxNumControlOutputs = 2;
+        public static int MaxInstructionJumpsPerTick = 50;
 
 
 
@@ -43,6 +44,7 @@ namespace CubeV2
         public static string SelectorPanelName = "SelectorPanel";
         public static string InstructionSlotName = "InstructionSlot";
         public static string InstructionOutputTileName = "InstructionOutputTile";
+        public static string InstructionControlOutputTileName = "InstructionControlOutputTile";
         public static string InstructionName = "Instruction";
         public static string AddInstructionButtonName = "AddInstructionButton";
         public static string RemoveInstructionButtonName = "RemoveInstructionButton";

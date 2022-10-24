@@ -10,7 +10,13 @@
 
         public override void Run(Entity caller, Board board)
         {
-            throw new System.NotImplementedException();
+            var direction = Variables[0]?.Convert(caller, IVariableType.RelativeDirection);
+            if (direction == null)
+            {
+                return;
+            }
+
+            caller.TryHit((RelativeDirection)direction);
         }
     }
 

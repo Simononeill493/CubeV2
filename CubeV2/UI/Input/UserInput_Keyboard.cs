@@ -14,6 +14,9 @@ namespace CubeV2
         public List<Keys> KeysJustReleased;
         public string CharactersPressed = "";
 
+        public bool IsNumberJustPressed => KeysJustPressed.Any(k => k.IsNumeric());
+        public int GetNumberJustPressed => KeysJustPressed.FirstOrDefault(k => k.IsNumeric()).KeyToInt();
+
         protected void _setKeyboardState(KeyboardState newKeyboardState, KeyboardState oldKeyboardState)
         {
             KeyboardState = newKeyboardState;

@@ -31,7 +31,9 @@ namespace CubeV2
 
         public void Tick(Board currentBoard)
         {
-            for (int InstructionCounter = 0; InstructionCounter < Instructions.Count; InstructionCounter++)
+            var trueInstructionCount = 0;
+
+            for (InstructionCounter = 0; InstructionCounter < Instructions.Count; InstructionCounter++)
             {
                 var currentInstruction = Instructions[InstructionCounter];
                 currentInstruction.Run(this, currentBoard);
@@ -41,7 +43,7 @@ namespace CubeV2
                     if (currentInstruction.OutputTargets[i] >= 0)
                     {
                         var output = currentInstruction.Outputs[i];
-                        if(output.DefaultType==IVariableType.StoredVariable)
+                        if(output!=null && output.DefaultType==IVariableType.StoredVariable)
                         {
                             //We can't store variable references in variables yet. causes overflow. too meta lol
                             continue;
@@ -50,16 +52,54 @@ namespace CubeV2
                         Variables[currentInstruction.OutputTargets[i]] = output;
                     }
                 }
+
+                if(trueInstructionCount++ >= Config.MaxInstructionJumpsPerTick)
+                {
+                    break;
+                }
+            }
+        }
+
+        public void SetInstructionCounter(int index)
+        {
+            if(index>=0)
+            {
+                InstructionCounter = index;
             }
         }
 
         public void TryMove(RelativeDirection direction) => TryMove(DirectionUtils.ToCardinal(Orientation, direction));
+        public void TryHit(RelativeDirection direction) => TryHit(DirectionUtils.ToCardinal(Orientation, direction));
+        public CapturedTileVariable TryScan(RelativeDirection direction) => TryScan(DirectionUtils.ToCardinal(Orientation, direction));
 
         public void TryMove(CardinalDirection direction)
         {
             var newLocation = Location + direction.XYOffset();
             GameInterface.TryMoveEntity(this, newLocation);
         }
+
+        public void TryHit(CardinalDirection direction)
+        {
+            var targetLocation = Location + direction.XYOffset();
+            GameInterface.ClearTile(targetLocation);
+        }
+
+
+        public CapturedTileVariable TryScan(CardinalDirection direction)
+        {
+            var newLocation = Location + direction.XYOffset();
+            var tile = GameInterface.TryGetTile(newLocation);
+
+            if(tile!=null)
+            {
+                return new CapturedTileVariable(newLocation,tile.Contents);
+            }
+
+            return null;
+        }
+
+
+
 
         public void Rotate(int rotation)
         {
@@ -73,5 +113,6 @@ namespace CubeV2
 
 
         public virtual bool TryBeCollected(Entity collector) => false;
+
     }
 }

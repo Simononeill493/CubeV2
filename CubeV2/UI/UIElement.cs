@@ -14,6 +14,8 @@ namespace CubeV2
 
         public Appearance Appearance { get; private set; } = Appearance.NoAppearance;
         public bool Clickable { get; private set; } = false;
+        public bool Typeable { get; private set; } = false;
+
         public bool Enabled => _alwaysEnabled || _isEnabled();
 
         public UIElement(string id)
@@ -23,9 +25,12 @@ namespace CubeV2
         }
 
 
-
+        private event Action<UserInput> _onKeyPressed;
         private event Action<UserInput> _onLeftClick;
         private event Action<UserInput> _onRightClick;
+
+
+
         public void AddLeftClickAction(Action<UserInput> action)
         {
             Clickable = true;
@@ -36,6 +41,14 @@ namespace CubeV2
             Clickable = true;
             _onRightClick += action;
         }
+        public void AddKeyPressedAction(Action<UserInput> action)
+        {
+            Typeable = true;
+            _onKeyPressed += action;
+        }
+
+        
+        
         public void TryLeftClick(UserInput input)
         {
             if (IsMouseOver(input.MousePos))
@@ -49,6 +62,10 @@ namespace CubeV2
             {
                 _onRightClick?.Invoke(input);
             }
+        }
+        public void SendKeys(UserInput input)
+        {
+            _onKeyPressed?.Invoke(input);
         }
 
         public Func<bool> _isEnabled = () => true;

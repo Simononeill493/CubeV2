@@ -23,7 +23,13 @@ namespace CubeV2
             _alphaNumericKeys[Keys.OemComma] = ',';
         }
 
-        public static char KeyToChar(Keys key)
+        public static int KeyToInt(this Keys key)
+        {
+            var asInt = key.KeyToChar();
+            return asInt - 48;
+        }
+
+        public static char KeyToChar(this Keys key)
         {
             var keyboard = Keyboard.GetState();
             var caps = CapsLock;

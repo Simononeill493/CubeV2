@@ -20,6 +20,8 @@ namespace CubeV2
             _uIElements[id] = element;
         }
 
-        public static IEnumerable<UIElement> GetClickable => _uIElements.Values.Where(u => u.Clickable);
+        public static IEnumerable<UIElement> GetClickable => _uIElements.Values.Where(u => u.Clickable && u.Enabled);
+        public static IEnumerable<UIElement> GetTypeable => _uIElements.Values.Where(u => u.Typeable && u.Enabled);
+
     }
 }

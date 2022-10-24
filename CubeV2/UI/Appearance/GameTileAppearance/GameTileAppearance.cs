@@ -33,7 +33,7 @@ namespace CubeV2
         {
             DrawUtils.DrawSprite(spriteBatch, DrawUtils.GroundSprite, position, Config.TileScale, 0, Vector2.Zero, DrawUtils.UILayer2);
 
-            var contents = GameInterface.GetTile(this.Index).Contents;
+            var contents = GameInterface.TryGetTile(this.Index).Contents;
             if (contents!=null)
             {
                 DrawUtils.DrawEntity(spriteBatch, contents, position, Config.TileScale, DrawUtils.UILayer3);

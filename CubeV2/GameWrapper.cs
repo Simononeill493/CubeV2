@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Buffers;
+using System.Linq;
 
 namespace CubeV2
 {
@@ -67,6 +68,14 @@ namespace CubeV2
                 {
                     element.TryRightClick(input);
                 }
+            }
+            if(input.KeysJustPressed.Any())
+            {
+                foreach (var element in AllUIElements.GetClickable)
+                {
+                    element.SendKeys(input);
+                }
+
             }
 
             // TODO: Add your update logic here

@@ -181,6 +181,19 @@ namespace CubeV2
                 slot.AddChildren(outputTile);
             }
 
+            for (int controlIndex = 0; controlIndex < Config.InstructionMaxNumControlOutputs; controlIndex++)
+            {
+                var controlOutputTile = _makeInstructionControlTile(instructionIndex, controlIndex);
+                slot.AddChildren(controlOutputTile);
+            }
+
+
+
+            var indexText = new UIElement(slot.ID + "_indexNumber");
+            indexText.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer2, instructionIndex.ToString()));
+            indexText.SetOffset(-20, Config.InstructionTileSize.Y / 2);
+            slot.AddChildren(indexText);
+
             return slot;
         }
 
@@ -199,6 +212,24 @@ namespace CubeV2
 
             return outputTile;
         }
+
+        private static UIElement _makeInstructionControlTile(int instructionIndex, int controlIndex)
+        {
+            var outputTile = new UIElement(Config.InstructionControlOutputTileName + "_" + instructionIndex + "_" + controlIndex);
+            outputTile.SetOffset(Config.InstructionTileSize.X + 1, (controlIndex * 50));
+
+            var tileBackground = new RectangleAppearance(Config.TileBaseSize * Config.InstructionTileVariableScale, Config.InstructionTileColor, DrawUtils.UILayer2);
+            tileBackground.OverrideColor(() => (GameInterface.IsFocusedOnControlOutput(instructionIndex, controlIndex) ? Config.InstructionTileAssignedVariableHighlightColor : Config.InstructionTileAssignedVariableColor));
+            var tileAppearance = new OutputControlTileAppearance(controlIndex, instructionIndex, Config.InstructionTileVariableScale, DrawUtils.UILayer3);
+            outputTile.AddAppearances(tileBackground, tileAppearance);
+
+            outputTile.AddLeftClickAction((i) => { GameInterface.FocusControlOutput(instructionIndex, controlIndex); });
+            outputTile.SetEnabledCondition(() => GameInterface.ControlOutputExists(instructionIndex, controlIndex));
+            outputTile.AddKeyPressedAction((i) => { if (i.IsNumberJustPressed) { GameInterface.AssignValueToFocusedControlOutput(i.GetNumberJustPressed); } });
+
+            return outputTile;
+        }
+
 
         private static UIElement _makeInstructionVariableTile(int instructionIndex,int variableIndex)
         {

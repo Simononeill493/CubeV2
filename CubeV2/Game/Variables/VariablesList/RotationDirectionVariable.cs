@@ -42,6 +42,17 @@ namespace CubeV2
 
             DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, str, position, Color.Green, scale / 3, layer);
         }
+
+        public override bool IVariableEquals(Entity caller, IVariable other)
+        {
+            var otherConverted = other.Convert(caller, IVariableType.RotationDirection);
+            if (otherConverted != null)
+            {
+                return (RotationDirection)otherConverted == RotationDirection;
+            }
+            return false;
+        }
+
     }
 
 }

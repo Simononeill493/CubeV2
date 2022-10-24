@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -14,7 +15,8 @@ namespace CubeV2
         None,
         Instruction,
         Variable,
-        Output
+        Output,
+        ControlOutput
     }
 
     internal class GameInterface
@@ -24,6 +26,7 @@ namespace CubeV2
         private static int _focusedInstruction;
         private static int _focusedVariable;
         private static int _focusedOutput;
+        private static int _focusedControlOutput;
 
         private static List<Instruction> _focusedInstructions;
         private static List<IVariable> _variableOptions = new List<IVariable>();
@@ -60,15 +63,24 @@ namespace CubeV2
         public static bool IsFocusedOnInstruction(int instructionIndex) => instructionIndex == _focusedInstruction;
         public static bool IsFocusedOnVariable(int instructionIndex,int variableIndex) => instructionIndex == _focusedInstruction & variableIndex == _focusedVariable & Focus == CurrentFocus.Variable;
         public static bool IsFocusedOnOutput(int instructionIndex, int outputIndex) => instructionIndex == _focusedInstruction & outputIndex == _focusedOutput & Focus == CurrentFocus.Output;
+        public static bool IsFocusedOnControlOutput(int instructionIndex, int controlIndex) => instructionIndex == _focusedInstruction & controlIndex == _focusedControlOutput & Focus == CurrentFocus.ControlOutput;
 
         public static void AssignValueToFocusedVariable(int variableOptionIndex)
         {
-            if(FocusedVariableExists && VariableOptionExists(variableOptionIndex))
+            if(Focus == CurrentFocus.Variable && FocusedVariableExists && VariableOptionExists(variableOptionIndex))
             {
                 var newVariable = _variableOptions[variableOptionIndex];
                 _focusedInstructions[_focusedInstruction].Variables[_focusedVariable] = newVariable;
             }
         }
+        public static void AssignValueToFocusedControlOutput(int targetIndex)
+        {
+            if (Focus == CurrentFocus.ControlOutput && FocusedControlOutputExists)
+            {
+                _focusedInstructions[_focusedInstruction].ControlOutputs[_focusedControlOutput] = targetIndex;
+            }
+        }
+
         public static void AssignValueToFocusedInstruction(int instructionOptionIndex)
         {
             if(FocusedInstructionExists && InstructionOptionExists(instructionOptionIndex))
@@ -79,7 +91,7 @@ namespace CubeV2
         }
         public static void AssignValueToFocusedOutput(int outputOptionIndex)
         {
-            if (FocusedOutputExists && OutputOptionExists(outputOptionIndex))
+            if (Focus == CurrentFocus.Output && FocusedOutputExists && OutputOptionExists(outputOptionIndex))
             {
                 GetInstructionFromCurrentFocus(_focusedInstruction).OutputTargets[_focusedOutput] = outputOptionIndex;
             }
@@ -117,16 +129,37 @@ namespace CubeV2
                 Focus = CurrentFocus.Output;
             }
         }
+        public static void FocusControlOutput(int instructionIndex, int controlIndex)
+        {
+            if (ControlOutputExists(instructionIndex, controlIndex))
+            {
+                _focusedInstruction = instructionIndex;
+                _focusedControlOutput = controlIndex;
+                Focus = CurrentFocus.ControlOutput;
+            }
+        }
+
 
         public static IVariable GetVariable(int instructionIndex, int variableIndex) => _focusedInstructions[instructionIndex].Variables[variableIndex];
 
         public static bool FocusedOutputExists => OutputExists(_focusedInstruction, _focusedOutput);
         public static bool FocusedVariableExists => VariableExists(_focusedInstruction, _focusedVariable);
+        public static bool FocusedControlOutputExists => ControlOutputExists(_focusedInstruction, _focusedControlOutput);
+
         public static bool FocusedInstructionExists => InstructionExists(_focusedInstruction);
 
         public static bool OutputExists(int instructionIndex, int outputIndex)
         {
             if (InstructionExists(instructionIndex) && outputIndex >= 0 && (_focusedInstructions[instructionIndex].OutputCount > outputIndex))
+            {
+                return true;
+            }
+
+            return false;
+        }
+        internal static bool ControlOutputExists(int instructionIndex, int controlIndex)
+        {
+            if (InstructionExists(instructionIndex) && controlIndex >= 0 && (_focusedInstructions[instructionIndex].ControlOutputCount > controlIndex))
             {
                 return true;
             }
@@ -146,7 +179,8 @@ namespace CubeV2
         {
             return (_focusedInstructions != null && (_focusedInstructions.Count > instructionIndex) && instructionIndex >= 0);
         }
-        
+
+
         public static bool InstructionOptionExists(int instructionIndex)
         {
             return (_game != null && _instructionOptions != null && (_instructionOptions.Count > instructionIndex) && instructionIndex >= 0);
@@ -220,10 +254,15 @@ namespace CubeV2
             _game.CurrentBoard.TryMoveEntity(e, location);
         }
 
-        public static Tile GetTile(int index)
+        public static Tile TryGetTile(int index) => _game.CurrentBoard.TryGetTile(index);
+        public static Tile TryGetTile(Vector2Int offset) => _game.CurrentBoard.TryGetTile(offset);
+
+        internal static void ClearTile(Vector2Int targetLocation)
         {
-            return _game.CurrentBoard.TilesLinear[index];
+            _game.CurrentBoard.ClearThisTile(targetLocation);
         }
+
+
 
         public static void AddInstruction()
         {
@@ -237,9 +276,6 @@ namespace CubeV2
                 _focusedInstructions.RemoveAt(_focusedInstructions.Count - 1);
             }
         }
-
-
-
 
 
     }

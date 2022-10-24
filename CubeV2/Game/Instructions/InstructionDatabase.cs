@@ -23,7 +23,7 @@ namespace CubeV2
             _masterList.Add(new TurnInstruction());
             _masterList.Add(new RotateInstruction());
             _masterList.Add(new StoreDataInstruction());
-
+            _masterList.Add(new IfInstruction());
         }
 
         public static List<Instruction> GetAll()

@@ -51,6 +51,8 @@ namespace CubeV2
                 case IVariableType.Integer:
                 case IVariableType.Orientation:
                 case IVariableType.CardinalDirection:
+                case IVariableType.Tile:
+                case IVariableType._null:
                     break;
                 default:
                     throw new Exception("Make sure all variable types are handled");

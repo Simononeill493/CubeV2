@@ -34,5 +34,17 @@ namespace CubeV2
             DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, VariableIndex.ToString(), position, Color.Magenta, scale, layer);
 
         }
+
+        public override bool IVariableEquals(Entity caller, IVariable other)
+        {
+            var targetVariable = caller.Variables[VariableIndex];
+            if(targetVariable!=null)
+            {
+                return targetVariable.IVariableEquals(caller, other);
+            }
+
+            return false;
+        }
+
     }
 }

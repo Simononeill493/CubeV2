@@ -55,6 +55,24 @@ namespace CubeV2
             }
         }
 
+        public Tile TryGetTile(int index)
+        {
+            if (index > TilesLinear.Count)
+            {
+                Console.WriteLine("Warning: tried to fetch a tile with an index greater than the grid.");
+                return null;
+            }
+
+            return TilesLinear[index];
+        }
+        public Tile TryGetTile(Vector2Int offset)
+        {
+            Tile tile;
+            TilesVector.TryGetValue(offset, out tile);
+
+            return tile;
+        }
+
         public void TryMoveEntity(Entity entity, Vector2Int newLocation)
         {
             if (!TilesVector.ContainsKey(newLocation))
@@ -78,6 +96,16 @@ namespace CubeV2
             RemoveEntityFromCurrentTile(entity);
             AddEntityToTile(entity, newLocation);
         }
+
+        internal void ClearThisTile(Vector2Int targetLocation)
+        {
+            var tile = TryGetTile(targetLocation);
+            if(tile!=null && tile.Contents!=null)
+            {
+                RemoveEntityFromBoard(tile.Contents);
+            }
+        }
+
 
         public void RemoveEntityFromBoard(Entity entity)
         {

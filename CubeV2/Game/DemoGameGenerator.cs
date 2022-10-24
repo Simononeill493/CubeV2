@@ -27,7 +27,7 @@ namespace CubeV2
                 templateTemplate.Entities.Add(EntityDatabase.GetTemplate(EntityDatabase.WallName));
             }
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1; i++)
             {
                 templateTemplate.Entities.Add(EntityDatabase.GetTemplate(EntityDatabase.GoalName));
             }

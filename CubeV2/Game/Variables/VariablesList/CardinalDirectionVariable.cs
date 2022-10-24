@@ -4,10 +4,17 @@ using System.Collections.Generic;
 
 namespace CubeV2
 {
-    public class RandomDirectionVariable : IVariable
+    public class CardinalDirectionVariable : IVariable
     {
-        public override IVariableType DefaultType => IVariableType.RelativeDirection;
+        public override IVariableType DefaultType => IVariableType.CardinalDirection;
         public override List<IVariableType> ValidTypes { get; } = new List<IVariableType>() { IVariableType.RelativeDirection, IVariableType.CardinalDirection, IVariableType.Orientation };
+
+        public CardinalDirection Direction { get; }
+
+        public CardinalDirectionVariable(CardinalDirection direction)
+        {
+            Direction = direction;
+        }
 
         public override object Convert(Entity caller, IVariableType variableType)
         {
@@ -16,7 +23,7 @@ namespace CubeV2
                 case IVariableType.RelativeDirection:
                 case IVariableType.CardinalDirection:
                 case IVariableType.Orientation:
-                    return RandomUtils.RandomRelative();
+                    return Direction;
                 default:
                     return null;
             }
@@ -24,20 +31,19 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, int scale, float layer)
         {
-            DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, "RD", position, Color.Black, scale / 2, layer);
+            DrawUtils.DrawSprite(spriteBatch, DrawUtils.PlayerSprite, position, scale, 0, Vector2.Zero, layer);
         }
 
         public override bool IVariableEquals(Entity caller, IVariable other)
         {
-            var otherConverted = other.Convert(caller, IVariableType.RelativeDirection);
+            var otherConverted = other.Convert(caller, IVariableType.CardinalDirection);
             if (otherConverted != null)
             {
-                return (RelativeDirection)otherConverted == RandomUtils.RandomRelative();
+                return (CardinalDirection)otherConverted == Direction;
             }
             return false;
         }
 
     }
-
 
 }
