@@ -5,21 +5,18 @@ namespace CubeV2
 {
     public class GoalWinCondition : BoardWinCondition
     {
-        string _entityTypeToCheck;
+        string _templateToCheck;
 
         public GoalWinCondition(string entityTypeToCheck)
         {
-            _entityTypeToCheck = entityTypeToCheck;
+            _templateToCheck = entityTypeToCheck;
         }
 
         public override bool Check(Board board)
         {
-            if(!board.EntityTypes.ContainsKey(_entityTypeToCheck))
-            {
-                return false;
-            }
+            var listToCheck = board.GetEntityByTemplate(_templateToCheck);
 
-            return board.EntityTypes[_entityTypeToCheck].Any(t=>t.HasTag(Config.GoalTag));
+            return listToCheck.Any(t => t.HasTag(Config.GoalTag));
         }
 
     }

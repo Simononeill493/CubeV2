@@ -10,6 +10,7 @@ namespace CubeV2
         public string EntityID { get; }
 
         public string Sprite;
+        public int CurrentEnergy;
 
         public Orientation Orientation;
         public Vector2Int Location = Vector2Int.MinusOne;
@@ -27,6 +28,8 @@ namespace CubeV2
             TemplateID = templateID;
             EntityID = entityID;
             Sprite = sprite;
+
+            CurrentEnergy = Config.EntityMaxEnergy;
         }
 
         public void Tick(Board currentBoard)
@@ -36,7 +39,18 @@ namespace CubeV2
             for (InstructionCounter = 0; InstructionCounter < Instructions.Count; InstructionCounter++)
             {
                 var currentInstruction = Instructions[InstructionCounter];
-                currentInstruction.Run(this, currentBoard);
+                if(!HasEnergy(currentInstruction.BaseEnergyCost))
+                {
+                    continue;
+                }
+
+                var energyCost = currentInstruction.Run(this, currentBoard);
+
+                CurrentEnergy -= energyCost;
+                if(CurrentEnergy<0)
+                {
+                    Console.WriteLine("Entity energy is negative, which should never happen.");
+                }
                 
                 for(int i=0;i<currentInstruction.OutputCount;i++)
                 {
@@ -68,17 +82,24 @@ namespace CubeV2
             }
         }
 
-        public void TryMove(RelativeDirection direction) => TryMove(DirectionUtils.ToCardinal(Orientation, direction));
-        public void TryHit(RelativeDirection direction) => TryHit(DirectionUtils.ToCardinal(Orientation, direction));
-        public CapturedTileVariable TryScan(RelativeDirection direction) => TryScan(DirectionUtils.ToCardinal(Orientation, direction));
-
-        public void TryMove(CardinalDirection direction)
+        public bool HasEnergy(int amount)
         {
-            var newLocation = Location + direction.XYOffset();
-            GameInterface.TryMoveEntity(this, newLocation);
+            return (CurrentEnergy >= amount);
         }
 
-        public void TryHit(CardinalDirection direction)
+        public bool TryMove(RelativeDirection direction) => TryMove(DirectionUtils.ToCardinal(Orientation, direction));
+        public void Hit(RelativeDirection direction) => Hit(DirectionUtils.ToCardinal(Orientation, direction));
+        public CapturedTileVariable TryScan(RelativeDirection direction) => TryScan(DirectionUtils.ToCardinal(Orientation, direction));
+
+        public bool TryMove(CardinalDirection direction)
+        {
+            var newLocation = Location + direction.XYOffset();
+            var didMoveWork = GameInterface.TryMoveEntity(this, newLocation);
+
+            return didMoveWork;
+        }
+
+        public void Hit(CardinalDirection direction)
         {
             var targetLocation = Location + direction.XYOffset();
             GameInterface.ClearTile(targetLocation);

@@ -1,4 +1,7 @@
-﻿namespace CubeV2
+﻿using System;
+using System.Data;
+
+namespace CubeV2
 {
     public abstract class Instruction
     {
@@ -9,9 +12,10 @@
         public IVariable[] Outputs;
         public int[] OutputTargets;
 
-
         public virtual int ControlOutputCount { get; } = 0;
         public int[] ControlOutputs;
+
+        public virtual int BaseEnergyCost { get; } = 0;
 
         public abstract string Name { get; }
 
@@ -44,7 +48,7 @@
             }
         }
 
-        public abstract void Run(Entity caller,Board board);
+        public abstract int Run(Entity caller,Board board);
 
         public abstract Instruction GenerateNew();
     }

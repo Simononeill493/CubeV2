@@ -21,6 +21,20 @@ namespace CubeV2
 
     internal class GameInterface
     {
+        public static int GetPlayerEnergy()
+        {
+            if (_game != null && _game.CurrentBoard != null)
+            {
+                var players = _game.CurrentBoard.GetEntityByTemplate(EntityDatabase.PlayerName);
+                if(players.Any())
+                {
+                    return players.First().CurrentEnergy;
+                }
+            }
+
+            return 0;
+        }
+
         public static CurrentFocus Focus = CurrentFocus.None;
 
         private static int _focusedInstruction;
@@ -249,10 +263,8 @@ namespace CubeV2
             }
         }
 
-        public static void TryMoveEntity(Entity e, Vector2Int location)
-        {
-            _game.CurrentBoard.TryMoveEntity(e, location);
-        }
+        public static bool TryMoveEntity(Entity e, Vector2Int location) => _game.CurrentBoard.TryMoveEntity(e, location);
+        
 
         public static Tile TryGetTile(int index) => _game.CurrentBoard.TryGetTile(index);
         public static Tile TryGetTile(Vector2Int offset) => _game.CurrentBoard.TryGetTile(offset);

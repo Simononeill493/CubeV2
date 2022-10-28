@@ -30,13 +30,19 @@ namespace CubeV2
             resetButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Reset"));
             resetButton.AddLeftClickAction((i) => { GameInterface.ResetBoard(); GameInterface.PauseBoard(); });
 
+            var energyBar = new UIElement(Config.EnergyBarName);
+            energyBar.SetOffset(Config.EnergyBarOffset);
+            energyBar.AddAppearance(new EnergyBarAppearance(Config.EnergyBarSize, DrawUtils.UILayer1, DrawUtils.UILayer2));
+
+
             var winText = new UIElement(Config.WinTextName);
             winText.SetOffset(Config.WinTextOffset);
             winText.AddAppearance(new TextAppearance(new Color(255,58,200), DrawUtils.UILayer1, "A winner is you!"));
             winText.SetEnabledCondition(() => GameInterface.IsGameWon);
 
 
-            topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid,rerollButton,goButton,resetButton,winText);
+
+            topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid,rerollButton,goButton,resetButton,energyBar,winText);
 
 
 

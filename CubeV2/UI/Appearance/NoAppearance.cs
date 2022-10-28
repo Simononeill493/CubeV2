@@ -12,6 +12,11 @@ namespace CubeV2
     {
         public override Vector2 Size => Vector2.Zero;
 
+        public NoAppearance() :base(0)
+        {
+
+        }
+
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
             return;

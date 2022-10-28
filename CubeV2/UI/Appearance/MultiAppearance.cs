@@ -28,5 +28,7 @@ namespace CubeV2
 
             return multi;
         }
+
+        private MultiAppearance() : base(0) {}
     }
 }

@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 namespace CubeV2
 {
 
-    public class OutputTileAppearance : TileAppearance
+    public class OutputControlTileAppearance : TileAppearance
     {
         public override Vector2 Size => Vector2.Zero;
         private int _scale;
         private int _instructionIndex;
 
-        public OutputTileAppearance(int gridIndex, int instructionIndex, int scale,float layer) : base(gridIndex,layer)
+        public OutputControlTileAppearance(int gridIndex, int instructionIndex, int scale,float layer) : base(gridIndex,layer)
         {
             _scale = scale;
             _instructionIndex = instructionIndex;
@@ -23,14 +23,14 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            if(GameInterface.OutputExists(_instructionIndex, Index))
+            if(GameInterface.ControlOutputExists(_instructionIndex, Index))
             {
                 var instruction = GameInterface.GetInstructionFromCurrentFocus(_instructionIndex);
-                var outputNum = instruction.OutputTargets[Index];
+                var targetIndex = instruction.ControlOutputs[Index];
 
-                if(outputNum>=0)
+                if(targetIndex >= 0)
                 {
-                    DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, outputNum.ToString(), position, Color.Magenta, _scale, _layer);
+                    DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, targetIndex.ToString(), position, Color.Cyan, _scale, Layer);
                 }
             }
         }

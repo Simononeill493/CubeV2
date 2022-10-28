@@ -14,13 +14,15 @@ namespace CubeV2
 
         public override Instruction GenerateNew() => new RotateInstruction();
 
-        public override void Run(Entity caller, Board board)
+        public override int Run(Entity caller, Board board)
         {
             var rotationAmount = Variables[0]?.Convert(caller, IVariableType.Integer);
             if(rotationAmount!=null)
             {
                 caller.Rotate((int)rotationAmount);
             }
+
+            return 0;
         }
     }
 

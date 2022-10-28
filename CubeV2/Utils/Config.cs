@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.VisualBasic;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,13 @@ namespace CubeV2
     internal class Config
     {
         public static bool KnowAllInstructionsByDefault = true;
+
         public static int EntityMaxVariables = 3;
+        public static int EntityMaxEnergy = 100;
+        public static int BaseMoveCost = 1;
+        public static int BaseScanCost = 3;
+        public static int BaseHitCost = 10;
+        public static int BasePingCost = 20;
 
         public static TimeSpan DemoBoardUpdateRate = TimeSpan.FromSeconds(0.1);
 
@@ -19,14 +26,12 @@ namespace CubeV2
         //public static int GameGridHeight = 1;
         public static int GameGridWidth = 14;
         public static int GameGridHeight = 10;
-
         public static int GameGridPadding = 2;
 
         public static Vector2 TileBaseSize = new Vector2(16,16);
         public static int TileScale = 4;
         public static int VariableSelectionTileScale = 4;
         public static int InstructionTileVariableScale = 3;
-
 
         public static int NumInstructionTiles = 6;
         public static int InstructionTileInternalPadding = 10;
@@ -57,6 +62,7 @@ namespace CubeV2
         public static string InstructionVariableTileName = "InstructionVariableTile";
         public static string OutputSelectorGridName = "OutputSelectorGrid";
 
+        public static string EnergyBarName = "EnergyBar";
         public static string WinTextName = "WinText";
 
         public static string GoalTag = "EnteredGoal";
@@ -87,6 +93,8 @@ namespace CubeV2
         public static Vector2 GoButtonOffset;
         public static Vector2 ResetButtonOffset;
 
+        public static Vector2 EnergyBarSize;
+        public static Vector2 EnergyBarOffset;
         public static Vector2 WinTextOffset;
 
 
@@ -109,6 +117,8 @@ namespace CubeV2
             GoButtonOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 500, (int)ScreenSize.Y - GameControlButtonSize.Y);
             ResetButtonOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 750, (int)ScreenSize.Y - GameControlButtonSize.Y);
 
+            EnergyBarSize = new Vector2(830, 30);
+            EnergyBarOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 50, (int)ScreenSize.Y - (GameControlButtonSize.Y * 2.1f));
             WinTextOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 350, (int)ScreenSize.Y - (GameControlButtonSize.Y * 1.5f));
 
         }

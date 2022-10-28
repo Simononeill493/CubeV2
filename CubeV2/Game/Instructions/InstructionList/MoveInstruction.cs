@@ -6,6 +6,7 @@
 
         public override int VariableCount => 1;
         public override int OutputCount => 0;
+        public override int BaseEnergyCost { get; } = Config.BaseMoveCost;
 
         public MoveInstruction() : base() { }
 
@@ -14,15 +15,18 @@
             Variables[0] = new RelativeDirectionVariable(dir);
         }
 
-        public override void Run(Entity caller, Board board)
+        public override int Run(Entity caller, Board board)
         {
             var direction = Variables[0]?.Convert(caller, IVariableType.RelativeDirection);
-            if (direction == null)
+            if (direction != null)
             {
-                return;
+                if (caller.TryMove((RelativeDirection)direction))
+                {
+                    return Config.BaseMoveCost;
+                }
             }
 
-            caller.TryMove((RelativeDirection)direction);
+            return 0;
         }
 
         public override Instruction GenerateNew() => new MoveInstruction();

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace CubeV2
 {
@@ -7,21 +8,25 @@ namespace CubeV2
         public override string Name => "Ping";
         public override int VariableCount => 1;
         public override int OutputCount => 1;
+        public override int BaseEnergyCost { get; } = Config.BasePingCost;
 
         public override Instruction GenerateNew() => new PingInstruction();
 
-        public override void Run(Entity caller, Board board)
+        public override int Run(Entity caller, Board board)
         {
             var targetTemplate = Variables[0]?.Convert(caller, IVariableType.EntityType);
-            if(targetTemplate != null)
+            if (targetTemplate != null)
             {
-                var targetEntities = board.LocateEntityType(((EntityTemplate)targetTemplate).TemplateID);
+                var targetEntities = board.GetEntityByTemplate(((EntityTemplate)targetTemplate).TemplateID);
                 var targetEntity = targetEntities.FirstOrDefault();
-                if(targetEntity!=null)
+                if (targetEntity != null)
                 {
                     Outputs[0] = new CardinalDirectionVariable(caller.Location.ApproachDirection(targetEntity.Location));
+                    return Config.BasePingCost;
                 }
             }
+
+            return 0;
         }
     }
 }

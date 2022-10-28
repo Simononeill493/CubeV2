@@ -20,7 +20,7 @@ namespace CubeV2.UI.Appearance.OutputSelectionTile
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, Index.ToString(), position, Color.Magenta, _scale, _layer);
+            DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, Index.ToString(), position, Color.Magenta, _scale, Layer);
         }
     }
 

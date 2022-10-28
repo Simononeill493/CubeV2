@@ -6,11 +6,11 @@ namespace CubeV2
 {
     public class Board
     {
-        public Dictionary<string, Entity> Entities = new Dictionary<string, Entity>();
-        public Dictionary<string, List<Entity>> EntityTypes = new Dictionary<string, List<Entity>>();
+        private Dictionary<string, Entity> Entities = new Dictionary<string, Entity>();
+        private Dictionary<string, List<Entity>> EntityTypes = new Dictionary<string, List<Entity>>();
 
-        public Dictionary<Vector2Int, Tile> TilesVector = new Dictionary<Vector2Int, Tile>();
-        public List<Tile> TilesLinear = new List<Tile>();
+        private Dictionary<Vector2Int, Tile> TilesVector = new Dictionary<Vector2Int, Tile>();
+        private List<Tile> TilesLinear = new List<Tile>();
 
         public Board(int width, int height)
         {
@@ -73,11 +73,11 @@ namespace CubeV2
             return tile;
         }
 
-        public void TryMoveEntity(Entity entity, Vector2Int newLocation)
+        public bool TryMoveEntity(Entity entity, Vector2Int newLocation)
         {
             if (!TilesVector.ContainsKey(newLocation))
             {
-                return;
+                return false;
             }
 
             var currentContents = TilesVector[newLocation].Contents;
@@ -89,12 +89,14 @@ namespace CubeV2
                 }
                 else
                 {
-                    return;
+                    return false;
                 }
             }
 
             RemoveEntityFromCurrentTile(entity);
             AddEntityToTile(entity, newLocation);
+
+            return true;
         }
 
         internal void ClearThisTile(Vector2Int targetLocation)
@@ -197,7 +199,7 @@ namespace CubeV2
             EntityTypes[entity.TemplateID].Remove(entity);
         }
 
-        public List<Entity> LocateEntityType(string templateID)
+        public List<Entity> GetEntityByTemplate(string templateID)
         {
             if(!EntityTypes.ContainsKey(templateID))
             {

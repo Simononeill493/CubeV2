@@ -78,13 +78,11 @@ namespace CubeV2
 
     public abstract class TileAppearance : Appearance
     {
-        public TileAppearance(int index,float layer)
+        public TileAppearance(int index,float layer) : base(layer)
         {
             Index = index;
-            _layer = layer;
         }
 
         public int Index;
-        protected float _layer;
     }
 }

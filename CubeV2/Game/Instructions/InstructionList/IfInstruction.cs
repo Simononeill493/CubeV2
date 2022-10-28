@@ -20,11 +20,11 @@ namespace CubeV2
 
         public override Instruction GenerateNew() => new IfInstruction();
 
-        public override void Run(Entity caller, Board board)
+        public override int Run(Entity caller, Board board)
         {
             if(Variables[0]==null || Variables[1]==null)
             {
-                return;
+                return 0;
             }
 
             switch (Operator)
@@ -40,6 +40,8 @@ namespace CubeV2
                     }
                     break;
             }
+
+            return 0;
         }
     }
 

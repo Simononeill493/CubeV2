@@ -8,13 +8,15 @@
 
         public override Instruction GenerateNew() => new TurnInstruction();
 
-        public override void Run(Entity caller, Board board)
+        public override int Run(Entity caller, Board board)
         {
             var orientation = Variables[0]?.Convert(caller, IVariableType.Orientation);
             if(orientation!=null)
             {
                 caller.SetOrientation((Orientation)orientation);
             }
+
+            return 0;
         }
     }
 }

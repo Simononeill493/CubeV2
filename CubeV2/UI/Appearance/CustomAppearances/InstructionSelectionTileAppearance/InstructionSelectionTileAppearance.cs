@@ -13,10 +13,7 @@ namespace CubeV2
     {
         static Vector2 _textOffset = new Vector2(20, 30);
 
-        public InstructionSelectionTileAppearance(int index,float layer) : base(index,layer) 
-        {
-            _layer = layer;
-        }
+        public InstructionSelectionTileAppearance(int index,float layer) : base(index,layer) {}
 
         public override Vector2 Size => Config.InstructionOptionTileSize;
 
@@ -25,7 +22,7 @@ namespace CubeV2
             var instructionOption = GameInterface.GetInstructionOption(Index);
             if (instructionOption!=null)
             {
-                DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, instructionOption.Name, position + _textOffset, Color.Black, 1, _layer);
+                DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, instructionOption.Name, position + _textOffset, Color.Black, 1, Layer);
             }
         }
     }

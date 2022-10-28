@@ -15,20 +15,17 @@ namespace CubeV2
         public override Vector2 Size => _size;
         private Vector2 _size;
 
-        public float Layer;
-
         public RectangleAppearance(int width, int height, Microsoft.Xna.Framework.Color color, float layer) : this(new Vector2(width, height), color, layer) { }
 
-        public RectangleAppearance(Vector2 size, Microsoft.Xna.Framework.Color color, float layer)
+        public RectangleAppearance(Vector2 size, Microsoft.Xna.Framework.Color color, float layer) :base(layer)
         {
             _size = size;
             Color = color;
-            Layer = layer;
         }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            spriteBatch.Draw(DrawUtils.DefaultTexture, new Microsoft.Xna.Framework.Rectangle((int)position.X, (int)position.Y, (int)_size.X,(int)_size.Y), null, Color, 0, Vector2.Zero, SpriteEffects.None, Layer);
+            DrawUtils.DrawRect(spriteBatch, position, _size, Color, Layer);
         }
     }
 }

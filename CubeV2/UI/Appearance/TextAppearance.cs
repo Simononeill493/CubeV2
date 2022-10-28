@@ -10,13 +10,11 @@ namespace CubeV2
         public Func<string> GetText;
 
         public override Vector2 Size => Vector2.Zero;
-        public float Layer;
         public float Scale = 1;
 
-        public TextAppearance(Color color, float layer)
+        public TextAppearance(Color color, float layer) : base(layer)
         {
             Color = color;
-            Layer = layer;
         }
 
         public TextAppearance(Color color, float layer,string text) : this(color,layer)

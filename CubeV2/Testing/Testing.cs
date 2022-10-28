@@ -18,7 +18,7 @@ namespace CubeV2
             var testEntity = new Entity("Test", "Test",null);
             testBoard.AddEntityToBoard(testEntity, new Vector2Int(0, 0));
 
-            if (testBoard.TilesVector[Vector2Int.Zero].Contents!=testEntity)
+            if (testBoard.TryGetTile(Vector2Int.Zero).Contents!=testEntity)
             {
                 throw new Exception("Test failed.");
             }
@@ -34,12 +34,12 @@ namespace CubeV2
             GameInterface.ManualSetBoard(testBoard);
             testBoard.Tick();
 
-            if (testBoard.TilesVector[Vector2Int.Zero].Contents != null)
+            if (testBoard.TryGetTile(Vector2Int.Zero).Contents != null)
             {
                 throw new Exception("Test failed.");
             }
 
-            if (testBoard.TilesVector[Vector2Int.One].Contents != testEntity)
+            if (testBoard.TryGetTile(Vector2Int.One).Contents != testEntity)
             {
                 throw new Exception("Test failed.");
             }
@@ -52,7 +52,7 @@ namespace CubeV2
 
             testBoard.RemoveEntityFromCurrentTile(testEntity);
 
-            if (testBoard.TilesVector[Vector2Int.One].Contents != null)
+            if (testBoard.TryGetTile(Vector2Int.One).Contents != null)
             {
                 throw new Exception("Test failed.");
             }

@@ -13,6 +13,12 @@ namespace CubeV2
         public static Appearance NoAppearance = new NoAppearance();
 
         public abstract Vector2 Size { get; }
+        public float Layer { get; }
+
+        public Appearance(float layer)
+        {
+            Layer = layer;
+        }
 
         public Color Color
         {

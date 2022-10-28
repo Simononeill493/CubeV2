@@ -21,7 +21,7 @@ namespace CubeV2
             var instruction = GameInterface.GetInstructionFromCurrentFocus(Index);
             if (instruction!=null)
             {
-                DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, instruction.Name, position, Color.White, 1, _layer);
+                DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, instruction.Name, position, Color.White, 1, Layer);
             }
         }
     }
