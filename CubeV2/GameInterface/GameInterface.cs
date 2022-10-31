@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,11 +17,14 @@ namespace CubeV2
         Instruction,
         Variable,
         Output,
-        ControlOutput
+        ControlOutput,
+        InstructionOption
     }
 
     internal class GameInterface
     {
+        public static string DisplayText = "Display text not yet set!";
+
         public static int GetPlayerEnergy()
         {
             if (_game != null && _game.CurrentBoard != null)
@@ -35,12 +39,26 @@ namespace CubeV2
             return 0;
         }
 
-        public static CurrentFocus Focus = CurrentFocus.None;
+        public static void DeleteInstructionAtIndex(int index)
+        {
+            if(InstructionExists(index))
+            {
+                _focusedInstructions.RemoveAt(index);
+            }
+        }
+
+        public static void AddInstruction()
+        {
+            _focusedInstructions.Add(new MoveInstruction());
+        }
+
+        public static CurrentFocus Focus = CurrentFocus.Instruction;
 
         private static int _focusedInstruction;
         private static int _focusedVariable;
         private static int _focusedOutput;
         private static int _focusedControlOutput;
+        private static int _focusedInstructionOption;
 
         private static List<Instruction> _focusedInstructions;
         private static List<IVariable> _variableOptions = new List<IVariable>();
@@ -135,9 +153,6 @@ namespace CubeV2
         {
             if (OutputExists(instructionIndex, outputIndex))
             {
-                //VariableOptions.Clear();
-                //VariableOptions.AddRange(VariableOptionsGenerator.GetAllVariableOptions());
-
                 _focusedInstruction = instructionIndex;
                 _focusedOutput = outputIndex;
                 Focus = CurrentFocus.Output;
@@ -152,6 +167,16 @@ namespace CubeV2
                 Focus = CurrentFocus.ControlOutput;
             }
         }
+        public static void FocusInstructionOption(int instructionIndex, int optionIndex)
+        {
+            if(InstructionExists(instructionIndex) &&  InstructionOptionExists(optionIndex))
+            {
+                _focusedInstruction = instructionIndex;
+                _focusedInstructionOption = optionIndex;
+                Focus = CurrentFocus.InstructionOption;
+            }
+        }
+
 
 
         public static IVariable GetVariable(int instructionIndex, int variableIndex) => _focusedInstructions[instructionIndex].Variables[variableIndex];
@@ -195,9 +220,9 @@ namespace CubeV2
         }
 
 
-        public static bool InstructionOptionExists(int instructionIndex)
+        public static bool InstructionOptionExists(int instructionOptionIndex)
         {
-            return (_game != null && _instructionOptions != null && (_instructionOptions.Count > instructionIndex) && instructionIndex >= 0);
+            return (_game != null && _instructionOptions != null && (_instructionOptions.Count > instructionOptionIndex) && instructionOptionIndex >= 0);
 
         }
         public static bool VariableOptionExists(int variableOptionIndex)
@@ -250,7 +275,7 @@ namespace CubeV2
             TimeSinceLastUpdate = TimeSpan.Zero;
         }
 
-        public static void Update(GameTime gameTime)
+        public static void Update(UserInput input,GameTime gameTime)
         {
             if(BoardRunning)
             {
@@ -259,9 +284,37 @@ namespace CubeV2
                 {
                     TimeSinceLastUpdate = TimeSpan.Zero;
                     _game.TickBoard();
+
+                    if (IsGameWon)
+                    {
+                        DisplayText = "A winner is you!";
+                    }
                 }
             }
+
+            _processKeyboardShortcuts(input);
         }
+
+        private static void _processKeyboardShortcuts(UserInput input)
+        {
+            if(Focus == CurrentFocus.Instruction)
+            {
+                if (input.IsKeyJustPressed(Keys.Up))
+                {
+                    FocusInstruction(_focusedInstruction - 1);
+                }
+                if (input.IsKeyJustPressed(Keys.Down))
+                {
+                    FocusInstruction(_focusedInstruction + 1);
+                }
+                if (input.IsKeyJustPressed(Keys.Right))
+                {
+                    FocusInstructionOption(_focusedInstruction, 0);
+                }
+
+            }
+        }
+
 
         public static bool TryMoveEntity(Entity e, Vector2Int location) => _game.CurrentBoard.TryMoveEntity(e, location);
         
@@ -276,18 +329,6 @@ namespace CubeV2
 
 
 
-        public static void AddInstruction()
-        {
-            _focusedInstructions.Add(new MoveInstruction());
-        }
-
-        public static void RemoveInstruction()
-        {
-            if(_focusedInstructions.Any())
-            {
-                _focusedInstructions.RemoveAt(_focusedInstructions.Count - 1);
-            }
-        }
 
 
     }

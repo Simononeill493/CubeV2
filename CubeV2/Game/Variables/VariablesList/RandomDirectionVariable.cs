@@ -7,7 +7,7 @@ namespace CubeV2
     public class RandomDirectionVariable : IVariable
     {
         public override IVariableType DefaultType => IVariableType.RelativeDirection;
-        public override List<IVariableType> ValidTypes { get; } = new List<IVariableType>() { IVariableType.RelativeDirection, IVariableType.CardinalDirection, IVariableType.Orientation };
+        public override List<IVariableType> ValidTypes { get; } = new List<IVariableType>() { IVariableType.RelativeDirection, IVariableType.CardinalDirection, IVariableType.Orientation, IVariableType.Integer };
 
         public override object Convert(Entity caller, IVariableType variableType)
         {
@@ -16,6 +16,7 @@ namespace CubeV2
                 case IVariableType.RelativeDirection:
                 case IVariableType.CardinalDirection:
                 case IVariableType.Orientation:
+                case IVariableType.Integer:
                     return RandomUtils.RandomRelative();
                 default:
                     return null;

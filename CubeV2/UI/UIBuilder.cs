@@ -18,31 +18,32 @@ namespace CubeV2
             var gameGrid = _makeGameGrid();
             gameGrid.SetOffset(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X, 0);
 
+            var goButton = UIElementMaker.MakeRectangle(Config.GoButtonName, Config.GameControlButtonSize, Config.GoButtonOffset, Color.Lime, DrawUtils.UILayer2);
+            goButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Go"));
+            goButton.AddLeftClickAction((i) => GameInterface.StartBoard(Config.DemoBoardUpdateRate));
+
+            var resetButton = UIElementMaker.MakeRectangle(Config.ResetButtonName, Config.GameControlButtonSize, Config.ResetButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
+            resetButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Reset"));
+            resetButton.AddLeftClickAction((i) => { GameInterface.ResetBoard(); GameInterface.PauseBoard(); });
+
             var rerollButton = UIElementMaker.MakeRectangle(Config.RerollButtonName, Config.GameControlButtonSize, Config.RerollButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
             rerollButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Reroll"));
             rerollButton.AddLeftClickAction((i) => { GameInterface.ResetBoardTemplate(); GameInterface.ResetBoard(); GameInterface.PauseBoard(); });
 
-            var goButton = UIElementMaker.MakeRectangle(Config.GoButtonName, Config.GameControlButtonSize, Config.GoButtonOffset,Color.AliceBlue, DrawUtils.UILayer2);
-            goButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Go"));
-            goButton.AddLeftClickAction((i) => GameInterface.StartBoard(Config.DemoBoardUpdateRate));
-
-            var resetButton = UIElementMaker.MakeRectangle(Config.ResetButtonName, Config.GameControlButtonSize, Config.ResetButtonOffset,Color.AliceBlue, DrawUtils.UILayer2);
-            resetButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Reset"));
-            resetButton.AddLeftClickAction((i) => { GameInterface.ResetBoard(); GameInterface.PauseBoard(); });
 
             var energyBar = new UIElement(Config.EnergyBarName);
             energyBar.SetOffset(Config.EnergyBarOffset);
             energyBar.AddAppearance(new EnergyBarAppearance(Config.EnergyBarSize, DrawUtils.UILayer1, DrawUtils.UILayer2));
 
 
-            var winText = new UIElement(Config.WinTextName);
-            winText.SetOffset(Config.WinTextOffset);
-            winText.AddAppearance(new TextAppearance(new Color(255,58,200), DrawUtils.UILayer1, "A winner is you!"));
-            winText.SetEnabledCondition(() => GameInterface.IsGameWon);
+            var displayText = new UIElement(Config.DisplayTextName);
+            displayText.SetOffset(Config.DisplayTextOffset);
+            displayText.AddAppearance(new TextAppearance(new Color(255,58,200), DrawUtils.UILayer1, ()=>GameInterface.DisplayText));
+            //displayText.SetEnabledCondition(() => GameInterface.IsGameWon);
 
 
 
-            topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid,rerollButton,goButton,resetButton,energyBar,winText);
+            topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid,rerollButton,goButton,resetButton,energyBar,displayText);
 
 
 
@@ -56,7 +57,7 @@ namespace CubeV2
 
             var removeInstructionButton = UIElementMaker.MakeRectangle(Config.RemoveInstructionButtonName, new Vector2(50, 30), Config.RemoveInstructionButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
             removeInstructionButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3,"-"));
-            removeInstructionButton.AddLeftClickAction((i) => GameInterface.RemoveInstruction());
+            removeInstructionButton.AddLeftClickAction((i) => GameInterface.DeleteInstructionAtIndex(0));
 
             instructionPanel.AddChildren(addInstructionButton, removeInstructionButton, instructionTiles);
 
@@ -79,7 +80,7 @@ namespace CubeV2
 
         private static bool InstructionSelectorGridEnabled()
         {
-            return GameInterface.Focus == CurrentFocus.Instruction && GameInterface.FocusedInstructionExists;
+            return (GameInterface.Focus == CurrentFocus.Instruction ||GameInterface.Focus == CurrentFocus.InstructionOption) && GameInterface.FocusedInstructionExists;
         }
 
         private static bool VariableSelectorGridEnabled()
@@ -193,12 +194,16 @@ namespace CubeV2
                 slot.AddChildren(controlOutputTile);
             }
 
-
-
             var indexText = new UIElement(slot.ID + "_indexNumber");
             indexText.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer2, instructionIndex.ToString()));
-            indexText.SetOffset(-20, Config.InstructionTileSize.Y / 2);
+            indexText.SetOffset(-20, Config.InstructionTileSize.Y / 5);
             slot.AddChildren(indexText);
+
+            var deleteButton = new UIElement(slot.ID + "_deleteButton");
+            deleteButton.AddAppearance(MultiAppearance.Create(new RectangleAppearance(20, 20, Color.White, DrawUtils.UILayer4), new TextAppearance(Color.Red, DrawUtils.UILayer5, "X")));
+            deleteButton.SetOffset(-20, Config.InstructionTileSize.Y-20);
+            deleteButton.AddLeftClickAction((i) => GameInterface.DeleteInstructionAtIndex(instructionIndex));
+            slot.AddChildren(deleteButton);
 
             return slot;
         }

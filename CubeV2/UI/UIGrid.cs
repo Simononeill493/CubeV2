@@ -21,7 +21,7 @@ namespace CubeV2
 
         public static UIGrid Make(string id, Vector2Int gridSize, Vector2Int tileSize, int internalPadding, Color tileBackgroundColor, float layer, TileAppearanceFactory appearanceFactory)
          => Make(id, gridSize.X, gridSize.Y, tileSize.X, tileSize.Y, internalPadding, tileBackgroundColor, layer, appearanceFactory);
-            
+
         public static UIGrid Make(string id, int gridWidth, int gridHeight, int tileWidth, int tileHeight, int internalPadding, Color tileBackgroundColor, float layer, TileAppearanceFactory appearanceFactory)
         {
             var grid = new UIGrid(id);
@@ -78,7 +78,7 @@ namespace CubeV2
 
     public abstract class TileAppearance : Appearance
     {
-        public TileAppearance(int index,float layer) : base(layer)
+        public TileAppearance(int index, float layer) : base(layer)
         {
             Index = index;
         }

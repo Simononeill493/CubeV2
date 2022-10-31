@@ -7,7 +7,7 @@ namespace CubeV2
     public class RelativeDirectionVariable : IVariable
     {
         public override IVariableType DefaultType => IVariableType.RelativeDirection;
-        public override List<IVariableType> ValidTypes { get; } = new List<IVariableType>() { IVariableType.RelativeDirection, IVariableType.CardinalDirection, IVariableType.Orientation };
+        public override List<IVariableType> ValidTypes { get; } = new List<IVariableType>() { IVariableType.RelativeDirection, IVariableType.CardinalDirection, IVariableType.Orientation, IVariableType.Integer };
 
         public RelativeDirection Direction { get; }
 
@@ -23,6 +23,7 @@ namespace CubeV2
                 case IVariableType.RelativeDirection:
                 case IVariableType.CardinalDirection:
                 case IVariableType.Orientation:
+                case IVariableType.Integer:
                     return Direction;
                 default:
                     return null;

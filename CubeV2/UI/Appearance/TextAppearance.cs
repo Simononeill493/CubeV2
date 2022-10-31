@@ -17,10 +17,12 @@ namespace CubeV2
             Color = color;
         }
 
-        public TextAppearance(Color color, float layer,string text) : this(color,layer)
+        public TextAppearance(Color color, float layer, Func<string> getText) : this(color, layer)
         {
-            GetText = () => { return text; };
+            GetText = getText;
         }
+
+        public TextAppearance(Color color, float layer, string text) : this(color, layer, () => { return text; }) { }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {

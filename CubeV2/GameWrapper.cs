@@ -81,7 +81,7 @@ namespace CubeV2
             // TODO: Add your update logic here
 
             base.Update(gameTime);
-            GameInterface.Update(gameTime);
+            GameInterface.Update(input,gameTime);
 
             _previousInput = input;
             _globalTickCount++;
