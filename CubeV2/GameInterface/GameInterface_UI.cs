@@ -14,6 +14,8 @@ namespace CubeV2
 
     public partial class GameInterface
     {
+        public static void AddInstructionToEnd() => AddInstructionAtIndex(_focusedInstructions.Count);
+        public static void RemoveInstructionFromEnd() => RemoveInstructionAtIndex(_focusedInstructions.Count-1);
         public static void AddInstructionAtIndex(int index)
         {
             if (index < 0 || index > _focusedInstructions.Count)
@@ -23,7 +25,7 @@ namespace CubeV2
 
             _focusedInstructions.Insert(index, new MoveInstruction());
         }
-        public static void DeleteInstructionAtIndex(int index)
+        public static void RemoveInstructionAtIndex(int index)
         {
             if(InstructionExists(index))
             {

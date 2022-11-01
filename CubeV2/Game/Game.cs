@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace CubeV2
 {
-    internal class Game
+    public class Game
     {
         public bool GameWon => WinCondition.Check(CurrentBoard);
         public BoardWinCondition WinCondition = BoardWinCondition.None;
 
         public Board CurrentBoard { get; private set; }
-        private BoardTemplate CurrentTemplate;
-        private BoardTemplateTemplate CurrentTemplateTemplate;
+        public BoardTemplate CurrentTemplate { get; private set; }
+        public BoardTemplateTemplate CurrentTemplateTemplate { get; private set; }
 
         public void SetTemplateTemplate(BoardTemplateTemplate templateTemplate) => CurrentTemplateTemplate = templateTemplate;
         public void ResetBoardTemplate() => CurrentTemplate = CurrentTemplateTemplate.GenerateTemplate();

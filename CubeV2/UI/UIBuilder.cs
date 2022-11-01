@@ -29,6 +29,9 @@ namespace CubeV2
             rerollButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Reroll"));
             rerollButton.AddLeftClickAction((i) => { GameInterface.RerollBoard(); GameInterface.ResetBoard(); GameInterface.PauseBoard(); });
 
+            var simulateButton = UIElementMaker.MakeRectangle(Config.SimulateButtonName, Config.SimulateButtonSize,Config.SimulateButtonOffset,Color.White,DrawUtils.UILayer2);
+            simulateButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Simulate"));
+            simulateButton.AddLeftClickAction((i) => { GameInterface.SimulateCurrentGame(100, 100); });
 
             var energyBar = new UIElement(Config.EnergyBarName);
             energyBar.SetOffset(Config.EnergyBarOffset);
@@ -42,9 +45,7 @@ namespace CubeV2
 
 
 
-            topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid,rerollButton,goButton,resetButton,energyBar,displayText);
-
-
+            topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid,rerollButton,goButton,resetButton,simulateButton,energyBar,displayText);
 
 
 
@@ -52,11 +53,11 @@ namespace CubeV2
 
             var addInstructionButton = UIElementMaker.MakeRectangle(Config.AddInstructionButtonName, new Vector2(50,30), Config.AddInstructionButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
             addInstructionButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3,"+"));
-            addInstructionButton.AddLeftClickAction((i) => GameInterface.AddInstructionAtIndex(0));
+            addInstructionButton.AddLeftClickAction((i) => GameInterface.AddInstructionToEnd());
 
             var removeInstructionButton = UIElementMaker.MakeRectangle(Config.RemoveInstructionButtonName, new Vector2(50, 30), Config.RemoveInstructionButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
             removeInstructionButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3,"-"));
-            removeInstructionButton.AddLeftClickAction((i) => GameInterface.DeleteInstructionAtIndex(0));
+            removeInstructionButton.AddLeftClickAction((i) => GameInterface.RemoveInstructionFromEnd());
 
             instructionPanel.AddChildren(addInstructionButton, removeInstructionButton, instructionTiles);
 
@@ -193,7 +194,7 @@ namespace CubeV2
             var deleteButton = new UIElement(slot.ID + "_deleteButton");
             deleteButton.AddAppearance(MultiAppearance.Create(new RectangleAppearance(20, 20, Color.White, DrawUtils.UILayer4), new TextAppearance(Color.Red, DrawUtils.UILayer5, "X")));
             deleteButton.SetOffset(-20, Config.InstructionTileSize.Y-20);
-            deleteButton.AddLeftClickAction((i) => GameInterface.DeleteInstructionAtIndex(instructionIndex));
+            deleteButton.AddLeftClickAction((i) => GameInterface.RemoveInstructionAtIndex(instructionIndex));
             slot.AddChildren(deleteButton);
 
             return slot;

@@ -29,7 +29,7 @@ namespace CubeV2
                         AddInstructionAtIndex(_focusedInstruction);
                     }
 
-                    FocusInstruction(_focusedInstruction + 1);
+                    FocusInstruction(_focusedInstruction+1);
                 }
                 else if (input.IsKeyJustPressed(Keys.Right))
                 {
@@ -86,10 +86,11 @@ namespace CubeV2
                 }
                 else if (input.IsKeyJustPressed(Keys.Down))
                 {
-                    if(input.CtrlDown)
+                    if (input.CtrlDown)
                     {
                         AddInstructionAtIndex(_focusedInstruction);
                     }
+
                     FocusInstruction(_focusedInstruction + 1);
                 }
             }

@@ -133,7 +133,7 @@ namespace CubeV2
                 Console.WriteLine("Warning: Entity is not in tile that its location data is pointing to.");
             }
 
-            TilesVector[entity.Location].Contents = null;
+            TilesVector[entity.Location].SetContents(null);
             entity.Location = Vector2Int.MinusOne;
         }
 
@@ -162,7 +162,7 @@ namespace CubeV2
             }
 
 
-            TilesVector[tileToAddTo].Contents = entity;
+            TilesVector[tileToAddTo].SetContents(entity);
             entity.Location = tileToAddTo;
 
         }

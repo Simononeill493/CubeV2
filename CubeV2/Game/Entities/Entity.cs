@@ -94,7 +94,7 @@ namespace CubeV2
         public bool TryMove(CardinalDirection direction)
         {
             var newLocation = Location + direction.XYOffset();
-            var didMoveWork = GameInterface.TryMoveEntity(this, newLocation);
+            var didMoveWork = BoardCallback.TryMoveEntity(this, newLocation);
 
             return didMoveWork;
         }
@@ -102,14 +102,14 @@ namespace CubeV2
         public void Hit(CardinalDirection direction)
         {
             var targetLocation = Location + direction.XYOffset();
-            GameInterface.ClearTile(targetLocation);
+            BoardCallback.ClearTile(targetLocation);
         }
 
 
         public CapturedTileVariable TryScan(CardinalDirection direction)
         {
             var newLocation = Location + direction.XYOffset();
-            var tile = GameInterface.TryGetTile(newLocation);
+            var tile = BoardCallback.TryGetTile(newLocation);
 
             if(tile!=null)
             {

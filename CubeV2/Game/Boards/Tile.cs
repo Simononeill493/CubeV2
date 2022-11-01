@@ -2,6 +2,11 @@
 {
     public class Tile
     {
-        public Entity Contents;
+        public Entity Contents { get; private set; }
+
+        public void SetContents(Entity e)
+        {
+            Contents = e;
+        }
     }
 }

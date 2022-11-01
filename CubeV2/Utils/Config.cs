@@ -24,12 +24,12 @@ namespace CubeV2
 
         //public static int GameGridWidth = 1;
         //public static int GameGridHeight = 1;
-        public static int GameGridWidth = 14;
-        public static int GameGridHeight = 10;
+        public static int GameGridWidth = 7;
+        public static int GameGridHeight = 5;
         public static int GameGridPadding = 2;
 
         public static Vector2 TileBaseSize = new Vector2(16,16);
-        public static int TileScale = 4;
+        public static int TileScale = 8;
         public static int VariableSelectionTileScale = 4;
         public static int InstructionTileVariableScale = 3;
 
@@ -56,6 +56,8 @@ namespace CubeV2
         public static string RerollButtonName = "RerollButton";
         public static string GoButtonName = "GoButton";
         public static string ResetButtonName = "ResetButton";
+        public static string SimulateButtonName = "SimulateButton";
+
         public static string GameGridName = "GameGrid";
         public static string VariableGridName = "VariableGrid";
         public static string InstructionSelectorGridName = "InstructionSelectorGrid";
@@ -91,9 +93,12 @@ namespace CubeV2
 
 
         public static Vector2 GameControlButtonSize;
+        public static Vector2 SimulateButtonSize;
+
         public static Vector2 GoButtonOffset;
         public static Vector2 ResetButtonOffset;
         public static Vector2 RerollButtonOffset;
+        public static Vector2 SimulateButtonOffset;
 
         public static Vector2 EnergyBarSize;
         public static Vector2 EnergyBarOffset;
@@ -115,9 +120,12 @@ namespace CubeV2
             RemoveInstructionButtonOffset = new Vector2(InstructionPanelSize.X * 0.6f, InstructionControlButtonsTopPadding);
 
             GameControlButtonSize = new Vector2(100, 60);
+            SimulateButtonSize = new Vector2(200, 60);
+
             GoButtonOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 50, (int)ScreenSize.Y - GameControlButtonSize.Y - 20);
             ResetButtonOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 170, (int)ScreenSize.Y - GameControlButtonSize.Y - 20);
             RerollButtonOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 290, (int)ScreenSize.Y - GameControlButtonSize.Y - 20);
+            SimulateButtonOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 410, (int)ScreenSize.Y - GameControlButtonSize.Y - 20);
 
             EnergyBarSize = new Vector2(830, 30);
             EnergyBarOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 50, (int)ScreenSize.Y - (GameControlButtonSize.Y * 2.1f));
@@ -143,7 +151,6 @@ namespace CubeV2
 
         public static Color InstructionTileVariableColor = new Color(240, 240, 240);
         public static Color SelectionTileVariableColor = new Color(132, 126, 126);
-
 
     }
 }
