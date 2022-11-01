@@ -87,6 +87,8 @@ namespace CubeV2
         public static Vector2 RemoveInstructionButtonOffset;
         public static int InstructionControlButtonsTopPadding = 15;
 
+        public static Vector2Int VariableSelectorGridSize = new Vector2Int(4, 7);
+
 
         public static Vector2 GameControlButtonSize;
         public static Vector2 GoButtonOffset;

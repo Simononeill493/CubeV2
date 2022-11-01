@@ -17,6 +17,11 @@ namespace CubeV2
         public bool IsNumberJustPressed => KeysJustPressed.Any(k => k.IsNumeric());
         public int GetNumberJustPressed => KeysJustPressed.FirstOrDefault(k => k.IsNumeric()).KeyToInt();
 
+        public bool CtrlDown = false;
+        public bool AltDown = false;
+        public bool ShiftDown = false;
+
+
         protected void _setKeyboardState(KeyboardState newKeyboardState, KeyboardState oldKeyboardState)
         {
             KeyboardState = newKeyboardState;
@@ -49,6 +54,11 @@ namespace CubeV2
                     CharactersPressed += KeyUtils.KeyToChar(key);
                 }
             }
+
+
+            CtrlDown = newKeyboardState.IsKeyDown(Keys.LeftControl) || newKeyboardState.IsKeyDown(Keys.RightControl);
+            AltDown = newKeyboardState.IsKeyDown(Keys.LeftAlt) || newKeyboardState.IsKeyDown(Keys.RightAlt);
+            ShiftDown = newKeyboardState.IsKeyDown(Keys.LeftShift) || newKeyboardState.IsKeyDown(Keys.RightShift);
         }
 
         public bool IsKeyDown(Keys key) => KeyboardState.IsKeyDown(key);

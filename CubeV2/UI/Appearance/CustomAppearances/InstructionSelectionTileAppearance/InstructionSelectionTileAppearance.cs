@@ -27,14 +27,4 @@ namespace CubeV2
         }
     }
 
-    public class InstructionSelectionTileAppearanceFactory : TileAppearanceFactory
-    {
-        public InstructionSelectionTileAppearanceFactory(float layer) : base(layer) {}
-
-        public override TileAppearance Create(int index)
-        {
-            return new InstructionSelectionTileAppearance(index,_layer);
-        }
-    }
-
 }

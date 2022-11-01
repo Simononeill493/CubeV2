@@ -1,5 +1,4 @@
-﻿using CubeV2.UI.Appearance.OutputSelectionTile;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
 using System.Threading;
 
@@ -28,7 +27,7 @@ namespace CubeV2
 
             var rerollButton = UIElementMaker.MakeRectangle(Config.RerollButtonName, Config.GameControlButtonSize, Config.RerollButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
             rerollButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Reroll"));
-            rerollButton.AddLeftClickAction((i) => { GameInterface.ResetBoardTemplate(); GameInterface.ResetBoard(); GameInterface.PauseBoard(); });
+            rerollButton.AddLeftClickAction((i) => { GameInterface.RerollBoard(); GameInterface.ResetBoard(); GameInterface.PauseBoard(); });
 
 
             var energyBar = new UIElement(Config.EnergyBarName);
@@ -53,7 +52,7 @@ namespace CubeV2
 
             var addInstructionButton = UIElementMaker.MakeRectangle(Config.AddInstructionButtonName, new Vector2(50,30), Config.AddInstructionButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
             addInstructionButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3,"+"));
-            addInstructionButton.AddLeftClickAction((i) => GameInterface.AddInstruction());
+            addInstructionButton.AddLeftClickAction((i) => GameInterface.AddInstructionAtIndex(0));
 
             var removeInstructionButton = UIElementMaker.MakeRectangle(Config.RemoveInstructionButtonName, new Vector2(50, 30), Config.RemoveInstructionButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
             removeInstructionButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3,"-"));
@@ -80,12 +79,12 @@ namespace CubeV2
 
         private static bool InstructionSelectorGridEnabled()
         {
-            return (GameInterface.Focus == CurrentFocus.Instruction ||GameInterface.Focus == CurrentFocus.InstructionOption) && GameInterface.FocusedInstructionExists;
+            return (GameInterface.Focus == CurrentFocus.Instruction || GameInterface.Focus == CurrentFocus.InstructionOption) && GameInterface.FocusedInstructionExists;
         }
 
         private static bool VariableSelectorGridEnabled()
         {
-            return GameInterface.Focus == CurrentFocus.Variable && GameInterface.FocusedVariableExists;
+            return (GameInterface.Focus == CurrentFocus.Variable || GameInterface.Focus == CurrentFocus.VariableOption) && GameInterface.FocusedVariableExists;
         }
 
         private static bool OutputSelectorGridEnabled()
@@ -96,22 +95,20 @@ namespace CubeV2
         private static UIGrid _makeGameGrid()
         {
             var gameTileSize = Config.TileBaseSize * Config.TileScale;
-            var gameGrid = UIGrid.Make(Config.GameGridName,Config.GameGridWidth,Config.GameGridHeight, (int)gameTileSize.X,(int)gameTileSize.Y,Config.GameGridPadding,Config.TileBackgroundColor,DrawUtils.UILayer1,new GameTileAppearanceFactory(DrawUtils.UILayer2,DrawUtils.UILayer3));
+            var appearanceFactory = new GameTileAppearanceFactory(DrawUtils.UILayer1, DrawUtils.UILayer2);
+
+            var gameGrid = UIGrid.Make(Config.GameGridName,Config.GameGridWidth,Config.GameGridHeight, (int)gameTileSize.X,(int)gameTileSize.Y,Config.GameGridPadding, appearanceFactory);
 
             return gameGrid;
         }
 
         private static UIGrid _makeVariableSelectorGrid()
         {
-            var gridSize = new Vector2Int(4, 7);
             var tileSize = Config.TileBaseSize * Config.VariableSelectionTileScale;
             var tilePadding = 3;
-            var backgroundColor = Config.SelectionTileVariableColor;
-            var backgroundDrawLayer = DrawUtils.UILayer2;
-            var appearanceDrawLayer = DrawUtils.UILayer3;
-            var appearanceFactory = new VariableTileAppearanceFactory_ForSelectionGrid(Config.VariableSelectionTileScale, appearanceDrawLayer);
+            var appearanceFactory = new VariableTileAppearanceFactory_ForSelectionGrid(Config.VariableSelectionTileScale, DrawUtils.UILayer2,DrawUtils.UILayer3);
 
-            var variableGrid = UIGrid.Make(Config.VariableGridName, gridSize, new Vector2Int(tileSize), tilePadding, backgroundColor, backgroundDrawLayer, appearanceFactory);
+            var variableGrid = UIGrid.Make(Config.VariableGridName, Config.VariableSelectorGridSize, new Vector2Int(tileSize), tilePadding, appearanceFactory);
             variableGrid.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedVariable(index);
             return variableGrid;
         }
@@ -122,12 +119,9 @@ namespace CubeV2
             var tileSize = new Vector2Int(Config.InstructionOptionTileSize);
             var tilePadding = 5;
 
-            var backgroundColor = Config.InstructionSelectorTileColor;
-            var backgroundDrawLayer = DrawUtils.UILayer2;
-            var appearanceDrawLayer = DrawUtils.UILayer3;
-            var appearanceFactory = new InstructionSelectionTileAppearanceFactory(appearanceDrawLayer);
+            var appearanceFactory = new InstructionSelectionTileAppearanceFactory(DrawUtils.UILayer2, DrawUtils.UILayer3);
 
-            var instructionGrid = UIGrid.Make(Config.InstructionSelectorGridName, gridSize, tileSize, tilePadding, backgroundColor, backgroundDrawLayer, appearanceFactory);
+            var instructionGrid = UIGrid.Make(Config.InstructionSelectorGridName, gridSize, tileSize, tilePadding, appearanceFactory);
             instructionGrid.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedInstruction(index);
             return instructionGrid;
         }
@@ -138,12 +132,9 @@ namespace CubeV2
             var tileSize = new Vector2Int(Config.InstructionOptionTileSize);
             var tilePadding = 10;
 
-            var backgroundColor = Config.InstructionSelectorTileColor;
-            var backgroundDrawLayer = DrawUtils.UILayer2;
-            var appearanceDrawLayer = DrawUtils.UILayer3;
-            var appearanceFactory = new OutputSelectionTileAppearanceFactory(Config.VariableSelectionTileScale,appearanceDrawLayer);
+            var appearanceFactory = new OutputSelectionTileAppearanceFactory(Config.VariableSelectionTileScale, DrawUtils.UILayer2, DrawUtils.UILayer3);
 
-            var outputSelectorGrid = UIGrid.Make(Config.OutputSelectorGridName, gridSize, tileSize, tilePadding, backgroundColor, backgroundDrawLayer, appearanceFactory);
+            var outputSelectorGrid = UIGrid.Make(Config.OutputSelectorGridName, gridSize, tileSize, tilePadding, appearanceFactory);
             outputSelectorGrid.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedOutput(index);
             return outputSelectorGrid;
         }
@@ -248,7 +239,7 @@ namespace CubeV2
             variableTile.SetOffset((Config.TileBaseSize.X * Config.InstructionTileVariableScale + 20) * variableIndex, 20);
 
             var tileBackground = new RectangleAppearance(Config.TileBaseSize * Config.InstructionTileVariableScale, Config.InstructionTileAssignedVariableColor, DrawUtils.UILayer3);
-            tileBackground.OverrideColor(() => (GameInterface.IsFocusedOnVariable(instructionIndex,variableIndex) ? Config.InstructionTileAssignedVariableHighlightColor : Config.InstructionTileAssignedVariableColor));
+            tileBackground.OverrideColor(() => (GameInterface.IsFocusedOnVariable(instructionIndex,variableIndex)  ? Config.InstructionTileAssignedVariableHighlightColor : Config.InstructionTileAssignedVariableColor));
 
             var appearance = new VariableTileAppearance_Instruction(instructionIndex, variableIndex, Config.InstructionTileVariableScale, DrawUtils.UILayer4);
             variableTile.AddAppearances(tileBackground, appearance);

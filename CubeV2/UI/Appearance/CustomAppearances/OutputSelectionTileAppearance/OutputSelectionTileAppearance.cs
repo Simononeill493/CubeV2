@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CubeV2.UI.Appearance.OutputSelectionTile
+namespace CubeV2
 {
     internal class OutputSelectionTileAppearance : TileAppearance
     {
@@ -21,21 +21,6 @@ namespace CubeV2.UI.Appearance.OutputSelectionTile
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
             DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, Index.ToString(), position, Color.Magenta, _scale, Layer);
-        }
-    }
-
-    internal class OutputSelectionTileAppearanceFactory : TileAppearanceFactory
-    {
-        private int _scale;
-
-        public OutputSelectionTileAppearanceFactory(int scale, float layer) : base(layer)
-        {
-            _scale = scale;
-        }
-
-        public override TileAppearance Create(int index)
-        {
-            return new OutputSelectionTileAppearance(index, _scale, _layer);
         }
     }
 

@@ -8,20 +8,6 @@ using System.Threading.Tasks;
 
 namespace CubeV2
 {
-    public class GameTileAppearanceFactory : TileAppearanceFactory
-    {
-        private float _spriteLayer;
-
-        public GameTileAppearanceFactory(float groundLayer,float spriteLayer) : base(groundLayer)
-        {
-            _spriteLayer = spriteLayer;
-        }
-
-        public override TileAppearance Create(int index)
-        {
-            return new GameTileAppearance(index,_layer, _spriteLayer);
-        }
-    }
 
     public class GameTileAppearance : TileAppearance
     {
