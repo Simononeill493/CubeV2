@@ -8,20 +8,27 @@ namespace CubeV2
     {
         private Dictionary<string, Entity> Entities = new Dictionary<string, Entity>();
         private Dictionary<string, List<Entity>> EntityTypes = new Dictionary<string, List<Entity>>();
-
-        private Dictionary<Vector2Int, Tile> TilesVector = new Dictionary<Vector2Int, Tile>();
+        private List<Entity> ActiveEntities = new List<Entity>();
         private List<Tile> TilesLinear = new List<Tile>();
+
+        private Tile[,] TilesVector;
+        private int _width;
+        private int _height;
 
         public Board(int width, int height)
         {
+            _width = width;
+            _height = height;
+
+            TilesVector = new Tile[width, height];
+
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
-                    var vector = new Vector2Int(x, y);
                     var tile = new Tile();
 
-                    TilesVector[vector] = tile;
+                    TilesVector[x,y] = tile;
                     TilesLinear.Add(tile);
                 }
             }
@@ -45,7 +52,7 @@ namespace CubeV2
 
         public void Tick()
         {
-            var entities = TilesVector.Values.Select(t => t.Contents).ToList();
+            var entities = ActiveEntities.ToList();
             foreach (var entity in entities)
             {
                 if (entity != null)
@@ -67,20 +74,27 @@ namespace CubeV2
         }
         public Tile TryGetTile(Vector2Int offset)
         {
-            Tile tile;
-            TilesVector.TryGetValue(offset, out tile);
+            if(!_onBoard(offset))
+            {
+                return null;
+            }
 
-            return tile;
+            return TilesVector[offset.X, offset.Y];
+        }
+
+        private bool _onBoard(Vector2Int location)
+        {
+            return (location.X >= 0 && location.Y >= 0 && location.X < _width && location.Y < _height);
         }
 
         public bool TryMoveEntity(Entity entity, Vector2Int newLocation)
         {
-            if (!TilesVector.ContainsKey(newLocation))
+            if (!_onBoard(newLocation))
             {
                 return false;
             }
 
-            var currentContents = TilesVector[newLocation].Contents;
+            var currentContents = TilesVector[newLocation.X,newLocation.Y].Contents;
             if (currentContents != null)
             {
                 if (currentContents.TryBeCollected(entity))
@@ -120,20 +134,25 @@ namespace CubeV2
 
             Entities.Remove(entity.EntityID);
             _removeFromEntityTypesDict(entity);
+
+            if (entity.Instructions != null)
+            {
+                _removeEntityFromActiveList(entity);
+            }
         }
         public void RemoveEntityFromCurrentTile(Entity entity)
         {
-            if (!TilesVector.ContainsKey(entity.Location))
+            if (!_onBoard(entity.Location))
             {
                 Console.WriteLine("Warning: Entity's current location is not valid for this board.");
             }
 
-            if (TilesVector[entity.Location].Contents != entity)
+            if (TilesVector[entity.Location.X,entity.Location.Y].Contents != entity)
             {
                 Console.WriteLine("Warning: Entity is not in tile that its location data is pointing to.");
             }
 
-            TilesVector[entity.Location].SetContents(null);
+            TilesVector[entity.Location.X,entity.Location.Y].SetContents(null);
             entity.Location = Vector2Int.MinusOne;
         }
 
@@ -144,11 +163,19 @@ namespace CubeV2
                 Console.WriteLine("Warning: An entity with this ID already exists in this board.");
             }
 
+
             Entities[entity.EntityID] = entity;
 
             AddEntityToTile(entity, tileToAddTo);
             _addToEntityTypesDict(entity);
+
+            if(entity.Instructions!=null)
+            {
+                _addEntityToActiveList(entity);
+            }
         }
+
+
         public void AddEntityToTile(Entity entity, Vector2Int tileToAddTo)
         {
             if (entity.Location != Vector2Int.MinusOne)
@@ -156,13 +183,13 @@ namespace CubeV2
                 Console.WriteLine("Warning: Entity already has a location");
             }
 
-            if (TilesVector[tileToAddTo].Contents != null)
+            if (TilesVector[tileToAddTo.X,tileToAddTo.Y].Contents != null)
             {
                 Console.WriteLine("Warning: Entity is being moved to tile which is not empty.");
             }
 
 
-            TilesVector[tileToAddTo].SetContents(entity);
+            TilesVector[tileToAddTo.X, tileToAddTo.Y].SetContents(entity);
             entity.Location = tileToAddTo;
 
         }
@@ -198,6 +225,30 @@ namespace CubeV2
 
             EntityTypes[entity.TemplateID].Remove(entity);
         }
+
+        private void _addEntityToActiveList(Entity entity)
+        {
+            if (ActiveEntities.Contains(entity))
+            {
+                Console.WriteLine("Warning: This entity already exists in the active list.");
+            }
+            else
+            {
+                ActiveEntities.Add(entity);
+            }
+        }
+        private void _removeEntityFromActiveList(Entity entity)
+        {
+            if (!ActiveEntities.Contains(entity))
+            {
+                Console.WriteLine("Warning: This entity is not in the active list.");
+            }
+            else
+            {
+                ActiveEntities.Remove(entity);
+            }
+        }
+
 
         public List<Entity> GetEntityByTemplate(string templateID)
         {

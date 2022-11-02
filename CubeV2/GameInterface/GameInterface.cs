@@ -73,12 +73,43 @@ namespace CubeV2
             _processKeyboardShortcuts(input);
         }
 
-        public static void SimulateCurrentGame(int timeout,int iterations)
+        public static void SimulateCurrentGame()
         {
-            DisplayText = "Simulating...";
-            var wins = GameSimulator.Simulate(_game.CurrentTemplateTemplate, _game.WinCondition, timeout, iterations);
+            int timeout = 100;
+            int iterations = 20;
+            int setsToTest = 1000;
 
-            DisplayText = "Wins: " + wins + "/" + iterations + " (" + (wins / (float)iterations) + "%)";
+            DisplayText = "Simulating...";
+
+            var bestInstructions = _focusedInstructions;
+            int bestWins = 0;
+
+            for(int i=0; i< int.MaxValue; i++)
+            {
+                var player = _game.CurrentTemplateTemplate.Entities.Where(e => e.TemplateID == EntityDatabase.PlayerName).First();
+                player.Instructions = InstructionDatabase.GenerateRandom(Config.NumInstructionTiles);
+
+                var wins = GameSimulator.Simulate(_game.CurrentTemplateTemplate, _game.WinCondition, timeout, iterations);
+                if(wins>bestWins)
+                {
+                    bestInstructions = player.Instructions;
+                    bestWins = wins;
+
+                    if(bestWins>14)
+                    {
+                        break;
+                    }
+                }
+
+                DisplayText = "Bestwins = " + bestWins + ".";
+
+            }
+
+            _focusedInstructions = bestInstructions;
+            _game.CurrentTemplateTemplate.Entities.Where(e => e.TemplateID == EntityDatabase.PlayerName).First().Instructions = bestInstructions;
+            DisplayText = "Bestwins = " + bestWins + ". Done.";
+
+            //DisplayText = "Wins: " + wins + "/" + iterations + " (" + (wins / (float)iterations) + "%)";
         }
 
 

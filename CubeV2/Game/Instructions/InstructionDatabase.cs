@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace CubeV2
 {
@@ -33,6 +34,21 @@ namespace CubeV2
             {
                 output.Add(inst.GenerateNew());
             }
+            return output;
+        }
+
+        public static Instruction GenerateRandom() => GenerateRandom(1).First();
+
+        public static List<Instruction> GenerateRandom(int count)
+        {
+            var output = new List<Instruction>();
+
+            for(int i=0;i<count;i++)
+            {
+                var rand = RandomUtils.GetRandom(_masterList).GenerateNewFilled();
+                output.Add(rand);
+            }
+
             return output;
         }
     }

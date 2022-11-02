@@ -23,7 +23,7 @@ namespace CubeV2
                 return;
             }
 
-            _focusedInstructions.Insert(index, new MoveInstruction());
+            _focusedInstructions.Insert(index, InstructionDatabase.GenerateRandom());
         }
         public static void RemoveInstructionAtIndex(int index)
         {

@@ -24,12 +24,12 @@ namespace CubeV2
                 for(int j=0;j<timeout;j++)
                 {
                     board.Tick();
-                }
 
-                var isWon = winCon.Check(board);
-                if(isWon)
-                {
-                    numWins++;
+                    if(winCon.Check(board))
+                    {
+                        numWins++;
+                        break;
+                    }
                 }
             }
 

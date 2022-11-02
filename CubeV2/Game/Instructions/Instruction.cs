@@ -51,5 +51,27 @@ namespace CubeV2
         public abstract int Run(Entity caller,Board board);
 
         public abstract Instruction GenerateNew();
+
+        public Instruction GenerateNewFilled()
+        {
+            var output = GenerateNew();
+
+            for (int i = 0; i < output.VariableCount; i++)
+            {
+                output.Variables[i] = RandomUtils.GetRandom(VariableOptionsGenerator.GetAllVariableOptions());
+            }
+
+            for (int j = 0; j < output.OutputCount; j++)
+            {
+                output.OutputTargets[j] = RandomUtils.RandomNumber(Config.InstructionMaxNumOutputs+1);
+            }
+
+            for (int k = 0; k < output.ControlOutputCount; k++)
+            {
+                output.ControlOutputs[k] = RandomUtils.RandomNumber(Config.NumInstructionTiles - 1);
+            }
+
+            return output;
+        }
     }
 }

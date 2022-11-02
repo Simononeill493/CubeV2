@@ -22,7 +22,7 @@ namespace CubeV2
             var templateTemplate = new BoardTemplateTemplate() { Width = Config.GameGridWidth, Height = Config.GameGridHeight };
             templateTemplate.Entities.Add(player);
             
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 60; i++)
             {
                 templateTemplate.Entities.Add(EntityDatabase.GetTemplate(EntityDatabase.WallName));
             }
