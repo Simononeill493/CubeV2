@@ -26,9 +26,11 @@ namespace CubeV2
 
             _masterList[ManualPlayerName] = new EntityTemplate(ManualPlayerName, EntityTemplate.SpecialEntityTag.ManualPlayer) { Sprite = DrawUtils.PlayerSprite };
             _masterList[ManualPlayerName].Instructions = new List<Instruction>();
+            _masterList[ManualPlayerName].DefaultTags = new List<string>() { Config.PlayerTag };
 
             _masterList[AutoPlayerName] = new EntityTemplate(AutoPlayerName) { Sprite = DrawUtils.PlayerSprite };
             _masterList[AutoPlayerName].Instructions = new List<Instruction>() { new MoveInstruction(RelativeDirection.Forward) };
+            _masterList[AutoPlayerName].DefaultTags = new List<string>() { Config.PlayerTag };
 
             _masterList[RockName] = new EntityTemplate(RockName) { Sprite = DrawUtils.RockSprite };
             _masterList[EnergyRockName] = new EntityTemplate(EnergyRockName) { Sprite = DrawUtils.EnergyRockSprite };

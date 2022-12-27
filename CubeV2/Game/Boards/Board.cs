@@ -260,5 +260,9 @@ namespace CubeV2
             return EntityTypes[templateID];
         }
 
+        public IEnumerable<Entity> GetActiveEntityByTag(string tag)
+        {
+            return ActiveEntities.Where(e => e.HasTag(tag));
+        }
     }
 }

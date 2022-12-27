@@ -96,6 +96,20 @@ namespace CubeV2
             var newLocation = Location + direction.XYOffset();
             var didMoveWork = BoardCallback.TryMoveEntity(this, newLocation);
 
+            if(!didMoveWork && direction.IsDiagonal())
+            {
+                var diagonalIngredients = direction.GetDiagonalIngredients();
+
+                var newLocationLeft = Location + diagonalIngredients.Left.XYOffset();
+                didMoveWork = BoardCallback.TryMoveEntity(this, newLocationLeft);
+
+                if(!didMoveWork)
+                {
+                    var newLocationRight = Location + diagonalIngredients.Right.XYOffset();
+                    didMoveWork = BoardCallback.TryMoveEntity(this, newLocationRight);
+                }
+            }
+
             return didMoveWork;
         }
 

@@ -23,6 +23,8 @@ namespace CubeV2
         private static Dictionary<CardinalDirection, Vector2Int> _XYOffsetDict;
         private static Dictionary<CardinalDirection, bool> _diagonalsDict;
         private static Dictionary<CardinalDirection, (CardinalDirection left, CardinalDirection right)> _parallelDict;
+        private static Dictionary<CardinalDirection, (CardinalDirection left, CardinalDirection right)> _diagonalIngredientsDict;
+
 
 
 
@@ -30,6 +32,8 @@ namespace CubeV2
         public static Vector2Int XYOffset(this CardinalDirection direction) => _XYOffsetDict[direction];
         public static bool IsDiagonal(this CardinalDirection dir) => _diagonalsDict[dir];
         public static (CardinalDirection Left, CardinalDirection Right) Parallel(this CardinalDirection dir) => _parallelDict[dir];
+        public static (CardinalDirection Left, CardinalDirection Right) GetDiagonalIngredients(this CardinalDirection dir) => _diagonalIngredientsDict[dir];
+
         public static Vector2Int GetAdjacentCoords(this Vector2Int coord, CardinalDirection direction) => coord + _XYOffsetDict[direction];
 
        
@@ -83,6 +87,14 @@ namespace CubeV2
                 [CardinalDirection.SouthEast] = (CardinalDirection.NorthEast, CardinalDirection.SouthWest),
                 [CardinalDirection.NorthWest] = (CardinalDirection.SouthWest, CardinalDirection.NorthEast),
                 [CardinalDirection.SouthWest] = (CardinalDirection.SouthEast, CardinalDirection.NorthWest)
+            };
+
+            _diagonalIngredientsDict = new Dictionary<CardinalDirection, (CardinalDirection left, CardinalDirection right)>
+            {
+                [CardinalDirection.NorthEast] = (CardinalDirection.East, CardinalDirection.North),
+                [CardinalDirection.SouthEast] = (CardinalDirection.East, CardinalDirection.South),
+                [CardinalDirection.NorthWest] = (CardinalDirection.North, CardinalDirection.West),
+                [CardinalDirection.SouthWest] = (CardinalDirection.South, CardinalDirection.West)
             };
         }
 

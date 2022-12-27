@@ -6,7 +6,7 @@
 
         public override bool TryBeCollected(Entity collector)
         {
-            collector.Tags.Add(Config.GoalTag);
+            collector.Tags.Add(Config.CollectedGoalTag);
             return true;
         }
     }

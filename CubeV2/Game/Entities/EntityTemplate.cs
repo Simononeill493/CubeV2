@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CubeV2
 {
@@ -8,9 +9,12 @@ namespace CubeV2
         public string TemplateID { get; }
         private static int _sessionEntityCount;
 
+        public List<string> DefaultTags = new List<string>();
         public SpecialEntityTag SpecialTag;
 
         public string Sprite;
+       
+
         public List<Instruction> Instructions = new List<Instruction>();
 
         public EntityTemplate(string id, SpecialEntityTag specialTag = SpecialEntityTag.None)
@@ -21,17 +25,31 @@ namespace CubeV2
 
         public Entity GenerateEntity()
         {
+            Entity entity;
+
             switch (SpecialTag)
             {
                 case SpecialEntityTag.None:
-                    return new Entity(TemplateID, _sessionEntityCount++.ToString(), Sprite) { Instructions = this.Instructions };
+                    entity = new Entity(TemplateID, _sessionEntityCount++.ToString(), Sprite);
+                    break;
                 case SpecialEntityTag.Goal:
-                    return new GoalEntity(TemplateID, _sessionEntityCount++.ToString(), Sprite) { Instructions = this.Instructions };
+                    entity = new GoalEntity(TemplateID, _sessionEntityCount++.ToString(), Sprite);
+                    break;
                 case SpecialEntityTag.ManualPlayer:
-                    return new ManualPlayerEntity(TemplateID, _sessionEntityCount++.ToString(), Sprite) { Instructions = this.Instructions };
+                    entity = new ManualPlayerEntity(TemplateID, _sessionEntityCount++.ToString(), Sprite);
+                    break;
                 default:
                     throw new Exception("Generating unrecognized entity type");
             }
+
+            entity.Instructions = this.Instructions;
+
+            if(DefaultTags.Any())
+            {
+                entity.Tags = new List<string>(DefaultTags);
+            }
+
+            return entity;
         }
 
         public enum SpecialEntityTag

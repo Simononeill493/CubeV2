@@ -22,6 +22,7 @@ namespace CubeV2
         public static void InitializeDemoFindGoalGame()
         {
             var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.AutoPlayerName);
+
             _focusedInstructions = demoPlayer.Instructions;
 
             _game = DemoFindGoalGameGenerator.CreateDemoFindGoalGame(demoPlayer);
@@ -29,12 +30,12 @@ namespace CubeV2
 
         public static void InitializeBoardTest1Game()
         {
-            //var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.AutoPlayerName);
             var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.ManualPlayerName);
 
             _focusedInstructions = demoPlayer.Instructions;
 
             _game = BoardTest1GameGenerator.CreateGemoBoardTest1Game(demoPlayer);
+            StartBoard(Config.BoardTest1UpdateRate);
         }
 
 

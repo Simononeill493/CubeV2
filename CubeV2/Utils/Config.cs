@@ -21,6 +21,7 @@ namespace CubeV2
         public static int BasePingCost = 10;//20
 
         public static TimeSpan DemoBoardUpdateRate = TimeSpan.FromSeconds(0.1);
+        public static TimeSpan BoardTest1UpdateRate = TimeSpan.FromSeconds(0.05);
 
         //public static int GameGridWidth = 1;
         //public static int GameGridHeight = 1;
@@ -67,7 +68,8 @@ namespace CubeV2
         public static string EnergyBarName = "EnergyBar";
         public static string DisplayTextName = "DisplayText";
 
-        public static string GoalTag = "EnteredGoal";
+        public static string CollectedGoalTag = "EnteredGoal";
+        public static string PlayerTag = "Player";
 
         public static void Load() 
         {
@@ -129,7 +131,7 @@ namespace CubeV2
 
             EnergyBarSize = new Vector2(830, 30);
             EnergyBarOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 50, (int)ScreenSize.Y - (GameControlButtonSize.Y * 2.1f));
-            DisplayTextOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 50, (int)ScreenSize.Y - (GameControlButtonSize.Y * 2.8f));
+            DisplayTextOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 50, (int)ScreenSize.Y - (GameControlButtonSize.Y * 2.4f));
 
         }
 
