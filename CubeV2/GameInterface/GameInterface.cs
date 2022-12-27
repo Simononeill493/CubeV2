@@ -101,18 +101,19 @@ namespace CubeV2
         }
 
 
-        public static int GetPlayerEnergy()
+        public static (int Current,int Max) GetPlayerEnergy()
         {
             if (_game != null && _game.CurrentBoard != null)
             {
-                var players = _game.CurrentBoard.GetEntityByTemplate(EntityDatabase.AutoPlayerName);
+                var players = _game.CurrentBoard.GetActiveEntityByTag(Config.PlayerTag);
                 if (players.Any())
                 {
-                    return players.First().CurrentEnergy;
+                    var player = players.First();
+                    return (player.CurrentEnergy,player.MaxEnergy);
                 }
             }
 
-            return 0;
+            return (0,1);
         }
     }
 

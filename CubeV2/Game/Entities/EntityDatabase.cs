@@ -27,6 +27,7 @@ namespace CubeV2
             _masterList[ManualPlayerName] = new EntityTemplate(ManualPlayerName, EntityTemplate.SpecialEntityTag.ManualPlayer) { Sprite = DrawUtils.PlayerSprite };
             _masterList[ManualPlayerName].Instructions = new List<Instruction>();
             _masterList[ManualPlayerName].DefaultTags = new List<string>() { Config.PlayerTag };
+            _masterList[ManualPlayerName].DefaultMaxEnergy = 200;
 
             _masterList[AutoPlayerName] = new EntityTemplate(AutoPlayerName) { Sprite = DrawUtils.PlayerSprite };
             _masterList[AutoPlayerName].Instructions = new List<Instruction>() { new MoveInstruction(RelativeDirection.Forward) };

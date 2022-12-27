@@ -25,14 +25,19 @@ namespace CubeV2
             if(WASDDirection.AnyPressed)
             {
                 _keyboardMoveInstruction.Variables[0] = new CardinalDirectionVariable(WASDDirection.Direction);
-                _keyboardMoveInstruction.Run(this, currentBoard);
+                _executeInstruction(_keyboardMoveInstruction, currentBoard);
             }
 
             var arrowsDirection = DirectionUtils.GetArrowsDirection(input);
             if (arrowsDirection.AnyPressed)
             {
                 _keyboardHitInstruction.Variables[0] = new CardinalDirectionVariable(arrowsDirection.Direction);
-                _keyboardHitInstruction.Run(this, currentBoard);
+                _executeInstruction(_keyboardHitInstruction, currentBoard);
+            }
+
+            if(RandomUtils.RandomNumber(3)==0)
+            {
+                GiveEnergy(1);
             }
         }
     }

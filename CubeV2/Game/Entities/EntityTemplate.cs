@@ -10,6 +10,8 @@ namespace CubeV2
         private static int _sessionEntityCount;
 
         public List<string> DefaultTags = new List<string>();
+        public int DefaultMaxEnergy = -1;
+
         public SpecialEntityTag SpecialTag;
 
         public string Sprite;
@@ -44,11 +46,21 @@ namespace CubeV2
 
             entity.Instructions = this.Instructions;
 
-            if(DefaultTags.Any())
+            if (DefaultTags.Any())
             {
                 entity.Tags = new List<string>(DefaultTags);
             }
 
+            if (DefaultMaxEnergy > -1)
+            {
+                entity.MaxEnergy = DefaultMaxEnergy;
+            }
+            else
+            {
+                entity.MaxEnergy = Config.GlobalDefaultMaxEnergy;
+            }
+
+            entity.CurrentEnergy = entity.MaxEnergy;
             return entity;
         }
 

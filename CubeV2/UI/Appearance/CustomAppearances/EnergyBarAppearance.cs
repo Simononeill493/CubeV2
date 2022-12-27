@@ -29,7 +29,7 @@ namespace CubeV2
 
             var energy = GameInterface.GetPlayerEnergy();
 
-            DrawUtils.DrawRect(spriteBatch, position, Size * new Vector2(energy/(float)Config.EntityMaxEnergy,1), ForegroundColor, _frontLayer);
+            DrawUtils.DrawRect(spriteBatch, position, Size * new Vector2(energy.Current/(float)energy.Max,1), ForegroundColor, _frontLayer);
         }
     }
 }

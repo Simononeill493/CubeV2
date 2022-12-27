@@ -10,6 +10,8 @@ namespace CubeV2
         public string EntityID { get; }
 
         public string Sprite;
+
+        public int MaxEnergy;
         public int CurrentEnergy;
 
         public Orientation Orientation;
@@ -28,8 +30,6 @@ namespace CubeV2
             TemplateID = templateID;
             EntityID = entityID;
             Sprite = sprite;
-
-            CurrentEnergy = Config.EntityMaxEnergy;
         }
 
         public virtual void Tick(Board currentBoard, UserInput input)
@@ -38,40 +38,42 @@ namespace CubeV2
 
             for (InstructionCounter = 0; InstructionCounter < Instructions.Count; InstructionCounter++)
             {
-                var currentInstruction = Instructions[InstructionCounter];
-                if(!HasEnergy(currentInstruction.BaseEnergyCost))
-                {
-                    continue;
-                }
-
-                var energyCost = currentInstruction.Run(this, currentBoard);
-
-                CurrentEnergy -= energyCost;
-                if(CurrentEnergy<0)
-                {
-                    Console.WriteLine("Entity energy is negative, which should never happen.");
-                }
-                
-                for(int i=0;i<currentInstruction.OutputCount;i++)
-                {
-                    if (currentInstruction.OutputTargets[i] >= 0)
-                    {
-                        var output = currentInstruction.Outputs[i];
-                        if(output!=null && output.DefaultType==IVariableType.StoredVariable)
-                        {
-                            //We can't store variable references in variables yet. causes overflow. too meta lol
-                            continue;
-                        }
-
-                        Variables[currentInstruction.OutputTargets[i]] = output;
-                    }
-                }
+                _executeInstruction(Instructions[InstructionCounter], currentBoard);
 
                 if(trueInstructionCount++ >= Config.MaxInstructionJumpsPerTick)
                 {
                     break;
                 }
             }
+        }
+
+        protected void _executeInstruction(Instruction currentInstruction,Board currentBoard)
+        {
+            if (!HasEnergy(currentInstruction.BaseEnergyCost))
+            {
+                return;
+            }
+
+            var energyCost = currentInstruction.Run(this, currentBoard);
+
+            TakeEnergy(energyCost);
+
+            //Set variable data
+            for (int i = 0; i < currentInstruction.OutputCount; i++)
+            {
+                if (currentInstruction.OutputTargets[i] >= 0)
+                {
+                    var output = currentInstruction.Outputs[i];
+                    if (output != null && output.DefaultType == IVariableType.StoredVariable)
+                    {
+                        //We can't store variable references in variables yet. causes overflow. too meta lol
+                        continue;
+                    }
+
+                    Variables[currentInstruction.OutputTargets[i]] = output;
+                }
+            }
+
         }
 
         public void SetInstructionCounter(int index)
@@ -86,6 +88,27 @@ namespace CubeV2
         {
             return (CurrentEnergy >= amount);
         }
+
+        public void TakeEnergy(int amount)
+        {
+            if (amount > CurrentEnergy)
+            {
+                throw new Exception("Taking more energy from an entity than it has. This should never happen.");
+            }
+
+            CurrentEnergy -= amount;
+        }
+
+        public void GiveEnergy(int amount)
+        {
+            CurrentEnergy += amount;
+
+            if(CurrentEnergy>MaxEnergy)
+            {
+                CurrentEnergy = MaxEnergy;
+            }
+        }
+
 
         public bool TryMove(RelativeDirection direction) => TryMove(DirectionUtils.ToCardinal(Orientation, direction));
         public void Hit(RelativeDirection direction) => Hit(DirectionUtils.ToCardinal(Orientation, direction));

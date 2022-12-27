@@ -14,14 +14,14 @@ namespace CubeV2
         public static bool KnowAllInstructionsByDefault = true;
 
         public static int EntityMaxVariables = 3;
-        public static int EntityMaxEnergy = 100;
+        public static int GlobalDefaultMaxEnergy = 100;
         public static int BaseMoveCost = 1;//1
         public static int BaseScanCost = 3;//3
         public static int BaseHitCost = 5;//10
         public static int BasePingCost = 10;//20
 
         public static TimeSpan DemoBoardUpdateRate = TimeSpan.FromSeconds(0.1);
-        public static TimeSpan BoardTest1UpdateRate = TimeSpan.FromSeconds(0.05);
+        public static TimeSpan BoardTest1UpdateRate = TimeSpan.FromSeconds(0.075);
 
         //public static int GameGridWidth = 1;
         //public static int GameGridHeight = 1;
@@ -129,7 +129,7 @@ namespace CubeV2
             RerollButtonOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 290, (int)ScreenSize.Y - GameControlButtonSize.Y - 20);
             SimulateButtonOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 410, (int)ScreenSize.Y - GameControlButtonSize.Y - 20);
 
-            EnergyBarSize = new Vector2(830, 30);
+            EnergyBarSize = new Vector2(600, 30);
             EnergyBarOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 50, (int)ScreenSize.Y - (GameControlButtonSize.Y * 2.1f));
             DisplayTextOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 50, (int)ScreenSize.Y - (GameControlButtonSize.Y * 2.4f));
 
