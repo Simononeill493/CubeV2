@@ -3,11 +3,11 @@ using System.Reflection.Metadata;
 
 namespace CubeV2
 {
-    public class GoalWinCondition : BoardWinCondition
+    public class FindGoalWinCondition : BoardWinCondition
     {
         string _templateToCheck;
 
-        public GoalWinCondition(string entityTypeToCheck)
+        public FindGoalWinCondition(string entityTypeToCheck)
         {
             _templateToCheck = entityTypeToCheck;
         }

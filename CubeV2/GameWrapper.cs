@@ -37,7 +37,8 @@ namespace CubeV2
         {
             // TODO: Add your initialization logic here
             _ui = UIBuilder.GenerateUI();
-            GameInterface.InitializeDemoGame();
+            //GameInterface.InitializeDemoFindGoalGame();
+            GameInterface.InitializeBoardTest1Game();
 
             base.Initialize();
         }

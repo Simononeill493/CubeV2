@@ -24,7 +24,7 @@ namespace CubeV2
         public void ResetBoard() => SetBoard(CurrentTemplate.GenerateBoard());
 
         public void SetBoard(Board b) => CurrentBoard = b;
-        public void TickBoard() => CurrentBoard.Tick();
+        public void TickBoard(UserInput input) => CurrentBoard.Tick(input);
 
         public List<Instruction> KnownInstructions = new List<Instruction>();
 

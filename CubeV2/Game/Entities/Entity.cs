@@ -32,7 +32,7 @@ namespace CubeV2
             CurrentEnergy = Config.EntityMaxEnergy;
         }
 
-        public void Tick(Board currentBoard)
+        public virtual void Tick(Board currentBoard, UserInput input)
         {
             var trueInstructionCount = 0;
 

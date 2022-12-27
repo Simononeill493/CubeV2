@@ -30,9 +30,9 @@ namespace CubeV2
 
             testEntity.Instructions = new List<Instruction>() { new MoveInstruction(RelativeDirection.BackwardRight) };
 
-            GameInterface.InitializeEmptyGame();
+            GameInterface.InitializeBoardlessGame();
             GameInterface.ManualSetBoard(testBoard);
-            testBoard.Tick();
+            testBoard.Tick(null);
 
             if (testBoard.TryGetTile(Vector2Int.Zero).Contents != null)
             {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -147,6 +148,65 @@ namespace CubeV2
 
             return res >= 0 ? res : res + m;
         }
+
+
+
+        public static (CardinalDirection Direction, bool AnyPressed) GetWASDDirection(UserInput input)
+        {
+            return KeysDownToDirection(input.IsKeyDown(Keys.W), input.IsKeyDown(Keys.S), input.IsKeyDown(Keys.A), input.IsKeyDown(Keys.D));
+        }
+
+        public static (CardinalDirection Direction, bool AnyPressed) GetArrowsDirection(UserInput input)
+        {
+            return KeysDownToDirection(input.IsKeyDown(Keys.Up), input.IsKeyDown(Keys.Down), input.IsKeyDown(Keys.Left), input.IsKeyDown(Keys.Right));
+        }
+
+        public static (CardinalDirection Direction,bool AnyPressed) KeysDownToDirection(bool upDown, bool downDown, bool leftDown, bool rightDown)
+        {
+            if(upDown)
+            {
+                if(leftDown)
+                {
+                    return (CardinalDirection.NorthWest,true);
+                }
+                if(rightDown)
+                {
+                    return (CardinalDirection.NorthEast,true);
+                }
+
+                return (CardinalDirection.North,true);
+            }
+
+            if(downDown)
+            {
+                if (leftDown)
+                {
+                    return (CardinalDirection.SouthWest, true);
+                }
+                if (rightDown)
+                {
+                    return (CardinalDirection.SouthEast, true);
+                }
+
+                return (CardinalDirection.South, true);
+
+            }
+
+            if(leftDown)
+            {
+                return (CardinalDirection.West, true);
+            }
+
+            if (rightDown)
+            {
+                return (CardinalDirection.East, true);
+            }
+
+            return (CardinalDirection.North, false);
+
+        }
+
+
 
     }
 }

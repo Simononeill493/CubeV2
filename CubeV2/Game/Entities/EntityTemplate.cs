@@ -27,6 +27,8 @@ namespace CubeV2
                     return new Entity(TemplateID, _sessionEntityCount++.ToString(), Sprite) { Instructions = this.Instructions };
                 case SpecialEntityTag.Goal:
                     return new GoalEntity(TemplateID, _sessionEntityCount++.ToString(), Sprite) { Instructions = this.Instructions };
+                case SpecialEntityTag.ManualPlayer:
+                    return new ManualPlayerEntity(TemplateID, _sessionEntityCount++.ToString(), Sprite) { Instructions = this.Instructions };
                 default:
                     throw new Exception("Generating unrecognized entity type");
             }
@@ -35,7 +37,8 @@ namespace CubeV2
         public enum SpecialEntityTag
         {
             None,
-            Goal
+            Goal,
+            ManualPlayer,
         }
     }
 }

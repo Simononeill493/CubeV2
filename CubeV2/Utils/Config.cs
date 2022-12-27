@@ -14,22 +14,22 @@ namespace CubeV2
         public static bool KnowAllInstructionsByDefault = true;
 
         public static int EntityMaxVariables = 3;
-        public static int EntityMaxEnergy = 500;
+        public static int EntityMaxEnergy = 100;
         public static int BaseMoveCost = 1;//1
         public static int BaseScanCost = 3;//3
-        public static int BaseHitCost = 3;//10
-        public static int BasePingCost = 5;//20
+        public static int BaseHitCost = 5;//10
+        public static int BasePingCost = 10;//20
 
         public static TimeSpan DemoBoardUpdateRate = TimeSpan.FromSeconds(0.1);
 
         //public static int GameGridWidth = 1;
         //public static int GameGridHeight = 1;
-        public static int GameGridWidth = 11;
-        public static int GameGridHeight = 8;
-        public static int GameGridPadding = 2;
+        public static int GameGridWidth = 43;
+        public static int GameGridHeight = 22;
+        public static int GameGridPadding = 0;
 
         public static Vector2 TileBaseSize = new Vector2(16,16);
-        public static int TileScale = 5;
+        public static int TileScale = 2;
         public static int VariableSelectionTileScale = 4;
         public static int InstructionTileVariableScale = 3;
 
@@ -74,7 +74,7 @@ namespace CubeV2
             _loadPositioning();
         }
 
-        public static Vector2 ScreenSize = new Vector2(1550, 850);
+        public static Vector2 ScreenSize = new Vector2(1900, 850);
 
         public static Vector2 InstructionPanelSize;
         public static Vector2 InstructionPanelOffset;
@@ -107,10 +107,10 @@ namespace CubeV2
 
         private static void _loadPositioning()
         {
-            InstructionPanelSize = new Vector2(300, ScreenSize.Y);
+            InstructionPanelSize = new Vector2(250, ScreenSize.Y);
             InstructionPanelOffset = Vector2.Zero;
 
-            SelectorPanelSize = new Vector2(300, ScreenSize.Y);
+            SelectorPanelSize = new Vector2(250, ScreenSize.Y);
             SelectorPanelOffset = new Vector2(Config.InstructionPanelSize.X, 0);
 
             InstructionTileSize = new Vector2(200, 100);

@@ -9,8 +9,12 @@ namespace CubeV2
 {
     internal class EntityDatabase
     {
-        public const string PlayerName = "Player";
-        public const string WallName = "Wall";
+        public const string AutoPlayerName = "AutoPlayer";
+        public const string ManualPlayerName = "ManualPlayer";
+
+        public const string RockName = "Rock";
+        public const string EnergyRockName = "EnergyRock";
+
         public const string GoalName = "Goal";
 
         private static Dictionary<string, EntityTemplate> _masterList;
@@ -20,10 +24,15 @@ namespace CubeV2
         {
             _masterList = new Dictionary<string, EntityTemplate>();
 
-            _masterList[PlayerName] = new EntityTemplate(PlayerName) { Sprite = DrawUtils.PlayerSprite };
-            _masterList[PlayerName].Instructions = new List<Instruction>() { new MoveInstruction(RelativeDirection.Forward) };
+            _masterList[ManualPlayerName] = new EntityTemplate(ManualPlayerName, EntityTemplate.SpecialEntityTag.ManualPlayer) { Sprite = DrawUtils.PlayerSprite };
+            _masterList[ManualPlayerName].Instructions = new List<Instruction>();
 
-            _masterList[WallName] = new EntityTemplate(WallName) { Sprite = DrawUtils.WallSprite };
+            _masterList[AutoPlayerName] = new EntityTemplate(AutoPlayerName) { Sprite = DrawUtils.PlayerSprite };
+            _masterList[AutoPlayerName].Instructions = new List<Instruction>() { new MoveInstruction(RelativeDirection.Forward) };
+
+            _masterList[RockName] = new EntityTemplate(RockName) { Sprite = DrawUtils.RockSprite };
+            _masterList[EnergyRockName] = new EntityTemplate(EnergyRockName) { Sprite = DrawUtils.EnergyRockSprite };
+
             _masterList[GoalName] = new EntityTemplate(GoalName, EntityTemplate.SpecialEntityTag.Goal) { Sprite = DrawUtils.GoalSprite };
         }
 

@@ -19,14 +19,26 @@ namespace CubeV2
         public static Game _game;
         private static bool _boardRunning;
 
-        public static void InitializeDemoGame()
+        public static void InitializeDemoFindGoalGame()
         {
-            var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.PlayerName);
+            var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.AutoPlayerName);
             _focusedInstructions = demoPlayer.Instructions;
 
-            _game = DemoGameGenerator.CreateDemoGame(demoPlayer);
+            _game = DemoFindGoalGameGenerator.CreateDemoFindGoalGame(demoPlayer);
         }
-        public static void InitializeEmptyGame()
+
+        public static void InitializeBoardTest1Game()
+        {
+            //var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.AutoPlayerName);
+            var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.ManualPlayerName);
+
+            _focusedInstructions = demoPlayer.Instructions;
+
+            _game = BoardTest1GameGenerator.CreateGemoBoardTest1Game(demoPlayer);
+        }
+
+
+        public static void InitializeBoardlessGame()
         {
             _game = new Game();
         }
@@ -61,7 +73,7 @@ namespace CubeV2
                 if (TimeSinceLastUpdate >= BoardUpdateRate)
                 {
                     TimeSinceLastUpdate = TimeSpan.Zero;
-                    _game.TickBoard();
+                    _game.TickBoard(input);
 
                     if (IsGameWon)
                     {
@@ -73,41 +85,16 @@ namespace CubeV2
             _processKeyboardShortcuts(input);
         }
 
-        public static void SimulateCurrentGame()
+        public static void SimulateCurrentGame(UserInput input)
         {
             int timeout = 100;
-            int iterations = 20;
-            int setsToTest = 1000;
+            int iterations = 200;
 
             DisplayText = "Simulating...";
 
-            var bestInstructions = _focusedInstructions;
-            int bestWins = 0;
+            var wins = GameSimulator.Simulate(input,_game.CurrentTemplateTemplate, _game.WinCondition, timeout, iterations);
 
-            for(int i=0; i< int.MaxValue; i++)
-            {
-                var player = _game.CurrentTemplateTemplate.Entities.Where(e => e.TemplateID == EntityDatabase.PlayerName).First();
-                player.Instructions = InstructionDatabase.GenerateRandom(Config.NumInstructionTiles);
-
-                var wins = GameSimulator.Simulate(_game.CurrentTemplateTemplate, _game.WinCondition, timeout, iterations);
-                if(wins>bestWins)
-                {
-                    bestInstructions = player.Instructions;
-                    bestWins = wins;
-
-                    if(bestWins>14)
-                    {
-                        break;
-                    }
-                }
-
-                DisplayText = "Bestwins = " + bestWins + ".";
-
-            }
-
-            _focusedInstructions = bestInstructions;
-            _game.CurrentTemplateTemplate.Entities.Where(e => e.TemplateID == EntityDatabase.PlayerName).First().Instructions = bestInstructions;
-            DisplayText = "Bestwins = " + bestWins + ". Done.";
+            DisplayText = "Wins: " + wins + "/" + iterations;
 
             //DisplayText = "Wins: " + wins + "/" + iterations + " (" + (wins / (float)iterations) + "%)";
         }
@@ -117,7 +104,7 @@ namespace CubeV2
         {
             if (_game != null && _game.CurrentBoard != null)
             {
-                var players = _game.CurrentBoard.GetEntityByTemplate(EntityDatabase.PlayerName);
+                var players = _game.CurrentBoard.GetEntityByTemplate(EntityDatabase.AutoPlayerName);
                 if (players.Any())
                 {
                     return players.First().CurrentEnergy;

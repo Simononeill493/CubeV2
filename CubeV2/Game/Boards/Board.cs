@@ -50,14 +50,14 @@ namespace CubeV2
 
         }
 
-        public void Tick()
+        public void Tick(UserInput input)
         {
             var entities = ActiveEntities.ToList();
             foreach (var entity in entities)
             {
                 if (entity != null)
                 {
-                    entity.Tick(this);
+                    entity.Tick(this,input);
                 }
             }
         }

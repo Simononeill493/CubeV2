@@ -31,7 +31,7 @@ namespace CubeV2
 
             var simulateButton = UIElementMaker.MakeRectangle(Config.SimulateButtonName, Config.SimulateButtonSize,Config.SimulateButtonOffset,Color.White,DrawUtils.UILayer2);
             simulateButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Simulate"));
-            simulateButton.AddLeftClickAction((i) => { GameInterface.SimulateCurrentGame(); });
+            simulateButton.AddLeftClickAction((i) => { GameInterface.SimulateCurrentGame(i); });
 
             var energyBar = new UIElement(Config.EnergyBarName);
             energyBar.SetOffset(Config.EnergyBarOffset);

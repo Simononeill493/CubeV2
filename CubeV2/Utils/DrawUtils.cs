@@ -22,7 +22,8 @@ namespace CubeV2
         public const string GoalSprite = "Goal";
         public const string GroundSprite = "Ground";
         public const string PlayerSprite = "Player";
-        public const string WallSprite = "WhiteWall";
+        public const string RockSprite = "WhiteWall";
+        public const string EnergyRockSprite = "EnergyRock";
 
         public const string UpSprite = "UpArrow";
         public const string DownSprite = "DownArrow";
@@ -59,7 +60,8 @@ namespace CubeV2
             SpritesDict[GoalSprite] = content.Load<Texture2D>(GoalSprite);
             SpritesDict[GroundSprite] = content.Load<Texture2D>(GroundSprite);
             SpritesDict[PlayerSprite] = content.Load<Texture2D>(PlayerSprite);
-            SpritesDict[WallSprite] = content.Load<Texture2D>(WallSprite);
+            SpritesDict[RockSprite] = content.Load<Texture2D>(RockSprite);
+            SpritesDict[EnergyRockSprite] = content.Load<Texture2D>(EnergyRockSprite);
 
             SpritesDict[UpSprite] = content.Load<Texture2D>(UpSprite);
             SpritesDict[DownSprite] = content.Load<Texture2D>(DownSprite);
