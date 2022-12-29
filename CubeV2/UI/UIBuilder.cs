@@ -18,9 +18,14 @@ namespace CubeV2
             gameGrid.SetOffset(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X, 0);
 
             var cursorOverlayTile = new UIElement(Config.CursorOverlayTileName);
-            cursorOverlayTile.AddAppearance(new RectangleAppearance(Config.TileBaseSize * Config.TileScale, Color.White * 0.5f, DrawUtils.UILayer4));
+            cursorOverlayTile.AddAppearance(new RectangleAppearance(Config.TileBaseSize * Config.TileScale, Color.White * 0.5f, DrawUtils.GameLayer4));
             cursorOverlayTile.SetEnabledCondition(() => AllUIElements.GetUIElement(Config.GameGridName).MouseOver);
             gameGrid.AddChildren(cursorOverlayTile);
+
+            var operationalRangeOverlayTile = new UIElement(Config.OperationalRangeOverlayTileName);
+            operationalRangeOverlayTile.AddAppearance(new RectangleAppearance(Config.TileBaseSize * Config.TileScale * ((Config.PlayerOperationalRadius*2+1)), Color.White * 0.05f, DrawUtils.GameLayer5));
+            operationalRangeOverlayTile.SetEnabledCondition(() => GameInterface._game.FocusEntity != null);
+            gameGrid.AddChildren(operationalRangeOverlayTile);
 
             var goButton = UIElementMaker.MakeRectangle(Config.GoButtonName, Config.GameControlButtonSize, Config.GoButtonOffset, Color.Lime, DrawUtils.UILayer2);
             goButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Go"));
@@ -101,9 +106,9 @@ namespace CubeV2
         private static UIGrid _makeGameGrid()
         {
             var gameTileSize = Config.TileBaseSize * Config.TileScale;
-            var appearanceFactory = new GameTileAppearanceFactory(DrawUtils.UILayer1, DrawUtils.UILayer2);
+            var appearanceFactory = new GameTileAppearanceFactory(DrawUtils.GameLayer1, DrawUtils.GameLayer2);
 
-            var gameGrid = UIGrid.Make(Config.GameGridName,Config.GameGridWidth,Config.GameGridHeight, (int)gameTileSize.X,(int)gameTileSize.Y,Config.GameGridPadding, appearanceFactory);
+            var gameGrid = UIGrid.Make(Config.GameGridName,Config.GameGridDefaultWidth,Config.GameGridDefaultHeight, (int)gameTileSize.X,(int)gameTileSize.Y,Config.GameGridPadding, appearanceFactory);
 
             //gameGrid.TileLeftClicked += (i, index) => Pause();
             gameGrid.TileLeftClicked += (i, index) => GameInterface.LeftClickBoard(index);

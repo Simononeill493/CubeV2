@@ -8,7 +8,7 @@ namespace CubeV2
 {
     internal class GameSimulator
     {
-        public static int Simulate(UserInput input,BoardTemplateTemplate template,BoardWinCondition winCon, int timeout,int iterations)
+        public static int Simulate(Game game,UserInput input,BoardTemplateTemplate template,BoardWinCondition winCon, int timeout,int iterations)
         {
             var oldMode = BoardCallback.Mode;
             //TODO uhmmmmmm
@@ -19,6 +19,7 @@ namespace CubeV2
             for(int i=0;i<iterations;i++)
             {
                 var board = template.GenerateTemplate().GenerateBoard();
+                game.CustomSetUpBoard(board);
                 BoardCallback.HeadlessBoard = board;
 
                 for(int j=0;j<timeout;j++)

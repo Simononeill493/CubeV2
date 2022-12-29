@@ -19,40 +19,31 @@ namespace CubeV2
         public static Game _game;
         private static bool _boardRunning;
 
-        internal static void InitializeEmptyGame()
-        {
-            _game = EmptyGameGenerator.CreateEmptyGame();
-        }
-
+        public static void InitializeEmptyBoardGame() => _game = new EmptyBoardGame();
+        public static void InitializeBoardlessGame() => _game = new EmptyBoardlessGame();
 
         public static void InitializeDemoFindGoalGame()
         {
             var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.AutoPlayerName);
-
             _focusedInstructions = demoPlayer.Instructions;
 
-            _game = DemoFindGoalGameGenerator.CreateDemoFindGoalGame(demoPlayer);
+            _game = new DemoFindGoalGame(demoPlayer);
         }
 
         public static void InitializeBoardTest1Game()
         {
             var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.ManualPlayerName);
-
             _focusedInstructions = demoPlayer.Instructions;
 
-            _game = BoardTest1GameGenerator.CreateGemoBoardTest1Game(demoPlayer);
+            _game = new BoardTest1Game(demoPlayer);
             StartBoard(Config.BoardTest1UpdateRate);
         }
 
+        
 
+        public static void ManualSetNewBoard(Board b) => _game.SetNewBoard(b);
+        public static void ManualUnsetBoard() => _game.UnsetBoard();
 
-
-        public static void InitializeBoardlessGame()
-        {
-            _game = new Game();
-        }
-
-        public static void ManualSetBoard(Board b) => _game.SetBoard(b);
         public static void RerollBoard()
         {
             _game.ResetBoardTemplate();
@@ -101,50 +92,21 @@ namespace CubeV2
 
             DisplayText = "Simulating...";
 
-            var wins = GameSimulator.Simulate(input,_game.CurrentTemplateTemplate, _game.WinCondition, timeout, iterations);
+            var wins = GameSimulator.Simulate(_game,input,_game.CurrentTemplateTemplate, _game.WinCondition, timeout, iterations);
 
             DisplayText = "Wins: " + wins + "/" + iterations;
 
             //DisplayText = "Wins: " + wins + "/" + iterations + " (" + (wins / (float)iterations) + "%)";
         }
 
-
         public static (int Current,int Max) GetPlayerEnergy()
         {
-            if (_game != null && _game.CurrentBoard != null)
+            if (_game != null && _game.CurrentBoard != null && _game.FocusEntity != null)
             {
-                var players = _game.CurrentBoard.GetActiveEntityByTag(Config.PlayerTag);
-                if (players.Any())
-                {
-                    var player = players.First();
-                    return (player.CurrentEnergy,player.MaxEnergy);
-                }
+                return (_game.FocusEntity.CurrentEnergy, _game.FocusEntity.MaxEnergy);
             }
 
             return (0,1);
-        }
-
-        public static void LeftClickBoard(int index)
-        {
-            Console.WriteLine("Left clicked board at " + index);
-
-            var tile = _game.CurrentBoard.TryGetTile(index);
-            if (tile != null && tile.Contents == null)
-            {
-                var newEntity = EntityDatabase.GetTemplate(EntityDatabase.RockName).GenerateEntity();
-                _game.CurrentBoard.AddEntityToBoard(newEntity,index);
-            }
-
-        }
-
-        internal static void RightClickBoard(int index)
-        {
-            var tile = _game.CurrentBoard.TryGetTile(index);
-            if(tile!=null && tile.Contents!=null)
-            {
-                _game.CurrentBoard.RemoveEntityFromBoard(tile.Contents);
-            }
-
         }
     }
 

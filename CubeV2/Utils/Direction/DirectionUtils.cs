@@ -23,7 +23,7 @@ namespace CubeV2
         private static Dictionary<CardinalDirection, Vector2Int> _XYOffsetDict;
         private static Dictionary<CardinalDirection, bool> _diagonalsDict;
         private static Dictionary<CardinalDirection, (CardinalDirection left, CardinalDirection right)> _parallelDict;
-        private static Dictionary<CardinalDirection, (CardinalDirection left, CardinalDirection right)> _diagonalIngredientsDict;
+        private static Dictionary<CardinalDirection, (CardinalDirection left, CardinalDirection right)> _adjacentDirectionsDict;
 
 
 
@@ -32,7 +32,7 @@ namespace CubeV2
         public static Vector2Int XYOffset(this CardinalDirection direction) => _XYOffsetDict[direction];
         public static bool IsDiagonal(this CardinalDirection dir) => _diagonalsDict[dir];
         public static (CardinalDirection Left, CardinalDirection Right) Parallel(this CardinalDirection dir) => _parallelDict[dir];
-        public static (CardinalDirection Left, CardinalDirection Right) GetDiagonalIngredients(this CardinalDirection dir) => _diagonalIngredientsDict[dir];
+        public static (CardinalDirection Left, CardinalDirection Right) GetAdjacentDirections(this CardinalDirection dir) => _adjacentDirectionsDict[dir];
 
         public static Vector2Int GetAdjacentCoords(this Vector2Int coord, CardinalDirection direction) => coord + _XYOffsetDict[direction];
 
@@ -89,12 +89,16 @@ namespace CubeV2
                 [CardinalDirection.SouthWest] = (CardinalDirection.SouthEast, CardinalDirection.NorthWest)
             };
 
-            _diagonalIngredientsDict = new Dictionary<CardinalDirection, (CardinalDirection left, CardinalDirection right)>
+            _adjacentDirectionsDict = new Dictionary<CardinalDirection, (CardinalDirection left, CardinalDirection right)>
             {
-                [CardinalDirection.NorthEast] = (CardinalDirection.East, CardinalDirection.North),
+                [CardinalDirection.NorthEast] = (CardinalDirection.North, CardinalDirection.East),
                 [CardinalDirection.SouthEast] = (CardinalDirection.East, CardinalDirection.South),
-                [CardinalDirection.NorthWest] = (CardinalDirection.North, CardinalDirection.West),
-                [CardinalDirection.SouthWest] = (CardinalDirection.South, CardinalDirection.West)
+                [CardinalDirection.NorthWest] = (CardinalDirection.West, CardinalDirection.North),
+                [CardinalDirection.SouthWest] = (CardinalDirection.South, CardinalDirection.West),
+                [CardinalDirection.North] = (CardinalDirection.NorthWest, CardinalDirection.NorthEast),
+                [CardinalDirection.South] = (CardinalDirection.SouthEast, CardinalDirection.SouthWest),
+                [CardinalDirection.East] = (CardinalDirection.NorthEast, CardinalDirection.SouthEast),
+                [CardinalDirection.West] = (CardinalDirection.SouthWest, CardinalDirection.NorthWest)
             };
         }
 

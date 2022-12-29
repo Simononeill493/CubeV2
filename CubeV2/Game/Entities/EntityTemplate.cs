@@ -60,7 +60,6 @@ namespace CubeV2
                 entity.MaxEnergy = Config.GlobalDefaultMaxEnergy;
             }
 
-            entity.CurrentEnergy = entity.MaxEnergy;
             return entity;
         }
 

@@ -8,28 +8,35 @@ using System.Xml.Schema;
 
 namespace CubeV2
 {
-    internal class BoardTest1GameGenerator
+    internal class BoardTest1Game : Game
     {
-        public static Game CreateGemoBoardTest1Game(EntityTemplate player)
+        private EntityTemplate _playerTemplate;
+
+        public BoardTest1Game(EntityTemplate player) : base()
         {
-            var game = new Game();
+            _playerTemplate = player;
 
-            game.SetTemplateTemplate(_createDemoBoardTest1TemplateTemplate(player));
-            game.ResetBoardTemplate();
-            game.ResetBoard();
+            SetTemplateTemplate(CreateTemplateTemplate());
+            ResetBoardTemplate();
+            ResetBoard();
 
-            var portal = game.CurrentBoard.GetEntityByTemplate(EntityDatabase.PortalName).First();
-            portal.CurrentEnergy = 0;
-
-            game.WinCondition = new EnergyWinCondition(portal,portal.MaxEnergy);
-
-            return game;
+            var portal = CurrentBoard.GetEntityByTemplate(EntityDatabase.PortalName).First();
+            WinCondition = new EnergyWinCondition(portal, portal.MaxEnergy);
         }
 
-        private static BoardTemplateTemplate _createDemoBoardTest1TemplateTemplate(EntityTemplate player)
+        public override void CustomSetUpBoard(Board b)
         {
-            var templateTemplate = new BoardTest1TemplateTemplate() { Width = Config.GameGridWidth, Height = Config.GameGridHeight };
-            templateTemplate.StaticEntities[new Vector2Int(7, 7)] = player;
+            foreach(var entity in b.ActiveEntities)
+            {
+                entity.GiveEnergy(Config.BoardTest1StartingEnergy);
+            }
+        }
+
+
+        public override BoardTemplateTemplate CreateTemplateTemplate()
+        {
+            var templateTemplate = new BoardTest1TemplateTemplate() { Width = Config.GameGridDefaultWidth, Height = Config.GameGridDefaultHeight };
+            templateTemplate.StaticEntities[new Vector2Int(7, 7)] = _playerTemplate;
 
             var rock = EntityDatabase.GetTemplate(EntityDatabase.RockName);
             var energyRock = EntityDatabase.GetTemplate(EntityDatabase.EnergyRockName);

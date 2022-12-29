@@ -8,12 +8,12 @@ namespace CubeV2
     {
         private Dictionary<string, Entity> Entities = new Dictionary<string, Entity>();
         private Dictionary<string, List<Entity>> EntityTypes = new Dictionary<string, List<Entity>>();
-        private List<Entity> ActiveEntities = new List<Entity>();
+        public List<Entity> ActiveEntities = new List<Entity>();
         private List<Tile> TilesLinear = new List<Tile>();
 
         private Tile[,] TilesVector;
-        private int _width;
-        private int _height;
+        public int _width { get; }
+        public int _height { get; }
 
         public Board(int width, int height)
         {

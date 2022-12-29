@@ -5,7 +5,7 @@ namespace CubeV2
     {
         private float _spriteLayer;
 
-        public GameTileAppearanceFactory(float groundLayer,float spriteLayer) : base(groundLayer,spriteLayer)
+        public GameTileAppearanceFactory(float groundLayer,float spriteLayer) : base(DrawUtils.BackgroundLayer,groundLayer)
         {
             _spriteLayer = spriteLayer;
         }

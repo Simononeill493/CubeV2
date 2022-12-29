@@ -14,7 +14,14 @@ namespace CubeV2
         public static bool KnowAllInstructionsByDefault = true;
 
         public static int EntityMaxVariables = 3;
+
         public static int GlobalDefaultMaxEnergy = 100;
+        public static int BoardTest1StartingEnergy = 100;
+
+        public static int ManualPlayerMaxEnergy = 200;
+        public static int ManualPlayerStartingEnergy = 50;
+        public static int PlayerOperationalRadius = 3;
+
         public static int BaseMoveCost = 1;//1
         public static int BaseScanCost = 3;//3
         public static int BaseHitCost = 5;//10
@@ -25,8 +32,8 @@ namespace CubeV2
 
         //public static int GameGridWidth = 10;
         //public static int GameGridHeight = 10;
-        public static int GameGridWidth = 43;
-        public static int GameGridHeight = 22;
+        public static int GameGridDefaultWidth = 43;
+        public static int GameGridDefaultHeight = 22;
         public static int GameGridPadding = 0;
 
         public static Vector2 TileBaseSize = new Vector2(16,16);
@@ -61,6 +68,7 @@ namespace CubeV2
 
         public static string GameGridName = "GameGrid";
         public static string CursorOverlayTileName = "CursorOverlayTile";
+        public static string OperationalRangeOverlayTileName = "OperationalRangeOverlayTile";
 
 
         public static string VariableGridName = "VariableGrid";

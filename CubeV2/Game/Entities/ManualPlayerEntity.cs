@@ -11,12 +11,10 @@ namespace CubeV2
         MoveInstruction _keyboardMoveInstruction;
         HitInstruction _keyboardHitInstruction;
 
-
         public ManualPlayerEntity(string templateID, string entityID, string sprite) : base(templateID, entityID, sprite)
         {
             _keyboardMoveInstruction = new MoveInstruction();
             _keyboardHitInstruction = new HitInstruction();
-
         }
 
         public override void Tick(Board currentBoard,UserInput input)
@@ -36,9 +34,11 @@ namespace CubeV2
             }
 
             base.Tick(currentBoard, input);
-            GiveEnergy(10);
 
-
+            if(CurrentEnergy < 5)
+            {
+                GiveEnergy(1);
+            }
         }
     }
 }

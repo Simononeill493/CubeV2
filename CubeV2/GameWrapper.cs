@@ -39,8 +39,8 @@ namespace CubeV2
             // TODO: Add your initialization logic here
             _ui = UIBuilder.GenerateUI();
             //GameInterface.InitializeEmptyGame();
-            GameInterface.InitializeDemoFindGoalGame();
-            //GameInterface.InitializeBoardTest1Game();
+            //GameInterface.InitializeDemoFindGoalGame();
+            GameInterface.InitializeBoardTest1Game();
 
             base.Initialize();
         }
@@ -89,7 +89,10 @@ namespace CubeV2
                 }
             }
 
-            _setCursorTilePosition(input);
+            var gameGrid = AllUIElements.GetUIElement(Config.GameGridName);
+
+            _setCursorTilePosition(input, gameGrid);
+            _setOperationalRangeOverlayPosition(gameGrid);
 
             // TODO: Add your update logic here
 
@@ -101,21 +104,32 @@ namespace CubeV2
 
         }
 
-        private void _setCursorTilePosition(UserInput input)
+        private void _setCursorTilePosition(UserInput input,UIElement gameGrid)
         {
-            var gameGrid = AllUIElements.GetUIElement(Config.GameGridName);
-            var cursorTile = AllUIElements.GetUIElement(Config.CursorOverlayTileName);
-
             if (gameGrid.MouseOver)
             {
+                var cursorTile = AllUIElements.GetUIElement(Config.CursorOverlayTileName);
+
                 var gridShrinkFactor = new Vector2Int(Config.TileBaseSize * Config.TileScale);
                 var startPos = new Vector2Int(input.MousePos - gameGrid._position);
 
                 var rescaledPos = (startPos / gridShrinkFactor) * gridShrinkFactor;
                 cursorTile.SetOffset(rescaledPos.ToVector2());
             }
-
         }
+
+        private void _setOperationalRangeOverlayPosition(UIElement gameGrid)
+        {
+            var focusEntity = GameInterface._game.FocusEntity;
+            if (focusEntity!=null)
+            {
+                var rangeOverlay = AllUIElements.GetUIElement(Config.OperationalRangeOverlayTileName);
+                var offset = ((focusEntity.Location - (Config.PlayerOperationalRadius)) * Config.TileScale * Config.TileBaseSize);
+
+                rangeOverlay.SetOffset(offset);
+            }
+        }
+
 
         private void _universalKeybindings(UserInput input)
         {

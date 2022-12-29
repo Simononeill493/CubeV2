@@ -56,10 +56,17 @@ namespace CubeV2
         public static Vector2Int operator /(Vector2Int a, Vector2Int b) => new Vector2Int(a.X / b.X, a.Y / b.Y);
 
         public static Vector2 operator +(Vector2Int a, Vector2 b) => new Vector2(a.X + b.X, a.Y + b.Y);
+        public static Vector2 operator +(Vector2 a, Vector2Int b) => new Vector2(a.X + b.X, a.Y + b.Y);
         public static Vector2 operator -(Vector2Int a, Vector2 b) => new Vector2(a.X - b.X, a.Y - b.Y);
+        public static Vector2 operator -(Vector2 a, Vector2Int b) => new Vector2(a.X - b.X, a.Y - b.Y);
         public static Vector2 operator *(Vector2Int a, Vector2 b) => new Vector2(a.X * b.X, a.Y * b.Y);
-        public static Vector2 operator /(Vector2Int a, Vector2 b) => new Vector2(a.X / b.X, a.Y / b.Y);
+        public static Vector2 operator *(Vector2 a, Vector2Int b) => new Vector2(a.X * b.X, a.Y * b.Y);
 
+        public static Vector2 operator /(Vector2Int a, Vector2 b) => new Vector2(a.X / b.X, a.Y / b.Y);
+        public static Vector2 operator /(Vector2 a, Vector2Int b) => new Vector2(a.X / b.X, a.Y / b.Y);
+
+        public static Vector2Int operator +(Vector2Int p, int i) => new Vector2Int(p.X + i, p.Y + i);
+        public static Vector2Int operator -(Vector2Int p, int i) => new Vector2Int(p.X - i, p.Y - i);
         public static Vector2Int operator *(Vector2Int p, int i) => new Vector2Int(p.X * i, p.Y * i);
         public static Vector2Int operator /(Vector2Int p, int i) => new Vector2Int(p.X / i, p.Y / i);
         public static Vector2 operator *(Vector2Int a, float b) => new Vector2(a.X * b, a.Y * b);
@@ -75,12 +82,19 @@ namespace CubeV2
         public int Product => X * Y;
 
 
-        public int DistanceFrom(Vector2Int other)
+        public int ManhattanDistance(Vector2Int other)
         {
             var distancePoint = (this - other).Absolute;
             var output = distancePoint.X + distancePoint.Y;
             return output;
         }
+
+        public int EuclideanDistance(Vector2Int other)
+        {
+            var distancePoint = (this - other).Absolute;
+            return distancePoint.Max;
+        }
+
 
         public List<Vector2Int> GetAdjacentPoints()
         {

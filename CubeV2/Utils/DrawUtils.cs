@@ -41,6 +41,13 @@ namespace CubeV2
         //private static Dictionary<int, string> _numberSpriteLookup;
 
         public const float BackgroundLayer = 1.0f;
+
+        public const float GameLayer1 = 0.29f;
+        public const float GameLayer2 = 0.28f;
+        public const float GameLayer3 = 0.27f;
+        public const float GameLayer4 = 0.26f;
+        public const float GameLayer5 = 0.25f;
+
         public const float UILayer1 = 0.19f;
         public const float UILayer2 = 0.18f;
         public const float UILayer3 = 0.17f;

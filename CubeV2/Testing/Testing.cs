@@ -34,7 +34,7 @@ namespace CubeV2
             testEntity.Instructions = new List<Instruction>() { new MoveInstruction(RelativeDirection.BackwardRight) };
 
             GameInterface.InitializeBoardlessGame();
-            GameInterface.ManualSetBoard(testBoard);
+            GameInterface.ManualSetNewBoard(testBoard);
             testBoard.Tick(null);
 
             if (testBoard.TryGetTile(Vector2Int.Zero).Contents != null)
@@ -65,7 +65,7 @@ namespace CubeV2
                 throw new Exception("Test failed.");
             }
 
-            GameInterface.ManualSetBoard(null);
+            GameInterface.ManualUnsetBoard();
             GameWrapper.DoDraw = captureRender;
         }
     }
