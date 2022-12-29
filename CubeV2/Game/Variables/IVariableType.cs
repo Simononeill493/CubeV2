@@ -10,6 +10,7 @@
         RotationDirection,
         Integer,
         Orientation,
-        Tile
+        CapturedTile,
+        IntTuple
     }
 }

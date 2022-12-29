@@ -23,10 +23,10 @@ namespace CubeV2
         public static TimeSpan DemoBoardUpdateRate = TimeSpan.FromSeconds(0.1);
         public static TimeSpan BoardTest1UpdateRate = TimeSpan.FromSeconds(0.075);
 
-        //public static int GameGridWidth = 1;
-        //public static int GameGridHeight = 1;
-        public static int GameGridWidth = 43;
-        public static int GameGridHeight = 22;
+        public static int GameGridWidth = 10;
+        public static int GameGridHeight = 10;
+        //public static int GameGridWidth = 43;
+        //public static int GameGridHeight = 22;
         public static int GameGridPadding = 0;
 
         public static Vector2 TileBaseSize = new Vector2(16,16);

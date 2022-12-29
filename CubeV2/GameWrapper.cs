@@ -37,8 +37,9 @@ namespace CubeV2
         {
             // TODO: Add your initialization logic here
             _ui = UIBuilder.GenerateUI();
-            //GameInterface.InitializeDemoFindGoalGame();
-            GameInterface.InitializeBoardTest1Game();
+            //GameInterface.InitializeEmptyGame();
+            GameInterface.InitializeDemoFindGoalGame();
+            //GameInterface.InitializeBoardTest1Game();
 
             base.Initialize();
         }
@@ -54,6 +55,7 @@ namespace CubeV2
         protected override void Update(GameTime gameTime)
         {
             var input = new UserInput(Mouse.GetState(), _previousInput.MouseState, Keyboard.GetState(), _previousInput.KeyboardState);
+            //Console.WriteLine(input.MousePos);
             _universalKeybindings(input);
 
             if (input.MouseLeftJustPressed)
@@ -86,6 +88,7 @@ namespace CubeV2
 
             _previousInput = input;
             _globalTickCount++;
+
         }
 
         private void _universalKeybindings(UserInput input)

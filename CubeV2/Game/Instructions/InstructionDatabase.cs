@@ -17,7 +17,6 @@ namespace CubeV2
             _masterList = new List<Instruction>();
 
             _masterList.Add(new MoveInstruction());
-            //_masterList.Add(new MoveRandomlyInstruction());
             _masterList.Add(new HitInstruction());
             _masterList.Add(new PingInstruction());
             _masterList.Add(new ScanInstruction());
@@ -25,6 +24,7 @@ namespace CubeV2
             _masterList.Add(new RotateInstruction());
             _masterList.Add(new StoreDataInstruction());
             _masterList.Add(new IfInstruction());
+            _masterList.Add(new SendEnergyInstruction());
         }
 
         public static List<Instruction> GetAll()

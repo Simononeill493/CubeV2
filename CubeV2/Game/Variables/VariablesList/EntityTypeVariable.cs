@@ -21,7 +21,7 @@ namespace CubeV2
             _template = template;
         }
 
-        public override object Convert(Entity caller, IVariableType variableType)
+        public override object Convert(Entity caller, Board board, IVariableType variableType)
         {
             switch (variableType)
             {
@@ -39,7 +39,7 @@ namespace CubeV2
 
         public override bool IVariableEquals(Entity caller, IVariable other)
         {
-            var otherConverted = other.Convert(caller, IVariableType.EntityType);
+            var otherConverted = other.Convert(caller, null, IVariableType.EntityType);
             if (otherConverted != null)
             {
                 return ((EntityTemplate)otherConverted).TemplateID == _template.TemplateID;

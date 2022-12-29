@@ -18,12 +18,12 @@ namespace CubeV2
             VariableIndex = variableIndex;
         }
 
-        public override object Convert(Entity caller, IVariableType variableType)
+        public override object Convert(Entity caller, Board board, IVariableType variableType)
         {
             var targetVariable = caller.Variables[VariableIndex];
             if (targetVariable != null)
             {
-                return targetVariable.Convert(caller, variableType);
+                return targetVariable.Convert(caller, board, variableType);
             }
 
             return null;

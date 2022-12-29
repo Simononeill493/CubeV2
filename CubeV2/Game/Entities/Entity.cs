@@ -172,5 +172,28 @@ namespace CubeV2
 
         public virtual bool TryBeCollected(Entity collector) => false;
 
+        public bool TryGiveEnergyToTile(Tile target, int amount)
+        {
+            if (CurrentEnergy < amount)
+            {
+                amount = CurrentEnergy;
+            }
+
+            if(amount==0)
+            {
+                return false;
+            }
+
+            var targetEntity = target.Contents;
+            if(targetEntity == null)
+            {
+                return false;
+            }
+
+            TakeEnergy(amount);
+            targetEntity.GiveEnergy(amount);
+            
+            return true;
+        }
     }
 }

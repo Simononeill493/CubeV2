@@ -35,10 +35,10 @@ namespace CubeV2
                 _executeInstruction(_keyboardHitInstruction, currentBoard);
             }
 
-            if(RandomUtils.RandomNumber(3)==0)
-            {
-                GiveEnergy(1);
-            }
+            base.Tick(currentBoard, input);
+            GiveEnergy(10);
+
+
         }
     }
 }

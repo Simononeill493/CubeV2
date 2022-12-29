@@ -16,7 +16,7 @@ namespace CubeV2
             RotationDirection = rotationDirection;
         }
 
-        public override object Convert(Entity caller, IVariableType variableType)
+        public override object Convert(Entity caller, Board board, IVariableType variableType)
         {
             switch (variableType)
             {
@@ -45,7 +45,7 @@ namespace CubeV2
 
         public override bool IVariableEquals(Entity caller, IVariable other)
         {
-            var otherConverted = other.Convert(caller, IVariableType.RotationDirection);
+            var otherConverted = other.Convert(caller, null, IVariableType.RotationDirection);
             if (otherConverted != null)
             {
                 return (RotationDirection)otherConverted == RotationDirection;

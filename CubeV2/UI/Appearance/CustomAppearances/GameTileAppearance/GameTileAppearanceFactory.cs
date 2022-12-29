@@ -12,7 +12,8 @@ namespace CubeV2
 
         public override TileAppearance CreateForeground(int index)
         {
-            return new GameTileAppearance(index,_foregroundLayer, _spriteLayer);
+            var appearance =  new GameTileAppearance(index,_foregroundLayer, _spriteLayer);
+            return appearance;
         }
 
         public override Appearance CreateBackground(int index, int width, int height)

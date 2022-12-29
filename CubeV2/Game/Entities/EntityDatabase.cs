@@ -16,6 +16,7 @@ namespace CubeV2
         public const string EnergyRockName = "EnergyRock";
 
         public const string GoalName = "Goal";
+        public const string PortalName = "Portal";
 
         private static Dictionary<string, EntityTemplate> _masterList;
         public static IEnumerable<EntityTemplate> GetAll() => _masterList.Values;
@@ -27,7 +28,7 @@ namespace CubeV2
             _masterList[ManualPlayerName] = new EntityTemplate(ManualPlayerName, EntityTemplate.SpecialEntityTag.ManualPlayer) { Sprite = DrawUtils.PlayerSprite };
             _masterList[ManualPlayerName].Instructions = new List<Instruction>();
             _masterList[ManualPlayerName].DefaultTags = new List<string>() { Config.PlayerTag };
-            _masterList[ManualPlayerName].DefaultMaxEnergy = 200;
+            _masterList[ManualPlayerName].DefaultMaxEnergy = 1000;
 
             _masterList[AutoPlayerName] = new EntityTemplate(AutoPlayerName) { Sprite = DrawUtils.PlayerSprite };
             _masterList[AutoPlayerName].Instructions = new List<Instruction>() { new MoveInstruction(RelativeDirection.Forward) };
@@ -37,6 +38,9 @@ namespace CubeV2
             _masterList[EnergyRockName] = new EntityTemplate(EnergyRockName) { Sprite = DrawUtils.EnergyRockSprite };
 
             _masterList[GoalName] = new EntityTemplate(GoalName, EntityTemplate.SpecialEntityTag.Goal) { Sprite = DrawUtils.GoalSprite };
+
+            _masterList[PortalName] = new EntityTemplate(PortalName) { Sprite = DrawUtils.PortalSprite };
+            _masterList[PortalName].DefaultMaxEnergy = 100;
         }
 
         public static EntityTemplate GetTemplate(string id)

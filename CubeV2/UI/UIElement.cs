@@ -51,8 +51,15 @@ namespace CubeV2
         
         public void TryLeftClick(UserInput input)
         {
+            /*if(input.MousePos.X >= 500 && _position.X >= 500 && _position.Y <= 50)
+            {
+                Console.WriteLine("Mouse is over grid.");
+            }*/
+
+
             if (IsMouseOver(input.MousePos))
             {
+  //              Console.WriteLine("Mouse is over");
                 _onLeftClick?.Invoke(input);
             }
         }

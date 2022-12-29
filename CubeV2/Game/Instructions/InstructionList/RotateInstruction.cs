@@ -16,7 +16,7 @@ namespace CubeV2
 
         public override int Run(Entity caller, Board board)
         {
-            var rotationAmount = Variables[0]?.Convert(caller, IVariableType.Integer);
+            var rotationAmount = Variables[0]?.Convert(caller, board, IVariableType.Integer);
             if(rotationAmount!=null)
             {
                 caller.Rotate((int)rotationAmount);

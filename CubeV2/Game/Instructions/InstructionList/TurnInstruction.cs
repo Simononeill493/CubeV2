@@ -10,7 +10,7 @@
 
         public override int Run(Entity caller, Board board)
         {
-            var orientation = Variables[0]?.Convert(caller, IVariableType.Orientation);
+            var orientation = Variables[0]?.Convert(caller, board, IVariableType.Orientation);
             if(orientation!=null)
             {
                 caller.SetOrientation((Orientation)orientation);

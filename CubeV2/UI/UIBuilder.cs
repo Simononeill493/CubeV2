@@ -100,8 +100,13 @@ namespace CubeV2
 
             var gameGrid = UIGrid.Make(Config.GameGridName,Config.GameGridWidth,Config.GameGridHeight, (int)gameTileSize.X,(int)gameTileSize.Y,Config.GameGridPadding, appearanceFactory);
 
+            //gameGrid.TileLeftClicked += (i, index) => Pause();
+            gameGrid.TileLeftClicked += (i, index) => GameInterface.LeftClickBoard(index);
+            gameGrid.TileRightClicked += (i, index) => GameInterface.RightClickBoard(index);
+
             return gameGrid;
         }
+
 
         private static UIGrid _makeVariableSelectorGrid()
         {

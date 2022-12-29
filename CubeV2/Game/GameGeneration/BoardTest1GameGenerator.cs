@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 namespace CubeV2
 {
@@ -17,7 +18,10 @@ namespace CubeV2
             game.ResetBoardTemplate();
             game.ResetBoard();
 
-            game.WinCondition = new NoWinCondition();
+            var portal = game.CurrentBoard.GetEntityByTemplate(EntityDatabase.PortalName).First();
+            portal.CurrentEnergy = 0;
+
+            game.WinCondition = new EnergyWinCondition(portal,portal.MaxEnergy);
 
             return game;
         }
@@ -49,6 +53,8 @@ namespace CubeV2
 
                 }
             }
+
+            templateTemplate.StaticEntities[new Vector2Int(5, 2)] = EntityDatabase.GetTemplate(EntityDatabase.PortalName);
 
             /*for (int i = 0; i < 25; i++)
             {

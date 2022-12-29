@@ -13,7 +13,7 @@ namespace CubeV2
     {
         public GameTileAppearance(int gridIndex,float groundLayer,float spriteLayer) : base(gridIndex, groundLayer) {}
 
-        public override Vector2 Size => Vector2.Zero;
+        public override Vector2 Size => Config.TileBaseSize * Config.TileScale;
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {

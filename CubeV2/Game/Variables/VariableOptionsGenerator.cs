@@ -51,7 +51,8 @@ namespace CubeV2
                 case IVariableType.Integer:
                 case IVariableType.Orientation:
                 case IVariableType.CardinalDirection:
-                case IVariableType.Tile:
+                case IVariableType.CapturedTile:
+                case IVariableType.IntTuple:
                 case IVariableType._null:
                     break;
                 default:

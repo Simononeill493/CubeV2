@@ -14,7 +14,7 @@ namespace CubeV2
 
         public override int Run(Entity caller, Board board)
         {
-            var targetTemplate = Variables[0]?.Convert(caller, IVariableType.EntityType);
+            var targetTemplate = Variables[0]?.Convert(caller, board, IVariableType.EntityType);
             if (targetTemplate != null)
             {
                 var targetEntities = board.GetEntityByTemplate(((EntityTemplate)targetTemplate).TemplateID);

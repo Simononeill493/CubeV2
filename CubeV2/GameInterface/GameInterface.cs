@@ -19,6 +19,12 @@ namespace CubeV2
         public static Game _game;
         private static bool _boardRunning;
 
+        internal static void InitializeEmptyGame()
+        {
+            _game = EmptyGameGenerator.CreateEmptyGame();
+        }
+
+
         public static void InitializeDemoFindGoalGame()
         {
             var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.AutoPlayerName);
@@ -37,6 +43,8 @@ namespace CubeV2
             _game = BoardTest1GameGenerator.CreateGemoBoardTest1Game(demoPlayer);
             StartBoard(Config.BoardTest1UpdateRate);
         }
+
+
 
 
         public static void InitializeBoardlessGame()
@@ -114,6 +122,17 @@ namespace CubeV2
             }
 
             return (0,1);
+        }
+
+        public static void LeftClickBoard(int index)
+        {
+            Console.WriteLine("Left clicked board at " + index);
+        }
+
+        internal static void RightClickBoard(int index)
+        {
+            Console.WriteLine("Right clicked board at " + index);
+
         }
     }
 

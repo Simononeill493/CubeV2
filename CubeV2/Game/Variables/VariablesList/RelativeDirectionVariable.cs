@@ -16,7 +16,7 @@ namespace CubeV2
             Direction = direction;
         }
 
-        public override object Convert(Entity caller, IVariableType variableType)
+        public override object Convert(Entity caller, Board board, IVariableType variableType)
         {
             switch (variableType)
             {
@@ -37,7 +37,7 @@ namespace CubeV2
 
         public override bool IVariableEquals(Entity caller, IVariable other)
         {
-            var otherConverted = other.Convert(caller, IVariableType.RelativeDirection);
+            var otherConverted = other.Convert(caller,null, IVariableType.RelativeDirection);
             if (otherConverted != null)
             {
                 return (RelativeDirection)otherConverted == Direction;

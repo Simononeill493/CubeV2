@@ -6,6 +6,7 @@ namespace CubeV2
     public class FindGoalWinCondition : BoardWinCondition
     {
         string _templateToCheck;
+        //We can't test a specific entity because that tests a SPECIFIC goal. We want to see if ANY player has reached ANY goal. 
 
         public FindGoalWinCondition(string entityTypeToCheck)
         {

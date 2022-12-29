@@ -17,7 +17,7 @@
 
         public override int Run(Entity caller, Board board)
         {
-            var direction = Variables[0]?.Convert(caller, IVariableType.RelativeDirection);
+            var direction = Variables[0]?.Convert(caller, board,IVariableType.RelativeDirection);
             if (direction != null)
             {
                 if (caller.TryMove((RelativeDirection)direction))
