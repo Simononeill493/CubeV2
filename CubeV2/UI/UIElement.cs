@@ -13,6 +13,11 @@ namespace CubeV2
         public string ID { get; }
 
         public Appearance Appearance { get; private set; } = Appearance.NoAppearance;
+        public void SetManualSize(Vector2 size)
+        {
+            ((NoAppearance)Appearance).SetManualSize(size);
+        }
+
         public bool Clickable { get; private set; } = false;
         public bool Typeable { get; private set; } = false;
 
@@ -57,7 +62,7 @@ namespace CubeV2
             }*/
 
 
-            if (IsMouseOver(input.MousePos))
+            if (MouseOver)
             {
   //              Console.WriteLine("Mouse is over");
                 _onLeftClick?.Invoke(input);
@@ -65,7 +70,7 @@ namespace CubeV2
         }
         public void TryRightClick(UserInput input)
         {
-            if (IsMouseOver(input.MousePos))
+            if (MouseOver)
             {
                 _onRightClick?.Invoke(input);
             }
@@ -113,8 +118,8 @@ namespace CubeV2
             }
         }
 
-        private Vector2 _position;
-        private Vector2 _offset;
+        public Vector2 _position { get; private set; }
+        public Vector2 _offset { get; private set; }
         public void SetOffset(Vector2 offset) => _offset = offset;
         public void SetOffset(float width, float height) => SetOffset(new Vector2(width, height));
 
@@ -149,15 +154,18 @@ namespace CubeV2
             }
         }
 
-        public bool IsMouseOver(Vector2 mousePos)
+        public bool MouseOver;
+
+        public void CheckMouseOver(Vector2 mousePos)
         {
             if(Enabled)
             {
                 var size = Appearance.Size;
-                return new Rectangle((int)_position.X, (int)_position.Y, (int)size.X, (int)size.Y).Contains(mousePos);
+                MouseOver = new Rectangle((int)_position.X, (int)_position.Y, (int)size.X, (int)size.Y).Contains(mousePos);
+                return;
             }
 
-            return false;
+            MouseOver = false;
         }
     }
 

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Buffers;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 
 namespace CubeV2
 {
@@ -58,6 +59,14 @@ namespace CubeV2
             //Console.WriteLine(input.MousePos);
             _universalKeybindings(input);
 
+            if (input.MouseMoved)
+            {
+                foreach (var element in AllUIElements.GetMouseInteractionElements)
+                {
+                    element.CheckMouseOver(input.MousePos);
+                }
+            }
+
             if (input.MouseLeftJustPressed)
             {
                 foreach (var element in AllUIElements.GetClickable)
@@ -72,14 +81,15 @@ namespace CubeV2
                     element.TryRightClick(input);
                 }
             }
-            if(input.KeysJustPressed.Any())
+            if (input.KeysJustPressed.Any())
             {
                 foreach (var element in AllUIElements.GetClickable)
                 {
                     element.SendKeys(input);
                 }
-
             }
+
+            _setCursorTilePosition(input);
 
             // TODO: Add your update logic here
 
@@ -88,6 +98,22 @@ namespace CubeV2
 
             _previousInput = input;
             _globalTickCount++;
+
+        }
+
+        private void _setCursorTilePosition(UserInput input)
+        {
+            var gameGrid = AllUIElements.GetUIElement(Config.GameGridName);
+            var cursorTile = AllUIElements.GetUIElement(Config.CursorOverlayTileName);
+
+            if (gameGrid.MouseOver)
+            {
+                var gridShrinkFactor = new Vector2Int(Config.TileBaseSize * Config.TileScale);
+                var startPos = new Vector2Int(input.MousePos - gameGrid._position);
+
+                var rescaledPos = (startPos / gridShrinkFactor) * gridShrinkFactor;
+                cursorTile.SetOffset(rescaledPos.ToVector2());
+            }
 
         }
 

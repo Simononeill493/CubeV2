@@ -19,6 +19,7 @@ namespace CubeV2
         public bool MouseLeftPressed;
         public bool MouseRightPressed;
         public bool MouseMiddlePressed;
+        public bool MouseMoved;
 
         public bool MouseLeftReleased;
         public bool MouseRightReleased;
@@ -57,6 +58,8 @@ namespace CubeV2
             MouseLeftJustReleased = MouseLeftReleased & (oldMouseState.LeftButton == ButtonState.Pressed);
             MouseRightJustReleased = MouseRightReleased & (oldMouseState.RightButton == ButtonState.Pressed);
             MouseMiddleJustReleased = MouseMiddleReleased & (oldMouseState.MiddleButton == ButtonState.Pressed);
+
+            MouseMoved = (MouseX != oldMouseState.X) || (MouseY != oldMouseState.Y);
 
             ScrollDifference = MouseState.ScrollWheelValue - oldMouseState.ScrollWheelValue;
             ScrollDirection += ScrollDifference > 0 ? 1 : ScrollDifference < 0 ? -1 : 0;

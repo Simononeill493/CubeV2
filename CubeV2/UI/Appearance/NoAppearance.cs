@@ -10,9 +10,15 @@ namespace CubeV2
 {
     public class NoAppearance : Appearance
     {
-        public override Vector2 Size => Vector2.Zero;
+        public override Vector2 Size => _manualSize;
 
-        public NoAppearance() :base(0)
+        private Vector2 _manualSize = Vector2.Zero;
+        public void SetManualSize(Vector2 newSize)
+        {
+            _manualSize = newSize;
+        }
+
+        public NoAppearance() : base(0)
         {
 
         }

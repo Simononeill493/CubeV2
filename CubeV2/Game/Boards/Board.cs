@@ -156,6 +156,8 @@ namespace CubeV2
             entity.Location = Vector2Int.MinusOne;
         }
 
+        public void AddEntityToBoard(Entity entity, int indexToAddTo) => AddEntityToBoard(entity, BoardUtils.IndexToXY(indexToAddTo,_width));
+
         public void AddEntityToBoard(Entity entity, Vector2Int tileToAddTo)
         {
             if (Entities.ContainsKey(entity.EntityID))
@@ -264,5 +266,11 @@ namespace CubeV2
         {
             return ActiveEntities.Where(e => e.HasTag(tag));
         }
+    }
+
+    public static class BoardUtils
+    {
+        public static Vector2Int IndexToXY(int index, int width) => new Vector2Int(index % width, index / width);
+
     }
 }

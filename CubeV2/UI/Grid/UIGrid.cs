@@ -48,6 +48,9 @@ namespace CubeV2
                 }
             }
 
+            var size = new Vector2(((tileWidth + internalPadding) * gridWidth), (tileHeight + internalPadding) * gridHeight);
+            grid.SetManualSize(size);
+
             return grid;
         }
 

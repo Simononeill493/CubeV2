@@ -127,11 +127,23 @@ namespace CubeV2
         public static void LeftClickBoard(int index)
         {
             Console.WriteLine("Left clicked board at " + index);
+
+            var tile = _game.CurrentBoard.TryGetTile(index);
+            if (tile != null && tile.Contents == null)
+            {
+                var newEntity = EntityDatabase.GetTemplate(EntityDatabase.RockName).GenerateEntity();
+                _game.CurrentBoard.AddEntityToBoard(newEntity,index);
+            }
+
         }
 
         internal static void RightClickBoard(int index)
         {
-            Console.WriteLine("Right clicked board at " + index);
+            var tile = _game.CurrentBoard.TryGetTile(index);
+            if(tile!=null && tile.Contents!=null)
+            {
+                _game.CurrentBoard.RemoveEntityFromBoard(tile.Contents);
+            }
 
         }
     }

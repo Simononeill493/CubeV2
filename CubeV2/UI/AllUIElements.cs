@@ -20,8 +20,20 @@ namespace CubeV2
             _uIElements[id] = element;
         }
 
+        public static UIElement GetUIElement(string id)
+        {
+            if (!_uIElements.ContainsKey(id))
+            {
+                throw new Exception("Element with id '" + id + "' does not exist.");
+            }
+
+            return _uIElements[id];
+        }
+
+
         public static IEnumerable<UIElement> GetClickable => _uIElements.Values.Where(u => u.Clickable && u.Enabled);
         public static IEnumerable<UIElement> GetTypeable => _uIElements.Values.Where(u => u.Typeable && u.Enabled);
+        public static IEnumerable<UIElement> GetMouseInteractionElements => _uIElements.Values;
 
     }
 }

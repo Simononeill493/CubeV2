@@ -11,7 +11,9 @@ namespace CubeV2
 
     public class GameTileAppearance : TileAppearance
     {
-        public GameTileAppearance(int gridIndex,float groundLayer,float spriteLayer) : base(gridIndex, groundLayer) {}
+        public GameTileAppearance(int gridIndex,float groundLayer,float spriteLayer) : base(gridIndex, groundLayer) 
+        {
+        }
 
         public override Vector2 Size => Config.TileBaseSize * Config.TileScale;
 

@@ -10,7 +10,7 @@ namespace CubeV2
 {
     public abstract class Appearance
     {
-        public static Appearance NoAppearance = new NoAppearance();
+        public static Appearance NoAppearance => new NoAppearance();
 
         public abstract Vector2 Size { get; }
         public float Layer { get; }
@@ -47,5 +47,10 @@ namespace CubeV2
         
 
         public abstract void Draw(SpriteBatch spriteBatch, Vector2 position);
+
+        /*public void DrawOverlay(SpriteBatch spriteBatch, Vector2 position,Color color,float layer)
+        {
+            DrawUtils.DrawRect(spriteBatch,position,Size,color,layer);
+        }*/
     }
 }

@@ -17,6 +17,11 @@ namespace CubeV2
             var gameGrid = _makeGameGrid();
             gameGrid.SetOffset(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X, 0);
 
+            var cursorOverlayTile = new UIElement(Config.CursorOverlayTileName);
+            cursorOverlayTile.AddAppearance(new RectangleAppearance(Config.TileBaseSize * Config.TileScale, Color.White * 0.5f, DrawUtils.UILayer4));
+            cursorOverlayTile.SetEnabledCondition(() => AllUIElements.GetUIElement(Config.GameGridName).MouseOver);
+            gameGrid.AddChildren(cursorOverlayTile);
+
             var goButton = UIElementMaker.MakeRectangle(Config.GoButtonName, Config.GameControlButtonSize, Config.GoButtonOffset, Color.Lime, DrawUtils.UILayer2);
             goButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Go"));
             goButton.AddLeftClickAction((i) => GameInterface.StartBoard(Config.DemoBoardUpdateRate));
@@ -43,7 +48,7 @@ namespace CubeV2
             displayText.AddAppearance(new TextAppearance(new Color(255,58,200), DrawUtils.UILayer1, ()=>GameInterface.DisplayText));
             //displayText.SetEnabledCondition(() => GameInterface.IsGameWon);
 
-
+                
 
             topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid,rerollButton,goButton,resetButton,simulateButton,energyBar,displayText);
 
