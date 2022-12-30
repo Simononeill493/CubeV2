@@ -83,6 +83,7 @@ namespace CubeV2
             }
 
             _processKeyboardShortcuts(input);
+            _processMouseActions(input);
         }
 
         public static void SimulateCurrentGame(UserInput input)

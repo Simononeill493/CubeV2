@@ -22,9 +22,8 @@ namespace CubeV2
             foreach (var entity in b.ActiveEntities)
             {
                 entity.GiveEnergy(entity.MaxEnergy);
-            }
+            }            
         }
-
 
         public override BoardTemplateTemplate CreateTemplateTemplate()
         {

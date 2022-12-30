@@ -9,13 +9,35 @@ namespace CubeV2
 {
     public partial class GameInterface
     {
+        private static void _processMouseActions(UserInput input)
+        {
+            if(input.ScrollDifference!=0)
+            {
+                ScrollWheelTurned(input.ScrollDirection);
+            }
+        }
+
+        private static int EntitySelection = 0;
+
+        public static void ScrollWheelTurned(int scrollDirection)
+        {
+            EntitySelection += scrollDirection;
+            if(EntitySelection<0)
+            {
+                EntitySelection = 0;
+            }
+        }
+
         public static void CurrentLeftClickAction(Tile tile, Vector2Int location)
         {
             var distance = location.EuclideanDistance(_game.FocusEntity.Location);
 
             if (tile.Contents == null && distance <= Config.PlayerOperationalRadius)
             {
-                var newEntity = EntityDatabase.GetTemplate(EntityDatabase.RockName).GenerateEntity();
+                var entities = EntityDatabase.GetAll();
+                var template = entities[EntitySelection % entities.Count()];
+                var newEntity = template.GenerateEntity();
+
                 _game.CurrentBoard.AddEntityToBoard(newEntity, location);
             }
         }
@@ -29,6 +51,7 @@ namespace CubeV2
                 _game.CurrentBoard.RemoveEntityFromBoard(tile.Contents);
             }
         }
+
 
         public static void LeftClickBoard(int index)
         {

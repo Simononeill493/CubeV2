@@ -19,7 +19,8 @@ namespace CubeV2
         public const string PortalName = "Portal";
 
         private static Dictionary<string, EntityTemplate> _masterList;
-        public static IEnumerable<EntityTemplate> GetAll() => _masterList.Values;
+        public static List<EntityTemplate> GetAll() => _masterList.Values.ToList();
+
         
         public static void Load()
         {

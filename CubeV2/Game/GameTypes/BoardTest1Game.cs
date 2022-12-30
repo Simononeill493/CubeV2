@@ -19,17 +19,20 @@ namespace CubeV2
             SetTemplateTemplate(CreateTemplateTemplate());
             ResetBoardTemplate();
             ResetBoard();
-
-            var portal = CurrentBoard.GetEntityByTemplate(EntityDatabase.PortalName).First();
-            WinCondition = new EnergyWinCondition(portal, portal.MaxEnergy);
         }
 
         public override void CustomSetUpBoard(Board b)
         {
             foreach(var entity in b.ActiveEntities)
             {
-                entity.GiveEnergy(Config.BoardTest1StartingEnergy);
+                if (entity.TemplateID != EntityDatabase.PortalName)
+                {
+                    entity.GiveEnergy(Config.BoardTest1StartingEnergy);
+                }
             }
+
+            var portal = b.GetEntityByTemplate(EntityDatabase.PortalName).First();
+            WinCondition = new EnergyWinCondition(portal, portal.MaxEnergy);
         }
 
 
