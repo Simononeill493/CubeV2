@@ -7,6 +7,7 @@ internal class Program
 {
     private static void Main(string[] args)
     {
+        //Before branch 
         Config.Load();
         RandomUtils.Init();
         DirectionUtils.Init();
