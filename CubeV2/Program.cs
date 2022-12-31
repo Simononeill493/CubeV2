@@ -7,7 +7,7 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        //Before branch 
+        //new years 
         Config.Load();
         RandomUtils.Init();
         DirectionUtils.Init();
