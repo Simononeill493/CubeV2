@@ -1,13 +1,13 @@
 ﻿namespace CubeV2
 {
-    public class HitInstruction : Instruction
+    public class PushDestroyInstruction : Instruction
     {
-        public override string Name => "Hit";
+        public override string Name => "PushDestroy";
         public override int VariableCount => 1;
         public override int OutputCount => 0;
         public override int BaseEnergyCost { get; } = Config.BaseHitCost;
 
-        public override Instruction GenerateNew() => new HitInstruction();
+        public override Instruction GenerateNew() => new PushDestroyInstruction();
 
         public override int Run(Entity caller, Board board)
         {
@@ -17,10 +17,8 @@
                 return 0;
             }
 
-            caller.Hit((RelativeDirection)direction);
+            caller.PushDestroy((RelativeDirection)direction);
             return Config.BaseHitCost;
         }
     }
-
-
 }

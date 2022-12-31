@@ -8,6 +8,7 @@
         Output,
         ControlOutput,
         InstructionOption,
-        VariableOption
+        VariableOption,
+        Tile
     }
 }

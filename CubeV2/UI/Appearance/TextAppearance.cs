@@ -29,4 +29,5 @@ namespace CubeV2
             DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, GetText(), position, Color, Scale, Layer);
         }
     }
+
 }

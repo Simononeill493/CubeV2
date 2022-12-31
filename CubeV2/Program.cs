@@ -8,6 +8,7 @@ internal class Program
     private static void Main(string[] args)
     {
         //new years 
+
         Config.Load();
         RandomUtils.Init();
         DirectionUtils.Init();

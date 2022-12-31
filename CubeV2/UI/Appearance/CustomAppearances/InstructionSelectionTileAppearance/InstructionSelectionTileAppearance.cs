@@ -11,7 +11,7 @@ namespace CubeV2
 {
     internal class InstructionSelectionTileAppearance : TileAppearance
     {
-        static Vector2 _textOffset = new Vector2(20, 30);
+        static Vector2 _textOffset = new Vector2(20, 15);
 
         public InstructionSelectionTileAppearance(int index,float layer) : base(index,layer) {}
 

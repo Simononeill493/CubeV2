@@ -41,6 +41,36 @@ namespace CubeV2
         private static int _focusedControlOutput;
         private static int _focusedInstructionOption;
         private static int _focusedVariableOption;
+        private static int _focusedTile;
+
+        public static Vector2Int GetFocusedTileCoordinates()
+        {
+            if(FocusedTileExists)
+            {
+                return BoardUtils.IndexToXY(_focusedTile, _game.CurrentBoard._width);
+            }
+
+            return Vector2Int.MinusOne;
+        }
+        public static bool FocusedTileHasEntity()
+        {
+            if (FocusedTileExists)
+            {
+                return _game.CurrentBoard.TryGetTile(_focusedTile).Contents != null;
+            }
+
+            return false;
+        }
+        public static Entity GetFocusedTileEntity()
+        {
+            if (FocusedTileHasEntity())
+            {
+                return _game.CurrentBoard.TryGetTile(_focusedTile).Contents;
+            }
+
+            return null;
+        }
+
 
         private static List<Instruction> _focusedInstructions;
         private static List<IVariable> _variableOptions = new List<IVariable>();
@@ -114,6 +144,14 @@ namespace CubeV2
             }
         }
 
+        public static void FocusTile(int tileIndex)
+        {
+            if(TileExists(tileIndex))
+            {
+                _focusedTile = tileIndex;
+                Focus = CurrentFocus.Tile;
+            }
+        }
         public static void FocusInstruction(int instructionIndex)
         {
             if (InstructionExists(instructionIndex))
@@ -176,7 +214,21 @@ namespace CubeV2
         public static bool FocusedVariableExists => VariableExists(_focusedInstruction, _focusedVariable);
         public static bool FocusedControlOutputExists => ControlOutputExists(_focusedInstruction, _focusedControlOutput);
         public static bool FocusedInstructionExists => InstructionExists(_focusedInstruction);
+        public static bool FocusedTileExists => TileExists(_focusedTile);
 
+        public static bool TileExists(int tileIndex)
+        {
+            if(_game != null && _game.CurrentBoard != null)
+            {
+                var tile = _game.CurrentBoard.TryGetTile(tileIndex);
+                if(tile!=null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
         public static bool OutputExists(int instructionIndex, int outputIndex)
         {
             if (InstructionExists(instructionIndex) && outputIndex >= 0 && (_focusedInstructions[instructionIndex].OutputCount > outputIndex))

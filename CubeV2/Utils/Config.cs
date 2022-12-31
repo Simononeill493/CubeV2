@@ -127,7 +127,7 @@ namespace CubeV2
             SelectorPanelOffset = new Vector2(Config.InstructionPanelSize.X, 0);
 
             InstructionTileSize = new Vector2(200, 100);
-            InstructionOptionTileSize = new Vector2(200, 75);
+            InstructionOptionTileSize = new Vector2(200, 40);
 
             AddInstructionButtonOffset = new Vector2(InstructionPanelSize.X * 0.24f, InstructionControlButtonsTopPadding);
             RemoveInstructionButtonOffset = new Vector2(InstructionPanelSize.X * 0.6f, InstructionControlButtonsTopPadding);

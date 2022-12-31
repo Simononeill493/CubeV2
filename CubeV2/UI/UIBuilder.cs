@@ -19,12 +19,12 @@ namespace CubeV2
 
             var cursorOverlayTile = new UIElement(Config.CursorOverlayTileName);
             cursorOverlayTile.AddAppearance(new RectangleAppearance(Config.TileBaseSize * Config.TileScale, Color.White * 0.5f, DrawUtils.GameLayer4));
-            cursorOverlayTile.SetEnabledCondition(() => AllUIElements.GetUIElement(Config.GameGridName).MouseOver);
+            cursorOverlayTile.AddEnabledCondition(() => AllUIElements.GetUIElement(Config.GameGridName).MouseOver);
             gameGrid.AddChildren(cursorOverlayTile);
 
             var operationalRangeOverlayTile = new UIElement(Config.OperationalRangeOverlayTileName);
             operationalRangeOverlayTile.AddAppearance(new RectangleAppearance(Config.TileBaseSize * Config.TileScale * ((Config.PlayerOperationalRadius*2+1)), Color.White * 0.05f, DrawUtils.GameLayer5));
-            operationalRangeOverlayTile.SetEnabledCondition(() => GameInterface._game.FocusEntity != null);
+            operationalRangeOverlayTile.AddEnabledCondition(() => GameInterface._game.FocusEntity != null);
             gameGrid.AddChildren(operationalRangeOverlayTile);
 
             var goButton = UIElementMaker.MakeRectangle(Config.GoButtonName, Config.GameControlButtonSize, Config.GoButtonOffset, Color.Lime, DrawUtils.UILayer2);
@@ -73,17 +73,21 @@ namespace CubeV2
 
             var instructionSelectorGrid = _makeInstructionSelectorGrid();
             instructionSelectorGrid.SetOffset(20, 20);
-            instructionSelectorGrid.SetEnabledCondition(InstructionSelectorGridEnabled);
+            instructionSelectorGrid.AddEnabledCondition(InstructionSelectorGridEnabled);
 
             var variableSelectorGrid = _makeVariableSelectorGrid();
             variableSelectorGrid.SetOffset(20, 20);
-            variableSelectorGrid.SetEnabledCondition(VariableSelectorGridEnabled);
+            variableSelectorGrid.AddEnabledCondition(VariableSelectorGridEnabled);
 
             var outputSelectorGrid = _makeOutputSelectorGrid();
             outputSelectorGrid.SetOffset(20, 20);
-            outputSelectorGrid.SetEnabledCondition(OutputSelectorGridEnabled);
+            outputSelectorGrid.AddEnabledCondition(OutputSelectorGridEnabled);
 
-            selectorPanel.AddChildren(instructionSelectorGrid,variableSelectorGrid,outputSelectorGrid);
+            var tileViewer = _makeTileViewer();
+            tileViewer.SetOffset(20, 20);
+            tileViewer.AddEnabledCondition(TileViewerEnabled);
+
+            selectorPanel.AddChildren(instructionSelectorGrid,variableSelectorGrid,outputSelectorGrid, tileViewer);
 
             return topLevel;
         }
@@ -103,6 +107,12 @@ namespace CubeV2
             return GameInterface.Focus == CurrentFocus.Output && GameInterface.FocusedOutputExists;
         }
 
+        private static bool TileViewerEnabled()
+        {
+            return GameInterface.Focus == CurrentFocus.Tile && GameInterface.FocusedTileExists;
+        }
+
+
         private static UIGrid _makeGameGrid()
         {
             var gameTileSize = Config.TileBaseSize * Config.TileScale;
@@ -117,6 +127,48 @@ namespace CubeV2
             return gameGrid;
         }
 
+        private static UIElement _makeTileViewer()
+        {
+            var container = new UIElement("TileViewer");
+
+            var tileDetailsPanel = UIElementMaker.MakeRectangle("TileDetailsPanel", new Vector2(210, 80), Vector2.Zero, new Color(212, 161, 161), DrawUtils.UILayer2);
+
+            var tilePicture = new UIElement("TilePicture");
+            tilePicture.AddAppearance(new SpriteAppearance(DrawUtils.UILayer3, DrawUtils.GroundSprite) { Scale = 3 });
+            tilePicture.SetOffset(25, 10);
+
+            var tileCoordsText = new UIElement("TileCoordsText");
+            tileCoordsText.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3,()=>GameInterface.GetFocusedTileCoordinates().ToString()));
+            tileCoordsText.SetOffset(120, 10);
+
+            tileDetailsPanel.AddChildren(tilePicture,tileCoordsText);
+
+
+
+            var contentsDetailsPanel = UIElementMaker.MakeRectangle("ContentsDetailsPanel", new Vector2(210, 150), Vector2.Zero, new Color(212, 161, 161), DrawUtils.UILayer2);
+            contentsDetailsPanel.AddEnabledCondition(GameInterface.FocusedTileHasEntity);
+            contentsDetailsPanel.SetOffset(0,120);
+
+            var contentsPicture = new UIElement("ContentsPicture");
+            contentsPicture.AddAppearance(new SpriteAppearance(DrawUtils.UILayer3, ()=>GameInterface.GetFocusedTileEntity().Sprite) { Scale = 3 });
+            contentsPicture.SetOffset(25, 10);
+
+            var contentsNameText = new UIElement("TileContentsNameText");
+            contentsNameText.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, () => GameInterface.GetFocusedTileEntity().GetEntityName())); ;
+            contentsNameText.SetOffset(25, 80);
+
+            var contentsEnergyText = new UIElement("TileContentsEnergyText");
+            contentsEnergyText.AddAppearance(new TextAppearance(Color.DarkGreen, DrawUtils.UILayer3, () => GameInterface.GetFocusedTileEntity().GetEnergyOverMaxAsText())); ;
+            contentsEnergyText.SetOffset(25, 100);
+
+
+            contentsDetailsPanel.AddChildren(contentsPicture,contentsNameText, contentsEnergyText);
+
+
+            container.AddChildren(tileDetailsPanel, contentsDetailsPanel);
+
+            return container;
+        }
 
         private static UIGrid _makeVariableSelectorGrid()
         {
@@ -131,7 +183,7 @@ namespace CubeV2
 
         private static UIGrid _makeInstructionSelectorGrid()
         {
-            var gridSize = new Vector2Int(1, 9);
+            var gridSize = new Vector2Int(1, 18);
             var tileSize = new Vector2Int(Config.InstructionOptionTileSize);
             var tilePadding = 5;
 
@@ -226,7 +278,7 @@ namespace CubeV2
             outputTile.AddAppearances(tileBackground,tileAppearance);
 
             outputTile.AddLeftClickAction((i) => { GameInterface.FocusOutput(instructionIndex, outputIndex); });
-            outputTile.SetEnabledCondition(() => GameInterface.OutputExists(instructionIndex, outputIndex));
+            outputTile.AddEnabledCondition(() => GameInterface.OutputExists(instructionIndex, outputIndex));
 
             return outputTile;
         }
@@ -242,7 +294,7 @@ namespace CubeV2
             outputTile.AddAppearances(tileBackground, tileAppearance);
 
             outputTile.AddLeftClickAction((i) => { GameInterface.FocusControlOutput(instructionIndex, controlIndex); });
-            outputTile.SetEnabledCondition(() => GameInterface.ControlOutputExists(instructionIndex, controlIndex));
+            outputTile.AddEnabledCondition(() => GameInterface.ControlOutputExists(instructionIndex, controlIndex));
             outputTile.AddKeyPressedAction((i) => { if (i.IsNumberJustPressed) { GameInterface.AssignValueToFocusedControlOutput(i.GetNumberJustPressed); } });
 
             return outputTile;
@@ -261,7 +313,7 @@ namespace CubeV2
             variableTile.AddAppearances(tileBackground, appearance);
 
             variableTile.AddLeftClickAction((i) => { GameInterface.FocusVariable(instructionIndex, variableIndex); });
-            variableTile.SetEnabledCondition(() => GameInterface.VariableExists(instructionIndex, variableIndex));
+            variableTile.AddEnabledCondition(() => GameInterface.VariableExists(instructionIndex, variableIndex));
 
             return variableTile;
         }

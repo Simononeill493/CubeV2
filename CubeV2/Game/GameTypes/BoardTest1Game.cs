@@ -31,6 +31,11 @@ namespace CubeV2
                 }
             }
 
+            foreach(var energyRock in b.GetEntityByTemplate(EntityDatabase.EnergyRockName))
+            {
+                energyRock.SetEnergyToMax();
+            }
+
             var portal = b.GetEntityByTemplate(EntityDatabase.PortalName).First();
             WinCondition = new EnergyWinCondition(portal, portal.MaxEnergy);
         }

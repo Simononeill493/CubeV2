@@ -28,9 +28,11 @@ namespace CubeV2
             }
         }
 
-        public static void CurrentLeftClickAction(Tile tile, Vector2Int location)
+        public static void CurrentLeftClickAction(Tile tile, Vector2Int location,int index)
         {
-            var distance = location.EuclideanDistance(_game.FocusEntity.Location);
+            FocusTile(index);
+            return;
+            /*var distance = location.EuclideanDistance(_game.FocusEntity.Location);
 
             if (tile.Contents == null && distance <= Config.PlayerOperationalRadius)
             {
@@ -39,10 +41,10 @@ namespace CubeV2
                 var newEntity = template.GenerateEntity();
 
                 _game.CurrentBoard.AddEntityToBoard(newEntity, location);
-            }
+            }*/
         }
 
-        public static void CurrentRightClickAction(Tile tile, Vector2Int location)
+        public static void CurrentRightClickAction(Tile tile, Vector2Int location,int index)
         {
             var distance = location.EuclideanDistance(_game.FocusEntity.Location);
 
@@ -58,7 +60,7 @@ namespace CubeV2
             (var tile, var location) = _getBoardDetailsFromIndex(index);
             if (tile != null)
             {
-                CurrentLeftClickAction(tile, location);
+                CurrentLeftClickAction(tile, location,index);
             }
 
         }
@@ -67,7 +69,7 @@ namespace CubeV2
             (var tile, var location) = _getBoardDetailsFromIndex(index);
             if(tile != null)
             {
-                CurrentRightClickAction(tile, location);
+                CurrentRightClickAction(tile, location,index);
             }
         }
 

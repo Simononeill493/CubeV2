@@ -36,7 +36,10 @@ namespace CubeV2
             _masterList[AutoPlayerName].DefaultTags = new List<string>() { Config.PlayerTag };
 
             _masterList[RockName] = new EntityTemplate(RockName) { Sprite = DrawUtils.RockSprite };
+            _masterList[RockName].DefaultMaxEnergy = 0;
+
             _masterList[EnergyRockName] = new EntityTemplate(EnergyRockName) { Sprite = DrawUtils.EnergyRockSprite };
+            _masterList[EnergyRockName].DefaultMaxEnergy = 250;
 
             _masterList[GoalName] = new EntityTemplate(GoalName, EntityTemplate.SpecialEntityTag.Goal) { Sprite = DrawUtils.GoalSprite };
 

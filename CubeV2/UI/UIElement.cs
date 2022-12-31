@@ -21,7 +21,18 @@ namespace CubeV2
         public bool Clickable { get; private set; } = false;
         public bool Typeable { get; private set; } = false;
 
-        public bool Enabled => _alwaysEnabled || _isEnabled();
+        public bool Enabled => _alwaysEnabled || _checkEnabledConditions();
+        private bool _checkEnabledConditions()
+        {
+            foreach (var condition in _enabledConditions)
+            {
+                if (!condition())
+                {
+                    return false;
+                }
+            }
+           return true;
+        }
 
         public UIElement(string id)
         {
@@ -80,17 +91,24 @@ namespace CubeV2
             _onKeyPressed?.Invoke(input);
         }
 
-        public Func<bool> _isEnabled = () => true;
+        public List<Func<bool>> _enabledConditions = new List<Func<bool>>();
         private bool _alwaysEnabled = true;
-        public void SetEnabledCondition(Func<bool> condition)
+        public void AddEnabledConditions(List<Func<bool>> conditions)
+        {
+            foreach(var condition in conditions)
+            {
+                AddEnabledCondition(condition);
+            }
+        }
+        public void AddEnabledCondition(Func<bool> condition)
         {
             _alwaysEnabled = false;
-            _isEnabled = condition;
+            _enabledConditions.Add(condition);
 
             //TODO: uhmmmmm this is bad
             foreach (var child in _children)
             {
-                child.SetEnabledCondition(_isEnabled);
+                child.AddEnabledCondition(condition);
             }
         }
 
@@ -132,7 +150,7 @@ namespace CubeV2
             {
                 foreach (var child in children)
                 {
-                    child.SetEnabledCondition(_isEnabled);
+                    child.AddEnabledConditions(_enabledConditions);
                 }
             }
 

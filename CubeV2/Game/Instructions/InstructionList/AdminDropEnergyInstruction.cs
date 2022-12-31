@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace CubeV2
 {
-    internal class SendEnergyInstruction : Instruction
+    internal class AdminDropEnergyInstruction : Instruction
     {
-        public override string Name => "SendEnergy";
+        public override string Name => "PlayerDropEnergy";
         public override int VariableCount => 2;
         public override int OutputCount => 0;
         public override int BaseEnergyCost { get; } = 0;
 
-        public override Instruction GenerateNew() => new SendEnergyInstruction();
+        public override Instruction GenerateNew() => new AdminDropEnergyInstruction();
 
         public override int Run(Entity caller, Board board)
         {
@@ -35,7 +35,7 @@ namespace CubeV2
                 return 0;
             }
 
-            caller.TryGiveEnergyToTile(tile, (int)amount);
+            caller.TryDropEnergy(tile, (int)amount);
             return 0;
         }
 

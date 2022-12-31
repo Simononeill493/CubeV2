@@ -8,11 +8,14 @@ namespace CubeV2
     {
         public string TemplateID { get; }
         public string EntityID { get; }
+        public string GetEntityName() => TemplateID + "_" + EntityID;
 
         public string Sprite;
 
         public int MaxEnergy;
         public int CurrentEnergy;
+        public string GetEnergyOverMaxAsText() => CurrentEnergy + "/" + MaxEnergy;
+        public float GetEnergyPercentage() => MaxEnergy == 0 ? 1 : CurrentEnergy / MaxEnergy;
 
         public Orientation Orientation;
         public Vector2Int Location = Vector2Int.MinusOne;
@@ -88,7 +91,6 @@ namespace CubeV2
         {
             return (CurrentEnergy >= amount);
         }
-
         public void TakeEnergy(int amount)
         {
             if (amount > CurrentEnergy)
@@ -98,7 +100,6 @@ namespace CubeV2
 
             CurrentEnergy -= amount;
         }
-
         public void GiveEnergy(int amount)
         {
             CurrentEnergy += amount;
@@ -108,11 +109,25 @@ namespace CubeV2
                 CurrentEnergy = MaxEnergy;
             }
         }
+        public void SetEnergyToMax() => CurrentEnergy = MaxEnergy;
+
+        public void Rotate(int rotation)
+        {
+            Orientation = Orientation.Rotate(rotation);
+        }
+        public void SetOrientation(Orientation orientation)
+        {
+            Orientation = orientation;
+        }
+
+
 
 
         public bool TryMove(RelativeDirection direction) => TryMove(DirectionUtils.ToCardinal(Orientation, direction));
-        public void Hit(RelativeDirection direction) => Hit(DirectionUtils.ToCardinal(Orientation, direction));
-        public CapturedTileVariable TryScan(RelativeDirection direction) => TryScan(DirectionUtils.ToCardinal(Orientation, direction));
+        public bool TryPushEnergy(RelativeDirection direction,int amount) => TryPushEnergy(DirectionUtils.ToCardinal(Orientation, direction),amount);
+        public bool TryPullEnergy(RelativeDirection direction) => TryPullEnergy(DirectionUtils.ToCardinal(Orientation, direction));
+        public CapturedTileVariable TryPushScan(RelativeDirection direction) => TryPushScan(DirectionUtils.ToCardinal(Orientation, direction));
+        public void PushDestroy(RelativeDirection direction) => PushDestroy(DirectionUtils.ToCardinal(Orientation, direction));
 
         public bool TryMove(CardinalDirection direction)
         {
@@ -137,64 +152,84 @@ namespace CubeV2
             return didMoveWork;
         }
 
-        public void Hit(CardinalDirection direction)
-        {
-            var targetLocation = Location + direction.XYOffset();
-            BoardCallback.ClearTile(targetLocation);
-        }
-
-
-        public CapturedTileVariable TryScan(CardinalDirection direction)
+        public bool TryPushEnergy(CardinalDirection direction, int amount)
         {
             var newLocation = Location + direction.XYOffset();
-            var tile = BoardCallback.TryGetTile(newLocation);
+            var target = BoardCallback.FocusedBoard.TryGetTile(newLocation);
 
-            if(tile!=null)
+            if (target != null)
             {
-                return new CapturedTileVariable(newLocation,tile.Contents);
+                return TryDropEnergy(target, amount);
             }
 
-            return null;
+            return false;
         }
-
-
-
-
-        public void Rotate(int rotation)
-        {
-            Orientation = Orientation.Rotate(rotation);
-        }
-
-        public void SetOrientation(Orientation orientation)
-        {
-            Orientation = orientation;
-        }
-
-
-        public virtual bool TryBeCollected(Entity collector) => false;
-
-        public bool TryGiveEnergyToTile(Tile target, int amount)
+        public bool TryDropEnergy(Tile target, int amount)
         {
             if (CurrentEnergy < amount)
             {
                 amount = CurrentEnergy;
             }
 
-            if(amount==0)
+            if (target.Contents == null || amount == 0 || (target.Contents.HasEnergy(target.Contents.MaxEnergy)))
             {
                 return false;
             }
-
-            var targetEntity = target.Contents;
-            if(targetEntity == null)
-            {
-                return false;
-            }
+            
 
             TakeEnergy(amount);
-            targetEntity.GiveEnergy(amount);
-            
+            target.Contents.GiveEnergy(amount);
+
             return true;
         }
+
+        public bool TryPullEnergy(CardinalDirection direction)
+        {
+            var newLocation = Location + direction.XYOffset();
+            var target = BoardCallback.FocusedBoard.TryGetTile(newLocation);
+
+            if (target != null && target.Contents != null && target.Contents.HasEnergy(1) && CurrentEnergy < MaxEnergy)
+            {
+                target.Contents.TakeEnergy(1);
+                GiveEnergy(1);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public CapturedTileVariable TryPushScan(CardinalDirection direction)
+        {
+            var newLocation = Location + direction.XYOffset();
+            var tile = BoardCallback.TryGetTile(newLocation);
+
+            if (tile != null)
+            {
+                return new CapturedTileVariable(newLocation, tile.Contents);
+            }
+
+            return null;
+        }
+
+        public void PushDestroy(CardinalDirection direction)
+        {
+            var targetLocation = Location + direction.XYOffset();
+            BoardCallback.ClearTile(targetLocation);
+        }
+
+
+
+
+
+
+
+
+
+        public virtual bool TryBeCollected(Entity collector) => false;
+
+
+
+
     }
 }

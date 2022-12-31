@@ -9,12 +9,14 @@ namespace CubeV2
     public class ManualPlayerEntity : Entity
     {
         MoveInstruction _keyboardMoveInstruction;
-        HitInstruction _keyboardHitInstruction;
+        PushDestroyInstruction _keyboardHitInstruction;
+        PullEnergyInstruction _keyboardSapInstruction;
 
         public ManualPlayerEntity(string templateID, string entityID, string sprite) : base(templateID, entityID, sprite)
         {
             _keyboardMoveInstruction = new MoveInstruction();
-            _keyboardHitInstruction = new HitInstruction();
+            _keyboardHitInstruction = new PushDestroyInstruction();
+            _keyboardSapInstruction = new PullEnergyInstruction();
         }
 
         public override void Tick(Board currentBoard,UserInput input)
@@ -29,12 +31,13 @@ namespace CubeV2
             var arrowsDirection = DirectionUtils.GetArrowsDirection(input);
             if (arrowsDirection.AnyPressed)
             {
-                _keyboardHitInstruction.Variables[0] = new CardinalDirectionVariable(arrowsDirection.Direction);
-                _executeInstruction(_keyboardHitInstruction, currentBoard);
+                _keyboardSapInstruction.Variables[0] = new CardinalDirectionVariable(arrowsDirection.Direction);
+                _executeInstruction(_keyboardSapInstruction, currentBoard);
             }
 
             base.Tick(currentBoard, input);
 
+            //GiveEnergy(1000);
             if(CurrentEnergy < 5)
             {
                 GiveEnergy(1);
