@@ -38,6 +38,8 @@ namespace CubeV2
 
             var portal = b.GetEntityByTemplate(EntityDatabase.PortalName).First();
             WinCondition = new EnergyWinCondition(portal, portal.MaxEnergy);
+
+            GameInterface.DisplayText = "Goal: Supply 100 energy to the portal!";
         }
 
 

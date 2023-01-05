@@ -15,7 +15,7 @@ namespace CubeV2
             var selectorPanel = UIElementMaker.MakeRectangle(Config.SelectorPanelName, Config.SelectorPanelSize, Config.SelectorPanelOffset, Config.SelectorPanelColor, DrawUtils.UILayer1);
 
             var gameGrid = _makeGameGrid();
-            gameGrid.SetOffset(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X, 0);
+            gameGrid.SetOffset(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X, 60);
 
             var cursorOverlayTile = new UIElement(Config.CursorOverlayTileName);
             cursorOverlayTile.AddAppearance(new RectangleAppearance(Config.TileBaseSize * Config.TileScale, Color.White * 0.5f, DrawUtils.GameLayer4));
@@ -43,19 +43,25 @@ namespace CubeV2
             simulateButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Simulate"));
             simulateButton.AddLeftClickAction((i) => { GameInterface.SimulateCurrentGame(i); });
 
+            var controlButtonArray = new UIElement("ControlButtonArray");
+            controlButtonArray.SetOffset(new Vector2(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X + 800, (int)Config.ScreenSize.Y - Config.GameControlButtonSize.Y - 15));
+            controlButtonArray.AddChildren(goButton, resetButton, rerollButton, simulateButton);
+
+
             var energyBar = new UIElement(Config.EnergyBarName);
             energyBar.SetOffset(Config.EnergyBarOffset);
             energyBar.AddAppearance(new EnergyBarAppearance(Config.EnergyBarSize, DrawUtils.UILayer1, DrawUtils.UILayer2));
-
 
             var displayText = new UIElement(Config.DisplayTextName);
             displayText.SetOffset(Config.DisplayTextOffset);
             displayText.AddAppearance(new TextAppearance(new Color(255,58,200), DrawUtils.UILayer1, ()=>GameInterface.DisplayText));
             //displayText.SetEnabledCondition(() => GameInterface.IsGameWon);
 
+            var playerActionArray = CreatePlayerActionArray();
+            playerActionArray.SetOffset(500,764);
                 
 
-            topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid,rerollButton,goButton,resetButton,simulateButton,energyBar,displayText);
+            topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid, controlButtonArray, energyBar,displayText,playerActionArray);
 
 
 
@@ -92,24 +98,30 @@ namespace CubeV2
             return topLevel;
         }
 
+        public static UIElement CreatePlayerActionArray()
+        {
+            var actionArray = UIElementMaker.MakeRectangle("test", new Vector2(30, 30), Vector2.Zero, Color.Yellow, DrawUtils.UILayer3);
+            return actionArray;
+        }
+
         private static bool InstructionSelectorGridEnabled()
         {
-            return (GameInterface.Focus == CurrentFocus.Instruction || GameInterface.Focus == CurrentFocus.InstructionOption) && GameInterface.FocusedInstructionExists;
+            return (GameInterface.CurrentSidePanelFocus == SidePanelFocus.Instruction || GameInterface.CurrentSidePanelFocus == SidePanelFocus.InstructionOption) && GameInterface.FocusedInstructionExists;
         }
 
         private static bool VariableSelectorGridEnabled()
         {
-            return (GameInterface.Focus == CurrentFocus.Variable || GameInterface.Focus == CurrentFocus.VariableOption) && GameInterface.FocusedVariableExists;
+            return (GameInterface.CurrentSidePanelFocus == SidePanelFocus.Variable || GameInterface.CurrentSidePanelFocus == SidePanelFocus.VariableOption) && GameInterface.FocusedVariableExists;
         }
 
         private static bool OutputSelectorGridEnabled()
         {
-            return GameInterface.Focus == CurrentFocus.Output && GameInterface.FocusedOutputExists;
+            return GameInterface.CurrentSidePanelFocus == SidePanelFocus.Output && GameInterface.FocusedOutputExists;
         }
 
         private static bool TileViewerEnabled()
         {
-            return GameInterface.Focus == CurrentFocus.Tile && GameInterface.FocusedTileExists;
+            return GameInterface.CurrentSidePanelFocus == SidePanelFocus.Tile && GameInterface.FocusedTileExists;
         }
 
 

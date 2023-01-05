@@ -1,6 +1,6 @@
 ﻿namespace CubeV2
 {
-    public enum CurrentFocus
+    public enum SidePanelFocus
     {
         None,
         Instruction,

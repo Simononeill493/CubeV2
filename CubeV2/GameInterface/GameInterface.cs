@@ -59,8 +59,6 @@ namespace CubeV2
             _boardRunning = true;
             BoardUpdateRate = updateRate;
             TimeSinceLastUpdate = TimeSpan.Zero;
-
-            DisplayText = "Running game...";
         }
         public static void TogglePauseBoard() => _boardRunning = !_boardRunning;
         public static void PauseBoard() => _boardRunning = false;
@@ -108,6 +106,48 @@ namespace CubeV2
             }
 
             return (0,1);
+        }
+
+        public static Vector2Int GetFocusedTileCoordinates()
+        {
+            if (FocusedTileExists)
+            {
+                return BoardUtils.IndexToXY(_focusedTile, _game.CurrentBoard._width);
+            }
+
+            return Vector2Int.MinusOne;
+        }
+        public static bool FocusedTileHasEntity()
+        {
+            if (FocusedTileExists)
+            {
+                return _game.CurrentBoard.TryGetTile(_focusedTile).Contents != null;
+            }
+
+            return false;
+        }
+        public static Entity GetFocusedTileEntity()
+        {
+            if (FocusedTileHasEntity())
+            {
+                return _game.CurrentBoard.TryGetTile(_focusedTile).Contents;
+            }
+
+            return null;
+        }
+
+        public static bool TileExists(int tileIndex)
+        {
+            if (_game != null && _game.CurrentBoard != null)
+            {
+                var tile = _game.CurrentBoard.TryGetTile(tileIndex);
+                if (tile != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 

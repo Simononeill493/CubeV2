@@ -16,7 +16,7 @@ namespace CubeV2
                 TogglePauseBoard();
             }
 
-            if (Focus == CurrentFocus.Instruction)
+            if (CurrentSidePanelFocus == SidePanelFocus.Instruction)
             {
                 if (input.IsKeyJustPressed(Keys.Up))
                 {
@@ -46,7 +46,7 @@ namespace CubeV2
                 }
 
             }
-            else if (Focus == CurrentFocus.InstructionOption)
+            else if (CurrentSidePanelFocus == SidePanelFocus.InstructionOption)
             {
                 if (input.IsKeyJustPressed(Keys.Up))
                 {
@@ -66,7 +66,7 @@ namespace CubeV2
                     FocusInstruction(_focusedInstruction);
                 }
             }
-            else if (Focus == CurrentFocus.Variable)
+            else if (CurrentSidePanelFocus == SidePanelFocus.Variable)
             {
                 if (input.IsKeyJustPressed(Keys.Enter))
                 {
@@ -94,7 +94,7 @@ namespace CubeV2
                     FocusInstruction(_focusedInstruction + 1);
                 }
             }
-            else if (Focus == CurrentFocus.VariableOption)
+            else if (CurrentSidePanelFocus == SidePanelFocus.VariableOption)
             {
                 if (input.IsKeyJustPressed(Keys.Enter))
                 {

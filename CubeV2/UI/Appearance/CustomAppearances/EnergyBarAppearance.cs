@@ -13,7 +13,7 @@ namespace CubeV2
         public override Vector2 Size { get; }
 
         private static Color BackgroundColor = Color.Gray;
-        private static Color ForegroundColor = new Color(0, 255, 255);
+        private static Color ForegroundColor = new Color(92, 245, 0);
 
         private float _frontLayer;
 

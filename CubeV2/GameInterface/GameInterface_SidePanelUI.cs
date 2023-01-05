@@ -14,6 +14,17 @@ namespace CubeV2
 
     public partial class GameInterface
     {
+        public static SidePanelFocus CurrentSidePanelFocus = SidePanelFocus.Instruction;
+
+        private static int _focusedInstruction;
+        private static int _focusedVariable;
+        private static int _focusedOutput;
+        private static int _focusedControlOutput;
+        private static int _focusedInstructionOption;
+        private static int _focusedVariableOption;
+        private static int _focusedTile;
+
+
         public static void AddInstructionToEnd() => AddInstructionAtIndex(_focusedInstructions.Count);
         public static void RemoveInstructionFromEnd() => RemoveInstructionAtIndex(_focusedInstructions.Count-1);
         public static void AddInstructionAtIndex(int index)
@@ -33,43 +44,10 @@ namespace CubeV2
             }
         }
 
-        public static CurrentFocus Focus = CurrentFocus.Instruction;
 
-        private static int _focusedInstruction;
-        private static int _focusedVariable;
-        private static int _focusedOutput;
-        private static int _focusedControlOutput;
-        private static int _focusedInstructionOption;
-        private static int _focusedVariableOption;
-        private static int _focusedTile;
 
-        public static Vector2Int GetFocusedTileCoordinates()
-        {
-            if(FocusedTileExists)
-            {
-                return BoardUtils.IndexToXY(_focusedTile, _game.CurrentBoard._width);
-            }
 
-            return Vector2Int.MinusOne;
-        }
-        public static bool FocusedTileHasEntity()
-        {
-            if (FocusedTileExists)
-            {
-                return _game.CurrentBoard.TryGetTile(_focusedTile).Contents != null;
-            }
 
-            return false;
-        }
-        public static Entity GetFocusedTileEntity()
-        {
-            if (FocusedTileHasEntity())
-            {
-                return _game.CurrentBoard.TryGetTile(_focusedTile).Contents;
-            }
-
-            return null;
-        }
 
 
         private static List<Instruction> _focusedInstructions;
@@ -106,16 +84,16 @@ namespace CubeV2
         public static IVariable GetVariable(int instructionIndex, int variableIndex) => _focusedInstructions[instructionIndex].Variables[variableIndex];
 
         public static bool IsFocusedOnInstruction(int instructionIndex) => instructionIndex == _focusedInstruction;
-        public static bool IsFocusedOnInstructionOption(int optionIndex) =>  optionIndex == _focusedInstructionOption & Focus == CurrentFocus.InstructionOption;
-        public static bool IsFocusedOnVariable(int instructionIndex,int variableIndex) => instructionIndex == _focusedInstruction & variableIndex == _focusedVariable & Focus == CurrentFocus.Variable;
-        public static bool IsFocusedOnVariableOption(int optionIndex) => optionIndex == _focusedVariableOption & Focus == CurrentFocus.VariableOption;
+        public static bool IsFocusedOnInstructionOption(int optionIndex) =>  optionIndex == _focusedInstructionOption & CurrentSidePanelFocus == SidePanelFocus.InstructionOption;
+        public static bool IsFocusedOnVariable(int instructionIndex,int variableIndex) => instructionIndex == _focusedInstruction & variableIndex == _focusedVariable & CurrentSidePanelFocus == SidePanelFocus.Variable;
+        public static bool IsFocusedOnVariableOption(int optionIndex) => optionIndex == _focusedVariableOption & CurrentSidePanelFocus == SidePanelFocus.VariableOption;
 
-        public static bool IsFocusedOnOutput(int instructionIndex, int outputIndex) => instructionIndex == _focusedInstruction & outputIndex == _focusedOutput & Focus == CurrentFocus.Output;
-        public static bool IsFocusedOnControlOutput(int instructionIndex, int controlIndex) => instructionIndex == _focusedInstruction & controlIndex == _focusedControlOutput & Focus == CurrentFocus.ControlOutput;
+        public static bool IsFocusedOnOutput(int instructionIndex, int outputIndex) => instructionIndex == _focusedInstruction & outputIndex == _focusedOutput & CurrentSidePanelFocus == SidePanelFocus.Output;
+        public static bool IsFocusedOnControlOutput(int instructionIndex, int controlIndex) => instructionIndex == _focusedInstruction & controlIndex == _focusedControlOutput & CurrentSidePanelFocus == SidePanelFocus.ControlOutput;
 
         public static void AssignValueToFocusedVariable(int variableOptionIndex)
         {
-            if((Focus == CurrentFocus.Variable || Focus == CurrentFocus.VariableOption) && FocusedVariableExists && VariableOptionExists(variableOptionIndex))
+            if((CurrentSidePanelFocus == SidePanelFocus.Variable || CurrentSidePanelFocus == SidePanelFocus.VariableOption) && FocusedVariableExists && VariableOptionExists(variableOptionIndex))
             {
                 var newVariable = _variableOptions[variableOptionIndex];
                 _focusedInstructions[_focusedInstruction].Variables[_focusedVariable] = newVariable;
@@ -123,7 +101,7 @@ namespace CubeV2
         }
         public static void AssignValueToFocusedControlOutput(int targetIndex)
         {
-            if (Focus == CurrentFocus.ControlOutput && FocusedControlOutputExists)
+            if (CurrentSidePanelFocus == SidePanelFocus.ControlOutput && FocusedControlOutputExists)
             {
                 _focusedInstructions[_focusedInstruction].ControlOutputs[_focusedControlOutput] = targetIndex;
             }
@@ -138,7 +116,7 @@ namespace CubeV2
         }
         public static void AssignValueToFocusedOutput(int outputOptionIndex)
         {
-            if (Focus == CurrentFocus.Output && FocusedOutputExists && OutputOptionExists(outputOptionIndex))
+            if (CurrentSidePanelFocus == SidePanelFocus.Output && FocusedOutputExists && OutputOptionExists(outputOptionIndex))
             {
                 GetInstructionFromCurrentFocus(_focusedInstruction).OutputTargets[_focusedOutput] = outputOptionIndex;
             }
@@ -149,7 +127,7 @@ namespace CubeV2
             if(TileExists(tileIndex))
             {
                 _focusedTile = tileIndex;
-                Focus = CurrentFocus.Tile;
+                CurrentSidePanelFocus = SidePanelFocus.Tile;
             }
         }
         public static void FocusInstruction(int instructionIndex)
@@ -157,7 +135,7 @@ namespace CubeV2
             if (InstructionExists(instructionIndex))
             {
                 _focusedInstruction = instructionIndex;
-                Focus = CurrentFocus.Instruction;
+                CurrentSidePanelFocus = SidePanelFocus.Instruction;
             }
         }
         public static void FocusVariable(int instructionIndex, int variableIndex)
@@ -169,7 +147,7 @@ namespace CubeV2
 
                 _focusedInstruction = instructionIndex;
                 _focusedVariable = variableIndex;
-                Focus = CurrentFocus.Variable;
+                CurrentSidePanelFocus = SidePanelFocus.Variable;
             }
         }
         public static void FocusOutput(int instructionIndex, int outputIndex)
@@ -178,7 +156,7 @@ namespace CubeV2
             {
                 _focusedInstruction = instructionIndex;
                 _focusedOutput = outputIndex;
-                Focus = CurrentFocus.Output;
+                CurrentSidePanelFocus = SidePanelFocus.Output;
             }
         }
         public static void FocusControlOutput(int instructionIndex, int controlIndex)
@@ -187,7 +165,7 @@ namespace CubeV2
             {
                 _focusedInstruction = instructionIndex;
                 _focusedControlOutput = controlIndex;
-                Focus = CurrentFocus.ControlOutput;
+                CurrentSidePanelFocus = SidePanelFocus.ControlOutput;
             }
         }
         public static void FocusInstructionOption(int instructionIndex, int optionIndex)
@@ -196,7 +174,7 @@ namespace CubeV2
             {
                 _focusedInstruction = instructionIndex;
                 _focusedInstructionOption = optionIndex;
-                Focus = CurrentFocus.InstructionOption;
+                CurrentSidePanelFocus = SidePanelFocus.InstructionOption;
             }
         }
         public static void FocusVariableOption(int instructionIndex, int variableIndex,int variableOptionIndex)
@@ -206,7 +184,7 @@ namespace CubeV2
                 _focusedInstruction = instructionIndex;
                 _focusedVariable = variableIndex;
                 _focusedVariableOption = variableOptionIndex;
-                Focus = CurrentFocus.VariableOption;
+                CurrentSidePanelFocus = SidePanelFocus.VariableOption;
             }
         }
 

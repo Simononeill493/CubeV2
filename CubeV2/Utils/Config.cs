@@ -135,14 +135,14 @@ namespace CubeV2
             GameControlButtonSize = new Vector2(100, 60);
             SimulateButtonSize = new Vector2(200, 60);
 
-            GoButtonOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 50, (int)ScreenSize.Y - GameControlButtonSize.Y - 20);
-            ResetButtonOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 170, (int)ScreenSize.Y - GameControlButtonSize.Y - 20);
-            RerollButtonOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 290, (int)ScreenSize.Y - GameControlButtonSize.Y - 20);
-            SimulateButtonOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 410, (int)ScreenSize.Y - GameControlButtonSize.Y - 20);
+            GoButtonOffset = new Vector2(0, 0);
+            ResetButtonOffset = new Vector2(120,0);
+            RerollButtonOffset = new Vector2(240, 0);
+            SimulateButtonOffset = new Vector2(360, 0);
 
-            EnergyBarSize = new Vector2(600, 30);
-            EnergyBarOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 50, (int)ScreenSize.Y - (GameControlButtonSize.Y * 2.1f));
-            DisplayTextOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 50, (int)ScreenSize.Y - (GameControlButtonSize.Y * 2.4f));
+            EnergyBarSize = new Vector2(500, 20);
+            EnergyBarOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 30, 30);
+            DisplayTextOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 30, 8);
 
         }
 
