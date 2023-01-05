@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace CubeV2
 {
-    internal class AdminDropEnergyInstruction : Instruction
+    internal class AdminCreateInstruction : Instruction
     {
-        public override string Name => "AdminDropEnergy";
+        public override string Name => "AdminCreate";
         public override int VariableCount => 2;
         public override int OutputCount => 0;
         public override int BaseEnergyCost { get; } = 0;
 
-        public override Instruction GenerateNew() => new AdminDropEnergyInstruction();
+        public override Instruction GenerateNew() => new AdminCreateInstruction();
 
         public override int Run(Entity caller, Board board)
         {
@@ -24,19 +24,20 @@ namespace CubeV2
             }
 
             var tile = board.TryGetTile((Vector2Int)location);
-            if (tile == null)
+            if (tile == null || tile.Contents != null)
             {
                 return 0;
             }
 
-            var amount = Variables[1]?.Convert(caller, board, IVariableType.Integer);
-            if (amount == null)
+            var entity = Variables[1]?.Convert(caller, board, IVariableType.EntityType);
+            if (entity == null)
             {
                 return 0;
             }
 
-            caller.TryDropEnergy(tile, (int)amount);
+            board.AddEntityToBoard(((EntityTemplate)entity).GenerateEntity(), (Vector2Int)location);
             return 0;
         }
+
     }
 }

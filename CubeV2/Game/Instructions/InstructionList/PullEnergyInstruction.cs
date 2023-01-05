@@ -1,6 +1,6 @@
 ﻿namespace CubeV2
 {
-    internal class PullEnergyInstruction : Instruction
+    public class PullEnergyInstruction : Instruction
     {
         public override string Name => "PullEnergy";
         public override int VariableCount => 1;

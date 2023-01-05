@@ -24,6 +24,9 @@ namespace CubeV2
         private static int _focusedVariableOption;
         private static int _focusedTile;
 
+        private static List<Instruction> _focusedInstructions;
+        private static List<IVariable> _variableOptions = new List<IVariable>();
+        private static List<Instruction> _instructionOptions => _game?.KnownInstructions;
 
         public static void AddInstructionToEnd() => AddInstructionAtIndex(_focusedInstructions.Count);
         public static void RemoveInstructionFromEnd() => RemoveInstructionAtIndex(_focusedInstructions.Count-1);
@@ -43,16 +46,6 @@ namespace CubeV2
                 _focusedInstructions.RemoveAt(index);
             }
         }
-
-
-
-
-
-
-
-        private static List<Instruction> _focusedInstructions;
-        private static List<IVariable> _variableOptions = new List<IVariable>();
-        private static List<Instruction> _instructionOptions => _game?.KnownInstructions;
 
         public static Instruction GetInstructionFromCurrentFocus(int instructionIndex)
         {
@@ -194,19 +187,6 @@ namespace CubeV2
         public static bool FocusedInstructionExists => InstructionExists(_focusedInstruction);
         public static bool FocusedTileExists => TileExists(_focusedTile);
 
-        public static bool TileExists(int tileIndex)
-        {
-            if(_game != null && _game.CurrentBoard != null)
-            {
-                var tile = _game.CurrentBoard.TryGetTile(tileIndex);
-                if(tile!=null)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
         public static bool OutputExists(int instructionIndex, int outputIndex)
         {
             if (InstructionExists(instructionIndex) && outputIndex >= 0 && (_focusedInstructions[instructionIndex].OutputCount > outputIndex))

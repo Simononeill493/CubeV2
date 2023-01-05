@@ -128,6 +128,7 @@ namespace CubeV2
                 Appearance = MultiAppearance.Create(oldAppearance, toAppend);
             }
         }
+
         public void AddAppearances(params Appearance[] toAppend)
         {
             foreach (var appearance in toAppend)

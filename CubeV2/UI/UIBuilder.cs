@@ -58,7 +58,7 @@ namespace CubeV2
             //displayText.SetEnabledCondition(() => GameInterface.IsGameWon);
 
             var playerActionArray = CreatePlayerActionArray();
-            playerActionArray.SetOffset(500,764);
+            playerActionArray.SetOffset(520, (int)Config.ScreenSize.Y - Config.GameControlButtonSize.Y - 15);
                 
 
             topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid, controlButtonArray, energyBar,displayText,playerActionArray);
@@ -100,7 +100,17 @@ namespace CubeV2
 
         public static UIElement CreatePlayerActionArray()
         {
-            var actionArray = UIElementMaker.MakeRectangle("test", new Vector2(30, 30), Vector2.Zero, Color.Yellow, DrawUtils.UILayer3);
+            var actionArray = new UIElement("ActionArray");
+
+            var currentPlayerAction = UIElementMaker.MakeRectangle("PlayerActionButton", Config.GameControlButtonSize, Vector2.Zero, Color.LightGray, DrawUtils.UILayer2);
+            currentPlayerAction.AddAppearance(new TextAppearance(new Color(179,14,55), DrawUtils.UILayer3, ()=>PlayerActionUtils.GetDisplayMessage(GameInterface.SelectedPlayerAction)));
+
+            var currentSubSelection = UIElementMaker.MakeRectangle("PlayerActionSubSelectionButton", Config.GameControlButtonSize, new Vector2(120,0), Color.White, DrawUtils.UILayer2);
+            currentSubSelection.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Go"));
+            currentSubSelection.AddEnabledCondition(()=>PlayerActionUtils.HasSubSelection(GameInterface.SelectedPlayerAction));
+
+            actionArray.AddChildren(currentPlayerAction, currentSubSelection);
+
             return actionArray;
         }
 

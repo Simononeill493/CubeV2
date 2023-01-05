@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CubeV2
+﻿namespace CubeV2
 {
-    internal class AdminDropEnergyInstruction : Instruction
+    internal class AdminTakeEnergyInstruction : Instruction
     {
-        public override string Name => "AdminDropEnergy";
+        public override string Name => "AdminTakeEnergy";
         public override int VariableCount => 2;
         public override int OutputCount => 0;
         public override int BaseEnergyCost { get; } = 0;
@@ -35,7 +29,7 @@ namespace CubeV2
                 return 0;
             }
 
-            caller.TryDropEnergy(tile, (int)amount);
+            caller.TryTakeEnergy(tile, (int)amount);
             return 0;
         }
     }

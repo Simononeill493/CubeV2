@@ -8,9 +8,11 @@ namespace CubeV2
 {
     public class ManualPlayerEntity : Entity
     {
-        MoveInstruction _keyboardMoveInstruction;
-        PushDestroyInstruction _keyboardHitInstruction;
-        PullEnergyInstruction _keyboardSapInstruction;
+        public static Instruction ClickInstruction;
+
+        static MoveInstruction _keyboardMoveInstruction;
+        static PushDestroyInstruction _keyboardHitInstruction;
+        static PullEnergyInstruction _keyboardSapInstruction;
 
         public ManualPlayerEntity(string templateID, string entityID, string sprite) : base(templateID, entityID, sprite)
         {
@@ -34,6 +36,13 @@ namespace CubeV2
                 _keyboardSapInstruction.Variables[0] = new CardinalDirectionVariable(arrowsDirection.Direction);
                 _executeInstruction(_keyboardSapInstruction, currentBoard);
             }
+
+            if(ClickInstruction!=null)
+            {
+                _executeInstruction(ClickInstruction, currentBoard);
+                ClickInstruction = null;
+            }
+
 
             base.Tick(currentBoard, input);
 

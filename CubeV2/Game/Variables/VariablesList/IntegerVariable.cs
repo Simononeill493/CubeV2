@@ -1,31 +1,30 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CubeV2
 {
-    public class LocationVariable : IVariable
+    public class IntegerVariable : IVariable
     {
         public override IVariableType DefaultType => IVariableType.IntTuple;
-        public override List<IVariableType> ValidTypes { get; } = new List<IVariableType>() { IVariableType.IntTuple };
+        public override List<IVariableType> ValidTypes { get; } = new List<IVariableType>() { IVariableType.Integer, IVariableType.RelativeDirection, IVariableType.CardinalDirection, IVariableType.RotationDirection };
 
-        public Vector2Int Location { get; }
+        public int Number { get; }
 
-        public LocationVariable(Vector2Int location)
+        public IntegerVariable(int number)
         {
-            Location = location;
+            Number = number;
         }
 
         public override object Convert(Entity caller, Board board, IVariableType variableType)
         {
             switch (variableType)
             {
-                case IVariableType.IntTuple:
-                    return Location;
+                case IVariableType.Integer:
+                case IVariableType.RelativeDirection:
+                case IVariableType.CardinalDirection:
+                case IVariableType.RotationDirection:
+                    return Number;
                 default:
                     return null;
             }
@@ -38,10 +37,10 @@ namespace CubeV2
 
         public override bool IVariableEquals(Entity caller, IVariable other)
         {
-            var otherConverted = other.Convert(caller, null, IVariableType.IntTuple);
+            var otherConverted = other.Convert(caller, null, IVariableType.Integer);
             if (otherConverted != null)
             {
-                return (Vector2Int)otherConverted == Location;
+                return (int)otherConverted == Number;
             }
             return false;
         }

@@ -80,7 +80,7 @@ namespace CubeV2
                 }
             }
 
-            _processKeyboardShortcuts(input);
+            _processKeyboardActions(input);
             _processMouseActions(input);
         }
 

@@ -17,32 +17,83 @@ namespace CubeV2
             }
         }
 
-        private static int EntitySelection = 0;
-
         public static void ScrollWheelTurned(int scrollDirection)
         {
-            EntitySelection += scrollDirection;
-            if(EntitySelection<0)
+            if (scrollDirection > 0)
             {
-                EntitySelection = 0;
+                SelectedPlayerAction = PlayerActionUtils.RotateForward(SelectedPlayerAction);
             }
-        }
-
-        public static void CurrentLeftClickAction(Tile tile, Vector2Int location,int index)
-        {
-            FocusTile(index);
-            return;
-            /*var distance = location.EuclideanDistance(_game.FocusEntity.Location);
-
-            if (tile.Contents == null && distance <= Config.PlayerOperationalRadius)
+            else if (scrollDirection < 0)
             {
-                var entities = EntityDatabase.GetAll();
-                var template = entities[EntitySelection % entities.Count()];
-                var newEntity = template.GenerateEntity();
+                SelectedPlayerAction = PlayerActionUtils.RotateBackwards(SelectedPlayerAction);
+            }
 
-                _game.CurrentBoard.AddEntityToBoard(newEntity, location);
-            }*/
         }
+
+        public static void CurrentLeftClickAction(Tile tile, Vector2Int tileLocation,int index)
+        {
+            var distance = _game.FocusEntity.Location.EuclideanDistance(tileLocation);
+            if(distance <= Config.PlayerOperationalRadius)
+            {
+                switch (SelectedPlayerAction)
+                {
+                    case PlayerActionSelection.Select:
+                        FocusTile(index);
+                        break;
+                    case PlayerActionSelection.GiveEnergy:
+                        FocusTile(index);
+                        _manualGiveEmergy(tileLocation);
+                        break;
+                    case PlayerActionSelection.TakeEnergy:
+                        FocusTile(index);
+                        _manualTakeEmergy(tileLocation);
+                        break;
+                    case PlayerActionSelection.CreateEntity:
+                        FocusTile(index);
+                        _manualCreateEntity(tileLocation);
+                        break;
+                    case PlayerActionSelection.DestroyEntity:
+                        _manualDestroyEntity(tileLocation);
+                        break;
+                }
+            }
+
+            return;
+        }
+
+        private static void _manualGiveEmergy(Vector2Int tileLocation)
+        {
+            var dropEnergy = new AdminDropEnergyInstruction();
+            dropEnergy.Variables[0] = new LocationVariable(tileLocation);
+            dropEnergy.Variables[1] = new IntegerVariable(10);
+
+            ManualPlayerEntity.ClickInstruction = dropEnergy;
+        }
+        private static void _manualTakeEmergy(Vector2Int tileLocation)
+        {
+            var takeEnergy = new AdminTakeEnergyInstruction();
+            takeEnergy.Variables[0] = new LocationVariable(tileLocation);
+            takeEnergy.Variables[1] = new IntegerVariable(10);
+
+            ManualPlayerEntity.ClickInstruction = takeEnergy;
+
+        }
+        private static void _manualCreateEntity(Vector2Int tileLocation)
+        {
+            var create = new AdminCreateInstruction();
+            create.Variables[0] = new LocationVariable(tileLocation);
+            create.Variables[1] = new EntityTypeVariable(EntityDatabase.GetTemplate(EntityDatabase.RockName));
+
+            ManualPlayerEntity.ClickInstruction = create;
+        }
+        private static void _manualDestroyEntity(Vector2Int tileLocation)
+        {
+            var destroy = new AdminDestroyInstruction();
+            destroy.Variables[0] = new LocationVariable(tileLocation);
+
+            ManualPlayerEntity.ClickInstruction = destroy;
+        }
+
 
         public static void CurrentRightClickAction(Tile tile, Vector2Int location,int index)
         {

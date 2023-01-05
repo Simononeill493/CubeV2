@@ -157,12 +157,7 @@ namespace CubeV2
             var newLocation = Location + direction.XYOffset();
             var target = BoardCallback.FocusedBoard.TryGetTile(newLocation);
 
-            if (target != null)
-            {
-                return TryDropEnergy(target, amount);
-            }
-
-            return false;
+            return TryDropEnergy(target, amount);
         }
         public bool TryDropEnergy(Tile target, int amount)
         {
@@ -171,7 +166,7 @@ namespace CubeV2
                 amount = CurrentEnergy;
             }
 
-            if (target.Contents == null || amount == 0 || (target.Contents.HasEnergy(target.Contents.MaxEnergy)))
+            if (target == null || target.Contents == null || amount == 0 || (target.Contents.HasEnergy(target.Contents.MaxEnergy)))
             {
                 return false;
             }
@@ -188,15 +183,28 @@ namespace CubeV2
             var newLocation = Location + direction.XYOffset();
             var target = BoardCallback.FocusedBoard.TryGetTile(newLocation);
 
-            if (target != null && target.Contents != null && target.Contents.HasEnergy(1) && CurrentEnergy < MaxEnergy)
+            return TryTakeEnergy(target, 1);
+        }
+        public bool TryTakeEnergy(Tile target, int amount)
+        {
+            if (target == null || target.Contents == null || CurrentEnergy >= MaxEnergy)
             {
-                target.Contents.TakeEnergy(1);
-                GiveEnergy(1);
-
-                return true;
+                return false;
             }
 
-            return false;
+            if(!target.Contents.HasEnergy(amount))
+            {
+                amount = target.Contents.CurrentEnergy;
+
+                if(amount<1)
+                {
+                    return false;
+                }
+            }
+
+            target.Contents.TakeEnergy(amount);
+            GiveEnergy(amount);
+            return true;
         }
 
         public CapturedTileVariable TryPushScan(CardinalDirection direction)

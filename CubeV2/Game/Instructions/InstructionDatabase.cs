@@ -27,7 +27,10 @@ namespace CubeV2
             _masterList.Add(new PushEnergyInstruction());
             _masterList.Add(new PullEnergyInstruction());
 
+            //_masterList.Add(new AdminTakeEnergyInstruction());
             //_masterList.Add(new AdminDropEnergyInstruction());
+            //_masterList.Add(new AdminCreateInstruction());
+            //_masterList.Add(new AdminDestroyInstruction());
         }
 
         public static List<Instruction> GetAll()
