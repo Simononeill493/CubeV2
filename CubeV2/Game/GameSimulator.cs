@@ -10,9 +10,9 @@ namespace CubeV2
     {
         public static int Simulate(Game game,UserInput input,BoardTemplateTemplate template,BoardWinCondition winCon, int timeout,int iterations)
         {
-            var oldMode = BoardCallback.Mode;
+            var oldMode = EntityBoardCallback.Mode;
             //TODO uhmmmmmm
-            BoardCallback.Mode = GamePlaybackMode.Headless;
+            EntityBoardCallback.Mode = GamePlaybackMode.Headless;
 
             int numWins = 0;
 
@@ -20,7 +20,7 @@ namespace CubeV2
             {
                 var board = template.GenerateTemplate().GenerateBoard();
                 game.CustomSetUpBoard(board);
-                BoardCallback.HeadlessBoard = board;
+                EntityBoardCallback.HeadlessBoard = board;
 
                 for(int j=0;j<timeout;j++)
                 {
@@ -34,7 +34,7 @@ namespace CubeV2
                 }
             }
 
-            BoardCallback.Mode = oldMode;
+            EntityBoardCallback.Mode = oldMode;
             return numWins;
         }
     }

@@ -38,10 +38,10 @@ namespace CubeV2
 
         public static Vector2 TileBaseSize = new Vector2(16,16);
         public static int TileScale = 2;
-        public static int VariableSelectionTileScale = 4;
+        public static int VariableSelectionTileScale = 3;
         public static int InstructionTileVariableScale = 3;
 
-        public static int NumInstructionTiles = 6;
+        public static int NumInstructionTiles = 7;
         public static int InstructionTileInternalPadding = 10;
         public static int InstructionTileTopPadding = 50;
         public static int InstructionMaxNumVariables = 3;
@@ -81,6 +81,7 @@ namespace CubeV2
 
         public static string CollectedGoalTag = "EnteredGoal";
         public static string PlayerTag = "Player";
+        public static string IndestructibleTag = "Indestructible";
 
         public static void Load() 
         {
@@ -163,7 +164,7 @@ namespace CubeV2
         public static Color InstructionTileAssignedVariableHighlightColor = new Color(200, 255, 215);
 
         public static Color InstructionTileVariableColor = new Color(240, 240, 240);
-        public static Color SelectionTileVariableColor = new Color(132, 126, 126);
+        public static Color SelectionTileVariableColor = new Color(162, 156, 156);
 
     }
 }

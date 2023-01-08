@@ -57,8 +57,15 @@ namespace CubeV2
                         break;
                 }
             }
+        }
 
-            return;
+        public static void CurrentRightClickAction(Tile tile, Vector2Int tileLocation, int index)
+        {
+            var distance = _game.FocusEntity.Location.EuclideanDistance(tileLocation);
+            if (distance <= Config.PlayerOperationalRadius)
+            {
+                _manualDestroyEntity(tileLocation);
+            }
         }
 
         private static void _manualGiveEmergy(Vector2Int tileLocation)
@@ -67,7 +74,7 @@ namespace CubeV2
             dropEnergy.Variables[0] = new LocationVariable(tileLocation);
             dropEnergy.Variables[1] = new IntegerVariable(10);
 
-            ManualPlayerEntity.ClickInstruction = dropEnergy;
+            _manualInstructionBuffer.Enqueue(dropEnergy);
         }
         private static void _manualTakeEmergy(Vector2Int tileLocation)
         {
@@ -75,35 +82,26 @@ namespace CubeV2
             takeEnergy.Variables[0] = new LocationVariable(tileLocation);
             takeEnergy.Variables[1] = new IntegerVariable(10);
 
-            ManualPlayerEntity.ClickInstruction = takeEnergy;
+            _manualInstructionBuffer.Enqueue(takeEnergy);
 
         }
         private static void _manualCreateEntity(Vector2Int tileLocation)
         {
             var create = new AdminCreateInstruction();
             create.Variables[0] = new LocationVariable(tileLocation);
-            create.Variables[1] = new EntityTypeVariable(EntityDatabase.GetTemplate(EntityDatabase.RockName));
+            create.Variables[1] = new EntityTypeVariable(EntityDatabase.GetTemplate(EntityDatabase.Ally1Name));
 
-            ManualPlayerEntity.ClickInstruction = create;
+            _manualInstructionBuffer.Enqueue(create);
         }
         private static void _manualDestroyEntity(Vector2Int tileLocation)
         {
             var destroy = new AdminDestroyInstruction();
             destroy.Variables[0] = new LocationVariable(tileLocation);
 
-            ManualPlayerEntity.ClickInstruction = destroy;
+            _manualInstructionBuffer.Enqueue(destroy);
         }
 
 
-        public static void CurrentRightClickAction(Tile tile, Vector2Int location,int index)
-        {
-            var distance = location.EuclideanDistance(_game.FocusEntity.Location);
-
-            if (tile.Contents != null && distance <= Config.PlayerOperationalRadius)
-            {
-                _game.CurrentBoard.RemoveEntityFromBoard(tile.Contents);
-            }
-        }
 
 
         public static void LeftClickBoard(int index)

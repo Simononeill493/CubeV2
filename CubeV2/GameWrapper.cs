@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Buffers;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 
@@ -53,9 +54,13 @@ namespace CubeV2
             // TODO: use this.Content to load your game content here
         }
 
+
+        //TODO: Hm. 
+
         protected override void Update(GameTime gameTime)
         {
             var input = new UserInput(Mouse.GetState(), _previousInput.MouseState, Keyboard.GetState(), _previousInput.KeyboardState);
+
             //Console.WriteLine(input.MousePos);
             _universalKeybindings(input);
 
@@ -97,7 +102,7 @@ namespace CubeV2
             // TODO: Add your update logic here
 
             base.Update(gameTime);
-            GameInterface.Update(input,gameTime);
+            GameInterface.TryUpdate(input,gameTime);
 
             _previousInput = input;
             _globalTickCount++;

@@ -55,7 +55,7 @@ namespace CubeV2
             var entities = ActiveEntities.ToList();
             foreach (var entity in entities)
             {
-                if (entity != null)
+                if (entity != null && !entity.Doomed)
                 {
                     entity.Tick(this,input);
                 }
@@ -74,7 +74,7 @@ namespace CubeV2
         }
         public Tile TryGetTile(Vector2Int offset)
         {
-            if(!_onBoard(offset))
+            if(!ContainsLocation(offset))
             {
                 return null;
             }
@@ -82,14 +82,14 @@ namespace CubeV2
             return TilesVector[offset.X, offset.Y];
         }
 
-        private bool _onBoard(Vector2Int location)
+        public bool ContainsLocation(Vector2Int location)
         {
             return (location.X >= 0 && location.Y >= 0 && location.X < _width && location.Y < _height);
         }
 
         public bool TryMoveEntity(Entity entity, Vector2Int newLocation)
         {
-            if (!_onBoard(newLocation))
+            if (!ContainsLocation(newLocation))
             {
                 return false;
             }
@@ -99,7 +99,7 @@ namespace CubeV2
             {
                 if (currentContents.TryBeCollected(entity))
                 {
-                    RemoveEntityFromBoard(currentContents);
+                    _removeEntityFromBoard(currentContents);
                 }
                 else
                 {
@@ -113,17 +113,28 @@ namespace CubeV2
             return true;
         }
 
-        internal void ClearThisTile(Vector2Int targetLocation)
+        internal void TryClearThisTile(Vector2Int targetLocation)
         {
             var tile = TryGetTile(targetLocation);
             if(tile!=null && tile.Contents!=null)
             {
-                RemoveEntityFromBoard(tile.Contents);
+                TryRemoveEntiryFromBoard(tile.Contents);
             }
         }
 
+        public bool TryRemoveEntiryFromBoard(Entity entity)
+        {
+            if(entity.HasTag(Config.IndestructibleTag))
+            {
+                return false;
+            }
 
-        public void RemoveEntityFromBoard(Entity entity)
+            _removeEntityFromBoard(entity);
+            return true;
+        }
+
+
+        private void _removeEntityFromBoard(Entity entity)
         {
             RemoveEntityFromCurrentTile(entity);
 
@@ -139,10 +150,12 @@ namespace CubeV2
             {
                 _removeEntityFromActiveList(entity);
             }
+
+            entity.Doomed = true;
         }
         public void RemoveEntityFromCurrentTile(Entity entity)
         {
-            if (!_onBoard(entity.Location))
+            if (!ContainsLocation(entity.Location))
             {
                 Console.WriteLine("Warning: Entity's current location is not valid for this board.");
             }

@@ -23,7 +23,7 @@ namespace CubeV2
         {
             DrawUtils.DrawSprite(spriteBatch, DrawUtils.GroundSprite, position, Config.TileScale, 0, Vector2.Zero, Layer);
 
-            var contents = BoardCallback.TryGetTile(this.Index).Contents;
+            var contents = GameInterface._game.CurrentBoard.TryGetTile(this.Index).Contents;
             if (contents!=null)
             {
                 DrawUtils.DrawEntity(spriteBatch, contents, position, Config.TileScale, _spriteLayer);

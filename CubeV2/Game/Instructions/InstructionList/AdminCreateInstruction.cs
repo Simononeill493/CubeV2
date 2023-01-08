@@ -29,13 +29,16 @@ namespace CubeV2
                 return 0;
             }
 
-            var entity = Variables[1]?.Convert(caller, board, IVariableType.EntityType);
-            if (entity == null)
+            var template = Variables[1]?.Convert(caller, board, IVariableType.EntityType);
+            if (template == null)
             {
                 return 0;
             }
 
-            board.AddEntityToBoard(((EntityTemplate)entity).GenerateEntity(), (Vector2Int)location);
+            var entity = ((EntityTemplate)template).GenerateEntity();
+            entity.SetEnergyToMax();
+
+            board.AddEntityToBoard(entity, (Vector2Int)location);
             return 0;
         }
 

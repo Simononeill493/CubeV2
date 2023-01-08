@@ -8,11 +8,9 @@ namespace CubeV2
 {
     public class ManualPlayerEntity : Entity
     {
-        public static Instruction ClickInstruction;
-
-        static MoveInstruction _keyboardMoveInstruction;
-        static PushDestroyInstruction _keyboardHitInstruction;
-        static PullEnergyInstruction _keyboardSapInstruction;
+        private static MoveInstruction _keyboardMoveInstruction;
+        private static PushDestroyInstruction _keyboardHitInstruction;
+        private static PullEnergyInstruction _keyboardSapInstruction;
 
         public ManualPlayerEntity(string templateID, string entityID, string sprite) : base(templateID, entityID, sprite)
         {
@@ -37,10 +35,9 @@ namespace CubeV2
                 _executeInstruction(_keyboardSapInstruction, currentBoard);
             }
 
-            if(ClickInstruction!=null)
+            if(input.ManualClickInstruction!=null)
             {
-                _executeInstruction(ClickInstruction, currentBoard);
-                ClickInstruction = null;
+                _executeInstruction(input.ManualClickInstruction, currentBoard);
             }
 
 

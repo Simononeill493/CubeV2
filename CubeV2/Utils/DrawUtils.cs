@@ -22,6 +22,12 @@ namespace CubeV2
         public const string GoalSprite = "Goal";
         public const string PortalSprite = "Portal";
 
+        public const string Ally1Sprite = "Ally1";
+        public const string Ally2Sprite = "Ally2";
+        public const string Ally3Sprite = "Ally3";
+        public const string Ally4Sprite = "Ally4";
+        public const string Ally5Sprite = "Ally5";
+
         public const string GroundSprite = "Ground";
         public const string PlayerSprite = "Player";
         public const string RockSprite = "WhiteWall";
@@ -68,6 +74,12 @@ namespace CubeV2
             SpritesDict[EnemySprite] = content.Load<Texture2D>(EnemySprite);
             SpritesDict[GoalSprite] = content.Load<Texture2D>(GoalSprite);
             SpritesDict[PortalSprite] = content.Load<Texture2D>(PortalSprite);
+
+            SpritesDict[Ally1Sprite] = content.Load<Texture2D>(Ally1Sprite);
+            SpritesDict[Ally2Sprite] = content.Load<Texture2D>(Ally2Sprite);
+            SpritesDict[Ally3Sprite] = content.Load<Texture2D>(Ally3Sprite);
+            SpritesDict[Ally4Sprite] = content.Load<Texture2D>(Ally4Sprite);
+            SpritesDict[Ally5Sprite] = content.Load<Texture2D>(Ally5Sprite);
 
             SpritesDict[GroundSprite] = content.Load<Texture2D>(GroundSprite);
             SpritesDict[PlayerSprite] = content.Load<Texture2D>(PlayerSprite);

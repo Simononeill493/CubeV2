@@ -29,8 +29,8 @@ namespace CubeV2
         public void SetNewBoard(Board b) 
         {
             CurrentBoard = b;
-            CustomSetUpBoard(b);
             SetFocusEntity(CurrentBoard.GetActiveEntityByTag(Config.PlayerTag).FirstOrDefault());
+            CustomSetUpBoard(b);
         }
 
         public void UnsetBoard()

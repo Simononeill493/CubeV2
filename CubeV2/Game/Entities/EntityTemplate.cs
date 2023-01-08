@@ -15,9 +15,9 @@ namespace CubeV2
         public SpecialEntityTag SpecialTag;
 
         public string Sprite;
-       
 
-        public List<Instruction> Instructions = new List<Instruction>();
+
+        public List<Instruction> Instructions = null;
 
         public EntityTemplate(string id, SpecialEntityTag specialTag = SpecialEntityTag.None)
         {

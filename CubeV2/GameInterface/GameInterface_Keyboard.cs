@@ -9,9 +9,6 @@ namespace CubeV2
 {
     public partial class GameInterface
     {
-
-
-
         private static void _processKeyboardActions(UserInput input)
         {
             if (input.IsKeyJustPressed(Keys.Space))

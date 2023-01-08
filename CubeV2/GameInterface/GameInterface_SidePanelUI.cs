@@ -24,7 +24,8 @@ namespace CubeV2
         private static int _focusedVariableOption;
         private static int _focusedTile;
 
-        private static List<Instruction> _focusedInstructions;
+        private static EntityTemplate _focusedTemplate;
+        private static List<Instruction> _focusedInstructions => _focusedTemplate.Instructions;
         private static List<IVariable> _variableOptions = new List<IVariable>();
         private static List<Instruction> _instructionOptions => _game?.KnownInstructions;
 

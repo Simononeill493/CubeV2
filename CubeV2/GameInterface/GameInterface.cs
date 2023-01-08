@@ -19,13 +19,16 @@ namespace CubeV2
         public static Game _game;
         private static bool _boardRunning;
 
+        private static Queue<Instruction> _manualInstructionBuffer = new Queue<Instruction>();
+
+
         public static void InitializeEmptyBoardGame() => _game = new EmptyBoardGame();
         public static void InitializeBoardlessGame() => _game = new EmptyBoardlessGame();
 
         public static void InitializeDemoFindGoalGame()
         {
             var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.AutoPlayerName);
-            _focusedInstructions = demoPlayer.Instructions;
+            _focusedTemplate = EntityDatabase.GetTemplate(EntityDatabase.Ally1Name);
 
             _game = new DemoFindGoalGame(demoPlayer);
         }
@@ -33,7 +36,7 @@ namespace CubeV2
         public static void InitializeBoardTest1Game()
         {
             var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.ManualPlayerName);
-            _focusedInstructions = demoPlayer.Instructions;
+            _focusedTemplate = EntityDatabase.GetTemplate(EntityDatabase.Ally1Name);
 
             _game = new BoardTest1Game(demoPlayer);
             StartBoard(Config.BoardTest1UpdateRate);
@@ -51,6 +54,8 @@ namespace CubeV2
         }
         public static void ResetBoard()
         {
+            _manualInstructionBuffer.Clear();
+
             _game.ResetBoard();
             DisplayText = "Board Reset!";
         }
@@ -63,25 +68,39 @@ namespace CubeV2
         public static void TogglePauseBoard() => _boardRunning = !_boardRunning;
         public static void PauseBoard() => _boardRunning = false;
 
-        public static void Update(UserInput input, GameTime gameTime)
+        public static void TryUpdate(UserInput input, GameTime gameTime)
         {
+            _processKeyboardActions(input);
+            _processMouseActions(input);
+
             if (_boardRunning)
             {
                 TimeSinceLastUpdate += gameTime.ElapsedGameTime;
                 if (TimeSinceLastUpdate >= BoardUpdateRate)
                 {
-                    TimeSinceLastUpdate = TimeSpan.Zero;
-                    _game.TickBoard(input);
-
-                    if (IsGameWon)
-                    {
-                        DisplayText = "A winner is you!";
-                    }
+                    _update(input);
                 }
             }
 
-            _processKeyboardActions(input);
-            _processMouseActions(input);
+        }
+
+        private static void _update(UserInput input)
+        {
+            TimeSinceLastUpdate = TimeSpan.Zero;
+
+            if (_manualInstructionBuffer.Any())
+            {
+                //Console.WriteLine("Instruction was removed from queue.");
+                input.ManualClickInstruction = _manualInstructionBuffer.Dequeue();
+            }
+
+            _game.TickBoard(input);
+
+            if (IsGameWon)
+            {
+                DisplayText = "A winner is you!";
+            }
+
         }
 
         public static void SimulateCurrentGame(UserInput input)
@@ -153,7 +172,7 @@ namespace CubeV2
 
 
     //TODO oh noooo
-    public static class BoardCallback
+    public static class EntityBoardCallback
     {
         public static GamePlaybackMode Mode = GamePlaybackMode.Headed;
 
@@ -161,10 +180,10 @@ namespace CubeV2
         public static Board HeadedBoard => GameInterface._game.CurrentBoard;
         public static Board HeadlessBoard;
 
-        public static bool TryMoveEntity(Entity e, Vector2Int location) => FocusedBoard.TryMoveEntity(e, location);
+        public static bool TryMove(Entity e, Vector2Int location) => FocusedBoard.TryMoveEntity(e, location);
         public static Tile TryGetTile(int index) => FocusedBoard.TryGetTile(index);
         public static Tile TryGetTile(Vector2Int offset) => FocusedBoard.TryGetTile(offset);
-        public static void ClearTile(Vector2Int targetLocation) => FocusedBoard.ClearThisTile(targetLocation);
+        public static void TryClearTile(Vector2Int targetLocation) => FocusedBoard.TryClearThisTile(targetLocation);
     }
 
     public enum GamePlaybackMode
