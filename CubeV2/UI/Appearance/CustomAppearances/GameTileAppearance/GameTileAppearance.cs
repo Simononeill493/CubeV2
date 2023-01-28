@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,16 +18,23 @@ namespace CubeV2
             _spriteLayer = spriteLayer;
         }
 
-        public override Vector2 Size => Config.TileBaseSize * Config.TileScale;
+        public override Vector2 Size => GameInterface._cameraTileSizeFloat;
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            DrawUtils.DrawSprite(spriteBatch, DrawUtils.GroundSprite, position, Config.TileScale, 0, Vector2.Zero, Layer);
-
-            var contents = GameInterface._game.CurrentBoard.TryGetTile(this.Index).Contents;
-            if (contents!=null)
+            var loc = GameInterface.UITileGetRealTile(Index).realLocation;
+            var tile = GameInterface._game.CurrentBoard.TryGetTile(loc);
+            if(tile!=null)
             {
-                DrawUtils.DrawEntity(spriteBatch, contents, position, Config.TileScale, _spriteLayer);
+                DrawUtils.DrawSprite(spriteBatch, DrawUtils.GroundSprite, position, GameInterface.CameraScale, 0, Vector2.Zero, Layer);
+                if (tile.Contents != null)
+                {
+                    DrawUtils.DrawEntity(spriteBatch, tile.Contents, position, GameInterface.CameraScale, _spriteLayer);
+                }
+            }
+            else
+            {
+                DrawUtils.DrawSprite(spriteBatch, DrawUtils.VoidSprite, position, GameInterface.CameraScale, 0, Vector2.Zero, Layer);
             }
         }
     }

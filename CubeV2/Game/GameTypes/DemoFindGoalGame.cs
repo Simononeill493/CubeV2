@@ -27,7 +27,7 @@ namespace CubeV2
 
         public override BoardTemplateTemplate CreateTemplateTemplate()
         {
-            var templateTemplate = new FullyRandomTemplateTemplate() { Width = Config.GameGridDefaultWidth, Height = Config.GameGridDefaultHeight };
+            var templateTemplate = new FullyRandomTemplateTemplate() { Width = Config.GameUIGridDefaultWidth, Height = Config.GameUIGridDefaultHeight };
             templateTemplate.EntitiesRandomLocation.Add(_playerTemplate);
 
             for (int i = 0; i < 25; i++)

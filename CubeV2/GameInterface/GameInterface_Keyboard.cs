@@ -120,6 +120,32 @@ namespace CubeV2
 
             }
 
+            if (input.IsKeyDown(Keys.Left))
+            {
+                CameraOffset.X++;
+            }
+             if (input.IsKeyDown(Keys.Right))
+            {
+                CameraOffset.X--;
+            }
+             if (input.IsKeyDown(Keys.Down))
+            {
+                CameraOffset.Y--;
+            }
+             if (input.IsKeyDown(Keys.Up))
+            {
+                CameraOffset.Y++;
+            }
+            if (input.IsKeyJustReleased(Keys.OemPlus))
+            {
+                SetCameraConfig(CameraScale + 1);
+            }
+            if (input.IsKeyJustReleased(Keys.OemMinus))
+            {
+                SetCameraConfig(CameraScale - 1);
+            }
+
+
         }
     }
 }

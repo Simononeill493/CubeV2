@@ -284,6 +284,7 @@ namespace CubeV2
     public static class BoardUtils
     {
         public static Vector2Int IndexToXY(int index, int width) => new Vector2Int(index % width, index / width);
+        public static int XYToIndex(Vector2Int xy, int width) => xy.X + (xy.Y * width);
 
     }
 }

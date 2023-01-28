@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Threading;
 
@@ -6,24 +7,40 @@ namespace CubeV2
 {
     internal class UIBuilder
     {
+        public class CursorOverlayAppearance : RectangleAppearance
+        {
+            public override Vector2 Size => GameInterface._cameraTileSizeFloat;
+            public CursorOverlayAppearance(Color color, float layer) : base(0, 0, color, layer){}
+        }
+
+        public class OperationalRangeOverlayAppearance : RectangleAppearance
+        {
+            public override Vector2 Size => GameInterface._cameraTileSizeFloat * ((Config.PlayerOperationalRadius * 2 + 1));
+            public OperationalRangeOverlayAppearance(Color color, float layer) : base(0, 0, color, layer) { }
+        }
+
+
+
         public static UIElement GenerateUI()
         {
             var topLevel = new UIElement(Config.UITopLevelName);
 
-            var instructionPanel = UIElementMaker.MakeRectangle(Config.InstructionPanelName, Config.InstructionPanelSize, Config.InstructionPanelOffset,Config.InstructionPanelColor, DrawUtils.UILayer1);
-            
+            var instructionPanel = UIElementMaker.MakeRectangle(Config.InstructionPanelName, Config.InstructionPanelSize, Config.InstructionPanelOffset, Config.InstructionPanelColor, DrawUtils.UILayer1);
+
             var selectorPanel = UIElementMaker.MakeRectangle(Config.SelectorPanelName, Config.SelectorPanelSize, Config.SelectorPanelOffset, Config.SelectorPanelColor, DrawUtils.UILayer1);
 
             var gameGrid = _makeGameGrid();
             gameGrid.SetOffset(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X, 60);
 
             var cursorOverlayTile = new UIElement(Config.CursorOverlayTileName);
-            cursorOverlayTile.AddAppearance(new RectangleAppearance(Config.TileBaseSize * Config.TileScale, Color.White * 0.5f, DrawUtils.GameLayer4));
+            cursorOverlayTile.AddAppearance(new CursorOverlayAppearance(Color.White * 0.5f, DrawUtils.GameLayer4));
+
+
             cursorOverlayTile.AddEnabledCondition(() => AllUIElements.GetUIElement(Config.GameGridName).MouseOver);
             gameGrid.AddChildren(cursorOverlayTile);
 
             var operationalRangeOverlayTile = new UIElement(Config.OperationalRangeOverlayTileName);
-            operationalRangeOverlayTile.AddAppearance(new RectangleAppearance(Config.TileBaseSize * Config.TileScale * ((Config.PlayerOperationalRadius*2+1)), Color.White * 0.05f, DrawUtils.GameLayer5));
+            operationalRangeOverlayTile.AddAppearance(new OperationalRangeOverlayAppearance(Color.White * 0.05f, DrawUtils.GameLayer5));
             operationalRangeOverlayTile.AddEnabledCondition(() => GameInterface._game.FocusEntity != null);
             gameGrid.AddChildren(operationalRangeOverlayTile);
 
@@ -137,10 +154,11 @@ namespace CubeV2
 
         private static UIGrid _makeGameGrid()
         {
-            var gameTileSize = Config.TileBaseSize * Config.TileScale;
             var appearanceFactory = new GameTileAppearanceFactory(DrawUtils.GameLayer1, DrawUtils.GameLayer2);
 
-            var gameGrid = UIGrid.Make(Config.GameGridName,Config.GameGridDefaultWidth,Config.GameGridDefaultHeight, (int)gameTileSize.X,(int)gameTileSize.Y,Config.GameGridPadding, appearanceFactory);
+            var gameGrid = new UIGrid(Config.GameGridName,Config.GameUIGridMaxGridWidth,Config.GameUIGridMaxGridHeight, appearanceFactory);
+            //gameGrid.Arrange(Config.GameUIGridDefaultWidth, Config.GameUIGridDefaultHeight, (int)gameTileSize.X, (int)gameTileSize.Y, Config.GameUIGridPadding);
+            //gameGrid.Arrange(GameInterface.CameraSize.X, GameInterface.CameraSize.Y, (int)gameTileSize.X*2, (int)gameTileSize.Y*2, Config.GameUIGridPadding);
 
             //gameGrid.TileLeftClicked += (i, index) => Pause();
             gameGrid.TileLeftClicked += (i, index) => GameInterface.LeftClickBoard(index);
@@ -198,7 +216,9 @@ namespace CubeV2
             var tilePadding = 3;
             var appearanceFactory = new VariableTileAppearanceFactory_ForSelectionGrid(Config.VariableSelectionTileScale, DrawUtils.UILayer2,DrawUtils.UILayer3);
 
-            var variableGrid = UIGrid.Make(Config.VariableGridName, Config.VariableSelectorGridSize, new Vector2Int(tileSize), tilePadding, appearanceFactory);
+            var variableGrid = new UIGrid(Config.VariableGridName, Config.VariableSelectorGridSize, appearanceFactory);
+            variableGrid.Arrange(Config.VariableSelectorGridSize, new Vector2Int(tileSize), tilePadding);
+
             variableGrid.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedVariable(index);
             return variableGrid;
         }
@@ -211,7 +231,9 @@ namespace CubeV2
 
             var appearanceFactory = new InstructionSelectionTileAppearanceFactory(DrawUtils.UILayer2, DrawUtils.UILayer3);
 
-            var instructionGrid = UIGrid.Make(Config.InstructionSelectorGridName, gridSize, tileSize, tilePadding, appearanceFactory);
+            var instructionGrid = new UIGrid(Config.InstructionSelectorGridName, gridSize, appearanceFactory);
+            instructionGrid.Arrange(gridSize, tileSize, tilePadding);
+
             instructionGrid.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedInstruction(index);
             return instructionGrid;
         }
@@ -224,7 +246,8 @@ namespace CubeV2
 
             var appearanceFactory = new OutputSelectionTileAppearanceFactory(Config.VariableSelectionTileScale, DrawUtils.UILayer2, DrawUtils.UILayer3);
 
-            var outputSelectorGrid = UIGrid.Make(Config.OutputSelectorGridName, gridSize, tileSize, tilePadding, appearanceFactory);
+            var outputSelectorGrid = new UIGrid(Config.OutputSelectorGridName, gridSize, appearanceFactory);
+            outputSelectorGrid.Arrange(gridSize, tileSize, tilePadding);
             outputSelectorGrid.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedOutput(index);
             return outputSelectorGrid;
         }

@@ -45,7 +45,7 @@ namespace CubeV2
 
         public override BoardTemplateTemplate CreateTemplateTemplate()
         {
-            var templateTemplate = new BoardTest1TemplateTemplate() { Width = Config.GameGridDefaultWidth, Height = Config.GameGridDefaultHeight };
+            var templateTemplate = new BoardTest1TemplateTemplate() { Width = Config.GameUIGridDefaultWidth, Height = Config.GameUIGridDefaultHeight };
             templateTemplate.StaticEntities[new Vector2Int(7, 7)] = _playerTemplate;
 
             var rock = EntityDatabase.GetTemplate(EntityDatabase.RockName);

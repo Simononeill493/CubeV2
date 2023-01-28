@@ -115,7 +115,7 @@ namespace CubeV2
             {
                 var cursorTile = AllUIElements.GetUIElement(Config.CursorOverlayTileName);
 
-                var gridShrinkFactor = new Vector2Int(Config.TileBaseSize * Config.TileScale);
+                var gridShrinkFactor = GameInterface.CameraTileSize;
                 var startPos = new Vector2Int(input.MousePos - gameGrid._position);
 
                 var rescaledPos = (startPos / gridShrinkFactor) * gridShrinkFactor;
@@ -129,7 +129,7 @@ namespace CubeV2
             if (focusEntity!=null)
             {
                 var rangeOverlay = AllUIElements.GetUIElement(Config.OperationalRangeOverlayTileName);
-                var offset = ((focusEntity.Location - (Config.PlayerOperationalRadius)) * Config.TileScale * Config.TileBaseSize);
+                var offset = ((focusEntity.Location - GameInterface.CameraOffset - (Config.PlayerOperationalRadius)) * GameInterface._cameraTileSizeFloat);
 
                 rangeOverlay.SetOffset(offset);
             }

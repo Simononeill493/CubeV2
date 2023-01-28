@@ -32,12 +32,15 @@ namespace CubeV2
 
         //public static int GameGridWidth = 10;
         //public static int GameGridHeight = 10;
-        public static int GameGridDefaultWidth = 43;
-        public static int GameGridDefaultHeight = 22;
-        public static int GameGridPadding = 0;
+        //public static int GameGridHeight = 10;
+        public static int GameUIGridMaxGridWidth = 100;
+        public static int GameUIGridMaxGridHeight = 50;
+
+        public static int GameUIGridDefaultWidth = 43;
+        public static int GameUIGridDefaultHeight = 22;
+        public static int GameUIGridPadding = 0;
 
         public static Vector2 TileBaseSize = new Vector2(16,16);
-        public static int TileScale = 2;
         public static int VariableSelectionTileScale = 3;
         public static int InstructionTileVariableScale = 3;
 
@@ -89,6 +92,8 @@ namespace CubeV2
         }
 
         public static Vector2 ScreenSize = new Vector2(1900, 850);
+        public static Vector2 GameUIGridMaxSize = new Vector2(1376, 704);
+
 
         public static Vector2 InstructionPanelSize;
         public static Vector2 InstructionPanelOffset;

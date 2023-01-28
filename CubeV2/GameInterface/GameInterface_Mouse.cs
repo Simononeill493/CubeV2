@@ -30,26 +30,28 @@ namespace CubeV2
 
         }
 
-        public static void CurrentLeftClickAction(Tile tile, Vector2Int tileLocation,int index)
+        public static void CurrentLeftClickAction(Tile tile, Vector2Int tileLocation,int actualIndex)
         {
             var distance = _game.FocusEntity.Location.EuclideanDistance(tileLocation);
-            if(distance <= Config.PlayerOperationalRadius)
+            Console.WriteLine(distance);
+
+            if (distance <= Config.PlayerOperationalRadius)
             {
                 switch (SelectedPlayerAction)
                 {
                     case PlayerActionSelection.Select:
-                        FocusTile(index);
+                        FocusTile(actualIndex);
                         break;
                     case PlayerActionSelection.GiveEnergy:
-                        FocusTile(index);
+                        FocusTile(actualIndex);
                         _manualGiveEmergy(tileLocation);
                         break;
                     case PlayerActionSelection.TakeEnergy:
-                        FocusTile(index);
+                        FocusTile(actualIndex);
                         _manualTakeEmergy(tileLocation);
                         break;
                     case PlayerActionSelection.CreateEntity:
-                        FocusTile(index);
+                        FocusTile(actualIndex);
                         _manualCreateEntity(tileLocation);
                         break;
                     case PlayerActionSelection.DestroyEntity:
@@ -59,7 +61,7 @@ namespace CubeV2
             }
         }
 
-        public static void CurrentRightClickAction(Tile tile, Vector2Int tileLocation, int index)
+        public static void CurrentRightClickAction(Tile tile, Vector2Int tileLocation, int actualIndex)
         {
             var distance = _game.FocusEntity.Location.EuclideanDistance(tileLocation);
             if (distance <= Config.PlayerOperationalRadius)
@@ -104,37 +106,37 @@ namespace CubeV2
 
 
 
-        public static void LeftClickBoard(int index)
+        public static void LeftClickBoard(int uiIndex)
         {
-            (var tile, var location) = _getBoardDetailsFromIndex(index);
+            (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
+            Console.WriteLine(location);
+
             if (tile != null)
             {
-                CurrentLeftClickAction(tile, location,index);
+                CurrentLeftClickAction(tile, location,actualIndex);
             }
 
         }
-        public static void RightClickBoard(int index)
+        public static void RightClickBoard(int uiIndex)
         {
-            (var tile, var location) = _getBoardDetailsFromIndex(index);
+            (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
             if(tile != null)
             {
-                CurrentRightClickAction(tile, location,index);
+                CurrentRightClickAction(tile, location,actualIndex);
             }
         }
 
-        private static (Tile tile, Vector2Int Location) _getBoardDetailsFromIndex(int index)
+        private static (Tile tile, Vector2Int location,int actualIndex) _getBoardDetailsFromIndex(int index)
         {
-            var location = BoardUtils.IndexToXY(index, _game.CurrentBoard._width);
-            var tile = _game.CurrentBoard.TryGetTile(location);
+            (Vector2Int realLocation,int realIndex) = UITileGetRealTile(index);
+            var tile = _game.CurrentBoard.TryGetTile(realLocation);
 
             if (tile != null)
             {
-                return (tile, location);
+                return (tile, realLocation, realIndex);
             }
 
-            return (null, Vector2Int.MinusOne);
+            return (null, Vector2Int.MinusOne, -1);
         }
-
-
     }
 }

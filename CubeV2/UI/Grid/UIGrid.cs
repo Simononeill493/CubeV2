@@ -14,44 +14,65 @@ namespace CubeV2
 {
     public class UIGrid : UIElement
     {
-        private UIGrid(string id) : base(id) { }
-        private static string _generateTileID(string gridId, int x, int y) => gridId + '_' + x + '_' + y;
+        //private Dictionary<(int,int),UIElement> _tiles;
+        private List<UIElement> _tiles;
+        private TileAppearanceFactory _appearanceFactory;
+
+        private static string _generateTileID(string gridId, int x, int y) => gridId + '_' + x*y + " (" + x + ' ' + y + ')';
         private static Vector2 _generateTileOffset(int x, int y, int width, int height, int padding) => new Vector2((width + padding) * x + padding, (height + padding) * y + padding);
 
-        public static UIGrid Make(string id, Vector2Int gridSize, Vector2Int tileSize, int internalPadding, TileAppearanceFactory appearanceFactory)
-         => Make(id, gridSize.X, gridSize.Y, tileSize.X, tileSize.Y, internalPadding, appearanceFactory);
-
-        public static UIGrid Make(string id, int gridWidth, int gridHeight, int tileWidth, int tileHeight, int internalPadding, TileAppearanceFactory appearanceFactory)
+        public UIGrid(string id, Vector2Int maxSize, TileAppearanceFactory appearanceFactory): this(id, maxSize.X, maxSize.Y, appearanceFactory) { }
+        public UIGrid(string id, int maxWidth, int maxHeight, TileAppearanceFactory appearanceFactory) : base(id)
         {
-            var grid = new UIGrid(id);
+            _appearanceFactory = appearanceFactory;
+            _tiles = new List<UIElement>();
 
             int index = 0;
 
-            for (int y = 0; y < gridHeight; y++)
+            for (int y = 0; y < maxHeight; y++)
             {
-                for (int x = 0; x < gridWidth; x++)
+                for (int x = 0; x < maxWidth; x++)
                 {
                     var tile = new UIElement(_generateTileID(id, x, y));
 
-                    var backgroundAppearance = appearanceFactory.CreateBackground(index, tileWidth, tileHeight);
-                    var foregroundAppearance = appearanceFactory.CreateForeground(index);
+                    int indexCaptured = index;
+                    tile.AddLeftClickAction((input) => { TileLeftClicked?.Invoke(input, indexCaptured); });
+                    tile.AddRightClickAction((input) => { TileRightClicked?.Invoke(input, indexCaptured); });
 
+                    AddChildren(tile);
+                    _tiles.Add(tile);
+                    index++;
+                }
+            }
+        }
+
+        public void Arrange(Vector2Int size,Vector2Int tileSize,int internalPadding) => Arrange(size.X, size.Y, tileSize.X, tileSize.Y, internalPadding);
+        public void Arrange(int width,int height,int tileWidth,int tileHeight,int internalPadding)
+        {
+            int index = 0;
+
+            _tiles.ForEach((t) => t._alwaysDisabled = true);
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    var tile = _tiles[index];
+
+                    var backgroundAppearance = _appearanceFactory.CreateBackground(index, tileWidth, tileHeight);
+                    var foregroundAppearance = _appearanceFactory.CreateForeground(index);
+
+                    tile.ClearApperances();
                     tile.AddAppearances(backgroundAppearance, foregroundAppearance);
                     tile.SetOffset(_generateTileOffset(x, y, tileWidth, tileHeight, internalPadding));
 
-                    int indexCaptured = index;
-                    tile.AddLeftClickAction((input) => { grid.TileLeftClicked?.Invoke(input, indexCaptured); });
-                    tile.AddRightClickAction((input) => { grid.TileRightClicked?.Invoke(input, indexCaptured); });
-
-                    grid.AddChildren(tile);
+                    tile._alwaysDisabled = false;
                     index++;
                 }
             }
 
-            var size = new Vector2(((tileWidth + internalPadding) * gridWidth), (tileHeight + internalPadding) * gridHeight);
-            grid.SetManualSize(size);
-
-            return grid;
+            var size = new Vector2(((tileWidth + internalPadding) * width), (tileHeight + internalPadding) * height);
+            SetManualSize(size);
         }
 
         public event Action<UserInput, int> TileLeftClicked;

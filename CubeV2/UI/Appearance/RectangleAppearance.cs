@@ -25,7 +25,7 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            DrawUtils.DrawRect(spriteBatch, position, _size, Color, Layer);
+            DrawUtils.DrawRect(spriteBatch, position, Size, Color, Layer);
         }
     }
 }

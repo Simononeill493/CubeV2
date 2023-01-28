@@ -61,6 +61,8 @@ namespace CubeV2
         }
         public static void StartBoard(TimeSpan updateRate)
         {
+            SetCameraConfig(2,new Vector2Int(Config.GameUIGridDefaultWidth, Config.GameUIGridDefaultHeight));
+
             _boardRunning = true;
             BoardUpdateRate = updateRate;
             TimeSinceLastUpdate = TimeSpan.Zero;

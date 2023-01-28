@@ -21,7 +21,7 @@ namespace CubeV2
         public bool Clickable { get; private set; } = false;
         public bool Typeable { get; private set; } = false;
 
-        public bool Enabled => _alwaysEnabled || _checkEnabledConditions();
+        public bool Enabled => !_alwaysDisabled && (_alwaysEnabled || _checkEnabledConditions());
         private bool _checkEnabledConditions()
         {
             foreach (var condition in _enabledConditions)
@@ -93,6 +93,8 @@ namespace CubeV2
 
         public List<Func<bool>> _enabledConditions = new List<Func<bool>>();
         private bool _alwaysEnabled = true;
+        public bool _alwaysDisabled = false;
+
         public void AddEnabledConditions(List<Func<bool>> conditions)
         {
             foreach(var condition in conditions)
@@ -128,6 +130,7 @@ namespace CubeV2
                 Appearance = MultiAppearance.Create(oldAppearance, toAppend);
             }
         }
+        public void ClearApperances() => Appearance = Appearance.NoAppearance;
 
         public void AddAppearances(params Appearance[] toAppend)
         {

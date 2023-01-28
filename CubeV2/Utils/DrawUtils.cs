@@ -21,6 +21,7 @@ namespace CubeV2
         public const string EnemySprite = "Enemy";
         public const string GoalSprite = "Goal";
         public const string PortalSprite = "Portal";
+        public const string VoidSprite = "Void";
 
         public const string Ally1Sprite = "Ally1";
         public const string Ally2Sprite = "Ally2";
@@ -74,6 +75,7 @@ namespace CubeV2
             SpritesDict[EnemySprite] = content.Load<Texture2D>(EnemySprite);
             SpritesDict[GoalSprite] = content.Load<Texture2D>(GoalSprite);
             SpritesDict[PortalSprite] = content.Load<Texture2D>(PortalSprite);
+            SpritesDict[VoidSprite] = content.Load<Texture2D>(VoidSprite);
 
             SpritesDict[Ally1Sprite] = content.Load<Texture2D>(Ally1Sprite);
             SpritesDict[Ally2Sprite] = content.Load<Texture2D>(Ally2Sprite);
@@ -140,36 +142,36 @@ namespace CubeV2
                     break;
                 case Orientation.TopRight:
                     rotation = (float)(rotBase * 1);
-                    rotationOffset = new Vector2(8, -4) * Config.TileScale;
+                    rotationOffset = new Vector2(8, -4) * GameInterface.CameraScale;
                     break;
                 case Orientation.Right:
                     rotation = (float)(rotBase*2);
-                    rotationOffset = new Vector2(16, 0) * Config.TileScale;
+                    rotationOffset = new Vector2(16, 0) * GameInterface.CameraScale;
 
                     break;
                 case Orientation.BottomRight:
                     rotation = (float)(rotBase * 3);
-                    rotationOffset = new Vector2(19, 8) * Config.TileScale;
+                    rotationOffset = new Vector2(19, 8) * GameInterface.CameraScale;
 
                     break;
                 case Orientation.Bottom:
                     rotation = (float)(rotBase * 4);
-                    rotationOffset = new Vector2(16, 16) * Config.TileScale;
+                    rotationOffset = new Vector2(16, 16) * GameInterface.CameraScale;
 
                     break;
                 case Orientation.BottomLeft:
                     rotation = (float)(rotBase * 5);
-                    rotationOffset = new Vector2(8, 20) * Config.TileScale;
+                    rotationOffset = new Vector2(8, 20) * GameInterface.CameraScale;
 
                     break;
                 case Orientation.Left:
                     rotation = (float)(rotBase * 6);
-                    rotationOffset = new Vector2(0, 16) * Config.TileScale;
+                    rotationOffset = new Vector2(0, 16) * GameInterface.CameraScale;
 
                     break;
                 case Orientation.TopLeft:
                     rotation = (float)(rotBase * 7);
-                    rotationOffset = new Vector2(-3, 8) * Config.TileScale;
+                    rotationOffset = new Vector2(-3, 8) * GameInterface.CameraScale;
                     break;    
                 default:
                     throw new Exception();
