@@ -6,31 +6,29 @@ Created on Sat Jan 28 21:20:01 2023
 """
 
 path = "C:\\Users\\Simon\\Desktop\\CubeV2\\MapRead1.bmp"
+pathOut = "C:\\Users\\Simon\\Desktop\\CubeV2\\BigMap.txt"
 
-import os
-import scipy
-scipy
-image= misc.imageio.imread(path, flatten= 0)
+f = open(pathOut,'w+')
 
+def writePrint(char):
+    print(char,end='')
+    f.write(char)
 
 from PIL import Image
 img = Image.open(path)
-for i in img:
-    print(i)
-
-img = np.array(Image.open('path_to_file\file.bmp'))
 imglist = list(img.getdata())
 size = img.size
 
-i = 0
+i = 1
 for pixel in imglist:
     if pixel[0] == 0:
-        print('X',end='')
+        writePrint('x')
+    elif pixel[0] == 255:
+        writePrint('-')
     else:
-        print('-',end='')
-        
+        writePrint('?')
     if i % size[0] is 0:
-        print()
+        writePrint('\n')
     i=i+1
-        
-    
+
+f.close()
