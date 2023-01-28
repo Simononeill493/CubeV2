@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,15 +27,24 @@ namespace CubeV2
             var tile = GameInterface._game.CurrentBoard.TryGetTile(loc);
             if(tile!=null)
             {
-                DrawUtils.DrawSprite(spriteBatch, DrawUtils.GroundSprite, position, GameInterface.CameraScale, 0, Vector2.Zero, Layer);
-                if (tile.Contents != null)
+                if(tile.Seen)
                 {
-                    DrawUtils.DrawEntity(spriteBatch, tile.Contents, position, GameInterface.CameraScale, _spriteLayer);
+                    DrawUtils.DrawSprite(spriteBatch, DrawUtils.GroundSprite, position, GameInterface.CameraScale, 0, Vector2.Zero, Layer);
+                    if (tile.Contents != null)
+                    {
+                        DrawUtils.DrawEntity(spriteBatch, tile.Contents, position, GameInterface.CameraScale, _spriteLayer);
+                    }
+                }
+                else
+                {
+                    DrawUtils.DrawRect(spriteBatch, position,GameInterface._cameraTileSizeFloat, Config.PlayerFogColor, Layer);
                 }
             }
             else
             {
-                DrawUtils.DrawSprite(spriteBatch, DrawUtils.VoidSprite, position, GameInterface.CameraScale, 0, Vector2.Zero, Layer);
+                DrawUtils.DrawRect(spriteBatch, position, GameInterface._cameraTileSizeFloat, Color.Black, Layer);
+
+                //DrawUtils.DrawSprite(spriteBatch, DrawUtils.VoidSprite, position, GameInterface.CameraScale, 0, Vector2.Zero, Layer);
             }
         }
     }

@@ -21,6 +21,8 @@ namespace CubeV2
         public static int ManualPlayerMaxEnergy = 200;
         public static int ManualPlayerStartingEnergy = 50;
         public static int PlayerOperationalRadius = 3;
+        public static int PlayerVisualRadius = 5;
+        public static Color PlayerFogColor = new Color(50, 50, 50);
 
         public static int BaseMoveCost = 1;//1
         public static int BaseScanCost = 3;//3
@@ -35,9 +37,6 @@ namespace CubeV2
         //public static int GameGridHeight = 10;
         public static int GameUIGridMaxGridWidth = 100;
         public static int GameUIGridMaxGridHeight = 50;
-
-        public static int GameUIGridDefaultWidth = 43;
-        public static int GameUIGridDefaultHeight = 22;
         public static int GameUIGridPadding = 0;
 
         public static Vector2 TileBaseSize = new Vector2(16,16);

@@ -9,13 +9,8 @@ namespace CubeV2
 {
     public partial class GameInterface
     {
-        private static void _processKeyboardActions(UserInput input)
+        private static void _processInstructionKeyboardShortcuts(UserInput input)
         {
-            if (input.IsKeyJustPressed(Keys.Space))
-            {
-                TogglePauseBoard();
-            }
-
             if (CurrentSidePanelFocus == SidePanelFocus.Instruction)
             {
                 if (input.IsKeyJustPressed(Keys.Up))
@@ -29,14 +24,14 @@ namespace CubeV2
                         AddInstructionAtIndex(_focusedInstruction);
                     }
 
-                    FocusInstruction(_focusedInstruction+1);
+                    FocusInstruction(_focusedInstruction + 1);
                 }
                 else if (input.IsKeyJustPressed(Keys.Right))
                 {
                     FocusInstructionOption(_focusedInstruction, 0);
                 }
                 else if (input.IsKeyJustPressed(Keys.Enter))
-                {   
+                {
                     FocusVariable(_focusedInstruction, 0);
 
                     if (FocusedInstructionExists & _focusedInstructions[_focusedInstruction].VariableCount == 1)
@@ -80,7 +75,7 @@ namespace CubeV2
                 {
                     FocusVariable(_focusedInstruction, _focusedVariable - 1);
                 }
-                else if(input.IsKeyJustPressed(Keys.Up))
+                else if (input.IsKeyJustPressed(Keys.Up))
                 {
                     FocusInstruction(_focusedInstruction - 1);
                 }
@@ -99,7 +94,7 @@ namespace CubeV2
                 if (input.IsKeyJustPressed(Keys.Enter))
                 {
                     AssignValueToFocusedVariable(_focusedVariableOption);
-                    FocusVariable(_focusedInstruction,_focusedVariable);
+                    FocusVariable(_focusedInstruction, _focusedVariable);
                 }
                 else if (input.IsKeyJustPressed(Keys.Left))
                 {
@@ -119,6 +114,15 @@ namespace CubeV2
                 }
 
             }
+        }
+        private static void _processKeyboardActions(UserInput input)
+        {
+            if (input.IsKeyJustPressed(Keys.Space))
+            {
+                TogglePauseBoard();
+            }
+
+            //_processInstructionKeyboardShortcuts(input); 
 
             if (input.IsKeyDown(Keys.Left))
             {
@@ -139,13 +143,17 @@ namespace CubeV2
             if (input.IsKeyJustReleased(Keys.OemPlus))
             {
                 SetCameraConfig(CameraScale + 1);
+                CenterCameraOnPlayer();
             }
             if (input.IsKeyJustReleased(Keys.OemMinus))
             {
                 SetCameraConfig(CameraScale - 1);
+                CenterCameraOnPlayer();
             }
-
-
+            if (input.IsKeyJustReleased(Keys.Enter))
+            {
+                CenterCameraOnPlayer();
+            }
         }
     }
 }

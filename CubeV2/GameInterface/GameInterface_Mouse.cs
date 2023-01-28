@@ -33,8 +33,6 @@ namespace CubeV2
         public static void CurrentLeftClickAction(Tile tile, Vector2Int tileLocation,int actualIndex)
         {
             var distance = _game.FocusEntity.Location.EuclideanDistance(tileLocation);
-            Console.WriteLine(distance);
-
             if (distance <= Config.PlayerOperationalRadius)
             {
                 switch (SelectedPlayerAction)
@@ -109,8 +107,6 @@ namespace CubeV2
         public static void LeftClickBoard(int uiIndex)
         {
             (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
-            Console.WriteLine(location);
-
             if (tile != null)
             {
                 CurrentLeftClickAction(tile, location,actualIndex);

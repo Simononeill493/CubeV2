@@ -21,7 +21,6 @@ namespace CubeV2
 
         private static Queue<Instruction> _manualInstructionBuffer = new Queue<Instruction>();
 
-
         public static void InitializeEmptyBoardGame() => _game = new EmptyBoardGame();
         public static void InitializeBoardlessGame() => _game = new EmptyBoardlessGame();
 
@@ -61,7 +60,7 @@ namespace CubeV2
         }
         public static void StartBoard(TimeSpan updateRate)
         {
-            SetCameraConfig(2,new Vector2Int(Config.GameUIGridDefaultWidth, Config.GameUIGridDefaultHeight));
+            SetCameraConfig(2);
 
             _boardRunning = true;
             BoardUpdateRate = updateRate;
@@ -97,6 +96,13 @@ namespace CubeV2
             }
 
             _game.TickBoard(input);
+
+            if(!IsPlayerInCamera())
+            {
+                CenterCameraOnPlayer();
+            }
+
+            RevealMapToPlayer();
 
             if (IsGameWon)
             {

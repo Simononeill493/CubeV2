@@ -13,7 +13,7 @@ internal class EmptyBoardGame : Game
 
     public override BoardTemplateTemplate CreateTemplateTemplate()
     {
-        var templateTemplate = new FullyRandomTemplateTemplate() { Width = Config.GameUIGridDefaultWidth, Height = Config.GameUIGridDefaultHeight };
+        var templateTemplate = new FullyRandomTemplateTemplate() { Width = 16, Height = 16 };
         return templateTemplate;
     }
 }

@@ -45,14 +45,18 @@ namespace CubeV2
 
         public override BoardTemplateTemplate CreateTemplateTemplate()
         {
-            var templateTemplate = new BoardTest1TemplateTemplate() { Width = Config.GameUIGridDefaultWidth, Height = Config.GameUIGridDefaultHeight };
-            templateTemplate.StaticEntities[new Vector2Int(7, 7)] = _playerTemplate;
+            var lines = File.ReadAllLines("C:\\Users\\Simon\\Desktop\\CubeV2\\BigMap.txt");
+            var width = lines[0].Length;
+            var height = lines.Length;
+
+            var templateTemplate = new BoardTest1TemplateTemplate() { Width = width, Height = height };
+            templateTemplate.StaticEntities[new Vector2Int(58, 34)] = _playerTemplate;
 
             var rock = EntityDatabase.GetTemplate(EntityDatabase.RockName);
             var energyRock = EntityDatabase.GetTemplate(EntityDatabase.EnergyRockName);
+            var portal = EntityDatabase.GetTemplate(EntityDatabase.PortalName);
 
-            var lines = File.ReadAllLines("C:\\Users\\Simon\\Desktop\\CubeV2\\SampleMapSmall.txt");
-            for(int y=0;y<lines.Length;y++)
+            for (int y=0;y<lines.Length;y++)
             {
                 for(int x = 0;x<lines[y].Length;x++)
                 {
@@ -61,17 +65,29 @@ namespace CubeV2
 
                     if(tile=='x')
                     {
-                        templateTemplate.StaticEntities[position] = rock;
+                        if(RandomUtils.RandomNumber(100) == 0)
+                        {
+                            templateTemplate.StaticEntities[position] = energyRock;
+                        }
+                        else
+                        {
+                            templateTemplate.StaticEntities[position] = rock;
+                        }
                     }
                     else if (tile == 'E')
                     {
                         templateTemplate.StaticEntities[position] = energyRock;
                     }
+                    else if (RandomUtils.RandomNumber(3000) == 0)
+                    {
+                        templateTemplate.StaticEntities[position] = portal;
+                    }
+
 
                 }
             }
 
-            templateTemplate.StaticEntities[new Vector2Int(5, 2)] = EntityDatabase.GetTemplate(EntityDatabase.PortalName);
+            templateTemplate.StaticEntities[new Vector2Int(5, 2)] = portal;
 
             /*for (int i = 0; i < 25; i++)
             {
