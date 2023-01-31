@@ -200,6 +200,30 @@
 /processorParam:TextureFormat=Compressed
 /build:PressStart2P.spritefont
 
+#begin rain_TEST_ONLY-Sheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:rain_TEST_ONLY-Sheet.png
+
+#begin rain_TEST_ONLY.gif
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:rain_TEST_ONLY.gif
+
 #begin RightArrow.png
 /importer:TextureImporter
 /processor:TextureProcessor

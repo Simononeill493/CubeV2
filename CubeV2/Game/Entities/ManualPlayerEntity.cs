@@ -21,25 +21,27 @@ namespace CubeV2
 
         public override void Tick(Board currentBoard,UserInput input)
         {
-            var WASDDirection = DirectionUtils.GetWASDDirection(input);
-            if(WASDDirection.AnyPressed)
+            if(GameInterface.PrimaryFocus == PrimaryFocus.Board)
             {
-                _keyboardMoveInstruction.Variables[0] = new CardinalDirectionVariable(WASDDirection.Direction);
-                _executeInstruction(_keyboardMoveInstruction, currentBoard);
-            }
+                var WASDDirection = DirectionUtils.GetWASDDirection(input);
+                if (WASDDirection.AnyPressed)
+                {
+                    _keyboardMoveInstruction.Variables[0] = new CardinalDirectionVariable(WASDDirection.Direction);
+                    _executeInstruction(_keyboardMoveInstruction, currentBoard);
+                }
 
-            var arrowsDirection = DirectionUtils.GetArrowsDirection(input);
-            if (arrowsDirection.AnyPressed)
-            {
-                _keyboardSapInstruction.Variables[0] = new CardinalDirectionVariable(arrowsDirection.Direction);
-                _executeInstruction(_keyboardSapInstruction, currentBoard);
-            }
+                var arrowsDirection = DirectionUtils.GetArrowsDirection(input);
+                if (arrowsDirection.AnyPressed)
+                {
+                    _keyboardSapInstruction.Variables[0] = new CardinalDirectionVariable(arrowsDirection.Direction);
+                    _executeInstruction(_keyboardSapInstruction, currentBoard);
+                }
 
-            if(input.ManualClickInstruction!=null)
-            {
-                _executeInstruction(input.ManualClickInstruction, currentBoard);
+                if (input.ManualClickInstruction != null)
+                {
+                    _executeInstruction(input.ManualClickInstruction, currentBoard);
+                }
             }
-
 
             base.Tick(currentBoard, input);
 

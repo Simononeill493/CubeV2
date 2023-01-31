@@ -11,6 +11,8 @@ namespace CubeV2
 {
     public partial class GameInterface
     {
+        public static PrimaryFocus PrimaryFocus = PrimaryFocus.Board;
+
         public static bool IsGameWon => _game.GameWon;
         public static string DisplayText = "Display text not yet set!";
         public static TimeSpan BoardUpdateRate;
@@ -199,4 +201,11 @@ namespace CubeV2
         Headed,
         Headless
     }
+
+    public enum PrimaryFocus
+    {
+        Board,
+        Editor
+    }
+
 }

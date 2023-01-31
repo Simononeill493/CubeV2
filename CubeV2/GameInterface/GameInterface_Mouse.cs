@@ -9,9 +9,27 @@ namespace CubeV2
 {
     public partial class GameInterface
     {
+        public static void LeftClickBoard(int uiIndex)
+        {
+            (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
+            if (tile != null)
+            {
+                CurrentLeftClickAction(tile, location, actualIndex);
+            }
+        }
+
+        public static void RightClickBoard(int uiIndex)
+        {
+            (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
+            if (tile != null)
+            {
+                CurrentRightClickAction(tile, location, actualIndex);
+            }
+        }
+
         private static void _processMouseActions(UserInput input)
         {
-            if(input.ScrollDifference!=0)
+            if (input.ScrollDifference!=0)
             {
                 ScrollWheelTurned(input.ScrollDirection);
             }
@@ -99,27 +117,6 @@ namespace CubeV2
             destroy.Variables[0] = new LocationVariable(tileLocation);
 
             _manualInstructionBuffer.Enqueue(destroy);
-        }
-
-
-
-
-        public static void LeftClickBoard(int uiIndex)
-        {
-            (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
-            if (tile != null)
-            {
-                CurrentLeftClickAction(tile, location,actualIndex);
-            }
-
-        }
-        public static void RightClickBoard(int uiIndex)
-        {
-            (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
-            if(tile != null)
-            {
-                CurrentRightClickAction(tile, location,actualIndex);
-            }
         }
 
         private static (Tile tile, Vector2Int location,int actualIndex) _getBoardDetailsFromIndex(int index)

@@ -50,7 +50,7 @@ namespace CubeV2
             var height = lines.Length;
 
             var templateTemplate = new BoardTest1TemplateTemplate() { Width = width, Height = height };
-            templateTemplate.StaticEntities[new Vector2Int(58, 34)] = _playerTemplate;
+            templateTemplate.StaticEntities[new Vector2Int(61, 44)] = _playerTemplate;
 
             var rock = EntityDatabase.GetTemplate(EntityDatabase.RockName);
             var energyRock = EntityDatabase.GetTemplate(EntityDatabase.EnergyRockName);
@@ -65,7 +65,7 @@ namespace CubeV2
 
                     if(tile=='x')
                     {
-                        if(RandomUtils.RandomNumber(100) == 0)
+                        if(RandomUtils.RandomNumber(25) == 0)
                         {
                             templateTemplate.StaticEntities[position] = energyRock;
                         }

@@ -9,7 +9,7 @@ namespace CubeV2
 {
     public partial class GameInterface
     {
-        private static void _processInstructionKeyboardShortcuts(UserInput input)
+        private static void _processEditorKeyboardShortcuts(UserInput input)
         {
             if (CurrentSidePanelFocus == SidePanelFocus.Instruction)
             {
@@ -115,28 +115,27 @@ namespace CubeV2
 
             }
         }
-        private static void _processKeyboardActions(UserInput input)
+        
+        private static void _processBoardKeyInput(UserInput input)
         {
             if (input.IsKeyJustPressed(Keys.Space))
             {
                 TogglePauseBoard();
             }
 
-            //_processInstructionKeyboardShortcuts(input); 
-
             if (input.IsKeyDown(Keys.Left))
             {
                 CameraOffset.X++;
             }
-             if (input.IsKeyDown(Keys.Right))
+            if (input.IsKeyDown(Keys.Right))
             {
                 CameraOffset.X--;
             }
-             if (input.IsKeyDown(Keys.Down))
+            if (input.IsKeyDown(Keys.Down))
             {
                 CameraOffset.Y--;
             }
-             if (input.IsKeyDown(Keys.Up))
+            if (input.IsKeyDown(Keys.Up))
             {
                 CameraOffset.Y++;
             }
@@ -153,6 +152,20 @@ namespace CubeV2
             if (input.IsKeyJustReleased(Keys.Enter))
             {
                 CenterCameraOnPlayer();
+            }
+        }
+        
+        
+        private static void _processKeyboardActions(UserInput input)
+        {
+            switch (PrimaryFocus)
+            {
+                case PrimaryFocus.Board:
+                    _processBoardKeyInput(input);
+                    break;
+                case PrimaryFocus.Editor:
+                    _processEditorKeyboardShortcuts(input);
+                    break;
             }
         }
     }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO.Pipes;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Reflection.Metadata;
@@ -43,7 +44,11 @@ namespace CubeV2
         public const string DownLeftSprite = "DownLeftArrow";
         public const string DownRightSprite = "DownRightArrow";
 
+        public const string RainGif = "rain_TEST_ONLY-Sheet";
+
         public static Dictionary<string, Texture2D> SpritesDict;
+        public static Dictionary<string, MyGif> GifDict;
+
         private static Dictionary<RelativeDirection, string> _directionSpriteLookup;
         //private static Dictionary<int, string> _numberSpriteLookup;
 
@@ -99,6 +104,8 @@ namespace CubeV2
 
             PressStart2PFont = content.Load<SpriteFont>("PressStart2P");
 
+            GifDict = new Dictionary<string, MyGif>();
+            GifDict[RainGif] = new MyGif(content.Load<Texture2D>(RainGif), 200,200,30);
 
             _directionSpriteLookup = new Dictionary<RelativeDirection, string>
             {
@@ -112,6 +119,15 @@ namespace CubeV2
                 [RelativeDirection.BackwardLeft] = DrawUtils.DownLeftSprite
             };
         }
+
+        public static int i;
+        internal static void DrawGif(SpriteBatch spriteBatch, string gifName, Vector2 position, Vector2 scale, int rotation, Vector2 rotationOrigin, float layer,Color color)
+        {
+            var gif = GifDict[gifName];
+            gif.Draw(spriteBatch,position,scale,rotation,rotationOrigin,layer,color);
+
+        }
+
 
         public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position, float scale, float rotation, Vector2 rotationOrigin, float layer) => DrawSprite(spriteBatch, spriteName, position, scale, rotation, rotationOrigin, layer, Color.White);
 
@@ -182,4 +198,36 @@ namespace CubeV2
 
         public static string Sprite(this RelativeDirection dir) => _directionSpriteLookup[dir];
     }
+
+    public class MyGif
+    {
+        public Texture2D SpriteSheet;
+        public int Width;
+        public int Height;
+        public int NumFrames;
+
+        public float frameCounter = 0;
+
+        public MyGif(Texture2D spriteSheet,int width, int height, int numFrames)
+        {
+            SpriteSheet = spriteSheet;
+            Width = width;
+            Height = height;
+            NumFrames = numFrames;
+        }
+
+        internal void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 scale, int rotation, Vector2 rotationOrigin, float layer,Color color)
+        {
+            if(frameCounter>=NumFrames)
+            {
+                frameCounter = 0;
+            }
+
+            var spriteRect = new Microsoft.Xna.Framework.Rectangle((int)(frameCounter) * Width, 0, Width, Height);
+            spriteBatch.Draw(SpriteSheet, position, spriteRect, color, rotation, rotationOrigin, scale, SpriteEffects.None, layer);
+
+            frameCounter+=0.4f;
+        }
+    }
+
 }

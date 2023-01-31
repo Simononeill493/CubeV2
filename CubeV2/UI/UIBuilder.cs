@@ -5,32 +5,30 @@ using System.Threading;
 
 namespace CubeV2
 {
-    internal class UIBuilder
+    internal partial class UIBuilder
     {
-        public class CursorOverlayAppearance : RectangleAppearance
-        {
-            public override Vector2 Size => GameInterface._cameraTileSizeFloat;
-            public CursorOverlayAppearance(Color color, float layer) : base(0, 0, color, layer){}
-        }
-
-        public class OperationalRangeOverlayAppearance : RectangleAppearance
-        {
-            public override Vector2 Size => GameInterface._cameraTileSizeFloat * ((Config.PlayerOperationalRadius * 2 + 1));
-            public OperationalRangeOverlayAppearance(Color color, float layer) : base(0, 0, color, layer) { }
-        }
-
-
-
         public static UIElement GenerateUI()
         {
             var topLevel = new UIElement(Config.UITopLevelName);
 
             var instructionPanel = UIElementMaker.MakeRectangle(Config.InstructionPanelName, Config.InstructionPanelSize, Config.InstructionPanelOffset, Config.InstructionPanelColor, DrawUtils.UILayer1);
+            instructionPanel.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Editor);
 
             var selectorPanel = UIElementMaker.MakeRectangle(Config.SelectorPanelName, Config.SelectorPanelSize, Config.SelectorPanelOffset, Config.SelectorPanelColor, DrawUtils.UILayer1);
+            selectorPanel.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Editor);
 
             var gameGrid = _makeGameGrid();
             gameGrid.SetOffset(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X, 60);
+            gameGrid.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Board);
+
+            var randomElement = new UIElement("Random");
+            randomElement.AddAppearance(new GifAppearance(DrawUtils.GameLayer5, DrawUtils.RainGif) { Scale = new Vector2(3.375f, 3.5f), Transparency = 0.25f}); ; ;
+            gameGrid.AddChildren(randomElement);
+
+            var randomElement2 = new UIElement("Random2");
+            randomElement2.SetOffset(680, 0);
+            randomElement2.AddAppearance(new GifAppearance(DrawUtils.GameLayer5, DrawUtils.RainGif) { Scale = new Vector2(3.375f, 3.5f), Transparency = 0.25f }); ; ;
+            gameGrid.AddChildren(randomElement2);
 
             var cursorOverlayTile = new UIElement(Config.CursorOverlayTileName);
             cursorOverlayTile.AddAppearance(new CursorOverlayAppearance(Color.White * 0.5f, DrawUtils.GameLayer4));
@@ -76,9 +74,12 @@ namespace CubeV2
 
             var playerActionArray = CreatePlayerActionArray();
             playerActionArray.SetOffset(520, (int)Config.ScreenSize.Y - Config.GameControlButtonSize.Y - 15);
-                
 
-            topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid, controlButtonArray, energyBar,displayText,playerActionArray);
+            var primaryFocusText = new UIElement("PrimaryFocusText");
+            primaryFocusText.AddAppearance(new TextAppearance(Color.White,DrawUtils.UILayer5,()=>GameInterface.PrimaryFocus.ToString()));
+            primaryFocusText.SetOffset(Config.ScreenSize.X - 100, 10);
+
+            topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid, controlButtonArray, energyBar,displayText,playerActionArray,primaryFocusText);
 
 
 
