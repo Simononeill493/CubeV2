@@ -21,7 +21,7 @@ namespace CubeV2
         public static int ManualPlayerMaxEnergy = 200;
         public static int ManualPlayerStartingEnergy = 50;
         public static int PlayerOperationalRadius = 3;
-        public static int PlayerVisualRadius = 5;
+        public static int PlayerVisualRadius = 7;
         public static Color PlayerFogColor = new Color(50, 50, 50);
 
         public static int BaseMoveCost = 1;//1

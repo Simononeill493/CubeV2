@@ -10,7 +10,8 @@ namespace CubeV2
 {
     public partial class GameInterface
     {
-        public static int CameraScale = 2;
+        public const int DefaultCameraScale = 3;
+        public static int CameraScale;
         public static Vector2Int CameraTileSize { get; private set; }
         public static Vector2 _cameraTileSizeFloat { get; private set; }
 
@@ -71,6 +72,7 @@ namespace CubeV2
         public static void RevealMapToPlayer()
         {
             var location = _game.FocusEntity.Location;
+            _game.CurrentBoard.TryGetTile(location).Seen = true;
 
             for(int x= location.X - Config.PlayerVisualRadius; x< location.X + Config.PlayerVisualRadius;x++)
             {
@@ -80,16 +82,10 @@ namespace CubeV2
                     var tile = _game.CurrentBoard.TryGetTile(locInView);
                     if(tile!=null && !tile.Seen)
                     {
-                        if(tile.Contents==null)
-                        {
-                            tile.Seen = true;
-                            goto Done;
-                        }
-
                         foreach(var adjacent in locInView.GetAdjacentPoints())
                         {
                             var adjTile = _game.CurrentBoard.TryGetTile(adjacent);
-                            if(adjTile != null && adjTile.Contents==null)
+                            if(adjTile != null && adjTile.Seen && ((adjTile.Contents == null) || adjTile.Contents.HasTag(Config.PlayerTag)))
                             {
                                 tile.Seen = true;
                                 goto Done;

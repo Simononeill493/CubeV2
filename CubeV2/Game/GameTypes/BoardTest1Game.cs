@@ -53,6 +53,7 @@ namespace CubeV2
             templateTemplate.StaticEntities[new Vector2Int(61, 44)] = _playerTemplate;
 
             var rock = EntityDatabase.GetTemplate(EntityDatabase.RockName);
+            var brokenRock = EntityDatabase.GetTemplate(EntityDatabase.BrokenRockName);
             var energyRock = EntityDatabase.GetTemplate(EntityDatabase.EnergyRockName);
             var portal = EntityDatabase.GetTemplate(EntityDatabase.PortalName);
 
@@ -65,7 +66,11 @@ namespace CubeV2
 
                     if(tile=='x')
                     {
-                        if(RandomUtils.RandomNumber(25) == 0)
+                        if (RandomUtils.RandomNumber(10) == 0)
+                        {
+                            templateTemplate.StaticEntities[position] = brokenRock;
+                        }
+                        else if (RandomUtils.RandomNumber(25) == 0)
                         {
                             templateTemplate.StaticEntities[position] = energyRock;
                         }

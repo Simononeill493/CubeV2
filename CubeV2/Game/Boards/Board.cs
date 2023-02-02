@@ -99,7 +99,7 @@ namespace CubeV2
             {
                 if (currentContents.TryBeCollected(entity))
                 {
-                    _removeEntityFromBoard(currentContents);
+                    _removeFromBoard(currentContents);
                 }
                 else
                 {
@@ -108,34 +108,38 @@ namespace CubeV2
             }
 
             RemoveEntityFromCurrentTile(entity);
-            AddEntityToTile(entity, newLocation);
+            _addEntityToTile(entity, newLocation);
 
             return true;
         }
 
-        internal void TryClearThisTile(Vector2Int targetLocation)
+        internal bool TryClearThisTile(Vector2Int targetLocation)
         {
             var tile = TryGetTile(targetLocation);
             if(tile!=null && tile.Contents!=null)
             {
-                TryRemoveEntiryFromBoard(tile.Contents);
+                return TryRemoveFromBoard(tile.Contents);
             }
+
+            return false;
         }
 
-        public bool TryRemoveEntiryFromBoard(Entity entity)
+        public bool TryRemoveFromBoard(Entity entity)
         {
             if(entity.HasTag(Config.IndestructibleTag))
             {
                 return false;
             }
 
-            _removeEntityFromBoard(entity);
+            _removeFromBoard(entity);
             return true;
         }
 
 
-        private void _removeEntityFromBoard(Entity entity)
+        private void _removeFromBoard(Entity entity)
         {
+            var entityFormerLocation = entity.Location;
+
             RemoveEntityFromCurrentTile(entity);
 
             if (!Entities.ContainsKey(entity.EntityID))
@@ -152,6 +156,7 @@ namespace CubeV2
             }
 
             entity.Doomed = true;
+            entity.OnDestroy(entityFormerLocation);
         }
         public void RemoveEntityFromCurrentTile(Entity entity)
         {
@@ -160,12 +165,13 @@ namespace CubeV2
                 Console.WriteLine("Warning: Entity's current location is not valid for this board.");
             }
 
-            if (TilesVector[entity.Location.X,entity.Location.Y].Contents != entity)
+            var tile = TilesVector[entity.Location.X, entity.Location.Y];
+            if (tile.Contents != entity)
             {
                 Console.WriteLine("Warning: Entity is not in tile that its location data is pointing to.");
             }
 
-            TilesVector[entity.Location.X,entity.Location.Y].SetContents(null);
+            tile.SetContents(null);
             entity.Location = Vector2Int.MinusOne;
         }
 
@@ -181,7 +187,7 @@ namespace CubeV2
 
             Entities[entity.EntityID] = entity;
 
-            AddEntityToTile(entity, tileToAddTo);
+            _addEntityToTile(entity, tileToAddTo);
             _addToEntityTypesDict(entity);
 
             if(entity.Instructions!=null)
@@ -191,7 +197,7 @@ namespace CubeV2
         }
 
 
-        public void AddEntityToTile(Entity entity, Vector2Int tileToAddTo)
+        private void _addEntityToTile(Entity entity, Vector2Int tileToAddTo)
         {
             if (entity.Location != Vector2Int.MinusOne)
             {

@@ -62,7 +62,7 @@ namespace CubeV2
         }
         public static void StartBoard(TimeSpan updateRate)
         {
-            SetCameraConfig(2);
+            SetCameraConfig(GameInterface.DefaultCameraScale);
 
             _boardRunning = true;
             BoardUpdateRate = updateRate;
@@ -190,10 +190,11 @@ namespace CubeV2
         public static Board HeadedBoard => GameInterface._game.CurrentBoard;
         public static Board HeadlessBoard;
 
+        public static void TryCreate(Entity entity, Vector2Int location) => FocusedBoard.AddEntityToBoard(entity,location);
         public static bool TryMove(Entity e, Vector2Int location) => FocusedBoard.TryMoveEntity(e, location);
         public static Tile TryGetTile(int index) => FocusedBoard.TryGetTile(index);
         public static Tile TryGetTile(Vector2Int offset) => FocusedBoard.TryGetTile(offset);
-        public static void TryClearTile(Vector2Int targetLocation) => FocusedBoard.TryClearThisTile(targetLocation);
+        public static bool TryClearTile(Vector2Int targetLocation) => FocusedBoard.TryClearThisTile(targetLocation);
     }
 
     public enum GamePlaybackMode

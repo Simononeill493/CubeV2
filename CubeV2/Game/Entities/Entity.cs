@@ -30,6 +30,8 @@ namespace CubeV2
         public List<string> Tags = new List<string>();
         public bool HasTag(string tag) => Tags.Contains(tag);
 
+        public List<CollectableEntity> CollectedEntities = new List<CollectableEntity>();
+
         public Entity(string templateID, string entityID, string sprite)
         {
             TemplateID = templateID;
@@ -52,14 +54,14 @@ namespace CubeV2
             {
                 _executeInstruction(Instructions[InstructionCounter], currentBoard);
 
-                if(trueInstructionCount++ >= Config.MaxInstructionJumpsPerTick)
+                if (trueInstructionCount++ >= Config.MaxInstructionJumpsPerTick)
                 {
                     break;
                 }
             }
         }
 
-        protected void _executeInstruction(Instruction currentInstruction,Board currentBoard)
+        protected void _executeInstruction(Instruction currentInstruction, Board currentBoard)
         {
             if (!HasEnergy(currentInstruction.BaseEnergyCost))
             {
@@ -90,7 +92,7 @@ namespace CubeV2
 
         public void SetInstructionCounter(int index)
         {
-            if(index>=0)
+            if (index >= 0)
             {
                 InstructionCounter = index;
             }
@@ -113,7 +115,7 @@ namespace CubeV2
         {
             CurrentEnergy += amount;
 
-            if(CurrentEnergy>MaxEnergy)
+            if (CurrentEnergy > MaxEnergy)
             {
                 CurrentEnergy = MaxEnergy;
             }
@@ -133,7 +135,7 @@ namespace CubeV2
 
 
         public bool TryMove(RelativeDirection direction) => TryMove(DirectionUtils.ToCardinal(Orientation, direction));
-        public bool TryPushEnergy(RelativeDirection direction,int amount) => TryPushEnergy(DirectionUtils.ToCardinal(Orientation, direction),amount);
+        public bool TryPushEnergy(RelativeDirection direction, int amount) => TryPushEnergy(DirectionUtils.ToCardinal(Orientation, direction), amount);
         public bool TryPullEnergy(RelativeDirection direction) => TryPullEnergy(DirectionUtils.ToCardinal(Orientation, direction));
         public CapturedTileVariable TryPushScan(RelativeDirection direction) => TryPushScan(DirectionUtils.ToCardinal(Orientation, direction));
         public void PushDestroy(RelativeDirection direction) => PushDestroy(DirectionUtils.ToCardinal(Orientation, direction));
@@ -143,7 +145,7 @@ namespace CubeV2
             var newLocation = Location + direction.XYOffset();
             var didMoveWork = EntityBoardCallback.TryMove(this, newLocation);
 
-            if(!didMoveWork && direction.IsDiagonal())
+            if (!didMoveWork && direction.IsDiagonal())
             //if (!didMoveWork)
             {
                 var adjacentDirections = direction.GetAdjacentDirections();
@@ -151,7 +153,7 @@ namespace CubeV2
                 var newLocationLeft = Location + adjacentDirections.Left.XYOffset();
                 didMoveWork = EntityBoardCallback.TryMove(this, newLocationLeft);
 
-                if(!didMoveWork)
+                if (!didMoveWork)
                 {
                     var newLocationRight = Location + adjacentDirections.Right.XYOffset();
                     didMoveWork = EntityBoardCallback.TryMove(this, newLocationRight);
@@ -179,7 +181,7 @@ namespace CubeV2
             {
                 return false;
             }
-            
+
 
             TakeEnergy(amount);
             target.Contents.GiveEnergy(amount);
@@ -201,11 +203,11 @@ namespace CubeV2
                 return false;
             }
 
-            if(!target.Contents.HasEnergy(amount))
+            if (!target.Contents.HasEnergy(amount))
             {
                 amount = target.Contents.CurrentEnergy;
 
-                if(amount<1)
+                if (amount < 1)
                 {
                     return false;
                 }
@@ -235,18 +237,7 @@ namespace CubeV2
             EntityBoardCallback.TryClearTile(targetLocation);
         }
 
-
-
-
-
-
-
-
-
+        public virtual void OnDestroy(Vector2Int formerLocation) { }
         public virtual bool TryBeCollected(Entity collector) => false;
-
-
-
-
     }
 }

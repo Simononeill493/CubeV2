@@ -23,7 +23,7 @@
                 return 0;
             }
 
-            board.TryRemoveEntiryFromBoard(tile.Contents);
+            board.TryRemoveFromBoard(tile.Contents);
             return 0;
         }
 
