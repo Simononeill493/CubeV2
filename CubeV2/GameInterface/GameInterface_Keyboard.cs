@@ -139,12 +139,12 @@ namespace CubeV2
             {
                 CameraOffset.Y++;
             }
-            if (input.IsKeyJustReleased(Keys.OemPlus))
+            if (input.IsKeyJustReleased(Keys.OemPlus) | input.IsButtonJustReleased(Buttons.RightShoulder))
             {
                 SetCameraConfig(CameraScale + 1);
                 CenterCameraOnPlayer();
             }
-            if (input.IsKeyJustReleased(Keys.OemMinus))
+            if (input.IsKeyJustReleased(Keys.OemMinus) | input.IsButtonJustReleased(Buttons.LeftShoulder))
             {
                 SetCameraConfig(CameraScale - 1);
                 CenterCameraOnPlayer();

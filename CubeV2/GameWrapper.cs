@@ -32,7 +32,7 @@ namespace CubeV2
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            _previousInput = new UserInput(Mouse.GetState(), Mouse.GetState(), Keyboard.GetState(), Keyboard.GetState());
+            _previousInput = new UserInput(Mouse.GetState(), Mouse.GetState(), Keyboard.GetState(), Keyboard.GetState(), GamePad.GetState(0), GamePad.GetState(0));
         }
 
         protected override void Initialize()
@@ -59,7 +59,7 @@ namespace CubeV2
 
         protected override void Update(GameTime gameTime)
         {
-            var input = new UserInput(Mouse.GetState(), _previousInput.MouseState, Keyboard.GetState(), _previousInput.KeyboardState);
+            var input = new UserInput(Mouse.GetState(), _previousInput.MouseState, Keyboard.GetState(), _previousInput.KeyboardState, GamePad.GetState(0),_previousInput.ControllerState);
 
             //Console.WriteLine(input.MousePos);
             _universalKeybindings(input);

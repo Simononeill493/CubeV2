@@ -169,12 +169,20 @@ namespace CubeV2
 
         public static (CardinalDirection Direction, bool AnyPressed) GetWASDDirection(UserInput input)
         {
-            return KeysDownToDirection(input.IsKeyDown(Keys.W), input.IsKeyDown(Keys.S), input.IsKeyDown(Keys.A), input.IsKeyDown(Keys.D));
+            return KeysDownToDirection(
+                input.IsKeyDown(Keys.W) | input.IsButtonDown(Buttons.LeftThumbstickUp), 
+                input.IsKeyDown(Keys.S) | input.IsButtonDown(Buttons.LeftThumbstickDown),
+                input.IsKeyDown(Keys.A) | input.IsButtonDown(Buttons.LeftThumbstickLeft),
+                input.IsKeyDown(Keys.D) | input.IsButtonDown(Buttons.LeftThumbstickRight));
         }
 
         public static (CardinalDirection Direction, bool AnyPressed) GetArrowsDirection(UserInput input)
         {
-            return KeysDownToDirection(input.IsKeyDown(Keys.Up), input.IsKeyDown(Keys.Down), input.IsKeyDown(Keys.Left), input.IsKeyDown(Keys.Right));
+            return KeysDownToDirection(
+                input.IsKeyDown(Keys.Up) | input.IsButtonDown(Buttons.RightThumbstickLeft), 
+                input.IsKeyDown(Keys.Down) | input.IsButtonDown(Buttons.RightThumbstickLeft), 
+                input.IsKeyDown(Keys.Left) | input.IsButtonDown(Buttons.RightThumbstickLeft), 
+                input.IsKeyDown(Keys.Right) | input.IsButtonDown(Buttons.RightThumbstickLeft));
         }
 
         public static (CardinalDirection Direction,bool AnyPressed) KeysDownToDirection(bool upDown, bool downDown, bool leftDown, bool rightDown)
