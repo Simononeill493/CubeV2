@@ -12,7 +12,7 @@ namespace CubeV2
         public List<string> DefaultTags = new List<string>();
         public int DefaultMaxEnergy = -1;
 
-        public string DefaultSprite;
+        public string DisplaySprite;
 
         public List<Instruction> Instructions = null;
 
@@ -45,27 +45,27 @@ namespace CubeV2
 
         protected virtual Entity _createEntity()
         {
-            return new Entity(TemplateID, _sessionEntityCount++.ToString(), DefaultSprite);
+            return new Entity(TemplateID, _sessionEntityCount++.ToString(), DisplaySprite);
         }
     }
 
     public class GoalTemplate : EntityTemplate
     {
-        public GoalTemplate(string id) : base(id){ DefaultSprite = DrawUtils.GoalSprite; }
+        public GoalTemplate(string id) : base(id){ DisplaySprite = DrawUtils.GoalSprite; }
 
         protected override Entity _createEntity()
         {
-            return new GoalEntity(TemplateID, _sessionEntityCount++.ToString(), DefaultSprite); ;
+            return new GoalEntity(TemplateID, _sessionEntityCount++.ToString(), DisplaySprite); ;
         }
     }
 
     public class ManualPlayerTemplate : EntityTemplate
     {
-        public ManualPlayerTemplate(string id) : base(id) { DefaultSprite = DrawUtils.PlayerSprite; }
+        public ManualPlayerTemplate(string id) : base(id) { DisplaySprite = DrawUtils.PlayerSprite; }
 
         protected override Entity _createEntity()
         {
-            return new ManualPlayerEntity(TemplateID, _sessionEntityCount++.ToString(), DefaultSprite);
+            return new ManualPlayerEntity(TemplateID, _sessionEntityCount++.ToString(), DisplaySprite);
         }
     }
 
@@ -75,14 +75,14 @@ namespace CubeV2
 
         protected override Entity _createEntity()
         {
-            return new CollectableEntity(TemplateID, _sessionEntityCount++.ToString(), DefaultSprite);
+            return new CollectableEntity(TemplateID, _sessionEntityCount++.ToString(), DisplaySprite);
         }
     }
 
 
     public class RockTemplate : EntityTemplate
     {
-        public RockTemplate(string id) : base(id) { }
+        public RockTemplate(string id) : base(id) { DisplaySprite = DrawUtils.RockSprite1; }
 
         protected override Entity _createEntity()
         {
@@ -98,11 +98,11 @@ namespace CubeV2
 
     public class EnergyRockTemplate : EntityTemplate
     {
-        public EnergyRockTemplate(string id) : base(id) { DefaultSprite = DrawUtils.EnergyRockSprite; }
+        public EnergyRockTemplate(string id) : base(id) { DisplaySprite = DrawUtils.EnergyRockSprite; }
 
         protected override Entity _createEntity()
         {
-            return new RockEntity(TemplateID, _sessionEntityCount++.ToString(), DefaultSprite);
+            return new RockEntity(TemplateID, _sessionEntityCount++.ToString(), DisplaySprite);
         }
     }
 

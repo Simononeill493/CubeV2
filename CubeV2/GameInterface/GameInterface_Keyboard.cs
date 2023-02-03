@@ -123,21 +123,10 @@ namespace CubeV2
                 TogglePauseBoard();
             }
 
-            if (input.IsKeyDown(Keys.Left))
+            var arrowsDirection = DirectionUtils.GetArrowsDirection(input);
+            if (arrowsDirection.AnyPressed)
             {
-                CameraOffset.X++;
-            }
-            if (input.IsKeyDown(Keys.Right))
-            {
-                CameraOffset.X--;
-            }
-            if (input.IsKeyDown(Keys.Down))
-            {
-                CameraOffset.Y--;
-            }
-            if (input.IsKeyDown(Keys.Up))
-            {
-                CameraOffset.Y++;
+                CameraOffset += arrowsDirection.Direction.ToVector();
             }
             if (input.IsKeyJustReleased(Keys.OemPlus) | input.IsButtonJustReleased(Buttons.RightShoulder))
             {

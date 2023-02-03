@@ -29,7 +29,7 @@ namespace CubeV2
             {
                 if(tile.Seen)
                 {
-                    DrawUtils.DrawSprite(spriteBatch, DrawUtils.GroundSprite, position, GameInterface.CameraScale, 0, Vector2.Zero, Layer);
+                    DrawUtils.DrawSprite(spriteBatch, DrawUtils.GroundSprite, position, GameInterface.CameraScale, 0, Vector2.Zero, Layer, tile.flips);
                     if (tile.Contents != null)
                     {
                         DrawUtils.DrawEntity(spriteBatch, tile.Contents, position, GameInterface.CameraScale, _spriteLayer);

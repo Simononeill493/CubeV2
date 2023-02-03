@@ -142,7 +142,7 @@ namespace CubeV2
 
         public bool TryMove(CardinalDirection direction)
         {
-            var newLocation = Location + direction.XYOffset();
+            var newLocation = Location + direction.ToVector();
             var didMoveWork = EntityBoardCallback.TryMove(this, newLocation);
 
             if (!didMoveWork && direction.IsDiagonal())
@@ -150,12 +150,12 @@ namespace CubeV2
             {
                 var adjacentDirections = direction.GetAdjacentDirections();
 
-                var newLocationLeft = Location + adjacentDirections.Left.XYOffset();
+                var newLocationLeft = Location + adjacentDirections.Left.ToVector();
                 didMoveWork = EntityBoardCallback.TryMove(this, newLocationLeft);
 
                 if (!didMoveWork)
                 {
-                    var newLocationRight = Location + adjacentDirections.Right.XYOffset();
+                    var newLocationRight = Location + adjacentDirections.Right.ToVector();
                     didMoveWork = EntityBoardCallback.TryMove(this, newLocationRight);
                 }
             }
@@ -165,7 +165,7 @@ namespace CubeV2
 
         public bool TryPushEnergy(CardinalDirection direction, int amount)
         {
-            var newLocation = Location + direction.XYOffset();
+            var newLocation = Location + direction.ToVector();
             var target = EntityBoardCallback.FocusedBoard.TryGetTile(newLocation);
 
             return TryDropEnergy(target, amount);
@@ -191,7 +191,7 @@ namespace CubeV2
 
         public bool TryPullEnergy(CardinalDirection direction)
         {
-            var newLocation = Location + direction.XYOffset();
+            var newLocation = Location + direction.ToVector();
             var target = EntityBoardCallback.FocusedBoard.TryGetTile(newLocation);
 
             return TryTakeEnergy(target, 1);
@@ -220,7 +220,7 @@ namespace CubeV2
 
         public CapturedTileVariable TryPushScan(CardinalDirection direction)
         {
-            var newLocation = Location + direction.XYOffset();
+            var newLocation = Location + direction.ToVector();
             var tile = EntityBoardCallback.TryGetTile(newLocation);
 
             if (tile != null)
@@ -233,7 +233,7 @@ namespace CubeV2
 
         public void PushDestroy(CardinalDirection direction)
         {
-            var targetLocation = Location + direction.XYOffset();
+            var targetLocation = Location + direction.ToVector();
             EntityBoardCallback.TryClearTile(targetLocation);
         }
 

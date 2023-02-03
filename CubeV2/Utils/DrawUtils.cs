@@ -135,11 +135,11 @@ namespace CubeV2
         }
 
 
-        public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position, float scale, float rotation, Vector2 rotationOrigin, float layer) => DrawSprite(spriteBatch, spriteName, position, scale, rotation, rotationOrigin, layer, Color.White);
+        public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position, float scale, float rotation, Vector2 rotationOrigin, float layer, SpriteEffects flips = SpriteEffects.None) => DrawSprite(spriteBatch, spriteName, position, scale, rotation, rotationOrigin, layer, Color.White,flips);
 
-        public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position,float scale, float rotation, Vector2 rotationOrigin,float layer,Color color)
+        public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position,float scale, float rotation, Vector2 rotationOrigin,float layer,Color color,SpriteEffects flips = SpriteEffects.None)
         {
-            spriteBatch.Draw(SpritesDict[spriteName], position, null, color, rotation, rotationOrigin, scale, SpriteEffects.None, layer);
+            spriteBatch.Draw(SpritesDict[spriteName], position, null, color, rotation, rotationOrigin, scale, flips, layer);
         }
 
         public static void DrawString(SpriteBatch spriteBatch,SpriteFont font,string text,Vector2 position,Color color,float scale,float layer)
@@ -152,13 +152,26 @@ namespace CubeV2
             spriteBatch.Draw(DefaultTexture, new Microsoft.Xna.Framework.Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y), null, color, 0, Vector2.Zero, SpriteEffects.None, layer);
         }
 
+        public static void DrawTileFloor(SpriteBatch spriteBatch, Tile tile, Vector2 position, float scale, float layer)
+        {
+
+        }
+
+
+
         public static void DrawEntity(SpriteBatch spriteBatch, Entity entity, Vector2 position, float scale, float layer)
+        {
+            (float rotation, Vector2 rotationOffset) = _getRotationDataForOrientation(entity.Orientation);
+            DrawSprite(spriteBatch, entity.Sprite, position + rotationOffset, scale, rotation, Vector2.Zero, layer);
+        }
+
+        private static (float rotation,Vector2 rotationOffset) _getRotationDataForOrientation(Orientation orientation)
         {
             var rotBase = Math.PI / 4;
             float rotation = 0;
             Vector2 rotationOffset = Vector2.Zero;
 
-            switch (entity.Orientation)
+            switch (orientation)
             {
                 case Orientation.Top:
                     break;
@@ -167,7 +180,7 @@ namespace CubeV2
                     rotationOffset = new Vector2(8, -4) * GameInterface.CameraScale;
                     break;
                 case Orientation.Right:
-                    rotation = (float)(rotBase*2);
+                    rotation = (float)(rotBase * 2);
                     rotationOffset = new Vector2(16, 0) * GameInterface.CameraScale;
 
                     break;
@@ -194,12 +207,12 @@ namespace CubeV2
                 case Orientation.TopLeft:
                     rotation = (float)(rotBase * 7);
                     rotationOffset = new Vector2(-3, 8) * GameInterface.CameraScale;
-                    break;    
+                    break;
                 default:
                     throw new Exception();
             }
 
-            DrawSprite(spriteBatch, entity.Sprite, position + rotationOffset, scale, rotation, Vector2.Zero, layer);
+            return (rotation, rotationOffset);
         }
 
         public static string Sprite(this RelativeDirection dir) => _directionSpriteLookup[dir];

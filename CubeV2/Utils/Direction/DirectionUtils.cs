@@ -29,7 +29,7 @@ namespace CubeV2
 
 
         public static CardinalDirection Reverse(this CardinalDirection direction) => _reverseDict[direction];
-        public static Vector2Int XYOffset(this CardinalDirection direction) => _XYOffsetDict[direction];
+        public static Vector2Int ToVector(this CardinalDirection direction) => _XYOffsetDict[direction];
         public static bool IsDiagonal(this CardinalDirection dir) => _diagonalsDict[dir];
         public static (CardinalDirection Left, CardinalDirection Right) Parallel(this CardinalDirection dir) => _parallelDict[dir];
         public static (CardinalDirection Left, CardinalDirection Right) GetAdjacentDirections(this CardinalDirection dir) => _adjacentDirectionsDict[dir];
@@ -179,10 +179,10 @@ namespace CubeV2
         public static (CardinalDirection Direction, bool AnyPressed) GetArrowsDirection(UserInput input)
         {
             return KeysDownToDirection(
-                input.IsKeyDown(Keys.Up) | input.IsButtonDown(Buttons.RightThumbstickLeft), 
-                input.IsKeyDown(Keys.Down) | input.IsButtonDown(Buttons.RightThumbstickLeft), 
+                input.IsKeyDown(Keys.Up) | input.IsButtonDown(Buttons.RightThumbstickUp), 
+                input.IsKeyDown(Keys.Down) | input.IsButtonDown(Buttons.RightThumbstickDown), 
                 input.IsKeyDown(Keys.Left) | input.IsButtonDown(Buttons.RightThumbstickLeft), 
-                input.IsKeyDown(Keys.Right) | input.IsButtonDown(Buttons.RightThumbstickLeft));
+                input.IsKeyDown(Keys.Right) | input.IsButtonDown(Buttons.RightThumbstickRight));
         }
 
         public static (CardinalDirection Direction,bool AnyPressed) KeysDownToDirection(bool upDown, bool downDown, bool leftDown, bool rightDown)
