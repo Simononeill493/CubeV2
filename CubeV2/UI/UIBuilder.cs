@@ -23,12 +23,12 @@ namespace CubeV2
 
             var randomElement = new UIElement("Random");
             randomElement.AddAppearance(new GifAppearance(DrawUtils.GameLayer5, DrawUtils.RainGif) { Scale = new Vector2(3.375f, 3.5f), Transparency = 0.25f}); ; ;
-            gameGrid.AddChildren(randomElement);
+            //gameGrid.AddChildren(randomElement);
 
             var randomElement2 = new UIElement("Random2");
             randomElement2.SetOffset(680, 0);
             randomElement2.AddAppearance(new GifAppearance(DrawUtils.GameLayer5, DrawUtils.RainGif) { Scale = new Vector2(3.375f, 3.5f), Transparency = 0.25f }); ; ;
-            gameGrid.AddChildren(randomElement2);
+            //gameGrid.AddChildren(randomElement2);
 
             var cursorOverlayTile = new UIElement(Config.CursorOverlayTileName);
             cursorOverlayTile.AddAppearance(new CursorOverlayAppearance(Color.White * 0.5f, DrawUtils.GameLayer4));
@@ -38,7 +38,7 @@ namespace CubeV2
             gameGrid.AddChildren(cursorOverlayTile);
 
             var operationalRangeOverlayTile = new UIElement(Config.OperationalRangeOverlayTileName);
-            operationalRangeOverlayTile.AddAppearance(new OperationalRangeOverlayAppearance(Color.White * 0.05f, DrawUtils.GameLayer5));
+            //operationalRangeOverlayTile.AddAppearance(new OperationalRangeOverlayAppearance(Color.White * 0.05f, DrawUtils.GameLayer5));
             operationalRangeOverlayTile.AddEnabledCondition(() => GameInterface._game.FocusEntity != null);
             gameGrid.AddChildren(operationalRangeOverlayTile);
 
@@ -175,7 +175,7 @@ namespace CubeV2
             var tileDetailsPanel = UIElementMaker.MakeRectangle("TileDetailsPanel", new Vector2(210, 80), Vector2.Zero, new Color(212, 161, 161), DrawUtils.UILayer2);
 
             var tilePicture = new UIElement("TilePicture");
-            tilePicture.AddAppearance(new SpriteAppearance(DrawUtils.UILayer3, DrawUtils.GroundSprite) { Scale = 3 });
+            tilePicture.AddAppearance(new SpriteAppearance(DrawUtils.UILayer3, DrawUtils.GroundSprite1) { Scale = 3 });
             tilePicture.SetOffset(25, 10);
 
             var tileCoordsText = new UIElement("TileCoordsText");

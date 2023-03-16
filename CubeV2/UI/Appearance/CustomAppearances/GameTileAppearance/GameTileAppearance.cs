@@ -29,10 +29,10 @@ namespace CubeV2
             {
                 if(tile.Seen)
                 {
-                    DrawUtils.DrawSprite(spriteBatch, DrawUtils.GroundSprite, position, GameInterface.CameraScale, 0, Vector2.Zero, Layer, tile.flips);
+                    DrawUtils.DrawTileSprite(spriteBatch, tile.Sprite, tile.Orientation,position, GameInterface.CameraScale, Layer, tile.Flips);
                     if (tile.Contents != null)
                     {
-                        DrawUtils.DrawEntity(spriteBatch, tile.Contents, position, GameInterface.CameraScale, _spriteLayer);
+                        DrawUtils.DrawTileSprite(spriteBatch, tile.Contents.Sprite,tile.Contents.Orientation, position, GameInterface.CameraScale, _spriteLayer, SpriteEffects.None);
                     }
                 }
                 else
@@ -43,9 +43,7 @@ namespace CubeV2
             else
             {
                 DrawUtils.DrawRect(spriteBatch, position, GameInterface._cameraTileSizeFloat, Color.Black, Layer);
-
-                //DrawUtils.DrawSprite(spriteBatch, DrawUtils.VoidSprite, position, GameInterface.CameraScale, 0, Vector2.Zero, Layer);
-            }
+                }
         }
     }
 }

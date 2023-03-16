@@ -5,20 +5,37 @@ namespace CubeV2
     public class Tile
     {
         public bool Seen = false;
-        public SpriteEffects flips = SpriteEffects.None;
+        public string Sprite;
+        public SpriteEffects Flips = SpriteEffects.None;
+        public Orientation Orientation = Orientation.Top;
 
         public Entity Contents { get; private set; }
 
         public Tile()
         {
-            /*if (RandomUtils.RandomNumber(2) == 0)
+            //Orientation = Orientation.Right;
+            //Sprite = DrawUtils.GroundSprite1;
+            //Flips = Flips | SpriteEffects.FlipHorizontally;
+
+            Orientation = (Orientation)(RandomUtils.RandomNumber(4) * 2);
+
+            if (RandomUtils.RandomNumber(2) == 0)
             {
-                flips = flips | SpriteEffects.FlipHorizontally;
+                Sprite = DrawUtils.GroundSprite1;
+            }
+            else
+            {
+                Sprite = DrawUtils.GroundSprite2;
+            }
+
+            if (RandomUtils.RandomNumber(2) == 0)
+            {
+                Flips = Flips | SpriteEffects.FlipHorizontally;
             }
             if (RandomUtils.RandomNumber(2) == 0)
             {
-                flips = flips | SpriteEffects.FlipVertically;
-            }*/
+                Flips = Flips | SpriteEffects.FlipVertically;
+            }
         }
 
         public void SetContents(Entity e)

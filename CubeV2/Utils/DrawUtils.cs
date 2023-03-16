@@ -30,7 +30,9 @@ namespace CubeV2
         public const string Ally4Sprite = "Ally4";
         public const string Ally5Sprite = "Ally5";
 
-        public const string GroundSprite = "Ground";
+        public const string GroundSprite1 = "Ground";
+        public const string GroundSprite2 = "Ground2";
+
         public const string PlayerSprite = "Player";
         public const string RockSprite1 = "WhiteWall";
         public const string RockSprite2 = "RockSmall";
@@ -91,7 +93,9 @@ namespace CubeV2
             SpritesDict[Ally4Sprite] = content.Load<Texture2D>(Ally4Sprite);
             SpritesDict[Ally5Sprite] = content.Load<Texture2D>(Ally5Sprite);
 
-            SpritesDict[GroundSprite] = content.Load<Texture2D>(GroundSprite);
+            SpritesDict[GroundSprite1] = content.Load<Texture2D>(GroundSprite1);
+            SpritesDict[GroundSprite2] = content.Load<Texture2D>(GroundSprite2);
+
             SpritesDict[PlayerSprite] = content.Load<Texture2D>(PlayerSprite);
             SpritesDict[RockSprite1] = content.Load<Texture2D>(RockSprite1);
             SpritesDict[RockSprite2] = content.Load<Texture2D>(RockSprite2);
@@ -152,17 +156,11 @@ namespace CubeV2
             spriteBatch.Draw(DefaultTexture, new Microsoft.Xna.Framework.Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y), null, color, 0, Vector2.Zero, SpriteEffects.None, layer);
         }
 
-        public static void DrawTileFloor(SpriteBatch spriteBatch, Tile tile, Vector2 position, float scale, float layer)
+
+        public static void DrawTileSprite(SpriteBatch spriteBatch, string sprite, Orientation orientation, Vector2 position, float scale, float layer, SpriteEffects flips)
         {
-
-        }
-
-
-
-        public static void DrawEntity(SpriteBatch spriteBatch, Entity entity, Vector2 position, float scale, float layer)
-        {
-            (float rotation, Vector2 rotationOffset) = _getRotationDataForOrientation(entity.Orientation);
-            DrawSprite(spriteBatch, entity.Sprite, position + rotationOffset, scale, rotation, Vector2.Zero, layer);
+            (float rotation, Vector2 rotationOffset) = _getRotationDataForOrientation(orientation);
+            DrawSprite(spriteBatch, sprite, position + rotationOffset, scale, rotation, Vector2.Zero, layer,flips);
         }
 
         private static (float rotation,Vector2 rotationOffset) _getRotationDataForOrientation(Orientation orientation)

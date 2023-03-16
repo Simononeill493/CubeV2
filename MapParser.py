@@ -6,6 +6,7 @@ Created on Sat Jan 28 21:20:01 2023
 """
 
 path = "C:\\Users\\Simon\\Desktop\\CubeV2\\MapRead1.bmp"
+path2 = r"C:\Users\Simon\Desktop\temp\cols.png"
 pathOut = "C:\\Users\\Simon\\Desktop\\CubeV2\\BigMap.txt"
 
 f = open(pathOut,'w+')
@@ -15,9 +16,10 @@ def writePrint(char):
     f.write(char)
 
 from PIL import Image
-img = Image.open(path)
+img = Image.open(path2)
 imglist = list(img.getdata())
 size = img.size
+
 
 i = 1
 for pixel in imglist:
@@ -30,5 +32,12 @@ for pixel in imglist:
     if i % size[0] is 0:
         writePrint('\n')
     i=i+1
+
+
+
+for pixel in imglist:
+    print("(" + str(pixel[0]) + "," + str(pixel[1]) + "," +str(pixel[2]) + "),")
+
+
 
 f.close()
