@@ -16,8 +16,8 @@ namespace CubeV2
 
             var testBoard = new Board(3, 3);
             var testEntity = new Entity("Test", "Test",null);
-            testEntity.CurrentEnergy = 100;
             testEntity.MaxEnergy = 100;
+            testEntity.SetEnergyToMax();
 
             testBoard.AddEntityToBoard(testEntity, new Vector2Int(0, 0));
 
@@ -31,7 +31,8 @@ namespace CubeV2
                 throw new Exception("Test failed.");
             }
 
-            testEntity.Instructions = new List<Instruction>() { new MoveInstruction(RelativeDirection.BackwardRight) };
+            testEntity.Instructions = new Instruction[Config.EntityMaxInstructions];
+            testEntity.Instructions[0] =  new MoveInstruction(RelativeDirection.BackwardRight);
 
             GameInterface.InitializeBoardlessGame();
             GameInterface.ManualSetNewBoard(testBoard);

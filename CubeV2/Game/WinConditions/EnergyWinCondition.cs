@@ -19,7 +19,7 @@ namespace CubeV2
 
         public override bool Check(Board board)
         {
-            return _entityToCheck.CurrentEnergy >= _requiredEnergy;
+            return _entityToCheck.GetCurrentEnergy() >= _requiredEnergy;
         }
     }
 }

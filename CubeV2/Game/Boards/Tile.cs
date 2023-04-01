@@ -4,7 +4,7 @@ namespace CubeV2
 {
     public class Tile
     {
-        public bool Seen = false;
+        public bool Seen = !Config.EnableFogOfWar;
         public string Sprite;
         public SpriteEffects Flips = SpriteEffects.None;
         public Orientation Orientation = Orientation.Top;
@@ -13,19 +13,19 @@ namespace CubeV2
 
         public Tile()
         {
-            //Orientation = Orientation.Right;
-            //Sprite = DrawUtils.GroundSprite1;
-            //Flips = Flips | SpriteEffects.FlipHorizontally;
 
+            Sprite = DrawUtils.GrassGround;
+
+            /*
             Orientation = (Orientation)(RandomUtils.RandomNumber(4) * 2);
 
             if (RandomUtils.RandomNumber(2) == 0)
             {
-                Sprite = DrawUtils.GroundSprite1;
+                Sprite = DrawUtils.CircuitGround1;
             }
             else
             {
-                Sprite = DrawUtils.GroundSprite2;
+                Sprite = DrawUtils.CircuitGround2;
             }
 
             if (RandomUtils.RandomNumber(2) == 0)
@@ -35,7 +35,7 @@ namespace CubeV2
             if (RandomUtils.RandomNumber(2) == 0)
             {
                 Flips = Flips | SpriteEffects.FlipVertically;
-            }
+            }*/
         }
 
         public void SetContents(Entity e)

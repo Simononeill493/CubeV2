@@ -42,7 +42,7 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, int scale, float layer)
         {
-            DrawUtils.DrawSprite(spriteBatch, DrawUtils.GroundSprite1, position, scale, 0, Vector2.Zero, layer);
+            DrawUtils.DrawSprite(spriteBatch, DrawUtils.CircuitGround1, position, scale, 0, Vector2.Zero, layer);
         }
 
         public override bool IVariableEquals(Entity caller, IVariable other)

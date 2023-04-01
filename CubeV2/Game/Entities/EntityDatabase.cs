@@ -34,22 +34,23 @@ namespace CubeV2
             _masterList = new Dictionary<string, EntityTemplate>();
 
             _masterList[ManualPlayerName] = new ManualPlayerTemplate(ManualPlayerName);
-            _masterList[ManualPlayerName].Instructions = new List<Instruction>();
+            _masterList[ManualPlayerName].Instructions = new Instruction[Config.EntityMaxInstructions];
             _masterList[ManualPlayerName].DefaultTags = new List<string>() { Config.PlayerTag, Config.IndestructibleTag };
             _masterList[ManualPlayerName].DefaultMaxEnergy = 1000;
 
             _masterList[AutoPlayerName] = new EntityTemplate(AutoPlayerName) { DisplaySprite = DrawUtils.PlayerSprite };
-            _masterList[AutoPlayerName].Instructions = new List<Instruction>() { new MoveInstruction(RelativeDirection.Forward) };
+            _masterList[AutoPlayerName].Instructions = new Instruction[Config.EntityMaxInstructions];
+            _masterList[AutoPlayerName].Instructions[0]= new MoveInstruction(RelativeDirection.Forward);
             _masterList[AutoPlayerName].DefaultTags = new List<string>() { Config.PlayerTag };
 
 
-            _masterList[Ally1Name] = new EntityTemplate(Ally1Name) { DisplaySprite = DrawUtils.Ally1Sprite, Instructions = new List<Instruction>(), DefaultMaxEnergy = 10000 };
+            _masterList[Ally1Name] = new EntityTemplate(Ally1Name) { DisplaySprite = DrawUtils.Ally1Sprite, Instructions = new Instruction[Config.EntityMaxInstructions], DefaultMaxEnergy = 10000 };
             _masterList[Ally1Name].DefaultTags = new List<string>() { Config.IndestructibleTag };
 
-            _masterList[Ally2Name] = new EntityTemplate(Ally2Name) { DisplaySprite = DrawUtils.Ally2Sprite, Instructions = new List<Instruction>(), DefaultMaxEnergy = 50 };
-            _masterList[Ally3Name] = new EntityTemplate(Ally3Name) { DisplaySprite = DrawUtils.Ally3Sprite, Instructions = new List<Instruction>(), DefaultMaxEnergy = 50 };
-            _masterList[Ally4Name] = new EntityTemplate(Ally4Name) { DisplaySprite = DrawUtils.Ally4Sprite, Instructions = new List<Instruction>(), DefaultMaxEnergy = 50 };
-            _masterList[Ally5Name] = new EntityTemplate(Ally5Name) { DisplaySprite = DrawUtils.Ally5Sprite, Instructions = new List<Instruction>(), DefaultMaxEnergy = 50 };
+            _masterList[Ally2Name] = new EntityTemplate(Ally2Name) { DisplaySprite = DrawUtils.Ally2Sprite, Instructions = new Instruction[Config.EntityMaxInstructions], DefaultMaxEnergy = 50 };
+            _masterList[Ally3Name] = new EntityTemplate(Ally3Name) { DisplaySprite = DrawUtils.Ally3Sprite, Instructions = new Instruction[Config.EntityMaxInstructions], DefaultMaxEnergy = 50 };
+            _masterList[Ally4Name] = new EntityTemplate(Ally4Name) { DisplaySprite = DrawUtils.Ally4Sprite, Instructions = new Instruction[Config.EntityMaxInstructions], DefaultMaxEnergy = 50 };
+            _masterList[Ally5Name] = new EntityTemplate(Ally5Name) { DisplaySprite = DrawUtils.Ally5Sprite, Instructions = new Instruction[Config.EntityMaxInstructions], DefaultMaxEnergy = 50 };
 
             _masterList[RockName] = new RockTemplate(RockName);
             _masterList[RockName].DefaultMaxEnergy = 0;

@@ -51,7 +51,7 @@ namespace CubeV2
         public static void CurrentLeftClickAction(Tile tile, Vector2Int tileLocation,int actualIndex)
         {
             var distance = _game.FocusEntity.Location.EuclideanDistance(tileLocation);
-            if (distance <= Config.PlayerOperationalRadius)
+            if (!Config.EnableRangeLimits || distance <= Config.PlayerOperationalRadius)
             {
                 switch (SelectedPlayerAction)
                 {
@@ -80,7 +80,7 @@ namespace CubeV2
         public static void CurrentRightClickAction(Tile tile, Vector2Int tileLocation, int actualIndex)
         {
             var distance = _game.FocusEntity.Location.EuclideanDistance(tileLocation);
-            if (distance <= Config.PlayerOperationalRadius)
+            if (!Config.EnableRangeLimits || distance <= Config.PlayerOperationalRadius)
             {
                 _manualDestroyEntity(tileLocation);
             }

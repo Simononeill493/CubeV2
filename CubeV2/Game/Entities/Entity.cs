@@ -15,14 +15,16 @@ namespace CubeV2
         public string Sprite;
 
         public int MaxEnergy;
-        public int CurrentEnergy;
-        public string GetEnergyOverMaxAsText() => CurrentEnergy + "/" + MaxEnergy;
-        public float GetEnergyPercentage() => MaxEnergy == 0 ? 1 : CurrentEnergy / MaxEnergy;
+        public int GetCurrentEnergy() => Config.InfiniteEnergy ? MaxEnergy : _currentEnergy;
+
+        private int _currentEnergy;
+        public string GetEnergyOverMaxAsText() => GetCurrentEnergy() + "/" + MaxEnergy;
+        public float GetEnergyPercentage() => MaxEnergy == 0 ? 1 : GetCurrentEnergy() / MaxEnergy;
 
         public Orientation Orientation;
         public Vector2Int Location = Vector2Int.MinusOne;
 
-        public List<Instruction> Instructions = new List<Instruction>();
+        public Instruction[] Instructions = new Instruction[Config.EntityMaxInstructions];
         public int InstructionCounter;
 
         public IVariable[] Variables = new IVariable[Config.InstructionMaxNumVariables];
@@ -50,9 +52,13 @@ namespace CubeV2
 
             var trueInstructionCount = 0;
 
-            for (InstructionCounter = 0; InstructionCounter < Instructions.Count; InstructionCounter++)
+            for (InstructionCounter = 0; InstructionCounter < Config.EntityMaxInstructions; InstructionCounter++)
             {
-                _executeInstruction(Instructions[InstructionCounter], currentBoard);
+                var instruction = Instructions[InstructionCounter];
+                if (instruction != null)
+                {
+                    _executeInstruction(instruction, currentBoard);
+                }
 
                 if (trueInstructionCount++ >= Config.MaxInstructionJumpsPerTick)
                 {
@@ -100,27 +106,27 @@ namespace CubeV2
 
         public bool HasEnergy(int amount)
         {
-            return (CurrentEnergy >= amount);
+            return (Config.InfiniteEnergy) || (_currentEnergy >= amount);
         }
         public void TakeEnergy(int amount)
         {
-            if (amount > CurrentEnergy)
+            if (amount > _currentEnergy)
             {
                 throw new Exception("Taking more energy from an entity than it has. This should never happen.");
             }
 
-            CurrentEnergy -= amount;
+            _currentEnergy -= amount;
         }
         public void GiveEnergy(int amount)
         {
-            CurrentEnergy += amount;
+            _currentEnergy += amount;
 
-            if (CurrentEnergy > MaxEnergy)
+            if (_currentEnergy > MaxEnergy)
             {
-                CurrentEnergy = MaxEnergy;
+                _currentEnergy = MaxEnergy;
             }
         }
-        public void SetEnergyToMax() => CurrentEnergy = MaxEnergy;
+        public void SetEnergyToMax() => _currentEnergy = MaxEnergy;
 
         public void Rotate(int rotation)
         {
@@ -172,9 +178,9 @@ namespace CubeV2
         }
         public bool TryDropEnergy(Tile target, int amount)
         {
-            if (CurrentEnergy < amount)
+            if (_currentEnergy < amount)
             {
-                amount = CurrentEnergy;
+                amount = _currentEnergy;
             }
 
             if (target == null || target.Contents == null || amount == 0 || (target.Contents.HasEnergy(target.Contents.MaxEnergy)))
@@ -198,14 +204,14 @@ namespace CubeV2
         }
         public bool TryTakeEnergy(Tile target, int amount)
         {
-            if (target == null || target.Contents == null || CurrentEnergy >= MaxEnergy)
+            if (target == null || target.Contents == null || _currentEnergy >= MaxEnergy)
             {
                 return false;
             }
 
             if (!target.Contents.HasEnergy(amount))
             {
-                amount = target.Contents.CurrentEnergy;
+                amount = target.Contents._currentEnergy;
 
                 if (amount < 1)
                 {

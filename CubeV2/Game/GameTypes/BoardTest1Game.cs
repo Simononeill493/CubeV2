@@ -45,12 +45,12 @@ namespace CubeV2
 
         public override BoardTemplateTemplate CreateTemplateTemplate()
         {
-            var lines = File.ReadAllLines("C:\\Users\\Simon\\Desktop\\CubeV2\\BigMap.txt");
+            var lines = File.ReadAllLines(Config.BoardTest1WorldPath);
             var width = lines[0].Length;
             var height = lines.Length;
 
             var templateTemplate = new BoardTest1TemplateTemplate() { Width = width, Height = height };
-            templateTemplate.StaticEntities[new Vector2Int(61, 44)] = _playerTemplate;
+            templateTemplate.StaticEntities[new Vector2Int(1, 1)] = _playerTemplate;
 
             var rock = EntityDatabase.GetTemplate(EntityDatabase.RockName);
             var brokenRock = EntityDatabase.GetTemplate(EntityDatabase.BrokenRockName);

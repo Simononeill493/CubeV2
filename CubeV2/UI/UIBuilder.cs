@@ -21,14 +21,15 @@ namespace CubeV2
             gameGrid.SetOffset(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X, 60);
             gameGrid.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Board);
 
-            var randomElement = new UIElement("Random");
+            /* Rain
+             * var randomElement = new UIElement("Random");
             randomElement.AddAppearance(new GifAppearance(DrawUtils.GameLayer5, DrawUtils.RainGif) { Scale = new Vector2(3.375f, 3.5f), Transparency = 0.25f}); ; ;
             //gameGrid.AddChildren(randomElement);
 
             var randomElement2 = new UIElement("Random2");
             randomElement2.SetOffset(680, 0);
             randomElement2.AddAppearance(new GifAppearance(DrawUtils.GameLayer5, DrawUtils.RainGif) { Scale = new Vector2(3.375f, 3.5f), Transparency = 0.25f }); ; ;
-            //gameGrid.AddChildren(randomElement2);
+            //gameGrid.AddChildren(randomElement2);*/
 
             var cursorOverlayTile = new UIElement(Config.CursorOverlayTileName);
             cursorOverlayTile.AddAppearance(new CursorOverlayAppearance(Color.White * 0.5f, DrawUtils.GameLayer4));
@@ -37,10 +38,13 @@ namespace CubeV2
             cursorOverlayTile.AddEnabledCondition(() => AllUIElements.GetUIElement(Config.GameGridName).MouseOver);
             gameGrid.AddChildren(cursorOverlayTile);
 
-            var operationalRangeOverlayTile = new UIElement(Config.OperationalRangeOverlayTileName);
-            //operationalRangeOverlayTile.AddAppearance(new OperationalRangeOverlayAppearance(Color.White * 0.05f, DrawUtils.GameLayer5));
-            operationalRangeOverlayTile.AddEnabledCondition(() => GameInterface._game.FocusEntity != null);
-            gameGrid.AddChildren(operationalRangeOverlayTile);
+            if(Config.EnablePlayerRangeOverlay)
+            {
+                var operationalRangeOverlayTile = new UIElement(Config.OperationalRangeOverlayTileName);
+                operationalRangeOverlayTile.AddAppearance(new OperationalRangeOverlayAppearance(Color.White * 0.05f, DrawUtils.GameLayer5));
+                operationalRangeOverlayTile.AddEnabledCondition(() => GameInterface._game.FocusEntity != null);
+                gameGrid.AddChildren(operationalRangeOverlayTile);
+            }
 
             var goButton = UIElementMaker.MakeRectangle(Config.GoButtonName, Config.GameControlButtonSize, Config.GoButtonOffset, Color.Lime, DrawUtils.UILayer2);
             goButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Go"));
@@ -85,15 +89,16 @@ namespace CubeV2
 
             var instructionTiles = _makeInstructionTiles();
 
-            var addInstructionButton = UIElementMaker.MakeRectangle(Config.AddInstructionButtonName, new Vector2(50,30), Config.AddInstructionButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
-            addInstructionButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3,"+"));
-            addInstructionButton.AddLeftClickAction((i) => GameInterface.AddInstructionToEnd());
+            //var addInstructionButton = UIElementMaker.MakeRectangle(Config.AddInstructionButtonName, new Vector2(50,30), Config.AddInstructionButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
+            //addInstructionButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3,"+"));
+            //addInstructionButton.AddLeftClickAction((i) => GameInterface.AddInstructionToEnd());
 
-            var removeInstructionButton = UIElementMaker.MakeRectangle(Config.RemoveInstructionButtonName, new Vector2(50, 30), Config.RemoveInstructionButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
-            removeInstructionButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3,"-"));
-            removeInstructionButton.AddLeftClickAction((i) => GameInterface.RemoveInstructionFromEnd());
+            //var removeInstructionButton = UIElementMaker.MakeRectangle(Config.RemoveInstructionButtonName, new Vector2(50, 30), Config.RemoveInstructionButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
+            //removeInstructionButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3,"-"));
+            //removeInstructionButton.AddLeftClickAction((i) => GameInterface.RemoveInstructionFromEnd());
 
-            instructionPanel.AddChildren(addInstructionButton, removeInstructionButton, instructionTiles);
+            //instructionPanel.AddChildren(addInstructionButton, removeInstructionButton);
+            instructionPanel.AddChildren(instructionTiles);
 
             var instructionSelectorGrid = _makeInstructionSelectorGrid();
             instructionSelectorGrid.SetOffset(20, 20);
@@ -134,7 +139,7 @@ namespace CubeV2
 
         private static bool InstructionSelectorGridEnabled()
         {
-            return (GameInterface.CurrentSidePanelFocus == SidePanelFocus.Instruction || GameInterface.CurrentSidePanelFocus == SidePanelFocus.InstructionOption) && GameInterface.FocusedInstructionExists;
+            return (GameInterface.CurrentSidePanelFocus == SidePanelFocus.Instruction || GameInterface.CurrentSidePanelFocus == SidePanelFocus.InstructionOption);
         }
 
         private static bool VariableSelectorGridEnabled()
@@ -175,7 +180,7 @@ namespace CubeV2
             var tileDetailsPanel = UIElementMaker.MakeRectangle("TileDetailsPanel", new Vector2(210, 80), Vector2.Zero, new Color(212, 161, 161), DrawUtils.UILayer2);
 
             var tilePicture = new UIElement("TilePicture");
-            tilePicture.AddAppearance(new SpriteAppearance(DrawUtils.UILayer3, DrawUtils.GroundSprite1) { Scale = 3 });
+            tilePicture.AddAppearance(new SpriteAppearance(DrawUtils.UILayer3, DrawUtils.CircuitGround1) { Scale = 3 });
             tilePicture.SetOffset(25, 10);
 
             var tileCoordsText = new UIElement("TileCoordsText");

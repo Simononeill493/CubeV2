@@ -128,15 +128,19 @@ namespace CubeV2
             {
                 CameraOffset += arrowsDirection.Direction.ToVector();
             }
-            if (input.IsKeyJustReleased(Keys.OemPlus) | input.IsButtonJustReleased(Buttons.RightShoulder))
+
+            if(!Config.LockZoomLevel)
             {
-                SetCameraConfig(CameraScale + 1);
-                CenterCameraOnPlayer();
-            }
-            if (input.IsKeyJustReleased(Keys.OemMinus) | input.IsButtonJustReleased(Buttons.LeftShoulder))
-            {
-                SetCameraConfig(CameraScale - 1);
-                CenterCameraOnPlayer();
+                if (input.IsKeyJustReleased(Keys.OemPlus) | input.IsButtonJustReleased(Buttons.RightShoulder))
+                {
+                    SetCameraConfig(CameraScale + 1);
+                    CenterCameraOnPlayer();
+                }
+                if (input.IsKeyJustReleased(Keys.OemMinus) | input.IsButtonJustReleased(Buttons.LeftShoulder))
+                {
+                    SetCameraConfig(CameraScale - 1);
+                    CenterCameraOnPlayer();
+                }
             }
             if (input.IsKeyJustReleased(Keys.Enter))
             {

@@ -62,7 +62,7 @@ namespace CubeV2
         }
         public static void StartBoard(TimeSpan updateRate)
         {
-            SetCameraConfig(GameInterface.DefaultCameraScale);
+            SetCameraConfig(Config.DefaultZoomLevel);
 
             _boardRunning = true;
             BoardUpdateRate = updateRate;
@@ -131,7 +131,7 @@ namespace CubeV2
         {
             if (_game != null && _game.CurrentBoard != null && _game.FocusEntity != null)
             {
-                return (_game.FocusEntity.CurrentEnergy, _game.FocusEntity.MaxEnergy);
+                return (_game.FocusEntity.GetCurrentEnergy(), _game.FocusEntity.MaxEnergy);
             }
 
             return (0,1);

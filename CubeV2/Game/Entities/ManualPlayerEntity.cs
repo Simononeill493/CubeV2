@@ -46,7 +46,7 @@ namespace CubeV2
             base.Tick(currentBoard, input);
 
             //GiveEnergy(1000);
-            if(CurrentEnergy < 5)
+            if(GetCurrentEnergy() < 5)
             {
                 GiveEnergy(1);
             }

@@ -10,7 +10,6 @@ namespace CubeV2
 {
     public partial class GameInterface
     {
-        public const int DefaultCameraScale = 3;
         public static int CameraScale;
         public static Vector2Int CameraTileSize { get; private set; }
         public static Vector2 _cameraTileSizeFloat { get; private set; }
@@ -61,7 +60,10 @@ namespace CubeV2
 
         public static void SetCameraOffset(Vector2Int offset)
         {
-            CameraOffset = offset;
+            if (!Config.LockCameraMovement)
+            {
+                CameraOffset = offset;
+            }
         }
 
         public static bool IsPlayerInCamera()

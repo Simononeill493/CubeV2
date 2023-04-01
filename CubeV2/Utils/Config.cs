@@ -12,11 +12,23 @@ namespace CubeV2
     internal class Config
     {
         public static bool KnowAllInstructionsByDefault = true;
+        public static bool InfiniteEnergy = true;
 
-        public static int EntityMaxVariables = 3;
 
-        public static int GlobalDefaultMaxEnergy = 100;
+        public static bool EnableFogOfWar = false;
+        public static bool EnableRangeLimits = false;
+        public static bool EnablePlayerRangeOverlay = false;
+        public static bool LockCameraMovement = true;
+        public static bool LockZoomLevel = false;
+        public static int DefaultZoomLevel = 3;
+
+
+        public static string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\CircuitMap.txt";//30 14
         public static int BoardTest1StartingEnergy = 100;
+
+        public static int EntityMaxInstructions = 7;
+        public static int EntityMaxVariables = 3;
+        public static int GlobalDefaultMaxEnergy = 100;
 
         public static int ManualPlayerMaxEnergy = 200;
         public static int ManualPlayerStartingEnergy = 50;
@@ -42,6 +54,7 @@ namespace CubeV2
         public static Vector2 TileBaseSize = new Vector2(16,16);
         public static int VariableSelectionTileScale = 3;
         public static int InstructionTileVariableScale = 3;
+
 
         public static int NumInstructionTiles = 7;
         public static int InstructionTileInternalPadding = 10;

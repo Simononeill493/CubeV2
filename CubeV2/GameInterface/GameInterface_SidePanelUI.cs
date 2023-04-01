@@ -25,26 +25,26 @@ namespace CubeV2
         private static int _focusedTile;
 
         private static EntityTemplate _focusedTemplate;
-        private static List<Instruction> _focusedInstructions => _focusedTemplate.Instructions;
+        private static Instruction[] _focusedInstructions => _focusedTemplate.Instructions;
         private static List<IVariable> _variableOptions = new List<IVariable>();
         private static List<Instruction> _instructionOptions => _game?.KnownInstructions;
 
-        public static void AddInstructionToEnd() => AddInstructionAtIndex(_focusedInstructions.Count);
-        public static void RemoveInstructionFromEnd() => RemoveInstructionAtIndex(_focusedInstructions.Count-1);
+        //public static void AddInstructionToEnd() => AddInstructionAtIndex(_focusedInstructions.Count);
+        //public static void RemoveInstructionFromEnd() => RemoveInstructionAtIndex(_focusedInstructions.Count-1);
         public static void AddInstructionAtIndex(int index)
         {
-            if (index < 0 || index > _focusedInstructions.Count)
+            if (index < 0 || index > Config.EntityMaxInstructions)
             {
                 return;
             }
 
-            _focusedInstructions.Insert(index, InstructionDatabase.GenerateRandom());
+            _focusedInstructions[index] = new MoveInstruction();
         }
         public static void RemoveInstructionAtIndex(int index)
         {
             if(InstructionExists(index))
             {
-                _focusedInstructions.RemoveAt(index);
+                _focusedInstructions[index] = null;
             }
         }
 
@@ -102,10 +102,16 @@ namespace CubeV2
         }
         public static void AssignValueToFocusedInstruction(int instructionOptionIndex)
         {
-            if(FocusedInstructionExists && InstructionOptionExists(instructionOptionIndex))
+            if(InstructionOptionExists(instructionOptionIndex))
             {
+                if(!FocusedInstructionExists)
+                {
+                    AddInstructionAtIndex(_focusedInstruction);
+                }
+
                 var toSet = _instructionOptions[instructionOptionIndex].GenerateNew();
                 _focusedInstructions[_focusedInstruction] = toSet;
+
             }
         }
         public static void AssignValueToFocusedOutput(int outputOptionIndex)
@@ -126,11 +132,11 @@ namespace CubeV2
         }
         public static void FocusInstruction(int instructionIndex)
         {
-            if (InstructionExists(instructionIndex))
-            {
+            //if (InstructionExists(instructionIndex))
+            //{
                 _focusedInstruction = instructionIndex;
                 CurrentSidePanelFocus = SidePanelFocus.Instruction;
-            }
+            //}
         }
         public static void FocusVariable(int instructionIndex, int variableIndex)
         {
@@ -217,7 +223,7 @@ namespace CubeV2
         }
         public static bool InstructionExists(int instructionIndex)
         {
-            return (_focusedInstructions != null && (_focusedInstructions.Count > instructionIndex) && instructionIndex >= 0);
+            return (_focusedInstructions != null && (Config.EntityMaxInstructions > instructionIndex) && instructionIndex >= 0 && _focusedInstructions[instructionIndex]!=null);
         }
         public static bool InstructionOptionExists(int instructionOptionIndex)
         {

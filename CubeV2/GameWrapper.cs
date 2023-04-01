@@ -97,7 +97,10 @@ namespace CubeV2
             var gameGrid = AllUIElements.GetUIElement(Config.GameGridName);
 
             _setCursorTilePosition(input, gameGrid);
-            _setOperationalRangeOverlayPosition(gameGrid);
+            if (Config.EnablePlayerRangeOverlay)
+            {
+                _setOperationalRangeOverlayPosition(gameGrid);
+            }
 
             // TODO: Add your update logic here
 

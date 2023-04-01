@@ -14,7 +14,7 @@ namespace CubeV2
 
         public string DisplaySprite;
 
-        public List<Instruction> Instructions = null;
+        public Instruction[] Instructions = null;
 
         public EntityTemplate(string id)
         {
