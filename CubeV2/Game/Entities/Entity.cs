@@ -142,7 +142,7 @@ namespace CubeV2
 
         public bool TrySwitchInstructionSet(int index)
         {
-            if (index > 0 && index < Instructions.Count)
+            if (index >=0 && index < Instructions.Count)
             {
                 CurrentInstructionSet = index;
             }
