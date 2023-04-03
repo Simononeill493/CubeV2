@@ -26,6 +26,7 @@ namespace CubeV2
             _masterList.Add(new IfInstruction());
             _masterList.Add(new PushEnergyInstruction());
             _masterList.Add(new PullEnergyInstruction());
+            _masterList.Add(new SwitchModeInstruction());
 
             //_masterList.Add(new AdminTakeEnergyInstruction());
             //_masterList.Add(new AdminDropEnergyInstruction());

@@ -140,7 +140,15 @@ namespace CubeV2
             Orientation = orientation;
         }
 
+        public bool TrySwitchInstructionSet(int index)
+        {
+            if (index > 0 && index < Instructions.Count)
+            {
+                CurrentInstructionSet = index;
+            }
 
+            return false;
+        }
 
 
         public bool TryMove(RelativeDirection direction) => TryMove(DirectionUtils.ToCardinal(Orientation, direction));
@@ -248,5 +256,6 @@ namespace CubeV2
 
         public virtual void OnDestroy(Vector2Int formerLocation) { }
         public virtual bool TryBeCollected(Entity collector) => false;
+
     }
 }
