@@ -184,10 +184,17 @@ namespace CubeV2
             {
                 var size = Appearance.Size;
                 MouseOver = new Rectangle((int)_position.X, (int)_position.Y, (int)size.X, (int)size.Y).Contains(mousePos);
+
+
                 return;
             }
 
             MouseOver = false;
+        }
+
+        public override string ToString()
+        {
+            return ID;
         }
     }
 
@@ -203,4 +210,5 @@ namespace CubeV2
         }
 
     }
+
 }

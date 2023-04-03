@@ -26,7 +26,7 @@ namespace CubeV2
         public static string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\CircuitMap.txt";//30 14
         public static int BoardTest1StartingEnergy = 100;
 
-        public static int EntityMaxInstructions = 7;
+        public static int EntityMaxInstructionsPerSet = 7;
         public static int EntityMaxVariables = 3;
         public static int GlobalDefaultMaxEnergy = 100;
 

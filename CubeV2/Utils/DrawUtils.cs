@@ -51,7 +51,11 @@ namespace CubeV2
         public const string DownLeftSprite = "DownLeftArrow";
         public const string DownRightSprite = "DownRightArrow";
 
+        public const string MenuArrow1 = "MenuArrow1";
+
         public const string RainGif = "rain_TEST_ONLY-Sheet";
+
+       
 
         public static Dictionary<string, Texture2D> SpritesDict;
         public static Dictionary<string, MyGif> GifDict;
@@ -114,6 +118,8 @@ namespace CubeV2
             SpritesDict[UpRightSprite] = content.Load<Texture2D>(UpRightSprite);
             SpritesDict[DownLeftSprite] = content.Load<Texture2D>(DownLeftSprite);
             SpritesDict[DownRightSprite] = content.Load<Texture2D>(DownRightSprite);
+
+            SpritesDict[MenuArrow1] = content.Load<Texture2D>(MenuArrow1);
 
             PressStart2PFont = content.Load<SpriteFont>("PressStart2P");
 

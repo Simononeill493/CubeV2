@@ -11,6 +11,8 @@ namespace CubeV2
         public override Vector2 Size => Vector2.Zero;
         public float Scale = 1;
 
+        public bool FlipHorizontal = false;
+
         public SpriteAppearance(float layer, Func<string> getSprite) : base(layer)
         {
             GetSprite = getSprite;
@@ -20,7 +22,7 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            DrawUtils.DrawSprite(spriteBatch, GetSprite(), position, Scale, 0, Vector2.Zero, Layer);
+            DrawUtils.DrawSprite(spriteBatch, GetSprite(), position, Scale, 0, Vector2.Zero, Layer, SpriteEffects.None | (FlipHorizontal ? SpriteEffects.FlipHorizontally : SpriteEffects.None));
         }
     }
 

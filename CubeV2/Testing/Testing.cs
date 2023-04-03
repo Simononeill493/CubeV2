@@ -31,8 +31,7 @@ namespace CubeV2
                 throw new Exception("Test failed.");
             }
 
-            testEntity.Instructions = new Instruction[Config.EntityMaxInstructions];
-            testEntity.Instructions[0] =  new MoveInstruction(RelativeDirection.BackwardRight);
+            testEntity.Instructions[0][0] =  new MoveInstruction(RelativeDirection.BackwardRight);
 
             GameInterface.InitializeBoardlessGame();
             GameInterface.ManualSetNewBoard(testBoard);

@@ -24,7 +24,8 @@ namespace CubeV2
         public Orientation Orientation;
         public Vector2Int Location = Vector2Int.MinusOne;
 
-        public Instruction[] Instructions = new Instruction[Config.EntityMaxInstructions];
+        public List<Instruction[]> Instructions = new List<Instruction[]>();
+        public int CurrentInstructionSet = 0;
         public int InstructionCounter;
 
         public IVariable[] Variables = new IVariable[Config.InstructionMaxNumVariables];
@@ -39,6 +40,8 @@ namespace CubeV2
             TemplateID = templateID;
             EntityID = entityID;
             Sprite = sprite;
+
+            Instructions.Add(new Instruction[Config.EntityMaxInstructionsPerSet]);
         }
 
         public virtual void Tick(Board currentBoard, UserInput input)
@@ -52,9 +55,9 @@ namespace CubeV2
 
             var trueInstructionCount = 0;
 
-            for (InstructionCounter = 0; InstructionCounter < Config.EntityMaxInstructions; InstructionCounter++)
+            for (InstructionCounter = 0; InstructionCounter < Config.EntityMaxInstructionsPerSet; InstructionCounter++)
             {
-                var instruction = Instructions[InstructionCounter];
+                var instruction = Instructions[CurrentInstructionSet][InstructionCounter];
                 if (instruction != null)
                 {
                     _executeInstruction(instruction, currentBoard);
@@ -110,7 +113,7 @@ namespace CubeV2
         }
         public void TakeEnergy(int amount)
         {
-            if (amount > _currentEnergy)
+            if (amount > _currentEnergy && !Config.InfiniteEnergy)
             {
                 throw new Exception("Taking more energy from an entity than it has. This should never happen.");
             }
@@ -178,7 +181,7 @@ namespace CubeV2
         }
         public bool TryDropEnergy(Tile target, int amount)
         {
-            if (_currentEnergy < amount)
+            if (_currentEnergy < amount && !Config.InfiniteEnergy)
             {
                 amount = _currentEnergy;
             }
@@ -204,7 +207,7 @@ namespace CubeV2
         }
         public bool TryTakeEnergy(Tile target, int amount)
         {
-            if (target == null || target.Contents == null || _currentEnergy >= MaxEnergy)
+            if (target == null || target.Contents == null || _currentEnergy >= MaxEnergy || Config.InfiniteEnergy)
             {
                 return false;
             }

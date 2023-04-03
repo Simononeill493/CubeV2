@@ -34,7 +34,7 @@ namespace CubeV2
                 {
                     FocusVariable(_focusedInstruction, 0);
 
-                    if (FocusedInstructionExists & _focusedInstructions[_focusedInstruction].VariableCount == 1)
+                    if (FocusedInstructionExists && _focusedInstructions[FocusedInstructionSet][_focusedInstruction].VariableCount == 1)
                     {
                         FocusVariableOption(_focusedInstruction, 0, 0);
                     }
@@ -124,7 +124,7 @@ namespace CubeV2
             }
 
             var arrowsDirection = DirectionUtils.GetArrowsDirection(input);
-            if (arrowsDirection.AnyPressed)
+            if (arrowsDirection.AnyPressed && !Config.LockCameraMovement)
             {
                 CameraOffset += arrowsDirection.Direction.ToVector();
             }

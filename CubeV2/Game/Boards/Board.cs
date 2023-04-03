@@ -190,7 +190,7 @@ namespace CubeV2
             _addEntityToTile(entity, tileToAddTo);
             _addToEntityTypesDict(entity);
 
-            if(entity.Instructions!=null)
+            if(entity.Instructions != null && entity.Instructions[0] !=null)
             {
                 _addEntityToActiveList(entity);
             }

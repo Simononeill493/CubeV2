@@ -88,7 +88,9 @@ namespace CubeV2
 
 
             var instructionTiles = _makeInstructionTiles();
-
+            
+            var instructionSetManager = _makeInstructionSetManager();
+            instructionSetManager.SetOffset(65, 10);
             //var addInstructionButton = UIElementMaker.MakeRectangle(Config.AddInstructionButtonName, new Vector2(50,30), Config.AddInstructionButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
             //addInstructionButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3,"+"));
             //addInstructionButton.AddLeftClickAction((i) => GameInterface.AddInstructionToEnd());
@@ -98,7 +100,7 @@ namespace CubeV2
             //removeInstructionButton.AddLeftClickAction((i) => GameInterface.RemoveInstructionFromEnd());
 
             //instructionPanel.AddChildren(addInstructionButton, removeInstructionButton);
-            instructionPanel.AddChildren(instructionTiles);
+            instructionPanel.AddChildren(instructionTiles, instructionSetManager);
 
             var instructionSelectorGrid = _makeInstructionSelectorGrid();
             instructionSelectorGrid.SetOffset(20, 20);
@@ -155,6 +157,36 @@ namespace CubeV2
         private static bool TileViewerEnabled()
         {
             return GameInterface.CurrentSidePanelFocus == SidePanelFocus.Tile && GameInterface.FocusedTileExists;
+        }
+
+        private static UIElement _makeInstructionSetManager()
+        {
+            var leftArrow = new UIElement("InstructionSetLeftArrow");
+            leftArrow.AddAppearance(new RectangleAppearance(new Vector2(18,32),Color.Gray,DrawUtils.UILayer3));
+            leftArrow.AddAppearance(new SpriteAppearance(DrawUtils.UILayer4,DrawUtils.MenuArrow1) { Scale = 2, FlipHorizontal = true });
+            leftArrow.AddLeftClickAction((i) => GameInterface.FocusInstructionSet(GameInterface.FocusedInstructionSet-1));
+            leftArrow.SetOffset(0, 0);
+
+            var rightArrow = new UIElement("InstructionSetRightArrow");
+            rightArrow.AddAppearance(new RectangleAppearance(new Vector2(18, 32), Color.Gray, DrawUtils.UILayer3));
+            rightArrow.AddAppearance(new SpriteAppearance(DrawUtils.UILayer4, DrawUtils.MenuArrow1) { Scale = 2});
+            rightArrow.AddLeftClickAction((i) => GameInterface.FocusInstructionSet(GameInterface.FocusedInstructionSet + 1));
+            rightArrow.SetOffset(100, 0);
+
+            var focusNumber = new UIElement("InstructionSetFocusNumber");
+            focusNumber.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, ()=>GameInterface.FocusedInstructionSet.ToString()));
+            focusNumber.SetOffset(50, 0);
+
+            var makeNewSetButton= new UIElement("InstructionSetCreateNewButton");
+            makeNewSetButton.AddAppearance(new RectangleAppearance(new Vector2(18, 32), Color.Gray, DrawUtils.UILayer3));
+            makeNewSetButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer4,"+"));
+            makeNewSetButton.AddLeftClickAction((i) =>GameInterface.AddInstructionSet());
+            makeNewSetButton.SetOffset(150, 0);
+
+
+            var container = new UIElement("InstructionSetManager");
+            container.AddChildren(leftArrow, rightArrow, focusNumber, makeNewSetButton);
+            return container;
         }
 
 
