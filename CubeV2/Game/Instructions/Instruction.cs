@@ -12,7 +12,7 @@ namespace CubeV2
         public IVariable[] Outputs;
         public int[] OutputTargets;
 
-        public virtual int ControlOutputCount { get; } = 0;
+        public virtual int ControlOutputCount { get; } = 1;
         public int[] ControlOutputs;
 
         public virtual int BaseEnergyCost { get; } = 0;
@@ -40,11 +40,6 @@ namespace CubeV2
             for (int i = 0; i < Config.InstructionMaxNumControlOutputs; i++)
             {
                 ControlOutputs[i] = -1;
-            }
-
-            if (OutputCount > 0 && ControlOutputCount > 0)
-            {
-                throw new System.Exception("Can't (currently) have an instruction with both control and outputs.");
             }
         }
 

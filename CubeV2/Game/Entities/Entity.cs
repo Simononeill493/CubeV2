@@ -78,6 +78,10 @@ namespace CubeV2
             }
 
             var energyCost = currentInstruction.Run(this, currentBoard);
+            if(currentInstruction.ControlOutputs[0] >= 0 && currentInstruction.ControlOutputCount==1)
+            {
+                SetInstructionCounter(currentInstruction.ControlOutputs[0] - 1);
+            }
 
             TakeEnergy(energyCost);
 
@@ -145,6 +149,7 @@ namespace CubeV2
             if (index >=0 && index < Instructions.Count)
             {
                 CurrentInstructionSet = index;
+                return true;
             }
 
             return false;

@@ -14,6 +14,7 @@ namespace CubeV2
         public override Vector2 Size => Vector2.Zero;
         private int _scale;
         private int _instructionIndex;
+        private static Color TextColor = new Color(10, 68, 234);
 
         public OutputControlTileAppearance(int gridIndex, int instructionIndex, int scale,float layer) : base(gridIndex,layer)
         {
@@ -30,7 +31,7 @@ namespace CubeV2
 
                 if(targetIndex >= 0)
                 {
-                    DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, targetIndex.ToString(), position, Color.Cyan, _scale, Layer);
+                    DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, targetIndex.ToString(), position, TextColor, _scale, Layer);
                 }
             }
         }

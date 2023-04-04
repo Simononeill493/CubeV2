@@ -52,7 +52,7 @@ namespace CubeV2
         {
             if(InstructionExists(index))
             {
-                _focusedInstructions[index] = null;
+                _focusedInstructions[FocusedInstructionSet][index] = null;
             }
         }
 
@@ -245,7 +245,7 @@ namespace CubeV2
 
         public static bool InstructionExists(int instructionIndex)
         {
-            return (_focusedInstructions != null && (Config.EntityMaxInstructionsPerSet > instructionIndex) && instructionIndex >= 0 && InstructionSetExists(FocusedInstructionSet) && _focusedInstructions[FocusedInstructionSet][instructionIndex]!=null);
+            return (_focusedInstructions != null && (Config.EntityMaxInstructionsPerSet > instructionIndex) && instructionIndex >= 0 && InstructionSetExists(FocusedInstructionSet) && _focusedInstructions[FocusedInstructionSet]?[instructionIndex]!=null);
         }
         public static bool InstructionOptionExists(int instructionOptionIndex)
         {

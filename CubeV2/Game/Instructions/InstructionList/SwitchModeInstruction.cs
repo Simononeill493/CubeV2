@@ -12,6 +12,7 @@ namespace CubeV2
 
         public override int VariableCount => 1;
         public override int OutputCount => 0;
+        public override int ControlOutputCount => 0;
         public override int BaseEnergyCost { get; } = Config.BaseMoveCost;
 
         public SwitchModeInstruction() : base() { }
@@ -28,6 +29,7 @@ namespace CubeV2
             {
                 if (caller.TrySwitchInstructionSet((int)index))
                 {
+                    caller.SetInstructionCounter(Config.EntityMaxInstructionsPerSet + 1);
                     return 0;
                 }
             }
