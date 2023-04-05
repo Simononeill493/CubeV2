@@ -29,7 +29,7 @@ namespace CubeV2
         public static void InitializeDemoFindGoalGame()
         {
             var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.AutoPlayerName);
-            _focusedTemplate = EntityDatabase.GetTemplate(EntityDatabase.Ally1Name);
+            _focusedTemplate = EntityDatabase.GetTemplate(EntityDatabase.Ally2Name);
 
             _game = new DemoFindGoalGame(demoPlayer);
         }
@@ -37,7 +37,7 @@ namespace CubeV2
         public static void InitializeBoardTest1Game()
         {
             var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.ManualPlayerName);
-            _focusedTemplate = EntityDatabase.GetTemplate(EntityDatabase.Ally1Name);
+            _focusedTemplate = EntityDatabase.GetTemplate(EntityDatabase.Ally2Name);
 
             _game = new BoardTest1Game(demoPlayer);
             StartBoard(Config.BoardTest1UpdateRate);
@@ -190,7 +190,7 @@ namespace CubeV2
         public static Board HeadedBoard => GameInterface._game.CurrentBoard;
         public static Board HeadlessBoard;
 
-        public static void TryCreate(Entity entity, Vector2Int location) => FocusedBoard.AddEntityToBoard(entity,location);
+        public static bool TryCreate(Entity entity, Vector2Int location) => FocusedBoard.AddEntityToBoard(entity,location);
         public static bool TryMove(Entity e, Vector2Int location) => FocusedBoard.TryMoveEntity(e, location);
         public static Tile TryGetTile(int index) => FocusedBoard.TryGetTile(index);
         public static Tile TryGetTile(Vector2Int offset) => FocusedBoard.TryGetTile(offset);

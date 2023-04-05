@@ -23,7 +23,7 @@ namespace CubeV2
         public static int DefaultZoomLevel = 3;
 
 
-        public static string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\CircuitMap.txt";//30 14
+        public static string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\EmptyMapSmall.txt";//30 14
         public static int BoardTest1StartingEnergy = 100;
 
         public static int EntityMaxInstructionsPerSet = 7;
@@ -40,6 +40,7 @@ namespace CubeV2
         public static int BaseScanCost = 3;//3
         public static int BaseHitCost = 5;//10
         public static int BasePingCost = 10;//20
+        public static int BaseCreateCost = 100;//20
 
         public static TimeSpan DemoBoardUpdateRate = TimeSpan.FromSeconds(0.1);
         public static TimeSpan BoardTest1UpdateRate = TimeSpan.FromSeconds(0.075);

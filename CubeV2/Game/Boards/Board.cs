@@ -108,7 +108,7 @@ namespace CubeV2
             }
 
             RemoveEntityFromCurrentTile(entity);
-            _addEntityToTile(entity, newLocation);
+            _tryAddEntityToTile(entity, newLocation);
 
             return true;
         }
@@ -177,41 +177,56 @@ namespace CubeV2
 
         public void AddEntityToBoard(Entity entity, int indexToAddTo) => AddEntityToBoard(entity, BoardUtils.IndexToXY(indexToAddTo,_width));
 
-        public void AddEntityToBoard(Entity entity, Vector2Int tileToAddTo)
+        public bool AddEntityToBoard(Entity entity, Vector2Int tileToAddTo)
         {
+            if(!ContainsLocation(tileToAddTo))
+            {
+                return false;
+            }
+
             if (Entities.ContainsKey(entity.EntityID))
             {
-                Console.WriteLine("Warning: An entity with this ID already exists in this board.");
+                //Console.WriteLine("Warning: An entity with this ID already exists in this board.");
+                return false;
             }
 
 
             Entities[entity.EntityID] = entity;
 
-            _addEntityToTile(entity, tileToAddTo);
+            if(!_tryAddEntityToTile(entity, tileToAddTo))
+            {
+                return false;
+            }
+
             _addToEntityTypesDict(entity);
 
             if(entity.Instructions != null && entity.Instructions[0] !=null)
             {
                 _addEntityToActiveList(entity);
             }
+
+            return true;
         }
 
 
-        private void _addEntityToTile(Entity entity, Vector2Int tileToAddTo)
+        private bool _tryAddEntityToTile(Entity entity, Vector2Int tileToAddTo)
         {
             if (entity.Location != Vector2Int.MinusOne)
             {
-                Console.WriteLine("Warning: Entity already has a location");
+                //Console.WriteLine("Warning: Entity already has a location");
+                return false;
             }
 
             if (TilesVector[tileToAddTo.X,tileToAddTo.Y].Contents != null)
             {
-                Console.WriteLine("Warning: Entity is being moved to tile which is not empty.");
+                //Console.WriteLine("Warning: Entity is being moved to tile which is not empty.");
+                return false;
             }
 
 
             TilesVector[tileToAddTo.X, tileToAddTo.Y].SetContents(entity);
             entity.Location = tileToAddTo;
+            return true;
 
         }
 

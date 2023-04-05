@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CubeV2.CubeV2;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CubeV2
@@ -27,6 +28,8 @@ namespace CubeV2
             _masterList.Add(new PushEnergyInstruction());
             _masterList.Add(new PullEnergyInstruction());
             _masterList.Add(new SwitchModeInstruction());
+            _masterList.Add(new DestroySelfInstruction());
+            _masterList.Add(new CreateInstruction());
 
             //_masterList.Add(new AdminTakeEnergyInstruction());
             //_masterList.Add(new AdminDropEnergyInstruction());
