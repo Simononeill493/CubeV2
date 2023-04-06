@@ -36,8 +36,8 @@ namespace CubeV2
                 energyRock.SetEnergyToMax();
             }
 
-            var portal = b.GetEntityByTemplate(EntityDatabase.PortalName).First();
-            WinCondition = new EnergyWinCondition(portal, portal.MaxEnergy);
+            //var portal = b.GetEntityByTemplate(EntityDatabase.PortalName).First();
+            //WinCondition = new EnergyWinCondition(portal, portal.MaxEnergy);
 
             GameInterface.DisplayText = "Goal: Supply 100 energy to the portal!";
         }
@@ -85,14 +85,14 @@ namespace CubeV2
                     }
                     else if (RandomUtils.RandomNumber(3000) == 0)
                     {
-                        templateTemplate.StaticEntities[position] = portal;
+                        //templateTemplate.StaticEntities[position] = portal;
                     }
 
 
                 }
             }
 
-            templateTemplate.StaticEntities[new Vector2Int(5, 2)] = portal;
+            //templateTemplate.StaticEntities[new Vector2Int(5, 2)] = portal;
 
             /*for (int i = 0; i < 25; i++)
             {

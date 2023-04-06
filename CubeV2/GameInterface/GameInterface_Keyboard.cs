@@ -91,12 +91,7 @@ namespace CubeV2
             }
             else if (CurrentSidePanelFocus == SidePanelFocus.VariableOption)
             {
-                if (input.IsKeyJustPressed(Keys.Enter))
-                {
-                    AssignValueToFocusedVariable(_focusedVariableOption);
-                    FocusVariable(_focusedInstruction, _focusedVariable);
-                }
-                else if (input.IsKeyJustPressed(Keys.Left))
+                if (input.IsKeyJustPressed(Keys.Left))
                 {
                     FocusVariableOption(_focusedInstruction, _focusedVariable, _focusedVariableOption - 1);
                 }

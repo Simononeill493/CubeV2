@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Threading;
 
 namespace CubeV2
@@ -217,7 +216,7 @@ namespace CubeV2
         {
             var listContainer = new UIElement("SelectorPanelListContainer");
             listContainer.SetOffset(20, 20);
-            listContainer.AddChildren(_makeListOfInstructions(), _makeListOfVariableCategories(), _makeOutputSelectorGrid(), _makeTileViewer(),_makeGenericVariableList());
+            listContainer.AddChildren(_makeListOfInstructions(), _makeListOfVariableCategories(), _makeOutputSelectorGrid(), _makeTileViewer(),_makeGenericVariableList(),_makeIntegerVariableMaker());
 
             var selectorPanel = UIElementMaker.MakeRectangle(Config.SelectorPanelName, Config.SelectorPanelSize, Config.SelectorPanelOffset, Config.SelectorPanelColor, DrawUtils.UILayer1);
             selectorPanel.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Editor);
@@ -256,11 +255,30 @@ namespace CubeV2
 
             var listOfVariables = new UIGrid("ListOfVariables", gridSize, appearanceFactory);
             listOfVariables.Arrange(gridSize, new Vector2Int(Config.TileBaseSize * Config.VariableSelectionTileScale), 5);
-            listOfVariables.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedVariable(index);
+            listOfVariables.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedVariableFromGrid(index);
             listOfVariables.AddEnabledCondition(GenericVariableListEnabled);
 
             return listOfVariables;
         }
+
+        private static UIElement _makeIntegerVariableMaker()
+        {
+            var integerTextBox = new TextBox(Config.IntegerTextBoxName,200,25,DrawUtils.UILayer2,DrawUtils.UILayer3);
+            integerTextBox.IsKeyValid = (c) => c.IsNumeric();
+
+            var doneButton = new TextBox("IntegerVariableConfirmButton", 150, 20, DrawUtils.UILayer2, DrawUtils.UILayer3);
+            doneButton.SetOffset(0, 75);
+            doneButton.AddLeftClickAction((i) => GameInterface.TryAssignIntegerValueToFocusedVariable(integerTextBox.Text));
+            doneButton.Text = "Confirm";
+            doneButton.Editable = false;
+
+            var integerMakerContainer = new UIElement("IntegerVariableMaker");
+            integerMakerContainer.AddEnabledCondition(IntegerVariableMakerEnabled);
+            integerMakerContainer.AddChildren(integerTextBox,doneButton);
+            return integerMakerContainer;
+        }
+
+
 
         private static UIGrid _makeOutputSelectorGrid()
         {
@@ -359,7 +377,7 @@ namespace CubeV2
 
             outputTile.AddLeftClickAction((i) => { GameInterface.FocusControlOutput(instructionIndex, controlIndex); });
             outputTile.AddEnabledCondition(() => GameInterface.ControlOutputExists(instructionIndex, controlIndex));
-            outputTile.AddKeyPressedAction((i) => { if (i.IsNumberJustPressed) { GameInterface.AssignValueToFocusedControlOutput(i.GetNumberJustPressed); } });
+            outputTile.AddKeyPressedAction((i) => { if (GameInterface.CurrentSidePanelFocus == SidePanelFocus.ControlOutput && i.IsNumberJustPressed) { GameInterface.AssignValueToFocusedControlOutput(i.GetNumberJustPressed); } });
 
             return outputTile;
         }
@@ -394,6 +412,11 @@ namespace CubeV2
         private static bool GenericVariableListEnabled()
         {
             return (GameInterface.CurrentSidePanelFocus == SidePanelFocus.VariableGeneric);
+        }
+
+        private static bool IntegerVariableMakerEnabled()
+        {
+            return (GameInterface.CurrentSidePanelFocus == SidePanelFocus.IntegerVariableMaker);
         }
 
         private static bool OutputSelectorGridEnabled()

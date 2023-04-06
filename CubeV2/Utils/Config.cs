@@ -37,6 +37,7 @@ namespace CubeV2
         public static Color PlayerFogColor = new Color(50, 50, 50);
 
         public const int BaseMoveCost = 1;//1
+        public const int BaseCountSurroundingsCost = 2;//20
         public const int BaseScanCost = 3;//3
         public const int BaseHitCost = 5;//10
         public const int BasePingCost = 10;//20
@@ -45,60 +46,62 @@ namespace CubeV2
         public static TimeSpan DemoBoardUpdateRate = TimeSpan.FromSeconds(0.1);
         public static TimeSpan BoardTest1UpdateRate = TimeSpan.FromSeconds(0.075);
 
-        //public static int GameGridWidth = 10;
-        //public static int GameGridHeight = 10;
-        //public static int GameGridHeight = 10;
-        public static int GameUIGridMaxGridWidth = 100;
-        public static int GameUIGridMaxGridHeight = 50;
-        public static int GameUIGridPadding = 0;
+        //public const int GameGridWidth = 10;
+        //public const int GameGridHeight = 10;
+        //public const int GameGridHeight = 10;
+        public const int GameUIGridMaxGridWidth = 100;
+        public const int GameUIGridMaxGridHeight = 50;
+        public const int GameUIGridPadding = 0;
 
         public static Vector2 TileBaseSize = new Vector2(16,16);
-        public static int VariableSelectionTileScale = 3;
-        public static int InstructionTileVariableScale = 3;
+        public const int VariableSelectionTileScale = 3;
+        public const int InstructionTileVariableScale = 3;
 
 
-        public static int NumInstructionTiles = 7;
-        public static int InstructionTileInternalPadding = 10;
-        public static int InstructionTileTopPadding = 50;
-        public static int InstructionMaxNumVariables = 3;
-        public static int InstructionMaxNumOutputs = 2;
-        public static int InstructionMaxNumControlOutputs = 2;
-        public static int MaxInstructionJumpsPerTick = 12;
+        public const int NumInstructionTiles = 7;
+        public const int InstructionTileInternalPadding = 10;
+        public const int InstructionTileTopPadding = 50;
+        public const int InstructionMaxNumVariables = 3;
+        public const int InstructionMaxNumOutputs = 2;
+        public const int InstructionMaxNumControlOutputs = 2;
+        public const int MaxInstructionJumpsPerTick = 12;
 
 
 
 
-        public static string UITopLevelName = "UITopLevel";
-        public static string InstructionPanelName = "InstructionPanel";
-        public static string SelectorPanelName = "SelectorPanel";
-        public static string InstructionSlotName = "InstructionSlot";
-        public static string InstructionOutputTileName = "InstructionOutputTile";
-        public static string InstructionControlOutputTileName = "InstructionControlOutputTile";
-        public static string InstructionName = "Instruction";
-        public static string AddInstructionButtonName = "AddInstructionButton";
-        public static string RemoveInstructionButtonName = "RemoveInstructionButton";
-        public static string RerollButtonName = "RerollButton";
-        public static string GoButtonName = "GoButton";
-        public static string ResetButtonName = "ResetButton";
-        public static string SimulateButtonName = "SimulateButton";
+        public const string UITopLevelName = "UITopLevel";
+        public const string InstructionPanelName = "InstructionPanel";
+        public const string SelectorPanelName = "SelectorPanel";
+        public const string InstructionSlotName = "InstructionSlot";
+        public const string InstructionOutputTileName = "InstructionOutputTile";
+        public const string InstructionControlOutputTileName = "InstructionControlOutputTile";
+        public const string InstructionName = "Instruction";
+        public const string AddInstructionButtonName = "AddInstructionButton";
+        public const string RemoveInstructionButtonName = "RemoveInstructionButton";
+        public const string RerollButtonName = "RerollButton";
+        public const string GoButtonName = "GoButton";
+        public const string ResetButtonName = "ResetButton";
+        public const string SimulateButtonName = "SimulateButton";
 
-        public static string GameGridName = "GameGrid";
-        public static string CursorOverlayTileName = "CursorOverlayTile";
-        public static string OperationalRangeOverlayTileName = "OperationalRangeOverlayTile";
+        public const string GameGridName = "GameGrid";
+        public const string CursorOverlayTileName = "CursorOverlayTile";
+        public const string OperationalRangeOverlayTileName = "OperationalRangeOverlayTile";
 
 
-        public static string ListOfInstructionsName = "InstructionSelectorGrid";
-        public static string VariableCategoryListName = "VariableCategoryList";
+        public const string ListOfInstructionsName = "InstructionSelectorGrid";
+        public const string VariableCategoryListName = "VariableCategoryList";
 
-        public static string InstructionVariableTileName = "InstructionVariableTile";
-        public static string OutputSelectorGridName = "OutputSelectorGrid";
+        public const string InstructionVariableTileName = "InstructionVariableTile";
+        public const string OutputSelectorGridName = "OutputSelectorGrid";
 
-        public static string EnergyBarName = "EnergyBar";
-        public static string DisplayTextName = "DisplayText";
+        public const string EnergyBarName = "EnergyBar";
+        public const string DisplayTextName = "DisplayText";
 
-        public static string CollectedGoalTag = "EnteredGoal";
-        public static string PlayerTag = "Player";
-        public static string IndestructibleTag = "Indestructible";
+        public const string CollectedGoalTag = "EnteredGoal";
+        public const string PlayerTag = "Player";
+        public const string IndestructibleTag = "Indestructible";
+
+        public const string IntegerTextBoxName = "IntegerTextBox";
 
         public static void Load() 
         {

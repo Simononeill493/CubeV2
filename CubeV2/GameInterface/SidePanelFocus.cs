@@ -6,6 +6,7 @@
         Instruction,
         VariableCategory,
         VariableGeneric,
+        IntegerVariableMaker,
         Output,
         ControlOutput,
         InstructionOption,

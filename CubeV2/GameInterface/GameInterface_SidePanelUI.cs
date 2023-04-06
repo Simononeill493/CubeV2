@@ -103,22 +103,42 @@ namespace CubeV2
         {
             if(VariableCategoryExists(categoryIndex))
             {
-                CurrentSidePanelFocus = SidePanelFocus.VariableGeneric;
-                _focusedGenericVariables = VariableOptionsGenerator.GetVariableOptions(VariableUtils.GetAllVariableCategories()[categoryIndex]);
+                var category = VariableUtils.GetAllVariableCategories()[categoryIndex];
+                if(category.Name == VariableUtils.IntegerVariableName)
+                {
+                    CurrentSidePanelFocus = SidePanelFocus.IntegerVariableMaker;
+                }
+                else
+                {
+                    _focusedGenericVariables = VariableOptionsGenerator.GetVariableOptions(VariableUtils.GetAllVariableCategories()[categoryIndex]);
+                    CurrentSidePanelFocus = SidePanelFocus.VariableGeneric;
+                }
             }
         }
 
-        public static void AssignValueToFocusedVariable(int variableIndex)
+        public static void AssignValueToFocusedVariableFromGrid(int variableGridIndex) => AssignValueToFocusedVariable(GetVariableFromGrid(variableGridIndex));
+        public static void AssignValueToFocusedVariable(IVariable variable)
         {
-            var variable = GetVariableFromGrid(variableIndex);
-            if(variable!=null)
+            if (variable != null)
             {
-                if(FocusedVariableExists && FocusedInstructionExists)
+                if (FocusedVariableExists && FocusedInstructionExists)
                 {
                     _focusedInstructions[FocusedInstructionSet][_focusedInstruction].Variables[_focusedVariable] = variable;
                 }
             }
         }
+
+        public static void TryAssignIntegerValueToFocusedVariable(string integerTextBoxString)
+        {
+            int result;
+            if(int.TryParse(integerTextBoxString, out result))
+            {
+                _focusedInstructions[FocusedInstructionSet][_focusedInstruction].Variables[_focusedVariable] = new IntegerVariable(result);
+            }
+        }
+
+
+
 
         public static void AssignValueToFocusedControlOutput(int targetIndex)
         {

@@ -88,7 +88,7 @@ namespace CubeV2
             }
             if (input.KeysJustPressed.Any())
             {
-                foreach (var element in AllUIElements.GetClickable)
+                foreach (var element in AllUIElements.GetTypeable)
                 {
                     element.SendKeys(input);
                 }

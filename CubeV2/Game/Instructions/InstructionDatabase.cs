@@ -30,6 +30,7 @@ namespace CubeV2
             _masterList.Add(new SwitchModeInstruction());
             _masterList.Add(new DestroySelfInstruction());
             _masterList.Add(new CreateInstruction());
+            _masterList.Add(new CountSurroundingsInstruction());
 
             //_masterList.Add(new AdminTakeEnergyInstruction());
             //_masterList.Add(new AdminDropEnergyInstruction());
