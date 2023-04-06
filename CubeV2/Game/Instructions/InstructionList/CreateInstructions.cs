@@ -22,7 +22,7 @@ namespace CubeV2
 
             public override int Run(Entity caller, Board board)
             {
-                var direction = Variables[0]?.Convert(caller, board, IVariableType.CardinalDirection);
+                var direction = Variables[0]?.Convert(caller, board, IVariableType.RelativeDirection);
                 if(direction!=null)
                 {
                     var targetTemplate = Variables[1]?.Convert(caller, board, IVariableType.EntityType);
@@ -30,7 +30,10 @@ namespace CubeV2
                     {
                         var entity = ((EntityTemplate)targetTemplate).GenerateEntity();
 
-                        if(EntityBoardCallback.TryCreate(entity,caller.Location+((CardinalDirection)direction).ToVector()))
+                        var trueDirection = DirectionUtils.ToCardinal(caller.Orientation,(RelativeDirection)direction);
+                        var location = caller.Location + trueDirection.ToVector();
+
+                        if (EntityBoardCallback.TryCreate(entity,location))
                         {
                             return Config.BaseCreateCost;
 

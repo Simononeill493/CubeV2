@@ -5,9 +5,12 @@ namespace CubeV2
 {
     public static class VariableOptionsGenerator
     {
-        public static List<IVariable> GetAllVariableOptions() => GetVariableOptions(VariableUtils.GetAllVariableTypes());
+        //public static List<IVariable> GetAllVariableOptions() => GetVariableOptions(VariableUtils.GetAllVariableTypes());
 
-        public static List<IVariable> GetVariableOptions(IEnumerable<IVariableType> variableTypes)
+        public static List<VariableCategory> GetAllVariableCategories() => VariableUtils.GetAllVariableCategories();
+
+
+        /*public static List<IVariable> GetVariableOptions(IEnumerable<IVariableType> variableTypes)
         {
             var options = new List<IVariable>();
 
@@ -17,47 +20,40 @@ namespace CubeV2
             }
 
             return options;
-        }
+        }*/
 
-        public static List<IVariable> GetVariableOptions(IVariableType variableType)
+        public static List<IVariable> GetVariableOptions(VariableCategory variableCategory)
         {
             var options = new List<IVariable>();
 
-            switch (variableType)
+            if(variableCategory.Name == VariableUtils.DirectionVariableName)
             {
-                case IVariableType.RelativeDirection:
-                    foreach (var i in DirectionUtils.Relatives)
-                    {
-                        options.Add(new RelativeDirectionVariable(i));
-                    }
-                    options.Add(new RandomDirectionVariable());
-                    break;
-                case IVariableType.StoredVariable:
-                    for(int i=0;i<Config.InstructionMaxNumVariables;i++)
-                    {
-                        options.Add(new StoredVariableVariable(i));
-                    }
-                    break;
-                case IVariableType.EntityType:
-                    foreach(var template in EntityDatabase.GetAll())
-                    {
-                        options.Add(new EntityTypeVariable(template));
-                    }
-                    break;
-                case IVariableType.RotationDirection:
-                    options.Add(new RotationDirectionVariable(RotationDirection.Left));
-                    options.Add(new RotationDirectionVariable(RotationDirection.Right));
-                    break;
-                case IVariableType.Integer:
-                case IVariableType.Orientation:
-                case IVariableType.CardinalDirection:
-                case IVariableType.CapturedTile:
-                case IVariableType.IntTuple:
-                case IVariableType._null:
-                    break;
-                default:
-                    throw new Exception("Make sure all variable types are handled");
+                foreach (var i in DirectionUtils.Relatives)
+                {
+                    options.Add(new RelativeDirectionVariable(i));
+                }
+
             }
+            else if (variableCategory.Name == VariableUtils.VariableVariableName)
+            {
+                for (int i = 0; i < Config.InstructionMaxNumVariables; i++)
+                {
+                    options.Add(new StoredVariableVariable(i));
+                }
+            }
+            else if (variableCategory.Name == VariableUtils.TemplateVariableName)
+            {
+                foreach (var template in EntityDatabase.GetAll())
+                {
+                    options.Add(new EntityTypeVariable(template));
+                }
+            }
+            else if (variableCategory.Name == VariableUtils.RandomVariableName)
+            {
+                options.Add(new RandomDirectionVariable());
+            }
+
+
 
             return options;
         }

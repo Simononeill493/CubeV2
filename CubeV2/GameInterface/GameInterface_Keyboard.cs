@@ -61,7 +61,7 @@ namespace CubeV2
                     FocusInstruction(_focusedInstruction);
                 }
             }
-            else if (CurrentSidePanelFocus == SidePanelFocus.Variable)
+            else if (CurrentSidePanelFocus == SidePanelFocus.VariableCategory)
             {
                 if (input.IsKeyJustPressed(Keys.Enter))
                 {
@@ -106,11 +106,11 @@ namespace CubeV2
                 }
                 else if (input.IsKeyJustPressed(Keys.Down))
                 {
-                    FocusVariableOption(_focusedInstruction, _focusedVariable, _focusedVariableOption + Config.VariableSelectorGridSize.X);
+                    FocusVariableOption(_focusedInstruction, _focusedVariable, _focusedVariableOption + Config.VariableCategoryListSize.X);
                 }
                 else if (input.IsKeyJustPressed(Keys.Up))
                 {
-                    FocusVariableOption(_focusedInstruction, _focusedVariable, _focusedVariableOption - Config.VariableSelectorGridSize.X);
+                    FocusVariableOption(_focusedInstruction, _focusedVariable, _focusedVariableOption - Config.VariableCategoryListSize.X);
                 }
 
             }

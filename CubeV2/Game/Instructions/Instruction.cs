@@ -51,10 +51,11 @@ namespace CubeV2
         {
             var output = GenerateNew();
 
-            for (int i = 0; i < output.VariableCount; i++)
+            throw new NotImplementedException();
+            /*for (int i = 0; i < output.VariableCount; i++)
             {
                 output.Variables[i] = RandomUtils.GetRandom(VariableOptionsGenerator.GetAllVariableOptions());
-            }
+            }*/
 
             for (int j = 0; j < output.OutputCount; j++)
             {

@@ -4,7 +4,8 @@
     {
         None,
         Instruction,
-        Variable,
+        VariableCategory,
+        VariableGeneric,
         Output,
         ControlOutput,
         InstructionOption,

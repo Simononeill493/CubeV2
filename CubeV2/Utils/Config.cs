@@ -11,36 +11,36 @@ namespace CubeV2
 {
     internal class Config
     {
-        public static bool KnowAllInstructionsByDefault = true;
-        public static bool InfiniteEnergy = true;
+        public const bool KnowAllInstructionsByDefault = true;
+        public const bool InfiniteEnergy = true;
 
 
-        public static bool EnableFogOfWar = false;
-        public static bool EnableRangeLimits = false;
-        public static bool EnablePlayerRangeOverlay = false;
-        public static bool LockCameraMovement = true;
-        public static bool LockZoomLevel = false;
-        public static int DefaultZoomLevel = 3;
+        public const bool EnableFogOfWar = false;
+        public const bool EnableRangeLimits = false;
+        public const bool EnablePlayerRangeOverlay = false;
+        public const bool LockCameraMovement = true;
+        public const bool LockZoomLevel = false;
+        public const int DefaultZoomLevel = 3;
 
 
-        public static string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\EmptyMapSmall.txt";//30 14
-        public static int BoardTest1StartingEnergy = 100;
+        public const string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\EmptyMapSmall.txt";//30 14
+        public const int BoardTest1StartingEnergy = 100;
 
-        public static int EntityMaxInstructionsPerSet = 7;
-        public static int EntityMaxVariables = 3;
-        public static int GlobalDefaultMaxEnergy = 100;
+        public const int EntityMaxInstructionsPerSet = 7;
+        public const int EntityMaxVariables = 3;
+        public const int GlobalDefaultMaxEnergy = 100;
 
-        public static int ManualPlayerMaxEnergy = 200;
-        public static int ManualPlayerStartingEnergy = 50;
-        public static int PlayerOperationalRadius = 3;
-        public static int PlayerVisualRadius = 7;
+        public const int ManualPlayerMaxEnergy = 200;
+        public const int ManualPlayerStartingEnergy = 50;
+        public const int PlayerOperationalRadius = 3;
+        public const int PlayerVisualRadius = 7;
         public static Color PlayerFogColor = new Color(50, 50, 50);
 
-        public static int BaseMoveCost = 1;//1
-        public static int BaseScanCost = 3;//3
-        public static int BaseHitCost = 5;//10
-        public static int BasePingCost = 10;//20
-        public static int BaseCreateCost = 100;//20
+        public const int BaseMoveCost = 1;//1
+        public const int BaseScanCost = 3;//3
+        public const int BaseHitCost = 5;//10
+        public const int BasePingCost = 10;//20
+        public const int BaseCreateCost = 100;//20
 
         public static TimeSpan DemoBoardUpdateRate = TimeSpan.FromSeconds(0.1);
         public static TimeSpan BoardTest1UpdateRate = TimeSpan.FromSeconds(0.075);
@@ -87,8 +87,9 @@ namespace CubeV2
         public static string OperationalRangeOverlayTileName = "OperationalRangeOverlayTile";
 
 
-        public static string VariableGridName = "VariableGrid";
-        public static string InstructionSelectorGridName = "InstructionSelectorGrid";
+        public static string ListOfInstructionsName = "InstructionSelectorGrid";
+        public static string VariableCategoryListName = "VariableCategoryList";
+
         public static string InstructionVariableTileName = "InstructionVariableTile";
         public static string OutputSelectorGridName = "OutputSelectorGrid";
 
@@ -115,13 +116,16 @@ namespace CubeV2
         public static Vector2 SelectorPanelOffset;
 
         public static Vector2 InstructionTileSize;
-        public static Vector2 InstructionOptionTileSize;
+        public static Vector2 InstructionOptionTileSize = new Vector2(200, 40);
+        public static Vector2 VariableCategoryTileSize = new Vector2(200, 40);
 
         public static Vector2 AddInstructionButtonOffset;
         public static Vector2 RemoveInstructionButtonOffset;
         public static int InstructionControlButtonsTopPadding = 15;
 
-        public static Vector2Int VariableSelectorGridSize = new Vector2Int(4, 7);
+        public static Vector2Int ListOfInstructionsGridSize = new Vector2Int(1, 18);
+        public static Vector2Int VariableCategoryListSize = new Vector2Int(1, 18);
+        public static Vector2Int OutputSelectorGridSize = new Vector2Int(1, EntityMaxVariables);
 
 
         public static Vector2 GameControlButtonSize;
@@ -133,8 +137,6 @@ namespace CubeV2
         public static Vector2 SimulateButtonOffset;
 
         public static Vector2 EnergyBarSize;
-        public static Vector2 EnergyBarOffset;
-        public static Vector2 DisplayTextOffset;
 
 
         private static void _loadPositioning()
@@ -146,7 +148,6 @@ namespace CubeV2
             SelectorPanelOffset = new Vector2(Config.InstructionPanelSize.X, 0);
 
             InstructionTileSize = new Vector2(200, 100);
-            InstructionOptionTileSize = new Vector2(200, 40);
 
             AddInstructionButtonOffset = new Vector2(InstructionPanelSize.X * 0.24f, InstructionControlButtonsTopPadding);
             RemoveInstructionButtonOffset = new Vector2(InstructionPanelSize.X * 0.6f, InstructionControlButtonsTopPadding);
@@ -154,14 +155,12 @@ namespace CubeV2
             GameControlButtonSize = new Vector2(100, 60);
             SimulateButtonSize = new Vector2(200, 60);
 
-            GoButtonOffset = new Vector2(0, 0);
-            ResetButtonOffset = new Vector2(120,0);
-            RerollButtonOffset = new Vector2(240, 0);
-            SimulateButtonOffset = new Vector2(360, 0);
+            GoButtonOffset = new Vector2(740, 0);
+            ResetButtonOffset = new Vector2(860,0);
+            RerollButtonOffset = new Vector2(1000, 0);
+            SimulateButtonOffset = new Vector2(1120, 0);
 
             EnergyBarSize = new Vector2(500, 20);
-            EnergyBarOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 30, 30);
-            DisplayTextOffset = new Vector2(InstructionPanelSize.X + SelectorPanelSize.X + 30, 8);
 
         }
 

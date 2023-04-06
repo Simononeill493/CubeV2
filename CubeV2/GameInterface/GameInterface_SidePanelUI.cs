@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
@@ -27,18 +28,13 @@ namespace CubeV2
 
         private static EntityTemplate _focusedTemplate;
         private static List<Instruction[]> _focusedInstructions => _focusedTemplate.Instructions;
-        private static List<IVariable> _variableOptions = new List<IVariable>();
         private static List<Instruction> _instructionOptions => _game?.KnownInstructions;
+        private static List<IVariable> _focusedGenericVariables;
 
-        //public static void AddInstructionToEnd() => AddInstructionAtIndex(_focusedInstructions.Count);
-        //public static void RemoveInstructionFromEnd() => RemoveInstructionAtIndex(_focusedInstructions.Count-1);
         public static void AddInstructionSet()
         {
             _focusedInstructions.Add(new Instruction[Config.EntityMaxInstructionsPerSet]);
         }
-
-
-
         public static void AddInstructionAtIndex(int index)
         {
             if (index < 0 || index > Config.EntityMaxInstructionsPerSet )
@@ -74,33 +70,56 @@ namespace CubeV2
 
             return null;
         }
-        public static IVariable GetVariableOption(int variableOptionIndex)
+        public static VariableCategory GetVariableCategory(int categoryIndex)
         {
-            if (VariableOptionExists(variableOptionIndex))
+            var categories = VariableOptionsGenerator.GetAllVariableCategories();
+            if (categoryIndex < categories.Count)
             {
-                return _variableOptions[variableOptionIndex];
+                return categories[categoryIndex];
             }
 
             return null;
         }
-        public static IVariable GetVariable(int instructionIndex, int variableIndex) => _focusedInstructions[FocusedInstructionSet][instructionIndex].Variables[variableIndex];
+        public static IVariable GetInstructionVariable(int instructionIndex, int variableIndex) => _focusedInstructions[FocusedInstructionSet][instructionIndex].Variables[variableIndex];
+        public static IVariable GetVariableFromGrid(int variableIndex)
+        {
+            if (variableIndex >= 0 && variableIndex < _focusedGenericVariables.Count)
+            {
+                return _focusedGenericVariables[variableIndex];
+            }
+
+            return null;
+        }
 
         public static bool IsFocusedOnInstruction(int instructionIndex) => instructionIndex == _focusedInstruction;
         public static bool IsFocusedOnInstructionOption(int optionIndex) =>  optionIndex == _focusedInstructionOption & CurrentSidePanelFocus == SidePanelFocus.InstructionOption;
-        public static bool IsFocusedOnVariable(int instructionIndex,int variableIndex) => instructionIndex == _focusedInstruction & variableIndex == _focusedVariable & CurrentSidePanelFocus == SidePanelFocus.Variable;
+        public static bool IsFocusedOnVariable(int instructionIndex,int variableIndex) => instructionIndex == _focusedInstruction & variableIndex == _focusedVariable & CurrentSidePanelFocus == SidePanelFocus.VariableCategory;
         public static bool IsFocusedOnVariableOption(int optionIndex) => optionIndex == _focusedVariableOption & CurrentSidePanelFocus == SidePanelFocus.VariableOption;
 
         public static bool IsFocusedOnOutput(int instructionIndex, int outputIndex) => instructionIndex == _focusedInstruction & outputIndex == _focusedOutput & CurrentSidePanelFocus == SidePanelFocus.Output;
         public static bool IsFocusedOnControlOutput(int instructionIndex, int controlIndex) => instructionIndex == _focusedInstruction & controlIndex == _focusedControlOutput & CurrentSidePanelFocus == SidePanelFocus.ControlOutput;
 
-        public static void AssignValueToFocusedVariable(int variableOptionIndex)
+        public static void VaribleCategorySelected(int categoryIndex)
         {
-            if((CurrentSidePanelFocus == SidePanelFocus.Variable || CurrentSidePanelFocus == SidePanelFocus.VariableOption) && FocusedVariableExists && VariableOptionExists(variableOptionIndex))
+            if(VariableCategoryExists(categoryIndex))
             {
-                var newVariable = _variableOptions[variableOptionIndex];
-                _focusedInstructions[FocusedInstructionSet][_focusedInstruction].Variables[_focusedVariable] = newVariable;
+                CurrentSidePanelFocus = SidePanelFocus.VariableGeneric;
+                _focusedGenericVariables = VariableOptionsGenerator.GetVariableOptions(VariableUtils.GetAllVariableCategories()[categoryIndex]);
             }
         }
+
+        public static void AssignValueToFocusedVariable(int variableIndex)
+        {
+            var variable = GetVariableFromGrid(variableIndex);
+            if(variable!=null)
+            {
+                if(FocusedVariableExists && FocusedInstructionExists)
+                {
+                    _focusedInstructions[FocusedInstructionSet][_focusedInstruction].Variables[_focusedVariable] = variable;
+                }
+            }
+        }
+
         public static void AssignValueToFocusedControlOutput(int targetIndex)
         {
             if (CurrentSidePanelFocus == SidePanelFocus.ControlOutput && FocusedControlOutputExists)
@@ -138,7 +157,6 @@ namespace CubeV2
                 CurrentSidePanelFocus = SidePanelFocus.Tile;
             }
         }
-
         public static void FocusInstructionSet(int index)
         {
             if(InstructionSetExists(index))
@@ -146,7 +164,6 @@ namespace CubeV2
                 FocusedInstructionSet = index;
             }
         }
-
         public static void FocusInstruction(int instructionIndex)
         {
             //if (InstructionExists(instructionIndex))
@@ -159,12 +176,9 @@ namespace CubeV2
         {
             if(VariableExists(instructionIndex,variableIndex))
             {
-                _variableOptions.Clear();
-                _variableOptions.AddRange(VariableOptionsGenerator.GetAllVariableOptions());
-
                 _focusedInstruction = instructionIndex;
                 _focusedVariable = variableIndex;
-                CurrentSidePanelFocus = SidePanelFocus.Variable;
+                CurrentSidePanelFocus = SidePanelFocus.VariableCategory;
             }
         }
         public static void FocusOutput(int instructionIndex, int outputIndex)
@@ -196,13 +210,14 @@ namespace CubeV2
         }
         public static void FocusVariableOption(int instructionIndex, int variableIndex,int variableOptionIndex)
         {
-            if (InstructionExists(instructionIndex) && VariableExists(instructionIndex,variableIndex) && VariableOptionExists(variableOptionIndex))
+            throw new NotImplementedException();
+            /*if (InstructionExists(instructionIndex) && VariableExists(instructionIndex,variableIndex) && VariableOptionExists(variableOptionIndex))
             {
                 _focusedInstruction = instructionIndex;
                 _focusedVariable = variableIndex;
                 _focusedVariableOption = variableOptionIndex;
                 CurrentSidePanelFocus = SidePanelFocus.VariableOption;
-            }
+            }*/
         }
 
         public static bool FocusedOutputExists => OutputExists(_focusedInstruction, _focusedOutput);
@@ -238,6 +253,16 @@ namespace CubeV2
 
             return false;
         }
+        public static bool VariableCategoryExists(int categoryIndex)
+        {
+            if (categoryIndex >= 0 && categoryIndex < VariableUtils.GetAllVariableCategories().Count)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public static bool InstructionSetExists(int instructionSetIndex)
         {
             return (_focusedInstructions != null && instructionSetIndex >= 0 && instructionSetIndex < _focusedInstructions.Count );
@@ -254,7 +279,8 @@ namespace CubeV2
         }
         public static bool VariableOptionExists(int variableOptionIndex)
         {
-            return (_variableOptions != null && (_variableOptions.Count > variableOptionIndex) && variableOptionIndex >= 0);
+            throw new NotImplementedException();
+           // return (_variableCategories != null && (_variableCategories.Count > variableOptionIndex) && variableOptionIndex >= 0);
         }
         public static bool OutputOptionExists(int outputOptionIndex)
         {

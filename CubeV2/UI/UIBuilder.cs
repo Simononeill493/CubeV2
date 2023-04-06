@@ -9,43 +9,41 @@ namespace CubeV2
     {
         public static UIElement GenerateUI()
         {
+            var gameTopBar = MakeGameTopBar();
+            var gameBottomBar = MakeGameBottomBar();
+            var gameBoard = MakeGameBoardAndOverlays();
+            var gameSidePanels = MakeSidePanels();
+
             var topLevel = new UIElement(Config.UITopLevelName);
+            topLevel.AddChildren(gameSidePanels, gameBoard, gameBottomBar, gameTopBar);
+            return topLevel;
+        }
 
-            var instructionPanel = UIElementMaker.MakeRectangle(Config.InstructionPanelName, Config.InstructionPanelSize, Config.InstructionPanelOffset, Config.InstructionPanelColor, DrawUtils.UILayer1);
-            instructionPanel.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Editor);
-
-            var selectorPanel = UIElementMaker.MakeRectangle(Config.SelectorPanelName, Config.SelectorPanelSize, Config.SelectorPanelOffset, Config.SelectorPanelColor, DrawUtils.UILayer1);
-            selectorPanel.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Editor);
-
-            var gameGrid = _makeGameGrid();
-            gameGrid.SetOffset(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X, 60);
-            gameGrid.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Board);
-
-            /* Rain
-             * var randomElement = new UIElement("Random");
-            randomElement.AddAppearance(new GifAppearance(DrawUtils.GameLayer5, DrawUtils.RainGif) { Scale = new Vector2(3.375f, 3.5f), Transparency = 0.25f}); ; ;
-            //gameGrid.AddChildren(randomElement);
-
-            var randomElement2 = new UIElement("Random2");
-            randomElement2.SetOffset(680, 0);
-            randomElement2.AddAppearance(new GifAppearance(DrawUtils.GameLayer5, DrawUtils.RainGif) { Scale = new Vector2(3.375f, 3.5f), Transparency = 0.25f }); ; ;
-            //gameGrid.AddChildren(randomElement2);*/
+        public static UIElement MakeGameBoardAndOverlays()
+        {
+            var gameBoard = _makeGameBoard();
+            gameBoard.SetOffset(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X, 60);
+            gameBoard.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Board);
 
             var cursorOverlayTile = new UIElement(Config.CursorOverlayTileName);
             cursorOverlayTile.AddAppearance(new CursorOverlayAppearance(Color.White * 0.5f, DrawUtils.GameLayer4));
 
-
             cursorOverlayTile.AddEnabledCondition(() => AllUIElements.GetUIElement(Config.GameGridName).MouseOver);
-            gameGrid.AddChildren(cursorOverlayTile);
+            gameBoard.AddChildren(cursorOverlayTile);
 
-            if(Config.EnablePlayerRangeOverlay)
+            if (Config.EnablePlayerRangeOverlay)
             {
                 var operationalRangeOverlayTile = new UIElement(Config.OperationalRangeOverlayTileName);
                 operationalRangeOverlayTile.AddAppearance(new OperationalRangeOverlayAppearance(Color.White * 0.05f, DrawUtils.GameLayer5));
                 operationalRangeOverlayTile.AddEnabledCondition(() => GameInterface._game.FocusEntity != null);
-                gameGrid.AddChildren(operationalRangeOverlayTile);
+                gameBoard.AddChildren(operationalRangeOverlayTile);
             }
 
+            return gameBoard;
+        }
+
+        public static UIElement MakeGameBottomBar()
+        {
             var goButton = UIElementMaker.MakeRectangle(Config.GoButtonName, Config.GameControlButtonSize, Config.GoButtonOffset, Color.Lime, DrawUtils.UILayer2);
             goButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Go"));
             goButton.AddLeftClickAction((i) => GameInterface.StartBoard(Config.DemoBoardUpdateRate));
@@ -58,105 +56,74 @@ namespace CubeV2
             rerollButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Reroll"));
             rerollButton.AddLeftClickAction((i) => { GameInterface.RerollBoard(); GameInterface.ResetBoard(); GameInterface.PauseBoard(); });
 
-            var simulateButton = UIElementMaker.MakeRectangle(Config.SimulateButtonName, Config.SimulateButtonSize,Config.SimulateButtonOffset,Color.White,DrawUtils.UILayer2);
+            var simulateButton = UIElementMaker.MakeRectangle(Config.SimulateButtonName, Config.SimulateButtonSize, Config.SimulateButtonOffset, Color.White, DrawUtils.UILayer2);
             simulateButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Simulate"));
             simulateButton.AddLeftClickAction((i) => { GameInterface.SimulateCurrentGame(i); });
 
-            var controlButtonArray = new UIElement("ControlButtonArray");
-            controlButtonArray.SetOffset(new Vector2(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X + 800, (int)Config.ScreenSize.Y - Config.GameControlButtonSize.Y - 15));
-            controlButtonArray.AddChildren(goButton, resetButton, rerollButton, simulateButton);
 
+            var controlBarArray = new UIElement("ControlButtonArray");
+            controlBarArray.SetOffset(new Vector2(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X + 25, (int)Config.ScreenSize.Y - Config.GameControlButtonSize.Y - 15));
+            controlBarArray.AddChildren(MakePlayerClickActionButtons(), goButton, resetButton, rerollButton, simulateButton);
 
-            var energyBar = new UIElement(Config.EnergyBarName);
-            energyBar.SetOffset(Config.EnergyBarOffset);
-            energyBar.AddAppearance(new EnergyBarAppearance(Config.EnergyBarSize, DrawUtils.UILayer1, DrawUtils.UILayer2));
+            return controlBarArray;
+        }
 
+        public static UIElement MakePlayerClickActionButtons()
+        {
+            var clickActionButtonArray = new UIElement("ClickActionController");
+
+            var currentPlayerClickAction = UIElementMaker.MakeRectangle("PlayerClickActionButton", Config.GameControlButtonSize, Vector2.Zero, Color.LightGray, DrawUtils.UILayer2);
+            currentPlayerClickAction.AddAppearance(new TextAppearance(new Color(179,14,55), DrawUtils.UILayer3, ()=>PlayerActionUtils.GetDisplayMessage(GameInterface.SelectedPlayerAction)));
+
+            var currentClickActionSubSelection = UIElementMaker.MakeRectangle("PlayerClickActionSubSelectionButton", Config.GameControlButtonSize, new Vector2(120,0), Color.White, DrawUtils.UILayer2);
+            currentClickActionSubSelection.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "SubSelection"));
+            currentClickActionSubSelection.AddEnabledCondition(()=>PlayerActionUtils.HasSubSelection(GameInterface.SelectedPlayerAction));
+
+            clickActionButtonArray.AddChildren(currentPlayerClickAction, currentClickActionSubSelection);
+
+            return clickActionButtonArray;
+        }
+
+        public static UIElement MakeGameTopBar()
+        {
             var displayText = new UIElement(Config.DisplayTextName);
-            displayText.SetOffset(Config.DisplayTextOffset);
-            displayText.AddAppearance(new TextAppearance(new Color(255,58,200), DrawUtils.UILayer1, ()=>GameInterface.DisplayText));
+            displayText.AddAppearance(new TextAppearance(new Color(255, 58, 200), DrawUtils.UILayer1, () => GameInterface.DisplayText));
             //displayText.SetEnabledCondition(() => GameInterface.IsGameWon);
 
-            var playerActionArray = CreatePlayerActionArray();
-            playerActionArray.SetOffset(520, (int)Config.ScreenSize.Y - Config.GameControlButtonSize.Y - 15);
+            var energyBar = new UIElement(Config.EnergyBarName);
+            energyBar.SetOffset(new Vector2(0, 25));
+            energyBar.AddAppearance(new EnergyBarAppearance(Config.EnergyBarSize, DrawUtils.UILayer1, DrawUtils.UILayer2));
 
-            var primaryFocusText = new UIElement("PrimaryFocusText");
-            primaryFocusText.AddAppearance(new TextAppearance(Color.White,DrawUtils.UILayer5,()=>GameInterface.PrimaryFocus.ToString()));
-            primaryFocusText.SetOffset(Config.ScreenSize.X - 100, 10);
+            var topBarContainer = new UIElement("TopBar");
+            topBarContainer.SetOffset(new Vector2(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X + 30, 10));
+            topBarContainer.AddChildren(energyBar, displayText);
 
-            topLevel.AddChildren(instructionPanel, selectorPanel, gameGrid, controlButtonArray, energyBar,displayText,playerActionArray,primaryFocusText);
+            return topBarContainer;
+        }
 
+        public static UIElement MakeSidePanels()
+        {
+            var instructionPanel = MakeInstructionPanel();
+            var selectorPanel = MakeSelectorPanel();
 
+            var sidePanelContainer = new UIElement("SidePanelContainer");
+            sidePanelContainer.AddChildren(instructionPanel, selectorPanel);
+            return sidePanelContainer;
+        }
 
+        public static UIElement MakeInstructionPanel()
+        {
             var instructionTiles = _makeInstructionTiles();
-            
+            instructionTiles.SetOffset(Config.InstructionPanelSize.X / 2 - Config.InstructionTileSize.X / 2, Config.InstructionTileTopPadding);
+
             var instructionSetManager = _makeInstructionSetManager();
             instructionSetManager.SetOffset(65, 10);
-            //var addInstructionButton = UIElementMaker.MakeRectangle(Config.AddInstructionButtonName, new Vector2(50,30), Config.AddInstructionButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
-            //addInstructionButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3,"+"));
-            //addInstructionButton.AddLeftClickAction((i) => GameInterface.AddInstructionToEnd());
 
-            //var removeInstructionButton = UIElementMaker.MakeRectangle(Config.RemoveInstructionButtonName, new Vector2(50, 30), Config.RemoveInstructionButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
-            //removeInstructionButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3,"-"));
-            //removeInstructionButton.AddLeftClickAction((i) => GameInterface.RemoveInstructionFromEnd());
-
-            //instructionPanel.AddChildren(addInstructionButton, removeInstructionButton);
+            var instructionPanel = UIElementMaker.MakeRectangle(Config.InstructionPanelName, Config.InstructionPanelSize, Config.InstructionPanelOffset, Config.InstructionPanelColor, DrawUtils.UILayer1);
+            instructionPanel.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Editor);
             instructionPanel.AddChildren(instructionTiles, instructionSetManager);
 
-            var instructionSelectorGrid = _makeInstructionSelectorGrid();
-            instructionSelectorGrid.SetOffset(20, 20);
-            instructionSelectorGrid.AddEnabledCondition(InstructionSelectorGridEnabled);
-
-            var variableSelectorGrid = _makeVariableSelectorGrid();
-            variableSelectorGrid.SetOffset(20, 20);
-            variableSelectorGrid.AddEnabledCondition(VariableSelectorGridEnabled);
-
-            var outputSelectorGrid = _makeOutputSelectorGrid();
-            outputSelectorGrid.SetOffset(20, 20);
-            outputSelectorGrid.AddEnabledCondition(OutputSelectorGridEnabled);
-
-            var tileViewer = _makeTileViewer();
-            tileViewer.SetOffset(20, 20);
-            tileViewer.AddEnabledCondition(TileViewerEnabled);
-
-            selectorPanel.AddChildren(instructionSelectorGrid,variableSelectorGrid,outputSelectorGrid, tileViewer);
-
-            return topLevel;
-        }
-
-        public static UIElement CreatePlayerActionArray()
-        {
-            var actionArray = new UIElement("ActionArray");
-
-            var currentPlayerAction = UIElementMaker.MakeRectangle("PlayerActionButton", Config.GameControlButtonSize, Vector2.Zero, Color.LightGray, DrawUtils.UILayer2);
-            currentPlayerAction.AddAppearance(new TextAppearance(new Color(179,14,55), DrawUtils.UILayer3, ()=>PlayerActionUtils.GetDisplayMessage(GameInterface.SelectedPlayerAction)));
-
-            var currentSubSelection = UIElementMaker.MakeRectangle("PlayerActionSubSelectionButton", Config.GameControlButtonSize, new Vector2(120,0), Color.White, DrawUtils.UILayer2);
-            currentSubSelection.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Go"));
-            currentSubSelection.AddEnabledCondition(()=>PlayerActionUtils.HasSubSelection(GameInterface.SelectedPlayerAction));
-
-            actionArray.AddChildren(currentPlayerAction, currentSubSelection);
-
-            return actionArray;
-        }
-
-        private static bool InstructionSelectorGridEnabled()
-        {
-            return (GameInterface.CurrentSidePanelFocus == SidePanelFocus.Instruction || GameInterface.CurrentSidePanelFocus == SidePanelFocus.InstructionOption);
-        }
-
-        private static bool VariableSelectorGridEnabled()
-        {
-            return (GameInterface.CurrentSidePanelFocus == SidePanelFocus.Variable || GameInterface.CurrentSidePanelFocus == SidePanelFocus.VariableOption) && GameInterface.FocusedVariableExists;
-        }
-
-        private static bool OutputSelectorGridEnabled()
-        {
-            return GameInterface.CurrentSidePanelFocus == SidePanelFocus.Output && GameInterface.FocusedOutputExists;
-        }
-
-        private static bool TileViewerEnabled()
-        {
-            return GameInterface.CurrentSidePanelFocus == SidePanelFocus.Tile && GameInterface.FocusedTileExists;
+            return instructionPanel;
         }
 
         private static UIElement _makeInstructionSetManager()
@@ -189,8 +156,7 @@ namespace CubeV2
             return container;
         }
 
-
-        private static UIGrid _makeGameGrid()
+        private static UIGrid _makeGameBoard()
         {
             var appearanceFactory = new GameTileAppearanceFactory(DrawUtils.GameLayer1, DrawUtils.GameLayer2);
 
@@ -207,7 +173,7 @@ namespace CubeV2
 
         private static UIElement _makeTileViewer()
         {
-            var container = new UIElement("TileViewer");
+            var tileViewerContainer = new UIElement("TileViewer");
 
             var tileDetailsPanel = UIElementMaker.MakeRectangle("TileDetailsPanel", new Vector2(210, 80), Vector2.Zero, new Color(212, 161, 161), DrawUtils.UILayer2);
 
@@ -220,8 +186,6 @@ namespace CubeV2
             tileCoordsText.SetOffset(120, 10);
 
             tileDetailsPanel.AddChildren(tilePicture,tileCoordsText);
-
-
 
             var contentsDetailsPanel = UIElementMaker.MakeRectangle("ContentsDetailsPanel", new Vector2(210, 150), Vector2.Zero, new Color(212, 161, 161), DrawUtils.UILayer2);
             contentsDetailsPanel.AddEnabledCondition(GameInterface.FocusedTileHasEntity);
@@ -243,59 +207,76 @@ namespace CubeV2
             contentsDetailsPanel.AddChildren(contentsPicture,contentsNameText, contentsEnergyText);
 
 
-            container.AddChildren(tileDetailsPanel, contentsDetailsPanel);
+            tileViewerContainer.AddChildren(tileDetailsPanel, contentsDetailsPanel);
+            tileViewerContainer.AddEnabledCondition(TileViewerEnabled);
 
-            return container;
+            return tileViewerContainer;
         }
 
-        private static UIGrid _makeVariableSelectorGrid()
+        public static UIElement MakeSelectorPanel()
         {
-            var tileSize = Config.TileBaseSize * Config.VariableSelectionTileScale;
-            var tilePadding = 3;
-            var appearanceFactory = new VariableTileAppearanceFactory_ForSelectionGrid(Config.VariableSelectionTileScale, DrawUtils.UILayer2,DrawUtils.UILayer3);
+            var listContainer = new UIElement("SelectorPanelListContainer");
+            listContainer.SetOffset(20, 20);
+            listContainer.AddChildren(_makeListOfInstructions(), _makeListOfVariableCategories(), _makeOutputSelectorGrid(), _makeTileViewer(),_makeGenericVariableList());
 
-            var variableGrid = new UIGrid(Config.VariableGridName, Config.VariableSelectorGridSize, appearanceFactory);
-            variableGrid.Arrange(Config.VariableSelectorGridSize, new Vector2Int(tileSize), tilePadding);
-
-            variableGrid.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedVariable(index);
-            return variableGrid;
+            var selectorPanel = UIElementMaker.MakeRectangle(Config.SelectorPanelName, Config.SelectorPanelSize, Config.SelectorPanelOffset, Config.SelectorPanelColor, DrawUtils.UILayer1);
+            selectorPanel.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Editor);
+            selectorPanel.AddChildren(listContainer);
+            return selectorPanel;
         }
 
-        private static UIGrid _makeInstructionSelectorGrid()
+        private static UIGrid _makeListOfInstructions()
         {
-            var gridSize = new Vector2Int(1, 18);
-            var tileSize = new Vector2Int(Config.InstructionOptionTileSize);
-            var tilePadding = 5;
-
             var appearanceFactory = new InstructionSelectionTileAppearanceFactory(DrawUtils.UILayer2, DrawUtils.UILayer3);
 
-            var instructionGrid = new UIGrid(Config.InstructionSelectorGridName, gridSize, appearanceFactory);
-            instructionGrid.Arrange(gridSize, tileSize, tilePadding);
+            var listOfInstructions = new UIGrid(Config.ListOfInstructionsName, Config.ListOfInstructionsGridSize, appearanceFactory);
+            listOfInstructions.Arrange(Config.ListOfInstructionsGridSize, new Vector2Int(Config.InstructionOptionTileSize), 5);
+            listOfInstructions.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedInstruction(index);
+            listOfInstructions.AddEnabledCondition(ListOfInstructionsEnabled);
 
-            instructionGrid.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedInstruction(index);
-            return instructionGrid;
+            return listOfInstructions;
+        }
+
+        private static UIGrid _makeListOfVariableCategories()
+        {
+            var appearanceFactory = new VariableCategoryAppearanceFactory(Config.VariableSelectionTileScale, DrawUtils.UILayer2,DrawUtils.UILayer3);
+
+            var listOfVariableCategories = new UIGrid(Config.VariableCategoryListName, Config.VariableCategoryListSize, appearanceFactory);
+            listOfVariableCategories.Arrange(Config.VariableCategoryListSize, new Vector2Int(Config.VariableCategoryTileSize), 3);
+            listOfVariableCategories.TileLeftClicked += (input, index) => GameInterface.VaribleCategorySelected(index);
+            listOfVariableCategories.AddEnabledCondition(VariableCategoryListEnabled);
+
+            return listOfVariableCategories;
+        }
+
+        private static UIGrid _makeGenericVariableList()
+        {
+            var gridSize = new Vector2Int(4, 7);
+            var appearanceFactory = new VariableTileAppearanceFactoryGrid(DrawUtils.UILayer2, DrawUtils.UILayer3,3);
+
+            var listOfVariables = new UIGrid("ListOfVariables", gridSize, appearanceFactory);
+            listOfVariables.Arrange(gridSize, new Vector2Int(Config.TileBaseSize * Config.VariableSelectionTileScale), 5);
+            listOfVariables.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedVariable(index);
+            listOfVariables.AddEnabledCondition(GenericVariableListEnabled);
+
+            return listOfVariables;
         }
 
         private static UIGrid _makeOutputSelectorGrid()
         {
-            var gridSize = new Vector2Int(1, Config.EntityMaxVariables);
-            var tileSize = new Vector2Int(Config.InstructionOptionTileSize);
-            var tilePadding = 10;
-
             var appearanceFactory = new OutputSelectionTileAppearanceFactory(Config.VariableSelectionTileScale, DrawUtils.UILayer2, DrawUtils.UILayer3);
 
-            var outputSelectorGrid = new UIGrid(Config.OutputSelectorGridName, gridSize, appearanceFactory);
-            outputSelectorGrid.Arrange(gridSize, tileSize, tilePadding);
+            var outputSelectorGrid = new UIGrid(Config.OutputSelectorGridName, Config.OutputSelectorGridSize, appearanceFactory);
+            outputSelectorGrid.Arrange(Config.OutputSelectorGridSize, new Vector2Int(Config.InstructionOptionTileSize), 10);
             outputSelectorGrid.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedOutput(index);
+            outputSelectorGrid.AddEnabledCondition(OutputSelectorGridEnabled);
+
             return outputSelectorGrid;
         }
-
-
 
         private static UIElement _makeInstructionTiles()
         {
             var slotContainer = new UIElement("SlotContainer");
-            slotContainer.SetOffset(Config.InstructionPanelSize.X / 2 - Config.InstructionTileSize.X / 2, Config.InstructionTileTopPadding);
 
             for(int i=0;i<Config.NumInstructionTiles;i++)
             {
@@ -383,7 +364,6 @@ namespace CubeV2
             return outputTile;
         }
 
-
         private static UIElement _makeInstructionVariableTile(int instructionIndex,int variableIndex)
         {
             var variableTile = new UIElement(Config.InstructionVariableTileName + "_" + instructionIndex + "_" + variableIndex);
@@ -392,7 +372,7 @@ namespace CubeV2
             var tileBackground = new RectangleAppearance(Config.TileBaseSize * Config.InstructionTileVariableScale, Config.InstructionTileAssignedVariableColor, DrawUtils.UILayer3);
             tileBackground.OverrideColor(() => (GameInterface.IsFocusedOnVariable(instructionIndex,variableIndex)  ? Config.InstructionTileAssignedVariableHighlightColor : Config.InstructionTileAssignedVariableColor));
 
-            var appearance = new VariableTileAppearance_Instruction(instructionIndex, variableIndex, Config.InstructionTileVariableScale, DrawUtils.UILayer4);
+            var appearance = new VariableTileAppearance_InInstruction(instructionIndex, variableIndex, Config.InstructionTileVariableScale, DrawUtils.UILayer4);
             variableTile.AddAppearances(tileBackground, appearance);
 
             variableTile.AddLeftClickAction((i) => { GameInterface.FocusVariable(instructionIndex, variableIndex); });
@@ -401,5 +381,29 @@ namespace CubeV2
             return variableTile;
         }
 
+        private static bool ListOfInstructionsEnabled()
+        {
+            return (GameInterface.CurrentSidePanelFocus == SidePanelFocus.Instruction || GameInterface.CurrentSidePanelFocus == SidePanelFocus.InstructionOption);
+        }
+
+        private static bool VariableCategoryListEnabled()
+        {
+            return (GameInterface.CurrentSidePanelFocus == SidePanelFocus.VariableCategory || GameInterface.CurrentSidePanelFocus == SidePanelFocus.VariableOption) && GameInterface.FocusedVariableExists;
+        }
+
+        private static bool GenericVariableListEnabled()
+        {
+            return (GameInterface.CurrentSidePanelFocus == SidePanelFocus.VariableGeneric);
+        }
+
+        private static bool OutputSelectorGridEnabled()
+        {
+            return GameInterface.CurrentSidePanelFocus == SidePanelFocus.Output && GameInterface.FocusedOutputExists;
+        }
+
+        private static bool TileViewerEnabled()
+        {
+            return GameInterface.CurrentSidePanelFocus == SidePanelFocus.Tile && GameInterface.FocusedTileExists;
+        }
     }
 }
