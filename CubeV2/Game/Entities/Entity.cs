@@ -167,6 +167,8 @@ namespace CubeV2
             var newLocation = Location + direction.ToVector();
             var didMoveWork = EntityBoardCallback.TryMove(this, newLocation);
 
+            /* Code to 'flow' around blocks when moving diagonaally.
+             * Causes unintuitive behaviour when programming blocks, but we can go back to it later.
             if (!didMoveWork && direction.IsDiagonal())
             //if (!didMoveWork)
             {
@@ -180,7 +182,7 @@ namespace CubeV2
                     var newLocationRight = Location + adjacentDirections.Right.ToVector();
                     didMoveWork = EntityBoardCallback.TryMove(this, newLocationRight);
                 }
-            }
+            }*/
 
             return didMoveWork;
         }
