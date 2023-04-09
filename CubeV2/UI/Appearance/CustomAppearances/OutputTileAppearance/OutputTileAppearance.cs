@@ -26,7 +26,7 @@ namespace CubeV2
             if(GameInterface.OutputExists(_instructionIndex, Index))
             {
                 var instruction = GameInterface.GetInstructionFromCurrentFocus(_instructionIndex);
-                var outputNum = instruction.OutputTargets[Index];
+                var outputNum = instruction.OutputTargetVariables[Index];
 
                 if(outputNum>=0)
                 {

@@ -9,11 +9,10 @@ namespace CubeV2
         public IVariable[] Variables;
 
         public abstract int OutputCount { get; }
-        public IVariable[] Outputs;
-        public int[] OutputTargets;
+        public int[] OutputTargetVariables;
 
         public virtual int ControlOutputCount { get; } = 1;
-        public int[] ControlOutputs;
+        public int[] ControlFlowOutputs;
 
         public virtual int BaseEnergyCost { get; } = 0;
 
@@ -27,19 +26,17 @@ namespace CubeV2
                 Variables[i] = null;
             }
 
-            OutputTargets = new int[Config.InstructionMaxNumOutputs];
-            Outputs = new IVariable[Config.InstructionMaxNumOutputs];
-            ControlOutputs = new int[Config.InstructionMaxNumControlOutputs];
+            OutputTargetVariables = new int[Config.InstructionMaxNumOutputs];
+            ControlFlowOutputs = new int[Config.InstructionMaxNumControlFlowOutputs];
 
             for (int i = 0; i < Config.InstructionMaxNumOutputs; i++)
             {
-                OutputTargets[i] = -1;
-                Outputs[i] = null;
+                OutputTargetVariables[i] = -1;
             }
 
-            for (int i = 0; i < Config.InstructionMaxNumControlOutputs; i++)
+            for (int i = 0; i < Config.InstructionMaxNumControlFlowOutputs; i++)
             {
-                ControlOutputs[i] = -1;
+                ControlFlowOutputs[i] = -1;
             }
         }
 
@@ -59,12 +56,12 @@ namespace CubeV2
 
             for (int j = 0; j < output.OutputCount; j++)
             {
-                output.OutputTargets[j] = RandomUtils.RandomNumber(Config.InstructionMaxNumOutputs+1);
+                output.OutputTargetVariables[j] = RandomUtils.RandomNumber(Config.InstructionMaxNumOutputs+1);
             }
 
             for (int k = 0; k < output.ControlOutputCount; k++)
             {
-                output.ControlOutputs[k] = RandomUtils.RandomNumber(Config.NumInstructionTiles - 1);
+                output.ControlFlowOutputs[k] = RandomUtils.RandomNumber(Config.NumInstructionTiles - 1);
             }
 
             return output;

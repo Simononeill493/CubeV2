@@ -329,7 +329,7 @@ namespace CubeV2
                 slot.AddChildren(outputTile);
             }
 
-            for (int controlIndex = 0; controlIndex < Config.InstructionMaxNumControlOutputs; controlIndex++)
+            for (int controlIndex = 0; controlIndex < Config.InstructionMaxNumControlFlowOutputs; controlIndex++)
             {
                 var controlOutputTile = _makeInstructionControlTile(instructionIndex, controlIndex);
                 slot.AddChildren(controlOutputTile);

@@ -15,8 +15,8 @@ namespace CubeV2
         public override int ControlOutputCount => 2;
 
         public IOperator Operator { get; set; } = IOperator.Equals;
-        public int IndexTrue => ControlOutputs[0];
-        public int IndexFalse => ControlOutputs[1];
+        public int IndexTrue => ControlFlowOutputs[0];
+        public int IndexFalse => ControlFlowOutputs[1];
 
         public override Instruction GenerateNew() => new IfInstruction();
 

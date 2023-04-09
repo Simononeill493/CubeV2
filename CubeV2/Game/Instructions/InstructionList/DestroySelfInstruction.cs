@@ -19,7 +19,7 @@ namespace CubeV2
 
             public override int Run(Entity caller, Board board)
             {
-                board.TryClearThisTile(caller.Location);
+                board.TryRemoveFromBoard(caller, force: true);
 
                 return 0;
             }

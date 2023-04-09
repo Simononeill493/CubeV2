@@ -28,6 +28,7 @@ namespace CubeV2
         public int CurrentInstructionSet = 0;
         public int InstructionCounter;
 
+        public IVariable[] InstructionOutputs;
         public IVariable[] Variables = new IVariable[Config.InstructionMaxNumVariables];
 
         public List<string> Tags = new List<string>();
@@ -42,6 +43,12 @@ namespace CubeV2
             Sprite = sprite;
 
             Instructions.Add(new Instruction[Config.EntityMaxInstructionsPerSet]);
+
+            InstructionOutputs = new IVariable[Config.InstructionMaxNumOutputs];
+            for (int i = 0; i < Config.InstructionMaxNumOutputs; i++)
+            {
+                InstructionOutputs[i] = null;
+            }
         }
 
         public virtual void Tick(Board currentBoard, UserInput input)
@@ -78,9 +85,9 @@ namespace CubeV2
             }
 
             var energyCost = currentInstruction.Run(this, currentBoard);
-            if(currentInstruction.ControlOutputs[0] >= 0 && currentInstruction.ControlOutputCount==1)
+            if(currentInstruction.ControlFlowOutputs[0] >= 0 && currentInstruction.ControlOutputCount==1)
             {
-                SetInstructionCounter(currentInstruction.ControlOutputs[0] - 1);
+                SetInstructionCounter(currentInstruction.ControlFlowOutputs[0] - 1);
             }
 
             TakeEnergy(energyCost);
@@ -88,16 +95,16 @@ namespace CubeV2
             //Set variable data
             for (int i = 0; i < currentInstruction.OutputCount; i++)
             {
-                if (currentInstruction.OutputTargets[i] >= 0)
+                if (currentInstruction.OutputTargetVariables[i] >= 0)
                 {
-                    var output = currentInstruction.Outputs[i];
+                    var output = InstructionOutputs[i];
                     if (output != null && output.DefaultType == IVariableType.StoredVariable)
                     {
                         //We can't store variable references in variables yet. causes overflow. too meta lol
                         continue;
                     }
 
-                    Variables[currentInstruction.OutputTargets[i]] = output;
+                    Variables[currentInstruction.OutputTargetVariables[i]] = output;
                 }
             }
 

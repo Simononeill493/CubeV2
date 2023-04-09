@@ -144,7 +144,7 @@ namespace CubeV2
         {
             if (CurrentSidePanelFocus == SidePanelFocus.ControlOutput && FocusedControlOutputExists)
             {
-                _focusedInstructions[FocusedInstructionSet][_focusedInstruction].ControlOutputs[_focusedControlOutput] = targetIndex;
+                _focusedInstructions[FocusedInstructionSet][_focusedInstruction].ControlFlowOutputs[_focusedControlOutput] = targetIndex;
             }
         }
         public static void AssignValueToFocusedInstruction(int instructionOptionIndex)
@@ -165,7 +165,7 @@ namespace CubeV2
         {
             if (CurrentSidePanelFocus == SidePanelFocus.Output && FocusedOutputExists && OutputOptionExists(outputOptionIndex))
             {
-                GetInstructionFromCurrentFocus(_focusedInstruction).OutputTargets[_focusedOutput] = outputOptionIndex;
+                GetInstructionFromCurrentFocus(_focusedInstruction).OutputTargetVariables[_focusedOutput] = outputOptionIndex;
             }
         }
 

@@ -39,9 +39,10 @@ namespace CubeV2
         public const int BaseMoveCost = 1;//1
         public const int BaseCountSurroundingsCost = 2;//20
         public const int BaseScanCost = 3;//3
+        public const int BaseRangePingCost = 10;//10
         public const int BaseHitCost = 5;//10
-        public const int BasePingCost = 10;//20
         public const int BaseCreateCost = 100;//20
+        public const int BasePingCost = 500;//20
 
         public static TimeSpan DemoBoardUpdateRate = TimeSpan.FromSeconds(0.1);
         public static TimeSpan BoardTest1UpdateRate = TimeSpan.FromSeconds(0.075);
@@ -63,7 +64,7 @@ namespace CubeV2
         public const int InstructionTileTopPadding = 50;
         public const int InstructionMaxNumVariables = 3;
         public const int InstructionMaxNumOutputs = 2;
-        public const int InstructionMaxNumControlOutputs = 2;
+        public const int InstructionMaxNumControlFlowOutputs = 2;
         public const int MaxInstructionJumpsPerTick = 12;
 
 

@@ -18,7 +18,7 @@ namespace CubeV2
 
         public override int Run(Entity caller, Board board)
         {
-            Outputs[0] = Variables[0];
+            caller.InstructionOutputs[0] = Variables[0];
             return 0;
         }
     }

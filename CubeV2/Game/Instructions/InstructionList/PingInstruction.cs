@@ -21,7 +21,7 @@ namespace CubeV2
                 var targetEntity = targetEntities.FirstOrDefault();
                 if (targetEntity != null)
                 {
-                    Outputs[0] = new CardinalDirectionVariable(caller.Location.ApproachDirection(targetEntity.Location));
+                    caller.InstructionOutputs[0] = new CardinalDirectionVariable(caller.Location.ApproachDirection(targetEntity.Location));
                     return Config.BasePingCost;
                 }
             }

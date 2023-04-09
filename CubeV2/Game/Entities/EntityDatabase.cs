@@ -45,9 +45,12 @@ namespace CubeV2
 
 
             _masterList[Ally1Name] = new EntityTemplate(Ally1Name) { DisplaySprite = DrawUtils.Ally1Sprite, Instructions = new List<Instruction[]> { new Instruction[Config.EntityMaxInstructionsPerSet] }, DefaultMaxEnergy = 10000 };
-            //_masterList[Ally1Name].DefaultTags = new List<string>() { Config.IndestructibleTag };
+            _masterList[Ally1Name].DefaultTags = new List<string>() { Config.IndestructibleTag };
 
             _masterList[Ally2Name] = new EntityTemplate(Ally2Name) { DisplaySprite = DrawUtils.Ally2Sprite, Instructions = new List<Instruction[]> { new Instruction[Config.EntityMaxInstructionsPerSet] }, DefaultMaxEnergy = 50 };
+            _masterList[Ally2Name].DefaultTags = new List<string>() { Config.IndestructibleTag };
+
+
             _masterList[Ally3Name] = new EntityTemplate(Ally3Name) { DisplaySprite = DrawUtils.Ally3Sprite, Instructions = new List<Instruction[]> { new Instruction[Config.EntityMaxInstructionsPerSet] }, DefaultMaxEnergy = 50 };
             _masterList[Ally4Name] = new EntityTemplate(Ally4Name) { DisplaySprite = DrawUtils.Ally4Sprite, Instructions = new List<Instruction[]> { new Instruction[Config.EntityMaxInstructionsPerSet] }, DefaultMaxEnergy = 50 };
             _masterList[Ally5Name] = new EntityTemplate(Ally5Name) { DisplaySprite = DrawUtils.Ally5Sprite, Instructions = new List<Instruction[]> { new Instruction[Config.EntityMaxInstructionsPerSet] }, DefaultMaxEnergy = 50 };

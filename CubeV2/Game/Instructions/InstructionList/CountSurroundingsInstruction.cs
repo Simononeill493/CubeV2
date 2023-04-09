@@ -15,7 +15,7 @@ namespace CubeV2
         public override int Run(Entity caller, Board board)
         {
             var count = caller.Location.GetAdjacentPoints().Select(p => board.TryGetTile(p)?.Contents).Where(c=>c!=null).Count();
-            Outputs[0] = new IntegerVariable(count);
+            caller.InstructionOutputs[0] = new IntegerVariable(count);
 
             return Config.BaseCountSurroundingsCost;
         }

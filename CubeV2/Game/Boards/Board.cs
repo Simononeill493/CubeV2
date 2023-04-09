@@ -81,6 +81,30 @@ namespace CubeV2
 
             return TilesVector[offset.X, offset.Y];
         }
+        
+        public List<(Tile,Vector2Int)> GetSurroundings(Vector2Int location,int range)
+        {
+            var output = new List<(Tile,Vector2Int)>();
+            for (int x = location.X - range; x <= location.X + range; x++)
+            {
+                for (int y = location.Y - range; y <= location.Y + range; y++)
+                {
+                    var searchLoc = new Vector2Int(x, y);
+                    if(searchLoc == location)
+                    {
+                        continue;
+                    }
+
+                    var tile = TryGetTile(searchLoc);
+                    if(tile!=null)
+                    {
+                        output.Add((tile, searchLoc));
+                    }
+                }
+            }
+
+            return output;
+        }
 
         public bool ContainsLocation(Vector2Int location)
         {
@@ -124,9 +148,9 @@ namespace CubeV2
             return false;
         }
 
-        public bool TryRemoveFromBoard(Entity entity)
+        public bool TryRemoveFromBoard(Entity entity,bool force = false)
         {
-            if(entity.HasTag(Config.IndestructibleTag))
+            if(entity.HasTag(Config.IndestructibleTag) && !force)
             {
                 return false;
             }
