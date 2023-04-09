@@ -17,7 +17,7 @@
                 var amount = Variables[1]?.Convert(caller, board, IVariableType.Integer);
                 if(amount!=null)
                 {
-                    if (caller.TryPushEnergy((RelativeDirection)direction,(int)amount))
+                    if (caller.TryPushEnergy(board, (RelativeDirection)direction,(int)amount))
                     {
                         return 0;
                     }

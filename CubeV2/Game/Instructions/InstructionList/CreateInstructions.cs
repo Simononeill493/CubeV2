@@ -33,7 +33,7 @@ namespace CubeV2
                         var trueDirection = DirectionUtils.ToCardinal(caller.Orientation,(RelativeDirection)direction);
                         var location = caller.Location + trueDirection.ToVector();
 
-                        if (EntityBoardCallback.TryCreate(entity,location))
+                        if (board.TryAddEntityToBoard(entity,location))
                         {
                             return Config.BaseCreateCost;
 

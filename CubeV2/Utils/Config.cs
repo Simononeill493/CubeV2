@@ -23,7 +23,7 @@ namespace CubeV2
         public const int DefaultZoomLevel = 3;
 
 
-        public const string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\EmptyMapSmall.txt";//30 14
+        public const string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\CircuitMap.txt";//30 14
         public const int BoardTest1StartingEnergy = 100;
 
         public const int EntityMaxInstructionsPerSet = 7;

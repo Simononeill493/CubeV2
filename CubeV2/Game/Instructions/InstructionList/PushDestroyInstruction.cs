@@ -17,7 +17,7 @@
                 return 0;
             }
 
-            caller.PushDestroy((RelativeDirection)direction);
+            caller.PushDestroy(board,(RelativeDirection)direction);
             return Config.BaseHitCost;
         }
     }

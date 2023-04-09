@@ -38,7 +38,7 @@ namespace CubeV2
             var entity = ((EntityTemplate)template).GenerateEntity();
             entity.SetEnergyToMax();
 
-            board.AddEntityToBoard(entity, (Vector2Int)location);
+            board.TryAddEntityToBoard(entity, (Vector2Int)location);
             return 0;
         }
 

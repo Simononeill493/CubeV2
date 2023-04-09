@@ -180,29 +180,6 @@ namespace CubeV2
         }
     }
 
-
-    //TODO oh noooo
-    public static class EntityBoardCallback
-    {
-        public static GamePlaybackMode Mode = GamePlaybackMode.Headed;
-
-        public static Board FocusedBoard => Mode == GamePlaybackMode.Headed ? HeadedBoard : HeadlessBoard;
-        public static Board HeadedBoard => GameInterface._game.CurrentBoard;
-        public static Board HeadlessBoard;
-
-        public static bool TryCreate(Entity entity, Vector2Int location) => FocusedBoard.AddEntityToBoard(entity,location);
-        public static bool TryMove(Entity e, Vector2Int location) => FocusedBoard.TryMoveEntity(e, location);
-        public static Tile TryGetTile(int index) => FocusedBoard.TryGetTile(index);
-        public static Tile TryGetTile(Vector2Int offset) => FocusedBoard.TryGetTile(offset);
-        public static bool TryClearTile(Vector2Int targetLocation) => FocusedBoard.TryClearThisTile(targetLocation);
-    }
-
-    public enum GamePlaybackMode
-    {
-        Headed,
-        Headless
-    }
-
     public enum PrimaryFocus
     {
         Board,

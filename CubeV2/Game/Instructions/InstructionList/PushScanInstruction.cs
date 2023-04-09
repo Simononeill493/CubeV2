@@ -17,7 +17,7 @@
                 return 0;
             }
 
-            var capturedTile = caller.TryPushScan((RelativeDirection)direction);
+            var capturedTile = caller.TryPushScan(board, (RelativeDirection)direction);
             Outputs[0] = capturedTile;
             return Config.BaseScanCost;
         }

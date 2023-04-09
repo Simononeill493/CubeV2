@@ -156,7 +156,7 @@ namespace CubeV2
             }
 
             entity.Doomed = true;
-            entity.OnDestroy(entityFormerLocation);
+            entity.OnDestroy(this,entityFormerLocation);
         }
         public void RemoveEntityFromCurrentTile(Entity entity)
         {
@@ -175,9 +175,9 @@ namespace CubeV2
             entity.Location = Vector2Int.MinusOne;
         }
 
-        public void AddEntityToBoard(Entity entity, int indexToAddTo) => AddEntityToBoard(entity, BoardUtils.IndexToXY(indexToAddTo,_width));
+        public void AddEntityToBoard(Entity entity, int indexToAddTo) => TryAddEntityToBoard(entity, BoardUtils.IndexToXY(indexToAddTo,_width));
 
-        public bool AddEntityToBoard(Entity entity, Vector2Int tileToAddTo)
+        public bool TryAddEntityToBoard(Entity entity, Vector2Int tileToAddTo)
         {
             if(!ContainsLocation(tileToAddTo))
             {

@@ -14,7 +14,7 @@
             var direction = Variables[0]?.Convert(caller, board, IVariableType.RelativeDirection);
             if (direction != null)
             {
-                if (caller.TryPullEnergy((RelativeDirection)direction))
+                if (caller.TryPullEnergy(board, (RelativeDirection)direction))
                 {
                     return 0;
                 }

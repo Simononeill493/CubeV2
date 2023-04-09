@@ -4,11 +4,11 @@
     {
         public ItemDroppingEntity(string templateID, string ID, string sprite) : base(templateID, ID, sprite) { }
 
-        public override void OnDestroy(Vector2Int formerLocation)
+        public override void OnDestroy(Board board,Vector2Int formerLocation)
         {
-            base.OnDestroy(formerLocation);
+            base.OnDestroy(board,formerLocation);
 
-            EntityBoardCallback.TryCreate(GetDroppedItem(), formerLocation);
+            board.TryAddEntityToBoard(GetDroppedItem(), formerLocation);
         }
 
         public abstract Entity GetDroppedItem();

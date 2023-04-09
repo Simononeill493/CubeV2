@@ -20,7 +20,7 @@
             var direction = Variables[0]?.Convert(caller, board,IVariableType.RelativeDirection);
             if (direction != null)
             {
-                if (caller.TryMove((RelativeDirection)direction))
+                if (caller.TryMove(board, (RelativeDirection)direction))
                 {
                     return Config.BaseMoveCost;
                 }

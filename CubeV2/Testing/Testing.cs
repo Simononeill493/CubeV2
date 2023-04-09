@@ -19,7 +19,7 @@ namespace CubeV2
             testEntity.MaxEnergy = 100;
             testEntity.SetEnergyToMax();
 
-            testBoard.AddEntityToBoard(testEntity, new Vector2Int(0, 0));
+            testBoard.TryAddEntityToBoard(testEntity, new Vector2Int(0, 0));
 
             if (testBoard.TryGetTile(Vector2Int.Zero).Contents!=testEntity)
             {

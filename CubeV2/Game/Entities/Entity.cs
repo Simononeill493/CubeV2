@@ -156,16 +156,16 @@ namespace CubeV2
         }
 
 
-        public bool TryMove(RelativeDirection direction) => TryMove(DirectionUtils.ToCardinal(Orientation, direction));
-        public bool TryPushEnergy(RelativeDirection direction, int amount) => TryPushEnergy(DirectionUtils.ToCardinal(Orientation, direction), amount);
-        public bool TryPullEnergy(RelativeDirection direction) => TryPullEnergy(DirectionUtils.ToCardinal(Orientation, direction));
-        public CapturedTileVariable TryPushScan(RelativeDirection direction) => TryPushScan(DirectionUtils.ToCardinal(Orientation, direction));
-        public void PushDestroy(RelativeDirection direction) => PushDestroy(DirectionUtils.ToCardinal(Orientation, direction));
+        public bool TryMove(Board board, RelativeDirection direction) => TryMove(board,DirectionUtils.ToCardinal(Orientation, direction));
+        public bool TryPushEnergy(Board board, RelativeDirection direction, int amount) => TryPushEnergy(board, DirectionUtils.ToCardinal(Orientation, direction), amount);
+        public bool TryPullEnergy(Board board, RelativeDirection direction) => TryPullEnergy(board, DirectionUtils.ToCardinal(Orientation, direction));
+        public CapturedTileVariable TryPushScan(Board board, RelativeDirection direction) => TryPushScan(board, DirectionUtils.ToCardinal(Orientation, direction));
+        public void PushDestroy(Board board, RelativeDirection direction) => PushDestroy(board, DirectionUtils.ToCardinal(Orientation, direction));
 
-        public bool TryMove(CardinalDirection direction)
+        public bool TryMove(Board board,CardinalDirection direction)
         {
             var newLocation = Location + direction.ToVector();
-            var didMoveWork = EntityBoardCallback.TryMove(this, newLocation);
+            var didMoveWork = board.TryMoveEntity(this, newLocation);
 
             /* Code to 'flow' around blocks when moving diagonaally.
              * Causes unintuitive behaviour when programming blocks, but we can go back to it later.
@@ -187,10 +187,10 @@ namespace CubeV2
             return didMoveWork;
         }
 
-        public bool TryPushEnergy(CardinalDirection direction, int amount)
+        public bool TryPushEnergy(Board board, CardinalDirection direction, int amount)
         {
             var newLocation = Location + direction.ToVector();
-            var target = EntityBoardCallback.FocusedBoard.TryGetTile(newLocation);
+            var target = board.TryGetTile(newLocation);
 
             return TryDropEnergy(target, amount);
         }
@@ -213,10 +213,10 @@ namespace CubeV2
             return true;
         }
 
-        public bool TryPullEnergy(CardinalDirection direction)
+        public bool TryPullEnergy(Board board, CardinalDirection direction)
         {
             var newLocation = Location + direction.ToVector();
-            var target = EntityBoardCallback.FocusedBoard.TryGetTile(newLocation);
+            var target = board.TryGetTile(newLocation);
 
             return TryTakeEnergy(target, 1);
         }
@@ -242,10 +242,10 @@ namespace CubeV2
             return true;
         }
 
-        public CapturedTileVariable TryPushScan(CardinalDirection direction)
+        public CapturedTileVariable TryPushScan(Board board, CardinalDirection direction)
         {
             var newLocation = Location + direction.ToVector();
-            var tile = EntityBoardCallback.TryGetTile(newLocation);
+            var tile = board.TryGetTile(newLocation);
 
             if (tile != null)
             {
@@ -255,13 +255,13 @@ namespace CubeV2
             return null;
         }
 
-        public void PushDestroy(CardinalDirection direction)
+        public void PushDestroy(Board board, CardinalDirection direction)
         {
             var targetLocation = Location + direction.ToVector();
-            EntityBoardCallback.TryClearTile(targetLocation);
+            board.TryClearThisTile(targetLocation);
         }
 
-        public virtual void OnDestroy(Vector2Int formerLocation) { }
+        public virtual void OnDestroy(Board board,Vector2Int formerLocation) { }
         public virtual bool TryBeCollected(Entity collector) => false;
 
     }
