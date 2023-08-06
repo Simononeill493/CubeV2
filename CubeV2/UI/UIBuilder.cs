@@ -352,11 +352,11 @@ namespace CubeV2
         private static UIElement _makeInstructionOutputTile(int instructionIndex, int outputIndex)
         {
             var outputTile = new UIElement(Config.InstructionOutputTileName + "_" + instructionIndex + "_" + outputIndex);
-            outputTile.SetOffset(Config.InstructionTileSize.X+1,50+(outputIndex*50));
+            outputTile.SetOffset(Config.InstructionTileSize.X+1,75+(outputIndex*50));
 
-            var tileBackground = new RectangleAppearance(Config.TileBaseSize * (Config.InstructionTileVariableScale-1), new Color(251,167,232), DrawUtils.UILayer2);
+            var tileBackground = new RectangleAppearance(Config.OutputTileBaseSize * (Config.InstructionTileVariableScale-2), new Color(251,167,232), DrawUtils.UILayer2);
             //tileBackground.OverrideColor(() => (GameInterface.IsFocusedOnOutput(instructionIndex,outputIndex) ? Config.InstructionTileAssignedVariableHighlightColor : Config.InstructionTileAssignedVariableColor));
-            var tileAppearance = new OutputTileAppearance(outputIndex, instructionIndex, Config.InstructionTileVariableScale-1, DrawUtils.UILayer3);
+            var tileAppearance = new OutputTileAppearance(outputIndex, instructionIndex, Config.InstructionTileVariableScale-2, DrawUtils.UILayer3);
             outputTile.AddAppearances(tileBackground,tileAppearance);
 
             outputTile.AddLeftClickAction((i) => { GameInterface.FocusOutput(instructionIndex, outputIndex); });
@@ -368,11 +368,11 @@ namespace CubeV2
         private static UIElement _makeInstructionControlTile(int instructionIndex, int controlIndex)
         {
             var outputTile = new UIElement(Config.InstructionControlOutputTileName + "_" + instructionIndex + "_" + controlIndex);
-            outputTile.SetOffset(Config.InstructionTileSize.X + 1, (controlIndex * 50));
+            outputTile.SetOffset(Config.InstructionTileSize.X + 1, (controlIndex * 25));
 
-            var tileBackground = new RectangleAppearance(Config.TileBaseSize * (Config.InstructionTileVariableScale-1), new Color(156,219,250), DrawUtils.UILayer2);
+            var tileBackground = new RectangleAppearance(Config.OutputTileBaseSize * (Config.InstructionTileVariableScale-2), new Color(156,219,250), DrawUtils.UILayer2);
             //tileBackground.OverrideColor(() => (GameInterface.IsFocusedOnControlOutput(instructionIndex, controlIndex) ? Config.InstructionTileAssignedVariableHighlightColor : Config.InstructionTileAssignedVariableColor));
-            var tileAppearance = new OutputControlTileAppearance(controlIndex, instructionIndex, Config.InstructionTileVariableScale-1, DrawUtils.UILayer3);
+            var tileAppearance = new OutputControlTileAppearance(controlIndex, instructionIndex, Config.InstructionTileVariableScale-2, DrawUtils.UILayer3);
             outputTile.AddAppearances(tileBackground, tileAppearance);
 
             outputTile.AddLeftClickAction((i) => { GameInterface.FocusControlOutput(instructionIndex, controlIndex); });

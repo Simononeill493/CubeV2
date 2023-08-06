@@ -14,7 +14,7 @@ namespace CubeV2
 
         public string DisplaySprite;
 
-        public List<Instruction[]> Instructions = null;
+        public List<Instruction[]> Instructions { get; private set; } = null;
 
         public EntityTemplate(string id)
         {
@@ -46,6 +46,11 @@ namespace CubeV2
         protected virtual Entity _createEntity()
         {
             return new Entity(TemplateID, _sessionEntityCount++.ToString(), DisplaySprite);
+        }
+
+        public void MakeInstructable()
+        {
+            Instructions = new List<Instruction[]> { new Instruction[Config.EntityMaxInstructionsPerSet] };
         }
     }
 

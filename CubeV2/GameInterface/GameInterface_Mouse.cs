@@ -107,7 +107,7 @@ namespace CubeV2
         {
             var create = new AdminCreateInstruction();
             create.Variables[0] = new LocationVariable(tileLocation);
-            create.Variables[1] = new EntityTypeVariable(EntityDatabase.GetTemplate(EntityDatabase.Ally2Name));
+            create.Variables[1] = new EntityTypeVariable(EntityDatabase.Get(EntityDatabase.Ally2Name));
 
             _manualInstructionBuffer.Enqueue(create);
         }

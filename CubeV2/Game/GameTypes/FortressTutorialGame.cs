@@ -36,16 +36,16 @@ namespace CubeV2
             var templateTemplate = new FortressTutorialTemplateTemplate() { Width = width, Height = height };
             templateTemplate.StaticEntities[new Vector2Int(0, 12)] = _playerTemplate;
 
-            var wall = EntityDatabase.GetTemplate(EntityDatabase.StoneWallName);
-            var rock = EntityDatabase.GetTemplate(EntityDatabase.RockName);
+            var wall = EntityDatabase.Get(EntityDatabase.StoneWallName);
+            var rock = EntityDatabase.Get(EntityDatabase.RockName);
 
             //var player = EntityDatabase.GetTemplate(EntityDatabase.ManualPlayerName);
-            var respawner =  EntityDatabase.GetTemplate(EntityDatabase.RespawnerName);
-            var craftingTable= EntityDatabase.GetTemplate(EntityDatabase.CraftingTableName);
-            var turret = EntityDatabase.GetTemplate(EntityDatabase.TurretName);
-            var goal = EntityDatabase.GetTemplate(EntityDatabase.GoalName);
-            var laserFlower = EntityDatabase.GetTemplate(EntityDatabase.LaserFlowerName);
-            var pickaxeFlower = EntityDatabase.GetTemplate(EntityDatabase.PickaxeFlowerName);
+            var respawner =  EntityDatabase.Get(EntityDatabase.RespawnerName);
+            var craftingTable= EntityDatabase.Get(EntityDatabase.CraftingTableName);
+            var turret = EntityDatabase.Get(EntityDatabase.TurretName);
+            var goal = EntityDatabase.Get(EntityDatabase.GoalName);
+            var laserFlower = EntityDatabase.Get(EntityDatabase.LaserFlowerName);
+            var pickaxeFlower = EntityDatabase.Get(EntityDatabase.PickaxeFlowerName);
 
             for (int y = 0; y < lines.Length; y++)
             {

@@ -32,12 +32,12 @@ namespace CubeV2
 
             for (int i = 0; i < 25; i++)
             {
-                templateTemplate.EntitiesRandomLocation.Add(EntityDatabase.GetTemplate(EntityDatabase.RockName));
+                templateTemplate.EntitiesRandomLocation.Add(EntityDatabase.Get(EntityDatabase.RockName));
             }
 
             for (int i = 0; i < 1; i++)
             {
-                templateTemplate.EntitiesRandomLocation.Add(EntityDatabase.GetTemplate(EntityDatabase.GoalName));
+                templateTemplate.EntitiesRandomLocation.Add(EntityDatabase.Get(EntityDatabase.GoalName));
             }
 
             return templateTemplate;

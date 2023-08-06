@@ -9,6 +9,13 @@
 
         public override Instruction GenerateNew() => new PushScanInstruction();
 
+        public PushScanInstruction() { }
+
+        public PushScanInstruction(RelativeDirection direction)
+        {
+            Variables[0] = new RelativeDirectionVariable(direction);
+        }
+
         public override int Run(Entity caller, Board board)
         {
             var direction = Variables[0]?.Convert(caller, board, IVariableType.RelativeDirection);

@@ -34,7 +34,7 @@ namespace CubeV2
                     {
                         return null;
                     }
-                    return EntityDatabase.GetTemplate(Contents.TemplateID);
+                    return EntityDatabase.Get(Contents.TemplateID);
                 default:
                     return null;
             }

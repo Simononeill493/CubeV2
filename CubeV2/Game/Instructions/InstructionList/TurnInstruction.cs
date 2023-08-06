@@ -8,6 +8,19 @@
 
         public override Instruction GenerateNew() => new TurnInstruction();
 
+        public TurnInstruction() : base() { }
+
+        public TurnInstruction(CardinalDirection dir) : base()
+        {
+            Variables[0] = new CardinalDirectionVariable(dir);
+        }
+
+        public TurnInstruction(IVariable dir) : base()
+        {
+            Variables[0] = dir;
+        }
+
+
         public override int Run(Entity caller, Board board)
         {
             var orientation = Variables[0]?.Convert(caller, board, IVariableType.Orientation);

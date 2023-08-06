@@ -20,6 +20,21 @@ namespace CubeV2
 
             public override Instruction GenerateNew() => new CreateInstruction();
 
+            public CreateInstruction() : base() { }
+
+            public CreateInstruction(RelativeDirection direction,EntityTemplate template) : base()
+            {
+                Variables[0] = new RelativeDirectionVariable(direction);
+                Variables[1] = new EntityTypeVariable(template);
+            }
+
+            public CreateInstruction(IVariable direction, IVariable template) : base()
+            {
+                Variables[0] = direction;
+                Variables[1] = template;
+            }
+
+
             public override int Run(Entity caller, Board board)
             {
                 var direction = Variables[0]?.Convert(caller, board, IVariableType.RelativeDirection);
@@ -29,6 +44,7 @@ namespace CubeV2
                     if (targetTemplate != null)
                     {
                         var entity = ((EntityTemplate)targetTemplate).GenerateEntity();
+                        entity.Orientation = caller.Orientation;
 
                         var trueDirection = DirectionUtils.ToCardinal(caller.Orientation,(RelativeDirection)direction);
                         var location = caller.Location + trueDirection.ToVector();

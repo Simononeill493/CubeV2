@@ -6,7 +6,7 @@
 
         public override Entity GetDroppedItem()
         {
-            return EntityDatabase.GetTemplate(EntityDatabase.BrokenRockName).GenerateEntity();
+            return EntityDatabase.Get(EntityDatabase.BrokenRockName).GenerateEntity();
         }
     }
 

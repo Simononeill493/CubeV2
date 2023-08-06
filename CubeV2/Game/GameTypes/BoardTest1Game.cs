@@ -52,10 +52,10 @@ namespace CubeV2
             var templateTemplate = new BoardTest1TemplateTemplate() { Width = width, Height = height };
             templateTemplate.StaticEntities[new Vector2Int(1, 1)] = _playerTemplate;
 
-            var rock = EntityDatabase.GetTemplate(EntityDatabase.RockName);
-            var brokenRock = EntityDatabase.GetTemplate(EntityDatabase.BrokenRockName);
-            var energyRock = EntityDatabase.GetTemplate(EntityDatabase.EnergyRockName);
-            var portal = EntityDatabase.GetTemplate(EntityDatabase.PortalName);
+            var rock = EntityDatabase.Get(EntityDatabase.RockName);
+            var brokenRock = EntityDatabase.Get(EntityDatabase.BrokenRockName);
+            var energyRock = EntityDatabase.Get(EntityDatabase.EnergyRockName);
+            var portal = EntityDatabase.Get(EntityDatabase.PortalName);
 
             for (int y=0;y<lines.Length;y++)
             {

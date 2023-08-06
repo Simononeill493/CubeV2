@@ -28,16 +28,16 @@ namespace CubeV2
 
         public static void InitializeDemoFindGoalGame()
         {
-            var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.AutoPlayerName);
-            _focusedTemplate = EntityDatabase.GetTemplate(EntityDatabase.Ally2Name);
+            var demoPlayer = EntityDatabase.Get(EntityDatabase.AutoPlayerName);
+            _focusedTemplate = EntityDatabase.Get(EntityDatabase.Ally2Name);
 
             _game = new DemoFindGoalGame(demoPlayer);
         }
 
         public static void InitializeBoardTest1Game()
         {
-            var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.ManualPlayerName);
-            _focusedTemplate = EntityDatabase.GetTemplate(EntityDatabase.Ally2Name);
+            var demoPlayer = EntityDatabase.Get(EntityDatabase.ManualPlayerName);
+            _focusedTemplate = EntityDatabase.Get(EntityDatabase.Ally2Name);
 
             _game = new BoardTest1Game(demoPlayer);
             StartBoard(Config.BoardTest1UpdateRate);
@@ -45,8 +45,8 @@ namespace CubeV2
 
         public static void InitializeFortressTutorial()
         {
-            var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.ManualPlayerName);
-            _focusedTemplate = EntityDatabase.GetTemplate(EntityDatabase.Ally1Name);
+            var demoPlayer = EntityDatabase.Get(EntityDatabase.ManualPlayerName);
+            _focusedTemplate = EntityDatabase.Get(EntityDatabase.Ally2Name);
 
             _game = new FortressTurorialGame(demoPlayer);
             StartBoard(Config.BoardTest1UpdateRate);

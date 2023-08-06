@@ -44,26 +44,22 @@ namespace CubeV2
             _masterList = new Dictionary<string, EntityTemplate>();
 
             _masterList[ManualPlayerName] = new ManualPlayerTemplate(ManualPlayerName);
-            _masterList[ManualPlayerName].Instructions = new List<Instruction[]> { new Instruction[Config.EntityMaxInstructionsPerSet] };
             _masterList[ManualPlayerName].DefaultTags = new List<string>() { Config.PlayerTag, Config.IndestructibleTag };
             _masterList[ManualPlayerName].DefaultMaxEnergy = 1000;
 
             _masterList[AutoPlayerName] = new EntityTemplate(AutoPlayerName) { DisplaySprite = DrawUtils.PlayerSprite };
-            _masterList[AutoPlayerName].Instructions = new List<Instruction[]> { new Instruction[Config.EntityMaxInstructionsPerSet] };
-            _masterList[AutoPlayerName].Instructions[0][0] = new MoveInstruction(RelativeDirection.Forward);
             _masterList[AutoPlayerName].DefaultTags = new List<string>() { Config.PlayerTag };
 
-
-            _masterList[Ally1Name] = new EntityTemplate(Ally1Name) { DisplaySprite = DrawUtils.Ally1Sprite, Instructions = new List<Instruction[]> { new Instruction[Config.EntityMaxInstructionsPerSet] }, DefaultMaxEnergy = 10000 };
+            _masterList[Ally1Name] = new EntityTemplate(Ally1Name) { DisplaySprite = DrawUtils.Ally1Sprite, DefaultMaxEnergy = 10000 };
             _masterList[Ally1Name].DefaultTags = new List<string>() { Config.IndestructibleTag };
 
-            _masterList[Ally2Name] = new EntityTemplate(Ally2Name) { DisplaySprite = DrawUtils.Ally2Sprite, Instructions = new List<Instruction[]> { new Instruction[Config.EntityMaxInstructionsPerSet] }, DefaultMaxEnergy = 50 };
+            _masterList[Ally2Name] = new EntityTemplate(Ally2Name) { DisplaySprite = DrawUtils.Ally2Sprite, DefaultMaxEnergy = 50 };
             _masterList[Ally2Name].DefaultTags = new List<string>() { Config.IndestructibleTag };
 
 
-            _masterList[Ally3Name] = new EntityTemplate(Ally3Name) { DisplaySprite = DrawUtils.Ally3Sprite, Instructions = new List<Instruction[]> { new Instruction[Config.EntityMaxInstructionsPerSet] }, DefaultMaxEnergy = 50 };
-            _masterList[Ally4Name] = new EntityTemplate(Ally4Name) { DisplaySprite = DrawUtils.Ally4Sprite, Instructions = new List<Instruction[]> { new Instruction[Config.EntityMaxInstructionsPerSet] }, DefaultMaxEnergy = 50 };
-            _masterList[Ally5Name] = new EntityTemplate(Ally5Name) { DisplaySprite = DrawUtils.Ally5Sprite, Instructions = new List<Instruction[]> { new Instruction[Config.EntityMaxInstructionsPerSet] }, DefaultMaxEnergy = 50 };
+            _masterList[Ally3Name] = new EntityTemplate(Ally3Name) { DisplaySprite = DrawUtils.Ally3Sprite,DefaultMaxEnergy = 50 };
+            _masterList[Ally4Name] = new EntityTemplate(Ally4Name) { DisplaySprite = DrawUtils.Ally4Sprite,DefaultMaxEnergy = 50 };
+            _masterList[Ally5Name] = new EntityTemplate(Ally5Name) { DisplaySprite = DrawUtils.Ally5Sprite,DefaultMaxEnergy = 50 };
 
             _masterList[RockName] = new RockTemplate(RockName);
             _masterList[RockName].DefaultMaxEnergy = 0;
@@ -79,21 +75,14 @@ namespace CubeV2
             _masterList[PortalName].DefaultTags = new List<string>() { Config.IndestructibleTag };
             _masterList[PortalName].DefaultMaxEnergy = 100;
 
-
-
-
             _masterList[CraftingTableName] = new EntityTemplate(CraftingTableName) { DisplaySprite = DrawUtils.CraftingTableSprite };
-            _masterList[MissileName] = new EntityTemplate(MissileName) { DisplaySprite = DrawUtils.MissileSprite };
             _masterList[PickaxeFlowerName] = new EntityTemplate(PickaxeFlowerName) { DisplaySprite = DrawUtils.PickaxeFlowerSprite };
             _masterList[RespawnerName] = new EntityTemplate(RespawnerName) { DisplaySprite = DrawUtils.RespawnerSprite };
             _masterList[StoneWallName] = new EntityTemplate(StoneWallName) { DisplaySprite = DrawUtils.StoneWallSprite };
-            _masterList[TurretName] = new EntityTemplate(TurretName) { DisplaySprite = DrawUtils.TurretSprite};
             _masterList[LaserFlowerName] = new EntityTemplate(LaserFlowerName) { DisplaySprite = DrawUtils.WeaponFlowerSprite};
 
-
-
-
-
+            _masterList[MissileName] = new EntityTemplate(MissileName) { DisplaySprite = DrawUtils.MissileSprite };
+            _masterList[TurretName] = new EntityTemplate(TurretName) { DisplaySprite = DrawUtils.TurretSprite };
 
 
 
@@ -101,7 +90,7 @@ namespace CubeV2
         }
 
 
-        public static EntityTemplate GetTemplate(string id)
+        public static EntityTemplate Get(string id)
         {
             if(!_masterList.ContainsKey(id))
             {
