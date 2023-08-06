@@ -26,6 +26,8 @@ namespace CubeV2
         public const string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\CircuitMap.txt";//30 14
         public const int BoardTest1StartingEnergy = 100;
 
+        public const string FortressTutorialWorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\New tutorial\\NewTutorialMap.txt";//28 15
+
         public const int EntityMaxInstructionsPerSet = 7;
         public const int EntityMaxVariables = 3;
         public const int GlobalDefaultMaxEnergy = 100;

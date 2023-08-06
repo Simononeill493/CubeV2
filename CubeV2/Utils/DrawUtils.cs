@@ -53,6 +53,16 @@ namespace CubeV2
 
         public const string MenuArrow1 = "MenuArrow1";
 
+
+        public const string CraftingTableSprite = "Crafting_table";
+        public const string MissileSprite = "Missile";
+        public const string PickaxeFlowerSprite = "Pickaxe_flower";
+        public const string RespawnerSprite = "Respawner";
+        public const string StoneWallSprite = "Stone_wall";
+        public const string TurretSprite = "Turret";
+        public const string WeaponFlowerSprite = "Weapon_flower";
+
+
         public const string RainGif = "rain_TEST_ONLY-Sheet";
 
        
@@ -109,6 +119,16 @@ namespace CubeV2
 
             SpritesDict[BrokenRockSprite] = content.Load<Texture2D>(BrokenRockSprite);
             SpritesDict[EnergyRockSprite] = content.Load<Texture2D>(EnergyRockSprite);
+
+
+
+            SpritesDict[CraftingTableSprite] = content.Load<Texture2D>(CraftingTableSprite);
+            SpritesDict[MissileSprite] = content.Load<Texture2D>(MissileSprite);
+            SpritesDict[PickaxeFlowerSprite] = content.Load<Texture2D>(PickaxeFlowerSprite);
+            SpritesDict[RespawnerSprite] = content.Load<Texture2D>(RespawnerSprite);
+            SpritesDict[StoneWallSprite] = content.Load<Texture2D>(StoneWallSprite);
+            SpritesDict[TurretSprite] = content.Load<Texture2D>(TurretSprite);
+            SpritesDict[WeaponFlowerSprite] = content.Load<Texture2D>(WeaponFlowerSprite);
 
             SpritesDict[UpSprite] = content.Load<Texture2D>(UpSprite);
             SpritesDict[DownSprite] = content.Load<Texture2D>(DownSprite);

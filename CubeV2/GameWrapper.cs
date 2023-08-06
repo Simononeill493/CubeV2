@@ -41,7 +41,9 @@ namespace CubeV2
             _ui = UIBuilder.GenerateUI();
             //GameInterface.InitializeEmptyGame();
             //GameInterface.InitializeDemoFindGoalGame();
-            GameInterface.InitializeBoardTest1Game();
+            //GameInterface.InitializeBoardTest1Game();
+            GameInterface.InitializeFortressTutorial();
+
 
             base.Initialize();
         }
@@ -156,11 +158,6 @@ namespace CubeV2
                 _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp);
                 _ui.Draw(_spriteBatch, Vector2.Zero);
                 _spriteBatch.End();
-
-                base.Draw(gameTime);
-
-
-                // TODO: Add your drawing code here
 
                 base.Draw(gameTime);
             }

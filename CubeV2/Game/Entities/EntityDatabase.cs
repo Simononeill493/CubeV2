@@ -25,6 +25,16 @@ namespace CubeV2
         public const string GoalName = "Goal";
         public const string PortalName = "Portal";
 
+
+        public const string CraftingTableName = "CraftingTable";
+        public const string MissileName = "Missile";
+        public const string PickaxeFlowerName = "PickaxeFlower";
+        public const string RespawnerName = "Respawner";
+        public const string StoneWallName = "StoneWall";
+        public const string TurretName = "Turret";
+        public const string LaserFlowerName = "WeaponFlower";
+
+
         private static Dictionary<string, EntityTemplate> _masterList;
         public static List<EntityTemplate> GetAll() => _masterList.Values.ToList();
 
@@ -68,7 +78,28 @@ namespace CubeV2
             _masterList[PortalName] = new EntityTemplate(PortalName) { DisplaySprite = DrawUtils.PortalSprite };
             _masterList[PortalName].DefaultTags = new List<string>() { Config.IndestructibleTag };
             _masterList[PortalName].DefaultMaxEnergy = 100;
+
+
+
+
+            _masterList[CraftingTableName] = new EntityTemplate(CraftingTableName) { DisplaySprite = DrawUtils.CraftingTableSprite };
+            _masterList[MissileName] = new EntityTemplate(MissileName) { DisplaySprite = DrawUtils.MissileSprite };
+            _masterList[PickaxeFlowerName] = new EntityTemplate(PickaxeFlowerName) { DisplaySprite = DrawUtils.PickaxeFlowerSprite };
+            _masterList[RespawnerName] = new EntityTemplate(RespawnerName) { DisplaySprite = DrawUtils.RespawnerSprite };
+            _masterList[StoneWallName] = new EntityTemplate(StoneWallName) { DisplaySprite = DrawUtils.StoneWallSprite };
+            _masterList[TurretName] = new EntityTemplate(TurretName) { DisplaySprite = DrawUtils.TurretSprite};
+            _masterList[LaserFlowerName] = new EntityTemplate(LaserFlowerName) { DisplaySprite = DrawUtils.WeaponFlowerSprite};
+
+
+
+
+
+
+
+
+
         }
+
 
         public static EntityTemplate GetTemplate(string id)
         {

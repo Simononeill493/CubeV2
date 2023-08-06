@@ -31,6 +31,28 @@ namespace CubeV2
         }
     }
 
+    public class FortressTutorialTemplateTemplate : BoardTemplateTemplate
+    {
+        public Dictionary<Vector2Int, EntityTemplate> StaticEntities = new Dictionary<Vector2Int, EntityTemplate>();
+
+        public override BoardTemplate GenerateTemplate()
+        {
+            var template = new BoardTemplate();
+            template.Width = Width;
+            template.Height = Height;
+            template.Entities = new Dictionary<Vector2Int, EntityTemplate>();
+
+            foreach (var kvp in StaticEntities)
+            {
+                template.Entities.Add(kvp.Key, kvp.Value);
+            }
+
+            return template;
+        }
+    }
+
+
+
 
     public class FullyRandomTemplateTemplate : BoardTemplateTemplate
     {

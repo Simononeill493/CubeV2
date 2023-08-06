@@ -43,7 +43,17 @@ namespace CubeV2
             StartBoard(Config.BoardTest1UpdateRate);
         }
 
-        
+        public static void InitializeFortressTutorial()
+        {
+            var demoPlayer = EntityDatabase.GetTemplate(EntityDatabase.ManualPlayerName);
+            _focusedTemplate = EntityDatabase.GetTemplate(EntityDatabase.Ally1Name);
+
+            _game = new FortressTurorialGame(demoPlayer);
+            StartBoard(Config.BoardTest1UpdateRate);
+        }
+
+
+
 
         public static void ManualSetNewBoard(Board b) => _game.SetNewBoard(b);
         public static void ManualUnsetBoard() => _game.UnsetBoard();

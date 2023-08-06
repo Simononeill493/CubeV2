@@ -85,6 +85,18 @@
 /processorParam:TextureFormat=Color
 /build:BrokenStone.png
 
+#begin Crafting_table.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Crafting_table.png
+
 #begin DownArrow.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -217,6 +229,30 @@
 /processorParam:TextureFormat=Color
 /build:MenuArrow1.png
 
+#begin Missile.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Missile.png
+
+#begin Pickaxe_flower.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Pickaxe_flower.png
+
 #begin Player.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -272,6 +308,18 @@
 /processorParam:TextureFormat=Color
 /build:rain_TEST_ONLY.gif
 
+#begin Respawner.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Respawner.png
+
 #begin RightArrow.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -295,6 +343,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:RockSmall.png
+
+#begin Stone_wall.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Stone_wall.png
+
+#begin Turret.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Turret.png
 
 #begin UpArrow.png
 /importer:TextureImporter
@@ -343,6 +415,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Void.png
+
+#begin Weapon_flower.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Weapon_flower.png
 
 #begin WhiteWall.png
 /importer:TextureImporter
