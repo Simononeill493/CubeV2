@@ -34,15 +34,19 @@ namespace CubeV2
             DrawUtils.DrawSprite(spriteBatch, DrawUtils.PlayerSprite, position, scale, 0, Vector2.Zero, layer);
         }
 
-        public override bool IVariableEquals(Entity caller, IVariable other)
+        public override int IVariableCompare(Entity caller, Board board, IVariable other)
         {
             var otherConverted = other.Convert(caller, null, IVariableType.CardinalDirection);
             if (otherConverted != null)
             {
-                return (CardinalDirection)otherConverted == Direction;
+                return Direction - (CardinalDirection)otherConverted;
             }
-            return false;
+
+            return -1;
         }
+
+        public override bool IsEmpty(Entity caller, Board board) => false;
+
 
     }
 

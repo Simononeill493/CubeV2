@@ -20,7 +20,6 @@ namespace CubeV2
             public override int Run(Entity caller, Board board)
             {
                 board.TryRemoveFromBoard(caller, force: true);
-
                 return 0;
             }
 

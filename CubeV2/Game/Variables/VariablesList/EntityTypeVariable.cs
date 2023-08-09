@@ -37,15 +37,19 @@ namespace CubeV2
             DrawUtils.DrawSprite(spriteBatch, _template.DisplaySprite, position, scale, 0, Vector2.Zero,layer);
         }
 
-        public override bool IVariableEquals(Entity caller, IVariable other)
+        public override int IVariableCompare(Entity caller, Board board, IVariable other)
         {
             var otherConverted = other.Convert(caller, null, IVariableType.EntityType);
-            if (otherConverted != null)
+            if (otherConverted != null && ((EntityTemplate)otherConverted).TemplateID == _template.TemplateID)
             {
-                return ((EntityTemplate)otherConverted).TemplateID == _template.TemplateID;
+                return 0;
             }
-            return false;
+
+            return -1;
         }
+
+
+        public override bool IsEmpty(Entity caller, Board board) => _template == null;
 
     }
 }

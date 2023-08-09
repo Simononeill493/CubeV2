@@ -45,24 +45,41 @@ namespace CubeV2
             DrawUtils.DrawSprite(spriteBatch, DrawUtils.CircuitGround1, position, scale, 0, Vector2.Zero, layer);
         }
 
-        public override bool IVariableEquals(Entity caller, IVariable other)
+        public override int IVariableCompare(Entity caller, Board board, IVariable other)
         {
             switch (other.DefaultType)
             {
                 case IVariableType.EntityType:
                     if(Contents==null)
                     {
-                        return false;
+                        return -1;
                     }
-                    return ((EntityTypeVariable)other)._template.TemplateID == Contents.TemplateID;
+                    else if(((EntityTypeVariable)other)._template.TemplateID == Contents.TemplateID)
+                    {
+                        return 0;
+                    }
+                    break;
                 case IVariableType.CapturedTile:
                     var otherCaptured = ((CapturedTileVariable)other);
-                    return (otherCaptured.Location == Location && otherCaptured.Contents.TemplateID == Contents.TemplateID);
+                    if(otherCaptured.Location == Location && otherCaptured.Contents.TemplateID == Contents.TemplateID) //TODO: ?????
+                    {
+                        return 0;
+                    }
+                    break;
                 case IVariableType.IntTuple:
-                    return (Vector2Int)other.Convert(caller, null, IVariableType.IntTuple) == Location;
+                    if ((Vector2Int)other.Convert(caller, null, IVariableType.IntTuple) == Location)
+                    {
+                        return 0;
+                    }
+                    break;
                 default:
-                    return false;
+                    return -1;
             }
+
+            return -1;
         }
+
+        public override bool IsEmpty(Entity caller, Board board) => Contents == null;
+
     }
 }

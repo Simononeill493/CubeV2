@@ -28,15 +28,17 @@ internal class EntityAIDatabase
 
         //EntityDatabase.Get(EntityDatabase.AutoPlayerName).Instructions[0][0] = new MoveInstruction(RelativeDirection.Forward);
 
-        TurretSetInstructions(EntityDatabase.Get(EntityDatabase.TurretName));
-        MissileSetInstructions(EntityDatabase.Get(EntityDatabase.MissileName));
+        TurretSetAI(EntityDatabase.Get(EntityDatabase.TurretName));
+        MissileSetAI(EntityDatabase.Get(EntityDatabase.MissileName));
 
 
     }
 
-    private static void TurretSetInstructions(EntityTemplate turret)
+    private static void TurretSetAI(EntityTemplate turret)
     {
-        var find = new PingRangeInstruction(EntityDatabase.Get(EntityDatabase.ManualPlayerName), 3);
+        turret.DefaultUpdateRate = 20;
+
+        var find = new PingRangeInstruction(EntityDatabase.Get(EntityDatabase.ManualPlayerName), 8);
         find.OutputTargetVariables[0] = 0;
         find.IndexFound = 1;
         find.IndexNotFound = 3;
@@ -49,32 +51,43 @@ internal class EntityAIDatabase
         turret.Instructions[0][2] = shoot;
     }
 
-    private static void MissileSetInstructions(EntityTemplate missile)
+    private static void MissileSetAI(EntityTemplate missile)
     {
+        missile.DefaultUpdateRate = 2;
+
+        var actOnAge = new IfInstruction(new AgeVariable(), new IntegerVariable(16));
+        actOnAge.Operator = IOperator.MoreThan;
+        actOnAge.IndexTrue = 6;
+        actOnAge.IndexFalse = 1;
+
         var scan = new PushScanInstruction(RelativeDirection.Forward);
         scan.OutputTargetVariables[0] = 0;
 
-        var actOnScan = new IfInstruction(new StoredVariableVariable(0), new EntityTypeVariable(EntityDatabase.Get(EntityDatabase.ManualPlayerName)));
-        actOnScan.IndexTrue = 5;
-        actOnScan.IndexFalse = 2;
+        var actOnScan = new IfInstruction(new StoredVariableVariable(0), new DummyVariable());
+        actOnScan.Operator = IOperator.NotEmpty;
+        actOnScan.IndexTrue = 6;
+        actOnScan.IndexFalse = 3;
 
-        var find = new PingRangeInstruction(EntityDatabase.Get(EntityDatabase.ManualPlayerName), 3);
+        var find = new PingRangeInstruction(EntityDatabase.Get(EntityDatabase.ManualPlayerName), 6);
         find.OutputTargetVariables[0] = 1;
-        find.IndexFound = 3;
-        find.IndexNotFound = 6;
+        find.IndexFound = 4;
+        find.IndexNotFound = 5;
 
         var turn = new TurnInstruction(new StoredVariableVariable(1));
         var move = new MoveInstruction(RelativeDirection.Forward);
-        move.ControlFlowOutputs[0] = 6;
+        move.ControlFlowOutputs[0] = 7;
 
         var explode = new DestroySelfInstruction();
 
-        missile.Instructions[0][0] = scan;
-        missile.Instructions[0][1] = actOnScan;
-        missile.Instructions[0][2] = find;
-        missile.Instructions[0][3] = turn;
-        missile.Instructions[0][4] = move;
-        missile.Instructions[0][5] = explode;
+
+
+        missile.Instructions[0][0] = actOnAge;
+        missile.Instructions[0][1] = scan;
+        missile.Instructions[0][2] = actOnScan;
+        missile.Instructions[0][3] = find;
+        missile.Instructions[0][4] = turn;
+        missile.Instructions[0][5] = move;
+        missile.Instructions[0][6] = explode;
     }
 
 }

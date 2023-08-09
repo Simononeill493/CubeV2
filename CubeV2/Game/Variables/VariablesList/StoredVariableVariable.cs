@@ -35,15 +35,28 @@ namespace CubeV2
 
         }
 
-        public override bool IVariableEquals(Entity caller, IVariable other)
+        public override int IVariableCompare(Entity caller, Board board, IVariable other)
         {
             var targetVariable = caller.Variables[VariableIndex];
             if(targetVariable!=null)
             {
-                return targetVariable.IVariableEquals(caller, other);
+                return targetVariable.IVariableCompare(caller, board, other);
             }
 
-            return false;
+            return -1;
+        }
+
+        public override bool IsEmpty(Entity caller, Board board)
+        {
+            var targetVariable = caller.Variables[VariableIndex];
+            if (targetVariable != null)
+            {
+                return targetVariable.IsEmpty(caller, board);
+            }
+            else
+            {
+                return true;
+            }
         }
 
     }

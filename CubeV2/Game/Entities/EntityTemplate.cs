@@ -11,6 +11,7 @@ namespace CubeV2
 
         public List<string> DefaultTags = new List<string>();
         public int DefaultMaxEnergy = -1;
+        public int DefaultUpdateRate = 1;
 
         public string DisplaySprite;
 
@@ -25,6 +26,7 @@ namespace CubeV2
         {
             var entity = _createEntity();
             entity.Instructions = this.Instructions;
+            entity.UpdateRate = DefaultUpdateRate;
 
             if (DefaultTags.Any())
             {
@@ -35,6 +37,7 @@ namespace CubeV2
             {
                 entity.MaxEnergy = DefaultMaxEnergy;
             }
+
             else
             {
                 entity.MaxEnergy = Config.GlobalDefaultMaxEnergy;

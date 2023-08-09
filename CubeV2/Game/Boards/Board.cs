@@ -6,6 +6,8 @@ namespace CubeV2
 {
     public class Board
     {
+        public int Clock { get; private set; }
+
         private Dictionary<string, Entity> Entities = new Dictionary<string, Entity>();
         private Dictionary<string, List<Entity>> EntityTypes = new Dictionary<string, List<Entity>>();
         public List<Entity> ActiveEntities = new List<Entity>();
@@ -17,6 +19,8 @@ namespace CubeV2
 
         public Board(int width, int height)
         {
+            Clock = 0;
+
             _width = width;
             _height = height;
 
@@ -55,11 +59,13 @@ namespace CubeV2
             var entities = ActiveEntities.ToList();
             foreach (var entity in entities)
             {
-                if (entity != null && !entity.Doomed)
+                if (entity != null && !entity.Doomed && (Clock % entity.UpdateRate == 0))
                 {
-                    entity.Tick(this,input);
+                    entity.ExecuteInstructions(this,input);
                 }
             }
+
+            Clock++;
         }
 
         public Tile TryGetTile(int index)
@@ -180,7 +186,7 @@ namespace CubeV2
             }
 
             entity.Doomed = true;
-            entity.OnDestroy(this,entityFormerLocation);
+            entity.OnDoom(this,entityFormerLocation);
         }
         public void RemoveEntityFromCurrentTile(Entity entity)
         {
@@ -216,6 +222,7 @@ namespace CubeV2
 
 
             Entities[entity.EntityID] = entity;
+            entity.CreationTime = Clock;
 
             if(!_tryAddEntityToTile(entity, tileToAddTo))
             {

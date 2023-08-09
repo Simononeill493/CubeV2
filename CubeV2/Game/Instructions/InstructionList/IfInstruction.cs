@@ -42,13 +42,63 @@ namespace CubeV2
             switch (Operator)
             {
                 case IOperator.Equals:
-                    if(Variables[0].IVariableEquals(caller,Variables[1]))
+                    if(Variables[0].IVariableCompare(caller, board, Variables[1]) == 0)
                     {
                         caller.SetInstructionCounter(IndexTrue-1);
                     }
                     else
                     {
                         caller.SetInstructionCounter(IndexFalse-1);
+                    }
+                    break;
+                case IOperator.NotEquals:
+                    if (Variables[0].IVariableCompare(caller, board, Variables[1]) == 0)
+                    {
+                        caller.SetInstructionCounter(IndexFalse - 1);
+                    }
+                    else
+                    {
+                        caller.SetInstructionCounter(IndexTrue - 1);
+                    }
+                    break;
+                case IOperator.MoreThan:
+                    if (Variables[0].IVariableCompare(caller, board, Variables[1]) > 0)
+                    {
+                        caller.SetInstructionCounter(IndexTrue - 1);
+                    }
+                    else
+                    {
+                        caller.SetInstructionCounter(IndexFalse - 1);
+                    }
+                    break;
+                case IOperator.LessThan:
+                    if (Variables[0].IVariableCompare(caller, board, Variables[1]) < 0)
+                    {
+                        caller.SetInstructionCounter(IndexTrue - 1);
+                    }
+                    else
+                    {
+                        caller.SetInstructionCounter(IndexFalse - 1);
+                    }
+                    break;
+                case IOperator.IsEmpty:
+                    if (Variables[0].IsEmpty(caller, board))
+                    {
+                        caller.SetInstructionCounter(IndexTrue - 1);
+                    }
+                    else
+                    {
+                        caller.SetInstructionCounter(IndexFalse - 1);
+                    }
+                    break;
+                case IOperator.NotEmpty:
+                    if (Variables[0].IsEmpty(caller, board))
+                    {
+                        caller.SetInstructionCounter(IndexFalse - 1);
+                    }
+                    else
+                    {
+                        caller.SetInstructionCounter(IndexTrue - 1);
                     }
                     break;
             }
@@ -59,6 +109,11 @@ namespace CubeV2
 
     public enum IOperator
     {
-        Equals
+        Equals,
+        NotEquals,
+        MoreThan,
+        LessThan,
+        IsEmpty,
+        NotEmpty
     }
 }

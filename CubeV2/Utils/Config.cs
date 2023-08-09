@@ -20,7 +20,7 @@ namespace CubeV2
         public const bool EnablePlayerRangeOverlay = false;
         public const bool LockCameraMovement = true;
         public const bool LockZoomLevel = false;
-        public const int DefaultZoomLevel = 3;
+        public const int DefaultZoomLevel = 2;
 
 
         public const string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\CircuitMap.txt";//30 14

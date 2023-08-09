@@ -4,9 +4,9 @@
     {
         public ItemDroppingEntity(string templateID, string ID, string sprite) : base(templateID, ID, sprite) { }
 
-        public override void OnDestroy(Board board,Vector2Int formerLocation)
+        public override void OnDoom(Board board,Vector2Int formerLocation)
         {
-            base.OnDestroy(board,formerLocation);
+            base.OnDoom(board,formerLocation);
 
             board.TryAddEntityToBoard(GetDroppedItem(), formerLocation);
         }

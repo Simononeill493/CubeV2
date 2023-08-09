@@ -19,7 +19,7 @@ namespace CubeV2
             _keyboardSapInstruction = new PullEnergyInstruction();
         }
 
-        public override void Tick(Board currentBoard,UserInput input)
+        public override void ExecuteInstructions(Board currentBoard,UserInput input)
         {
             if(GameInterface.PrimaryFocus == PrimaryFocus.Board)
             {
@@ -43,7 +43,7 @@ namespace CubeV2
                 }
             }
 
-            base.Tick(currentBoard, input);
+            base.ExecuteInstructions(currentBoard, input);
 
             //GiveEnergy(1000);
             if(GetCurrentEnergy() < 5)

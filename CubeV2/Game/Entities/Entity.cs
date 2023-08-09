@@ -14,12 +14,15 @@ namespace CubeV2
 
         public string Sprite;
 
+        public int UpdateRate = 1;
+        public int CreationTime;
+
         public int MaxEnergy;
         public int GetCurrentEnergy() => Config.InfiniteEnergy ? MaxEnergy : _currentEnergy;
 
         private int _currentEnergy;
-        public string GetEnergyOverMaxAsText() => GetCurrentEnergy() + "/" + MaxEnergy;
-        public float GetEnergyPercentage() => MaxEnergy == 0 ? 1 : GetCurrentEnergy() / MaxEnergy;
+        public string GetEnergyOverMaxAsText() => Config.InfiniteEnergy ? "INF" : GetCurrentEnergy() + "/" + MaxEnergy;
+        public float GetEnergyPercentage() => (MaxEnergy == 0 || Config.InfiniteEnergy) ? 1 : GetCurrentEnergy() / MaxEnergy;
 
         public Orientation Orientation;
         public Vector2Int Location = Vector2Int.MinusOne;
@@ -51,15 +54,8 @@ namespace CubeV2
             }
         }
 
-        public virtual void Tick(Board currentBoard, UserInput input)
+        public virtual void ExecuteInstructions(Board currentBoard, UserInput input)
         {
-            /*if(!currentBoard.ContainsLocation(Location))
-            {
-                Console.WriteLine("Wtf?");
-            }
-
-            var oldLoc = Location;*/
-
             var trueInstructionCount = 0;
 
             for (InstructionCounter = 0; InstructionCounter < Config.EntityMaxInstructionsPerSet; InstructionCounter++)
@@ -70,7 +66,7 @@ namespace CubeV2
                     _executeInstruction(instruction, currentBoard);
                 }
 
-                if (trueInstructionCount++ >= Config.MaxInstructionJumpsPerTick)
+                if (trueInstructionCount++ >= Config.MaxInstructionJumpsPerTick || Doomed)
                 {
                     break;
                 }
@@ -268,7 +264,10 @@ namespace CubeV2
             board.TryClearThisTile(targetLocation);
         }
 
-        public virtual void OnDestroy(Board board,Vector2Int formerLocation) { }
+        public virtual void OnDoom(Board board,Vector2Int formerLocation) 
+        {
+
+        }
         public virtual bool TryBeCollected(Entity collector) => false;
 
     }

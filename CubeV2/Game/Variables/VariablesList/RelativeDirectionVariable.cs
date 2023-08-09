@@ -35,15 +35,18 @@ namespace CubeV2
             DrawUtils.DrawSprite(spriteBatch, Direction.Sprite(), position, scale, 0,Vector2.Zero, layer);
         }
 
-        public override bool IVariableEquals(Entity caller, IVariable other)
+        public override int IVariableCompare(Entity caller, Board board, IVariable other)
         {
             var otherConverted = other.Convert(caller,null, IVariableType.RelativeDirection);
             if (otherConverted != null)
             {
-                return (RelativeDirection)otherConverted == Direction;
+                return Direction - (RelativeDirection)otherConverted;
             }
-            return false;
+            return -1;
         }
+
+        public override bool IsEmpty(Entity caller, Board board) => false;
+
 
     }
 

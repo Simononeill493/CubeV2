@@ -14,6 +14,8 @@ namespace CubeV2
 
         public abstract void Draw(SpriteBatch spriteBatch, Vector2 position, int scale, float layer);
 
-        public abstract bool IVariableEquals(Entity caller, IVariable other);
+        public abstract int IVariableCompare(Entity caller, Board board, IVariable other);
+
+        public abstract bool IsEmpty(Entity caller, Board board);
     }
 }
