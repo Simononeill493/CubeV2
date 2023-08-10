@@ -74,21 +74,47 @@ namespace CubeV2
                 }
             }
 
-            if (input.MouseLeftJustPressed)
+            if(input.MousePressed)
             {
-                foreach (var element in AllUIElements.GetClickable)
+                var pressableElements = AllUIElements.GetPressableWithMouseOver.ToList();
+
+                if (input.MouseLeftPressed)
                 {
-                    element.TryLeftClick(input);
+                    foreach (var element in pressableElements)
+                    {
+                        element.PressLeft(input);
+                    }
+                }
+                if (input.MouseRightPressed)
+                {
+                    foreach (var element in pressableElements)
+                    {
+                        element.PressRight(input);
+                    }
+                }
+
+                if (input.MouseJustPressed)
+                {
+                    var clickableElements = AllUIElements.GetClickableWithMouseOver.ToList();
+
+                    if (input.MouseLeftJustPressed)
+                    {
+                        foreach (var element in clickableElements)
+                        {
+                            element.LeftClick(input);
+                        }
+                    }
+                    if (input.MouseRightJustPressed)
+                    {
+                        foreach (var element in clickableElements)
+                        {
+                            element.RightClick(input);
+                        }
+                    }
                 }
             }
-            if (input.MouseRightJustPressed)
-            {
-                foreach (var element in AllUIElements.GetClickable)
-                {
-                    element.TryRightClick(input);
-                }
-            }
-            if (input.KeysJustPressed.Any())
+
+            if (input.KeyPressed)
             {
                 foreach (var element in AllUIElements.GetTypeable)
                 {
@@ -134,7 +160,7 @@ namespace CubeV2
             if (focusEntity!=null)
             {
                 var rangeOverlay = AllUIElements.GetUIElement(Config.OperationalRangeOverlayTileName);
-                var offset = ((focusEntity.Location - GameInterface.CameraOffset - (Config.PlayerOperationalRadius)) * GameInterface._cameraTileSizeFloat);
+                var offset = ((focusEntity.Location - GameInterface.CameraOffset - (Config.PlayerRangeLimit)) * GameInterface._cameraTileSizeFloat);
 
                 rangeOverlay.SetOffset(offset);
             }

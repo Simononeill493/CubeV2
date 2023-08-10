@@ -119,12 +119,12 @@ namespace CubeV2
             }
 
             var arrowsDirection = DirectionUtils.GetArrowsDirection(input);
-            if (arrowsDirection.AnyPressed && !Config.LockCameraMovement)
+            if (arrowsDirection.AnyPressed && Config.AllowCameraMovement)
             {
                 CameraOffset += arrowsDirection.Direction.ToVector();
             }
 
-            if(!Config.LockZoomLevel)
+            if(Config.AllowCameraZoom)
             {
                 if (input.IsKeyJustReleased(Keys.OemPlus) | input.IsButtonJustReleased(Buttons.RightShoulder))
                 {

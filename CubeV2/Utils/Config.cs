@@ -16,10 +16,13 @@ namespace CubeV2
 
 
         public const bool EnableFogOfWar = false;
-        public const bool EnableRangeLimits = false;
-        public const bool EnablePlayerRangeOverlay = false;
-        public const bool LockCameraMovement = true;
-        public const bool LockZoomLevel = false;
+
+        public const bool EnableRangeLimits = true;
+        public const bool EnablePlayerRangeOverlay = true;
+        public const int PlayerRangeLimit = 5;
+
+        public const bool AllowCameraMovement = true;
+        public const bool AllowCameraZoom = true;
         public const int DefaultZoomLevel = 2;
 
 
@@ -34,7 +37,6 @@ namespace CubeV2
 
         public const int ManualPlayerMaxEnergy = 200;
         public const int ManualPlayerStartingEnergy = 50;
-        public const int PlayerOperationalRadius = 3;
         public const int PlayerVisualRadius = 7;
         public static Color PlayerFogColor = new Color(50, 50, 50);
 

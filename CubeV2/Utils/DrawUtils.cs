@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -14,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Formats.Asn1.AsnWriter;
 using Color = Microsoft.Xna.Framework.Color;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
 
 namespace CubeV2
 {
@@ -80,6 +82,10 @@ namespace CubeV2
         public const float GameLayer3 = 0.27f;
         public const float GameLayer4 = 0.26f;
         public const float GameLayer5 = 0.25f;
+        public const float GameLayer6 = 0.24f;
+        public const float GameLayer7 = 0.23f;
+        public const float GameLayer8 = 0.22f;
+        public const float GameLayer9 = 0.21f;
 
         public const float UILayer1 = 0.19f;
         public const float UILayer2 = 0.18f;
@@ -182,15 +188,34 @@ namespace CubeV2
 
         public static void DrawRect(SpriteBatch spriteBatch,Vector2 position,Vector2 size,Color color,float layer)
         {
-            spriteBatch.Draw(DefaultTexture, new Microsoft.Xna.Framework.Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y), null, color, 0, Vector2.Zero, SpriteEffects.None, layer);
+            spriteBatch.Draw(DefaultTexture, new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y), null, color, 0, Vector2.Zero, SpriteEffects.None, layer);
         }
 
+        public static void DrawLine(SpriteBatch spriteBatch, Vector2 start, Vector2 end, int thickness, Color color, float layer)
+        {
+            Vector2 edge = end - start;
+            float angle = (float)Math.Atan2(edge.Y, edge.X);
+
+            spriteBatch.Draw(DefaultTexture, new Rectangle((int)start.X, (int)start.Y, (int)edge.Length(), thickness), null, color, angle, new Vector2(0, 0), SpriteEffects.None, 0);
+        }
 
         public static void DrawTileSprite(SpriteBatch spriteBatch, string sprite, Orientation orientation, Vector2 position, float scale, float layer, SpriteEffects flips)
         {
             (float rotation, Vector2 rotationOffset) = _getRotationDataForOrientation(orientation);
             DrawSprite(spriteBatch, sprite, position + rotationOffset, scale, rotation, Vector2.Zero, layer,flips);
         }
+
+        internal static void DrawHarvestMeter(SpriteBatch spriteBatch, float percentage, Vector2 position, int cameraScale, float spriteMeterLayer, float spriteMeterLayer2)
+        {
+            var widthMeter = percentage * Config.TileBaseSize.X * cameraScale;
+            var widthBox = Config.TileBaseSize.X * cameraScale;
+
+            var height = (Config.TileBaseSize.Y) / 4 * cameraScale;
+
+            DrawRect(spriteBatch, position, new Vector2(widthBox, height), Color.Black,spriteMeterLayer);
+            DrawRect(spriteBatch, position, new Vector2(widthMeter, height), Color.Red, spriteMeterLayer2);
+        }
+
 
         private static (float rotation,Vector2 rotationOffset) _getRotationDataForOrientation(Orientation orientation)
         {
@@ -243,6 +268,7 @@ namespace CubeV2
         }
 
         public static string Sprite(this RelativeDirection dir) => _directionSpriteLookup[dir];
+
     }
 
     public class MyGif

@@ -31,7 +31,12 @@ namespace CubeV2
         }
 
 
-        public static IEnumerable<UIElement> GetClickable => _uIElements.Values.Where(u => u.Clickable && u.Enabled);
+        public static IEnumerable<UIElement> GetClickable => _uIElements.Values.Where(u => u.HasMouseClickEvent && u.Enabled);
+        public static IEnumerable<UIElement> GetClickableWithMouseOver => _uIElements.Values.Where(u => u.HasMouseClickEvent && u.Enabled && u.MouseOver);
+
+        public static IEnumerable<UIElement> GetPressable => _uIElements.Values.Where(u => u.HasMousePressEvent && u.Enabled);
+        public static IEnumerable<UIElement> GetPressableWithMouseOver => _uIElements.Values.Where(u => u.HasMousePressEvent && u.Enabled && u.MouseOver);
+
         public static IEnumerable<UIElement> GetTypeable => _uIElements.Values.Where(u => u.Typeable && u.Enabled);
         public static IEnumerable<UIElement> GetMouseInteractionElements => _uIElements.Values;
 

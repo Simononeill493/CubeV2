@@ -9,29 +9,53 @@ namespace CubeV2
 {
     public partial class GameInterface
     {
-        public static void LeftClickBoard(int uiIndex)
+        public static void TryLeftClickTile(int uiIndex)
         {
             (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
             if (tile != null)
             {
-                CurrentLeftClickAction(tile, location, actualIndex);
+                LeftClickTile(tile, location, actualIndex);
             }
         }
 
-        public static void RightClickBoard(int uiIndex)
+        public static void TryRightClickTile(int uiIndex)
         {
             (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
             if (tile != null)
             {
-                CurrentRightClickAction(tile, location, actualIndex);
+                RightClickTile(tile, location, actualIndex);
             }
         }
+
+        public static void TryLeftPressTile(int uiIndex)
+        {
+            (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
+            if (tile != null)
+            {
+                LeftPressTile(tile, location, actualIndex);
+            }
+        }
+
+        public static void TryRightPressTile(int uiIndex)
+        {
+            (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
+            if (tile != null)
+            {
+                RightPressTile(tile, location, actualIndex);
+            }
+        }
+
+
 
         private static void _processMouseActions(UserInput input)
         {
             if (input.ScrollDifference!=0)
             {
                 ScrollWheelTurned(input.ScrollDirection);
+            }
+            if(input.MouseLeftJustReleased)
+            {
+                MouseLeftReleased();
             }
         }
 
@@ -48,10 +72,11 @@ namespace CubeV2
 
         }
 
-        public static void CurrentLeftClickAction(Tile tile, Vector2Int tileLocation,int actualIndex)
+
+        public static void LeftClickTile(Tile tile, Vector2Int tileLocation,int actualIndex)
         {
             var distance = _game.FocusEntity.Location.EuclideanDistance(tileLocation);
-            if (!Config.EnableRangeLimits || distance <= Config.PlayerOperationalRadius)
+            if (!Config.EnableRangeLimits || distance <= Config.PlayerRangeLimit)
             {
                 switch (SelectedPlayerAction)
                 {
@@ -77,10 +102,37 @@ namespace CubeV2
             }
         }
 
-        public static void CurrentRightClickAction(Tile tile, Vector2Int tileLocation, int actualIndex)
+
+        public static void LeftPressTile(Tile tile, Vector2Int tileLocation, int actualIndex)
+        {
+            if (tile.Contents != null && (!Config.EnableRangeLimits || _game.FocusEntity.Location.EuclideanDistance(tileLocation) <= Config.PlayerRangeLimit))
+            {
+                if (tile.Contents.TryLeftPress())
+                {
+                    AnimationTracker.LaserActive = true;
+                    AnimationTracker.LaserDirection = (_game.FocusEntity.Location - CameraOffset, tileLocation - CameraOffset);
+                    return;
+                }
+            }
+
+            AnimationTracker.LaserActive = false;
+        }
+
+        public static void MouseLeftReleased()
+        {
+            AnimationTracker.LaserActive = false;
+        }
+
+        public static void RightPressTile(Tile tile, Vector2Int tileLocation, int actualIndex)
+        {
+
+        }
+
+
+        public static void RightClickTile(Tile tile, Vector2Int tileLocation, int actualIndex)
         {
             var distance = _game.FocusEntity.Location.EuclideanDistance(tileLocation);
-            if (!Config.EnableRangeLimits || distance <= Config.PlayerOperationalRadius)
+            if (!Config.EnableRangeLimits || distance <= Config.PlayerRangeLimit)
             {
                 _manualDestroyEntity(tileLocation);
             }

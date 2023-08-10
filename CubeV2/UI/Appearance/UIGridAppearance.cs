@@ -8,11 +8,17 @@ using System.Threading.Tasks;
 
 namespace CubeV2
 {
-    public class NoAppearance : Appearance
+    public class UIGridAppearance : Appearance
     {
-        public override Vector2 Size => Vector2.Zero;
+        public override Vector2 Size => _currentSize;
 
-        public NoAppearance() : base(0)
+        private Vector2 _currentSize = Vector2.Zero;
+        public void SetSizeFromGridItems(Vector2 newSize)
+        {
+            _currentSize = newSize;
+        }
+
+        public UIGridAppearance() : base(0)
         {
 
         }

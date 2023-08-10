@@ -16,10 +16,14 @@ namespace CubeV2
         public int MouseX;
         public int MouseY;
 
+        public bool MousePressed;
+        public bool MouseJustPressed;
+        public bool MouseJustReleased;
+        public bool MouseMoved;
+
         public bool MouseLeftPressed;
         public bool MouseRightPressed;
         public bool MouseMiddlePressed;
-        public bool MouseMoved;
 
         public bool MouseLeftReleased;
         public bool MouseRightReleased;
@@ -46,6 +50,7 @@ namespace CubeV2
             MouseLeftPressed = MouseState.LeftButton == ButtonState.Pressed;
             MouseRightPressed = MouseState.RightButton == ButtonState.Pressed;
             MouseMiddlePressed = MouseState.MiddleButton == ButtonState.Pressed;
+            MousePressed = MouseLeftPressed | MouseRightPressed | MouseMiddlePressed;
 
             MouseLeftReleased = MouseState.LeftButton == ButtonState.Released;
             MouseRightReleased = MouseState.RightButton == ButtonState.Released;
@@ -54,10 +59,12 @@ namespace CubeV2
             MouseLeftJustPressed = MouseLeftPressed & (oldMouseState.LeftButton == ButtonState.Released);
             MouseRightJustPressed = MouseRightPressed & (oldMouseState.RightButton == ButtonState.Released);
             MouseMiddleJustPressed = MouseMiddlePressed & (oldMouseState.MiddleButton == ButtonState.Released);
+            MouseJustPressed = MouseLeftJustPressed | MouseRightJustPressed | MouseMiddleJustPressed;
 
             MouseLeftJustReleased = MouseLeftReleased & (oldMouseState.LeftButton == ButtonState.Pressed);
             MouseRightJustReleased = MouseRightReleased & (oldMouseState.RightButton == ButtonState.Pressed);
             MouseMiddleJustReleased = MouseMiddleReleased & (oldMouseState.MiddleButton == ButtonState.Pressed);
+            MouseJustReleased = MouseLeftJustReleased | MouseMiddleJustReleased | MouseRightJustReleased;
 
             MouseMoved = (MouseX != oldMouseState.X) || (MouseY != oldMouseState.Y);
 

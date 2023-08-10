@@ -76,10 +76,12 @@ namespace CubeV2
             _masterList[PortalName].DefaultMaxEnergy = 100;
 
             _masterList[CraftingTableName] = new EntityTemplate(CraftingTableName) { DisplaySprite = DrawUtils.CraftingTableSprite };
-            _masterList[PickaxeFlowerName] = new EntityTemplate(PickaxeFlowerName) { DisplaySprite = DrawUtils.PickaxeFlowerSprite };
+
+            _masterList[PickaxeFlowerName] = new HarvestableEntityTemplate(PickaxeFlowerName, 30) { DisplaySprite = DrawUtils.PickaxeFlowerSprite };
+            _masterList[LaserFlowerName] = new HarvestableEntityTemplate(LaserFlowerName,100) { DisplaySprite = DrawUtils.WeaponFlowerSprite };
+
             _masterList[RespawnerName] = new EntityTemplate(RespawnerName) { DisplaySprite = DrawUtils.RespawnerSprite };
             _masterList[StoneWallName] = new EntityTemplate(StoneWallName) { DisplaySprite = DrawUtils.StoneWallSprite };
-            _masterList[LaserFlowerName] = new EntityTemplate(LaserFlowerName) { DisplaySprite = DrawUtils.WeaponFlowerSprite};
 
             _masterList[MissileName] = new EntityTemplate(MissileName) { DisplaySprite = DrawUtils.MissileSprite };
             _masterList[TurretName] = new EntityTemplate(TurretName) { DisplaySprite = DrawUtils.TurretSprite };

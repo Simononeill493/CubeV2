@@ -10,6 +10,8 @@ namespace CubeV2
     public partial class UserInput
     {
         public KeyboardState KeyboardState;
+
+        public bool KeyPressed => KeysJustPressed.Any();
         public List<Keys> KeysJustPressed;
         public List<Keys> KeysJustReleased;
         public string CharactersPressed = "";

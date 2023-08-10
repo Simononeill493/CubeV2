@@ -6,7 +6,7 @@ namespace CubeV2
     {
         public class OperationalRangeOverlayAppearance : RectangleAppearance
         {
-            public override Vector2 Size => GameInterface._cameraTileSizeFloat * ((Config.PlayerOperationalRadius * 2 + 1));
+            public override Vector2 Size => GameInterface._cameraTileSizeFloat * ((Config.PlayerRangeLimit * 2 + 1));
             public OperationalRangeOverlayAppearance(Color color, float layer) : base(0, 0, color, layer) { }
         }
 

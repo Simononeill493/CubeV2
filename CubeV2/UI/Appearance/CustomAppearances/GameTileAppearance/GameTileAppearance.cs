@@ -14,9 +14,15 @@ namespace CubeV2
     public class GameTileAppearance : TileAppearance
     {
         private float _spriteLayer;
-        public GameTileAppearance(int gridIndex,float groundLayer,float spriteLayer) : base(gridIndex, groundLayer) 
+        private float _spriteMeterLayer;
+        private float _spriteMeterLayer2;
+
+        public GameTileAppearance(int gridIndex,float groundLayer,float spriteLayer,float spriteMeterLayer,float spriteMeterLayer2) : base(gridIndex, groundLayer) 
         {
             _spriteLayer = spriteLayer;
+            _spriteMeterLayer = spriteMeterLayer;
+            _spriteMeterLayer2 = spriteMeterLayer2;
+
         }
 
         public override Vector2 Size => GameInterface._cameraTileSizeFloat;
@@ -29,21 +35,30 @@ namespace CubeV2
             {
                 if(tile.Seen)
                 {
+                    //Tile background
                     DrawUtils.DrawTileSprite(spriteBatch, tile.Sprite, tile.Orientation,position, GameInterface.CameraScale, Layer, tile.Flips);
+                    
                     if (tile.Contents != null)
                     {
+                        //Entity in tile
                         DrawUtils.DrawTileSprite(spriteBatch, tile.Contents.Sprite,tile.Contents.Orientation, position, GameInterface.CameraScale, _spriteLayer, SpriteEffects.None);
+                        if(tile.Contents.ShowHarvestMeter)
+                        {
+                            DrawUtils.DrawHarvestMeter(spriteBatch, tile.Contents.GetHarvestPercentage(), position, GameInterface.CameraScale, _spriteMeterLayer,_spriteMeterLayer2);
+                        }
                     }
                 }
                 else
                 {
+                    //Covered by fog of war
                     DrawUtils.DrawRect(spriteBatch, position,GameInterface._cameraTileSizeFloat, Config.PlayerFogColor, Layer);
                 }
             }
             else
             {
+                //Tile doesn't exist
                 DrawUtils.DrawRect(spriteBatch, position, GameInterface._cameraTileSizeFloat, Color.Black, Layer);
-                }
+            }
         }
     }
 }

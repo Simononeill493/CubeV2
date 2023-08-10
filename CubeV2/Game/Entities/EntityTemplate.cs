@@ -87,6 +87,21 @@ namespace CubeV2
         }
     }
 
+    public class HarvestableEntityTemplate : EntityTemplate
+    {
+        public int HarvestCount; 
+        public HarvestableEntityTemplate(string id,int harvestCount) : base(id) 
+        {
+            HarvestCount = harvestCount;
+        }
+
+        protected override Entity _createEntity()
+        {
+            return new HarvestableEntity(TemplateID, _sessionEntityCount++.ToString(), DisplaySprite,HarvestCount);
+        }
+    }
+
+
 
     public class RockTemplate : EntityTemplate
     {

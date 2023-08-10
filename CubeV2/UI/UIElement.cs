@@ -12,16 +12,14 @@ namespace CubeV2
     {
         public string ID { get; }
 
-        public Appearance Appearance { get; private set; } = Appearance.NoAppearance;
-        public void SetManualSize(Vector2 size)
-        {
-            ((NoAppearance)Appearance).SetManualSize(size);
-        }
+        public Appearance Appearance { get; protected set; } = Appearance.NoAppearance;
 
-        public bool Clickable { get; private set; } = false;
+        public bool HasMouseClickEvent { get; private set; } = false;
+        public bool HasMousePressEvent { get; private set; } = false;
+
         public bool Typeable { get; private set; } = false;
 
-        public bool Enabled => !_alwaysDisabled && (_alwaysEnabled || _checkEnabledConditions());
+        public bool Enabled => !_forceDisable && (_alwaysEnabled || _checkEnabledConditions());
         private bool _checkEnabledConditions()
         {
             foreach (var condition in _enabledConditions)
@@ -42,6 +40,10 @@ namespace CubeV2
 
 
         private event Action<UserInput> _onKeyPressed;
+
+        private event Action<UserInput> _onLeftMousePressed;
+        private event Action<UserInput> _onRightMousePressed;
+
         private event Action<UserInput> _onLeftClick;
         private event Action<UserInput> _onRightClick;
 
@@ -49,14 +51,26 @@ namespace CubeV2
 
         public void AddLeftClickAction(Action<UserInput> action)
         {
-            Clickable = true;
+            HasMouseClickEvent = true;
             _onLeftClick += action;
         }
         public void AddRightClickAction(Action<UserInput> action)
         {
-            Clickable = true;
+            HasMouseClickEvent = true;
             _onRightClick += action;
         }
+
+        public void AddLeftMousePressedAction(Action<UserInput> action)
+        {
+            HasMousePressEvent = true;
+            _onLeftMousePressed += action;
+        }
+        public void AddRightMousePressedAction(Action<UserInput> action)
+        {
+            HasMousePressEvent = true;
+            _onRightMousePressed += action;
+        }
+
         public void AddKeyPressedAction(Action<UserInput> action)
         {
             Typeable = true;
@@ -65,27 +79,28 @@ namespace CubeV2
 
         
         
-        public void TryLeftClick(UserInput input)
+        public void LeftClick(UserInput input)
         {
             /*if(input.MousePos.X >= 500 && _position.X >= 500 && _position.Y <= 50)
             {
                 Console.WriteLine("Mouse is over grid.");
             }*/
 
-
-            if (MouseOver)
-            {
-  //              Console.WriteLine("Mouse is over");
-                _onLeftClick?.Invoke(input);
-            }
+            _onLeftClick?.Invoke(input);            
         }
-        public void TryRightClick(UserInput input)
+        public void RightClick(UserInput input)
         {
-            if (MouseOver)
-            {
-                _onRightClick?.Invoke(input);
-            }
+            _onRightClick?.Invoke(input);
         }
+        public void PressLeft(UserInput input)
+        {
+            _onLeftMousePressed?.Invoke(input);
+        }
+        public void PressRight(UserInput input)
+        {
+            _onRightMousePressed?.Invoke(input);
+        }
+
         public void SendKeys(UserInput input)
         {
             _onKeyPressed?.Invoke(input);
@@ -93,7 +108,7 @@ namespace CubeV2
 
         public List<Func<bool>> _enabledConditions = new List<Func<bool>>();
         private bool _alwaysEnabled = true;
-        public bool _alwaysDisabled = false;
+        public bool _forceDisable = false;
 
         public void AddEnabledConditions(List<Func<bool>> conditions)
         {
@@ -184,8 +199,7 @@ namespace CubeV2
             {
                 var size = Appearance.Size;
                 MouseOver = new Rectangle((int)_position.X, (int)_position.Y, (int)size.X, (int)size.Y).Contains(mousePos);
-
-
+    
                 return;
             }
 

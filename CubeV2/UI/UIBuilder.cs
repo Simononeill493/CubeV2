@@ -25,7 +25,7 @@ namespace CubeV2
             gameBoard.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Board);
 
             var cursorOverlayTile = new UIElement(Config.CursorOverlayTileName);
-            cursorOverlayTile.AddAppearance(new CursorOverlayAppearance(Color.White * 0.5f, DrawUtils.GameLayer4));
+            cursorOverlayTile.AddAppearance(new CursorOverlayAppearance(Color.White * 0.5f, DrawUtils.GameLayer7));
 
             cursorOverlayTile.AddEnabledCondition(() => AllUIElements.GetUIElement(Config.GameGridName).MouseOver);
             gameBoard.AddChildren(cursorOverlayTile);
@@ -33,7 +33,7 @@ namespace CubeV2
             if (Config.EnablePlayerRangeOverlay)
             {
                 var operationalRangeOverlayTile = new UIElement(Config.OperationalRangeOverlayTileName);
-                operationalRangeOverlayTile.AddAppearance(new OperationalRangeOverlayAppearance(Color.White * 0.05f, DrawUtils.GameLayer5));
+                operationalRangeOverlayTile.AddAppearance(new OperationalRangeOverlayAppearance(Color.White * 0.05f, DrawUtils.GameLayer6));
                 operationalRangeOverlayTile.AddEnabledCondition(() => GameInterface._game.FocusEntity != null);
                 gameBoard.AddChildren(operationalRangeOverlayTile);
             }
@@ -157,15 +157,11 @@ namespace CubeV2
 
         private static UIGrid _makeGameBoard()
         {
-            var appearanceFactory = new GameTileAppearanceFactory(DrawUtils.GameLayer1, DrawUtils.GameLayer2);
+            var appearanceFactory = new GameTileAppearanceFactory(DrawUtils.GameLayer1, DrawUtils.GameLayer2,DrawUtils.GameLayer4,DrawUtils.GameLayer5);
 
-            var gameGrid = new UIGrid(Config.GameGridName,Config.GameUIGridMaxGridWidth,Config.GameUIGridMaxGridHeight, appearanceFactory);
+            var gameGrid = new UIGameGrid(Config.GameGridName,Config.GameUIGridMaxGridWidth,Config.GameUIGridMaxGridHeight, appearanceFactory);
             //gameGrid.Arrange(Config.GameUIGridDefaultWidth, Config.GameUIGridDefaultHeight, (int)gameTileSize.X, (int)gameTileSize.Y, Config.GameUIGridPadding);
             //gameGrid.Arrange(GameInterface.CameraSize.X, GameInterface.CameraSize.Y, (int)gameTileSize.X*2, (int)gameTileSize.Y*2, Config.GameUIGridPadding);
-
-            //gameGrid.TileLeftClicked += (i, index) => Pause();
-            gameGrid.TileLeftClicked += (i, index) => GameInterface.LeftClickBoard(index);
-            gameGrid.TileRightClicked += (i, index) => GameInterface.RightClickBoard(index);
 
             return gameGrid;
         }

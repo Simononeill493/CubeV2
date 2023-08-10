@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
@@ -23,6 +24,11 @@ namespace CubeV2
         private int _currentEnergy;
         public string GetEnergyOverMaxAsText() => Config.InfiniteEnergy ? "INF" : GetCurrentEnergy() + "/" + MaxEnergy;
         public float GetEnergyPercentage() => (MaxEnergy == 0 || Config.InfiniteEnergy) ? 1 : GetCurrentEnergy() / MaxEnergy;
+
+        public bool ShowHarvestMeter = false;
+        protected int _maxHarvestCount;
+        protected int _currentHarvestCount;
+        public float GetHarvestPercentage() => (_maxHarvestCount == 0 ) ? 1 : (((float)_currentHarvestCount) / _maxHarvestCount);
 
         public Orientation Orientation;
         public Vector2Int Location = Vector2Int.MinusOne;
@@ -264,11 +270,8 @@ namespace CubeV2
             board.TryClearThisTile(targetLocation);
         }
 
-        public virtual void OnDoom(Board board,Vector2Int formerLocation) 
-        {
-
-        }
+        public virtual void OnDoom(Board board,Vector2Int formerLocation) {}
         public virtual bool TryBeCollected(Entity collector) => false;
-
+        public virtual bool TryLeftPress() => false;
     }
 }

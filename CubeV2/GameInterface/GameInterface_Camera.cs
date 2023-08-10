@@ -60,7 +60,7 @@ namespace CubeV2
 
         public static void SetCameraOffset(Vector2Int offset)
         {
-            if (!Config.LockCameraMovement)
+            if (Config.AllowCameraMovement)
             {
                 CameraOffset = offset;
             }
@@ -100,6 +100,5 @@ namespace CubeV2
 
             }
         }
-
     }
 }
