@@ -45,11 +45,11 @@ namespace CubeV2
         {
             var goButton = UIElementMaker.MakeRectangle(Config.GoButtonName, Config.GameControlButtonSize, Config.GoButtonOffset, Color.Lime, DrawUtils.UILayer2);
             goButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Go"));
-            goButton.AddLeftClickAction((i) => GameInterface.StartBoard(Config.DemoBoardUpdateRate));
+            goButton.AddLeftClickAction((i) => GameInterface.StartBoard(Config.BoardMasterUpdateRate));
 
             var resetButton = UIElementMaker.MakeRectangle(Config.ResetButtonName, Config.GameControlButtonSize, Config.ResetButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
             resetButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Reset"));
-            resetButton.AddLeftClickAction((i) => { GameInterface.ResetBoard(); GameInterface.StartBoard(Config.DemoBoardUpdateRate); });
+            resetButton.AddLeftClickAction((i) => { GameInterface.ResetBoard(); GameInterface.StartBoard(Config.BoardMasterUpdateRate); });
 
             var rerollButton = UIElementMaker.MakeRectangle(Config.RerollButtonName, Config.GameControlButtonSize, Config.RerollButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
             rerollButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Reroll"));

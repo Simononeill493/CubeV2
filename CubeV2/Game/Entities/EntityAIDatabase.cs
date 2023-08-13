@@ -12,6 +12,8 @@ internal class EntityAIDatabase
     public static void Load()
     {
         EntityDatabase.Get(EntityDatabase.ManualPlayerName).MakeInstructable();
+        EntityDatabase.Get(EntityDatabase.ManualPlayerName).DefaultUpdateRate = 1;
+
         EntityDatabase.Get(EntityDatabase.AutoPlayerName).MakeInstructable();
 
         EntityDatabase.Get(EntityDatabase.Ally1Name).MakeInstructable();
@@ -36,7 +38,7 @@ internal class EntityAIDatabase
 
     private static void TurretSetAI(EntityTemplate turret)
     {
-        turret.DefaultUpdateRate = 20;
+        turret.DefaultUpdateRate = 60;
 
         var find = new PingRangeInstruction(EntityDatabase.Get(EntityDatabase.ManualPlayerName), 8);
         find.OutputTargetVariables[0] = 0;
@@ -53,7 +55,7 @@ internal class EntityAIDatabase
 
     private static void MissileSetAI(EntityTemplate missile)
     {
-        missile.DefaultUpdateRate = 2;
+        missile.DefaultUpdateRate = 4;
 
         var actOnAge = new IfInstruction(new AgeVariable(), new IntegerVariable(16));
         actOnAge.Operator = IOperator.MoreThan;

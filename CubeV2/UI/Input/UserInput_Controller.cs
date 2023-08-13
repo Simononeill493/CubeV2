@@ -41,8 +41,6 @@ namespace CubeV2
                     ButtonsJustReleased.Add(button);
                 }
             }
-
-            Console.WriteLine(string.Join(' ', currentlyPressed));
         }
 
         public bool IsButtonDown(Buttons button) => ControllerState.IsButtonDown(button);

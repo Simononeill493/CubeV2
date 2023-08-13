@@ -33,6 +33,7 @@ namespace CubeV2
         public Orientation Orientation;
         public Vector2Int Location = Vector2Int.MinusOne;
 
+        public bool IsActive => Instructions?[0] != null;
         public List<Instruction[]> Instructions = new List<Instruction[]>();
         public int CurrentInstructionSet = 0;
         public int InstructionCounter;
@@ -173,8 +174,14 @@ namespace CubeV2
 
         public bool TryMove(Board board,CardinalDirection direction)
         {
-            var newLocation = Location + direction.ToVector();
+            var approachVector = direction.ToVector();
+            var newLocation = Location + approachVector;
+
             var didMoveWork = board.TryMoveEntity(this, newLocation);
+            if(didMoveWork)
+            {
+                AnimationTracker.AddEntityMovement(EntityID, UpdateRate, approachVector);
+            }
 
             /* Code to 'flow' around blocks when moving diagonaally.
              * Causes unintuitive behaviour when programming blocks, but we can go back to it later.

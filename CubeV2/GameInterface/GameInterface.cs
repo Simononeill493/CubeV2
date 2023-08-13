@@ -40,7 +40,7 @@ namespace CubeV2
             _focusedTemplate = EntityDatabase.Get(EntityDatabase.Ally2Name);
 
             _game = new BoardTest1Game(demoPlayer);
-            StartBoard(Config.BoardTest1UpdateRate);
+            StartBoard(Config.BoardMasterUpdateRate);
         }
 
         public static void InitializeFortressTutorial()
@@ -49,13 +49,13 @@ namespace CubeV2
             _focusedTemplate = EntityDatabase.Get(EntityDatabase.Ally2Name);
 
             _game = new FortressTurorialGame(demoPlayer);
-            StartBoard(Config.BoardTest1UpdateRate);
+            StartBoard(Config.BoardMasterUpdateRate);
         }
 
 
 
 
-        public static void ManualSetNewBoard(Board b) => _game.SetNewBoard(b);
+        public static void ManualSetNewBoard(Board b) => _game.SetBoard(b);
         public static void ManualUnsetBoard() => _game.UnsetBoard();
 
         public static void RerollBoard()

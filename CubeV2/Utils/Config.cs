@@ -11,6 +11,9 @@ namespace CubeV2
 {
     internal class Config
     {
+        public static TimeSpan BoardMasterUpdateRate = TimeSpan.FromSeconds(0.075);
+
+
         public const bool KnowAllInstructionsByDefault = true;
         public const bool InfiniteEnergy = true;
 
@@ -48,8 +51,6 @@ namespace CubeV2
         public const int BaseCreateCost = 100;//20
         public const int BasePingCost = 500;//20
 
-        public static TimeSpan DemoBoardUpdateRate = TimeSpan.FromSeconds(0.1);
-        public static TimeSpan BoardTest1UpdateRate = TimeSpan.FromSeconds(0.075);
 
         //public const int GameGridWidth = 10;
         //public const int GameGridHeight = 10;

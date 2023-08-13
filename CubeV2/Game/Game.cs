@@ -26,8 +26,10 @@ namespace CubeV2
         public void SetFocusEntity(Entity p) => FocusEntity = p;
         public void ClearFocusEntity() => FocusEntity = null;
 
-        public void SetNewBoard(Board b) 
+        public void SetBoard(Board b) 
         {
+            AnimationTracker.Reset();
+
             CurrentBoard = b;
             SetFocusEntity(CurrentBoard.GetActiveEntityByTag(Config.PlayerTag).FirstOrDefault());
             CustomSetUpBoard(b);
@@ -39,8 +41,11 @@ namespace CubeV2
             ClearFocusEntity();
         }
 
-        public void ResetBoard() => SetNewBoard(CurrentTemplate.GenerateBoard());
-        public void TickBoard(UserInput input) => CurrentBoard.Tick(input);
+        public void ResetBoard() => SetBoard(CurrentTemplate.GenerateBoard());
+        public void TickBoard(UserInput input)
+        {
+            CurrentBoard.Tick(input);
+        }
 
         public void SetTemplateTemplate(BoardTemplateTemplate templateTemplate) => CurrentTemplateTemplate = templateTemplate;
         public void ResetBoardTemplate() => CurrentTemplate = CurrentTemplateTemplate.GenerateTemplate();

@@ -180,7 +180,7 @@ namespace CubeV2
             Entities.Remove(entity.EntityID);
             _removeFromEntityTypesDict(entity);
 
-            if (entity.Instructions != null)
+            if (entity.IsActive)
             {
                 _removeEntityFromActiveList(entity);
             }
@@ -231,7 +231,7 @@ namespace CubeV2
 
             _addToEntityTypesDict(entity);
 
-            if(entity.Instructions != null && entity.Instructions[0] !=null)
+            if(entity.IsActive)
             {
                 _addEntityToActiveList(entity);
             }

@@ -63,7 +63,6 @@ namespace CubeV2
         {
             var input = new UserInput(Mouse.GetState(), _previousInput.MouseState, Keyboard.GetState(), _previousInput.KeyboardState, GamePad.GetState(0),_previousInput.ControllerState);
 
-            //Console.WriteLine(input.MousePos);
             _universalKeybindings(input);
 
             if (input.MouseMoved)
@@ -177,7 +176,9 @@ namespace CubeV2
 
         protected override void Draw(GameTime gameTime)
         {
-            if(DoDraw)
+            AnimationTracker.TickEntityMovement(gameTime.ElapsedGameTime);
+
+            if (DoDraw)
             {
                 GraphicsDevice.Clear(Config.PrimaryBackgroundColor);
 

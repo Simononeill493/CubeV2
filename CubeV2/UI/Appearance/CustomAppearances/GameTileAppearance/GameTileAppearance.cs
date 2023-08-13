@@ -40,12 +40,7 @@ namespace CubeV2
                     
                     if (tile.Contents != null)
                     {
-                        //Entity in tile
-                        DrawUtils.DrawTileSprite(spriteBatch, tile.Contents.Sprite,tile.Contents.Orientation, position, GameInterface.CameraScale, _spriteLayer, SpriteEffects.None);
-                        if(tile.Contents.ShowHarvestMeter)
-                        {
-                            DrawUtils.DrawHarvestMeter(spriteBatch, tile.Contents.GetHarvestPercentage(), position, GameInterface.CameraScale, _spriteMeterLayer,_spriteMeterLayer2);
-                        }
+                        _drawEntity(spriteBatch, position, tile.Contents);
                     }
                 }
                 else
@@ -58,6 +53,23 @@ namespace CubeV2
             {
                 //Tile doesn't exist
                 DrawUtils.DrawRect(spriteBatch, position, GameInterface._cameraTileSizeFloat, Color.Black, Layer);
+            }
+        }
+
+        private void _drawEntity(SpriteBatch spriteBatch, Vector2 position,Entity entity)
+        {
+            if (entity.IsActive && AnimationTracker.IsMoving(entity))
+            {
+                position -= (AnimationTracker.GetMovementOffsetUnscaled(entity) * GameInterface.CameraScale);
+            }
+
+            //Entity
+            DrawUtils.DrawTileSprite(spriteBatch, entity.Sprite, entity.Orientation, position, GameInterface.CameraScale, _spriteLayer, SpriteEffects.None);
+            
+            if (entity.ShowHarvestMeter)
+            {
+                //Harvest meter
+                DrawUtils.DrawHarvestMeter(spriteBatch, entity.GetHarvestPercentage(), position, GameInterface.CameraScale, _spriteMeterLayer, _spriteMeterLayer2);
             }
         }
     }

@@ -58,9 +58,7 @@ namespace CubeV2
             _tileSizePadded = new Vector2Int(_tileWidth+_padding, _tileHeight+_padding);
             _tileSizeTopOffset = new Vector2Int(_tileWidth / 2, 0);
             _tileSizeCenterOffset = _tileSize / 2;
-
         }
-
     }
 
     public static class AnimationTracker
@@ -68,5 +66,65 @@ namespace CubeV2
         public static bool LaserActive;
         public static (Vector2Int, Vector2Int) LaserDirection;
 
+        public static Dictionary<string, MovementCounter> EntityMovementTracker;
+
+        public static void Reset()
+        {
+            LaserActive = false;
+            LaserDirection = (Vector2Int.Zero, Vector2Int.Zero);
+
+            EntityMovementTracker = new Dictionary<string, MovementCounter>();
+        }
+
+        public static void AddEntityMovement(string id,int updateRate,Vector2Int approachVector)
+        {
+            EntityMovementTracker[id] = new MovementCounter(approachVector, updateRate * Config.BoardMasterUpdateRate);
+        }
+
+        public static bool IsMoving(Entity e) => EntityMovementTracker.ContainsKey(e.EntityID);
+
+        public static Vector2 GetMovementOffsetUnscaled(Entity entity)
+        {
+            var movementData = EntityMovementTracker[entity.EntityID];
+            var movementPercentage = movementData.Remaining / movementData.Total;
+
+            var offset = movementData.Direction * Config.TileBaseSize.X * (float)movementPercentage;
+
+            return offset;
+        }
+
+        public static void TickEntityMovement(TimeSpan timeSinceLastDraw)
+        {
+            var toRemove = new List<string>();
+
+            foreach(var kvp in EntityMovementTracker)
+            {
+                kvp.Value.Remaining -= timeSinceLastDraw;
+                if (kvp.Value.Remaining <= TimeSpan.Zero)
+                {
+                    toRemove.Add(kvp.Key);
+                }
+            }
+
+            foreach(var e in toRemove)
+            {
+                EntityMovementTracker.Remove(e);
+            }
+        }
+    }
+
+    public class MovementCounter
+    {
+        public Vector2Int Direction;
+
+        public TimeSpan Total;
+        public TimeSpan Remaining;
+
+        public MovementCounter(Vector2Int direction, TimeSpan total)
+        {
+            Direction = direction;
+            Total = total;
+            Remaining = total;
+        }
     }
 }
