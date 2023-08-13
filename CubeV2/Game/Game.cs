@@ -28,7 +28,7 @@ namespace CubeV2
 
         public void SetBoard(Board b) 
         {
-            AnimationTracker.Reset();
+            BoardAnimator.Reset();
 
             CurrentBoard = b;
             SetFocusEntity(CurrentBoard.GetActiveEntityByTag(Config.PlayerTag).FirstOrDefault());

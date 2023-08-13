@@ -177,16 +177,16 @@ namespace CubeV2
         }
 
 
-        public virtual void Draw(SpriteBatch spriteBatch, Vector2 parentOffset)
+        public virtual void Draw(SpriteBatch spriteBatch, Vector2 parentOffset, GameTime gameTime)
         {
             if(Enabled)
             {
                 _position = _offset + parentOffset;
-                Appearance.Draw(spriteBatch, _position);
+                Appearance.Draw(spriteBatch, _position,gameTime);
 
                 foreach (var child in _children)
                 {
-                    child.Draw(spriteBatch, parentOffset + _offset);
+                    child.Draw(spriteBatch, parentOffset + _offset,gameTime);
                 }
             }
         }

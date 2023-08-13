@@ -16,7 +16,7 @@ namespace CubeV2
 
         public override Vector2 Size => Config.InstructionTileSize;
 
-        public override void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
             var instruction = GameInterface.GetInstructionFromCurrentFocus(Index);
             if (instruction!=null)

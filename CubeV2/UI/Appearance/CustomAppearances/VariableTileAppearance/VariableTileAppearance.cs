@@ -19,7 +19,7 @@ namespace CubeV2
             _scale = scale;
         }
 
-        public override void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
             var variable = GetSource();
             if(variable!=null)

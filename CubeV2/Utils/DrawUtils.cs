@@ -66,11 +66,12 @@ namespace CubeV2
 
 
         public const string RainGif = "rain_TEST_ONLY-Sheet";
+        public const string ExplosionGif = "testExplosion-Sheet";
 
-       
+
 
         public static Dictionary<string, Texture2D> SpritesDict;
-        public static Dictionary<string, MyGif> GifDict;
+        public static Dictionary<string, CustomGifClass> GifDict;
 
         private static Dictionary<RelativeDirection, string> _directionSpriteLookup;
         //private static Dictionary<int, string> _numberSpriteLookup;
@@ -86,6 +87,7 @@ namespace CubeV2
         public const float GameLayer7 = 0.23f;
         public const float GameLayer8 = 0.22f;
         public const float GameLayer9 = 0.21f;
+        public const float BoardAnimationLayer = 0.209f;
 
         public const float UILayer1 = 0.19f;
         public const float UILayer2 = 0.18f;
@@ -149,8 +151,9 @@ namespace CubeV2
 
             PressStart2PFont = content.Load<SpriteFont>("PressStart2P");
 
-            GifDict = new Dictionary<string, MyGif>();
-            GifDict[RainGif] = new MyGif(content.Load<Texture2D>(RainGif), 200,200,30);
+            GifDict = new Dictionary<string, CustomGifClass>();
+            GifDict[RainGif] = new CustomGifClass(content.Load<Texture2D>(RainGif), 200,200,30);
+            GifDict[ExplosionGif] = new CustomGifClass(content.Load<Texture2D>(ExplosionGif), 16, 16, 14);
 
             _directionSpriteLookup = new Dictionary<RelativeDirection, string>
             {
@@ -164,15 +167,6 @@ namespace CubeV2
                 [RelativeDirection.BackwardLeft] = DrawUtils.DownLeftSprite
             };
         }
-
-        public static int i;
-        internal static void DrawGif(SpriteBatch spriteBatch, string gifName, Vector2 position, Vector2 scale, int rotation, Vector2 rotationOrigin, float layer,Color color)
-        {
-            var gif = GifDict[gifName];
-            gif.Draw(spriteBatch,position,scale,rotation,rotationOrigin,layer,color);
-
-        }
-
 
         public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position, float scale, float rotation, Vector2 rotationOrigin, float layer, SpriteEffects flips = SpriteEffects.None) => DrawSprite(spriteBatch, spriteName, position, scale, rotation, rotationOrigin, layer, Color.White,flips);
 
@@ -271,16 +265,14 @@ namespace CubeV2
 
     }
 
-    public class MyGif
+    public class CustomGifClass
     {
         public Texture2D SpriteSheet;
         public int Width;
         public int Height;
         public int NumFrames;
 
-        public float frameCounter = 0;
-
-        public MyGif(Texture2D spriteSheet,int width, int height, int numFrames)
+        public CustomGifClass(Texture2D spriteSheet,int width, int height, int numFrames)
         {
             SpriteSheet = spriteSheet;
             Width = width;
@@ -288,17 +280,10 @@ namespace CubeV2
             NumFrames = numFrames;
         }
 
-        internal void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2 scale, int rotation, Vector2 rotationOrigin, float layer,Color color)
+        internal void Draw(SpriteBatch spriteBatch, int frame,Vector2 position, Vector2 scale, int rotation, Vector2 rotationOrigin, float layer,Color color)
         {
-            if(frameCounter>=NumFrames)
-            {
-                frameCounter = 0;
-            }
-
-            var spriteRect = new Microsoft.Xna.Framework.Rectangle((int)(frameCounter) * Width, 0, Width, Height);
+            var spriteRect = new Rectangle(frame * Width, 0, Width, Height);
             spriteBatch.Draw(SpriteSheet, position, spriteRect, color, rotation, rotationOrigin, scale, SpriteEffects.None, layer);
-
-            frameCounter+=0.4f;
         }
     }
 

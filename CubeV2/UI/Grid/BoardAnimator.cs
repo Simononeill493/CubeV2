@@ -27,11 +27,21 @@ namespace CubeV2
 
         public BoardAnimator(float layer) : base(layer) {}
 
-        public override void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public static void Reset()
         {
-            if (AnimationTracker.LaserActive)
+            AnimationTracker.Animations = new List<AnimationTracker.BoardAnimation>();
+
+            AnimationMovementTracker.EntityMovementTracker = new Dictionary<string, MovementCounter>();
+
+            AnimationMiscTracker.LaserActive = false;
+            AnimationMiscTracker.LaserDirection = (Vector2Int.Zero, Vector2Int.Zero);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
+        {
+            if (AnimationMiscTracker.LaserActive)
             {
-                var positions = AnimationTracker.LaserDirection;
+                var positions = AnimationMiscTracker.LaserDirection;
 
                 DrawUtils.DrawLine
                 (
@@ -43,6 +53,10 @@ namespace CubeV2
                     Layer
                 );
             }
+
+            var boardOffsetScaled = (GameInterface.CameraOffset * Config.TileBaseSize) * GameInterface.CameraScale;
+
+            AnimationTracker.Draw(spriteBatch, gameTime.TotalGameTime, position,boardOffsetScaled, GameInterface.CameraScale, DrawUtils.BoardAnimationLayer);
         }
 
         public void Arrange(Vector2 size,int indexWidth,int indexHeight,int tileWidth,int tileHeight,int padding)
@@ -63,18 +77,83 @@ namespace CubeV2
 
     public static class AnimationTracker
     {
+        public static List<BoardAnimation> Animations;
+        public static TimeSpan CurrentTime;
+
+        public static void Update(TimeSpan currentTime)
+        {
+            CurrentTime = currentTime;
+        }
+
+        public static void Draw(SpriteBatch spriteBatch, TimeSpan currentTime, Vector2 position,Vector2 cameraOffset, int scale, float layer)
+        {
+            var toRemove = new List<BoardAnimation>();
+
+            foreach(var animation in Animations)
+            {
+                var elapsed = currentTime - animation._startTime;
+                var frame = elapsed / animation._stepLength;
+
+                if(frame>= animation._gif.NumFrames)
+                {
+                    toRemove.Add(animation);
+                    continue;
+                }
+
+                animation.Draw(spriteBatch, (int)frame, position,cameraOffset, scale, layer);
+            }
+
+            foreach(var finishedAnimation in toRemove)
+            {
+                Animations.Remove(finishedAnimation);
+            }
+        }
+
+
+        internal static void StartAnimation(string gifName, Vector2 boardPositionUnscaled, TimeSpan stepLength)
+        {
+            Animations.Add(new BoardAnimation(DrawUtils.GifDict[gifName], boardPositionUnscaled, CurrentTime, stepLength));
+        }
+
+
+
+        public class BoardAnimation
+        {
+            public CustomGifClass _gif;
+            public Vector2 _boardPositionUnscaled;
+            public TimeSpan _startTime;
+            public TimeSpan _stepLength;
+
+            private float _transparency = 1;
+
+            public BoardAnimation(CustomGifClass gif, Vector2 boardPositionUnscaled, TimeSpan startTime, TimeSpan stepLength)
+            {
+                _gif = gif;
+                _boardPositionUnscaled = boardPositionUnscaled;
+                _startTime = startTime;
+                _stepLength = stepLength;
+            }
+
+            public void Draw(SpriteBatch spriteBatch,int frame,Vector2 position,Vector2 cameraOffset,int scale,float layer)
+            {
+                Vector2 actualPosition = position-cameraOffset + (_boardPositionUnscaled * scale *Config.TileBaseSize);
+
+                _gif.Draw(spriteBatch, frame, actualPosition, Vector2.One * scale, 0, Vector2.Zero, layer, Color.White * _transparency);
+            }
+        }
+
+    }
+
+
+    public static class AnimationMiscTracker
+    {
         public static bool LaserActive;
         public static (Vector2Int, Vector2Int) LaserDirection;
+    }
 
+    public static class AnimationMovementTracker
+    {
         public static Dictionary<string, MovementCounter> EntityMovementTracker;
-
-        public static void Reset()
-        {
-            LaserActive = false;
-            LaserDirection = (Vector2Int.Zero, Vector2Int.Zero);
-
-            EntityMovementTracker = new Dictionary<string, MovementCounter>();
-        }
 
         public static void AddEntityMovement(string id,int updateRate,Vector2Int approachVector)
         {

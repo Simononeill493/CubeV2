@@ -46,7 +46,7 @@ namespace CubeV2
         private Color _defaultColor;
         
 
-        public abstract void Draw(SpriteBatch spriteBatch, Vector2 position);
+        public abstract void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime);
 
         /*public void DrawOverlay(SpriteBatch spriteBatch, Vector2 position,Color color,float layer)
         {

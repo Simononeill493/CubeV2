@@ -176,14 +176,15 @@ namespace CubeV2
 
         protected override void Draw(GameTime gameTime)
         {
-            AnimationTracker.TickEntityMovement(gameTime.ElapsedGameTime);
+            AnimationTracker.Update(gameTime.TotalGameTime);
+            AnimationMovementTracker.TickEntityMovement(gameTime.ElapsedGameTime);
 
             if (DoDraw)
             {
                 GraphicsDevice.Clear(Config.PrimaryBackgroundColor);
 
                 _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend, SamplerState.PointClamp);
-                _ui.Draw(_spriteBatch, Vector2.Zero);
+                _ui.Draw(_spriteBatch, Vector2.Zero,gameTime);
                 _spriteBatch.End();
 
                 base.Draw(gameTime);

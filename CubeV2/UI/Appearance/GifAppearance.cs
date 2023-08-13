@@ -4,7 +4,7 @@ using System;
 
 namespace CubeV2
 {
-    public class GifAppearance : Appearance
+    /*public class GifAppearance : Appearance
     {
         public string Gif;
 
@@ -21,6 +21,6 @@ namespace CubeV2
         {
             DrawUtils.DrawGif(spriteBatch, Gif, position, Scale, 0, Vector2.Zero, Layer,Color.White * Transparency);
         }
-    }
+    }*/
 
 }

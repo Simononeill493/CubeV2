@@ -27,7 +27,7 @@ namespace CubeV2
 
         public override Vector2 Size => GameInterface._cameraTileSizeFloat;
 
-        public override void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
             var loc = GameInterface.UITileGetRealTile(Index).realLocation;
             var tile = GameInterface._game.CurrentBoard.TryGetTile(loc);
@@ -58,9 +58,9 @@ namespace CubeV2
 
         private void _drawEntity(SpriteBatch spriteBatch, Vector2 position,Entity entity)
         {
-            if (entity.IsActive && AnimationTracker.IsMoving(entity))
+            if (entity.IsActive && AnimationMovementTracker.IsMoving(entity))
             {
-                position -= (AnimationTracker.GetMovementOffsetUnscaled(entity) * GameInterface.CameraScale);
+                position -= (AnimationMovementTracker.GetMovementOffsetUnscaled(entity) * GameInterface.CameraScale);
             }
 
             //Entity

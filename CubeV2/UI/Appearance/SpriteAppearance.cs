@@ -20,7 +20,7 @@ namespace CubeV2
 
         public SpriteAppearance(float layer, string sprite) : this(layer, () => { return sprite; }) { }
 
-        public override void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
             DrawUtils.DrawSprite(spriteBatch, GetSprite(), position, Scale, 0, Vector2.Zero, Layer, SpriteEffects.None | (FlipHorizontal ? SpriteEffects.FlipHorizontally : SpriteEffects.None));
         }

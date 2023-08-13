@@ -18,7 +18,7 @@ namespace CubeV2
             _scale = scale;
         }
 
-        public override void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
             DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, Index.ToString(), position, Color.Magenta, _scale, Layer);
         }

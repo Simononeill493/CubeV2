@@ -180,7 +180,7 @@ namespace CubeV2
             var didMoveWork = board.TryMoveEntity(this, newLocation);
             if(didMoveWork)
             {
-                AnimationTracker.AddEntityMovement(EntityID, UpdateRate, approachVector);
+                AnimationMovementTracker.AddEntityMovement(EntityID, UpdateRate, approachVector);
             }
 
             /* Code to 'flow' around blocks when moving diagonaally.

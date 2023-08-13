@@ -23,7 +23,7 @@ namespace CubeV2
             _frontLayer = frontLayer;
         }
 
-        public override void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
             DrawUtils.DrawRect(spriteBatch, position, Size, BackgroundColor, Layer);
 

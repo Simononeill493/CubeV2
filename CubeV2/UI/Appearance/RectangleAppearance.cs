@@ -23,7 +23,7 @@ namespace CubeV2
             Color = color;
         }
 
-        public override void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
             DrawUtils.DrawRect(spriteBatch, position, Size, Color, Layer);
         }

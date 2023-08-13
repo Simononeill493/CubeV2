@@ -109,18 +109,18 @@ namespace CubeV2
             {
                 if (tile.Contents.TryLeftPress())
                 {
-                    AnimationTracker.LaserActive = true;
-                    AnimationTracker.LaserDirection = (_game.FocusEntity.Location - CameraOffset, tileLocation - CameraOffset);
+                    AnimationMiscTracker.LaserActive = true;
+                    AnimationMiscTracker.LaserDirection = (_game.FocusEntity.Location - CameraOffset, tileLocation - CameraOffset);
                     return;
                 }
             }
 
-            AnimationTracker.LaserActive = false;
+            AnimationMiscTracker.LaserActive = false;
         }
 
         public static void MouseLeftReleased()
         {
-            AnimationTracker.LaserActive = false;
+            AnimationMiscTracker.LaserActive = false;
         }
 
         public static void RightPressTile(Tile tile, Vector2Int tileLocation, int actualIndex)

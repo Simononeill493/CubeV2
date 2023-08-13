@@ -13,11 +13,11 @@ namespace CubeV2
         public override Vector2 Size => Appearances.First().Size;
         public List<Appearance> Appearances = new List<Appearance>();
 
-        public override void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
             foreach(var appearance in Appearances)
             {
-                appearance.Draw(spriteBatch, position);
+                appearance.Draw(spriteBatch, position,gameTime);
             }
         }
 

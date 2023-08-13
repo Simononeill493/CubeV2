@@ -24,7 +24,7 @@ namespace CubeV2
 
         public TextAppearance(Color color, float layer, string text) : this(color, layer, () => { return text; }) { }
 
-        public override void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
             DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, GetText(), position, Color, Scale, Layer);
         }
