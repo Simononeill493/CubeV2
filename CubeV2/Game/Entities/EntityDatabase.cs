@@ -46,6 +46,7 @@ namespace CubeV2
             _masterList[ManualPlayerName] = new ManualPlayerTemplate(ManualPlayerName);
             _masterList[ManualPlayerName].DefaultTags = new List<string>() { Config.PlayerTag, Config.IndestructibleTag };
             _masterList[ManualPlayerName].DefaultMaxEnergy = 1000;
+            _masterList[ManualPlayerName].DefaultMaxHealth = 100;
 
             _masterList[AutoPlayerName] = new EntityTemplate(AutoPlayerName) { DisplaySprite = DrawUtils.PlayerSprite };
             _masterList[AutoPlayerName].DefaultTags = new List<string>() { Config.PlayerTag };
@@ -81,6 +82,8 @@ namespace CubeV2
             _masterList[LaserFlowerName] = new HarvestableEntityTemplate(LaserFlowerName,100) { DisplaySprite = DrawUtils.WeaponFlowerSprite };
 
             _masterList[RespawnerName] = new EntityTemplate(RespawnerName) { DisplaySprite = DrawUtils.RespawnerSprite };
+            _masterList[RespawnerName].DefaultTags = new List<string>() { Config.SpawnerTag };
+
             _masterList[StoneWallName] = new EntityTemplate(StoneWallName) { DisplaySprite = DrawUtils.StoneWallSprite };
 
             _masterList[MissileName] = new EntityTemplate(MissileName) { DisplaySprite = DrawUtils.MissileSprite };

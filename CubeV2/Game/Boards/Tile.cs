@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace CubeV2
 {
@@ -41,6 +42,11 @@ namespace CubeV2
         public void SetContents(Entity e)
         {
             Contents = e;
+        }
+
+        public void Damage(int amount)
+        {
+            Contents?.TakeHealth(amount);
         }
     }
 }

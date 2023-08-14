@@ -41,10 +41,19 @@ namespace CubeV2
             ClearFocusEntity();
         }
 
-        public void ResetBoard() => SetBoard(CurrentTemplate.GenerateBoard());
+        public void ResetBoard()
+        {
+            SetBoard(CurrentTemplate.GenerateBoard());
+        }
+
         public void TickBoard(UserInput input)
         {
             CurrentBoard.Tick(input);
+
+            if(FocusEntity.AllHealthDepleted)
+            {
+                KillPlayer();
+            }
         }
 
         public void SetTemplateTemplate(BoardTemplateTemplate templateTemplate) => CurrentTemplateTemplate = templateTemplate;
@@ -59,7 +68,8 @@ namespace CubeV2
         }
 
         public abstract BoardTemplateTemplate CreateTemplateTemplate();
-        public virtual void CustomSetUpBoard(Board b) { }
 
+        public virtual void KillPlayer() { }
+        public virtual void CustomSetUpBoard(Board b) { }
     }
 }

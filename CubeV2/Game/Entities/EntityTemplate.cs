@@ -11,6 +11,7 @@ namespace CubeV2
 
         public List<string> DefaultTags = new List<string>();
         public int DefaultMaxEnergy = -1;
+        public int DefaultMaxHealth = -1;
         public int DefaultUpdateRate = 1;
 
         public string DisplaySprite;
@@ -36,6 +37,10 @@ namespace CubeV2
             if (DefaultMaxEnergy > -1)
             {
                 entity.MaxEnergy = DefaultMaxEnergy;
+            }
+            if (DefaultMaxHealth > -1)
+            {
+                entity.MaxHealth = DefaultMaxHealth;
             }
 
             else

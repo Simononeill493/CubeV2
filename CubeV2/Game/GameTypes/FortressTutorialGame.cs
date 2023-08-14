@@ -24,6 +24,17 @@ namespace CubeV2
         public override void CustomSetUpBoard(Board b)
         {
             GameInterface.DisplayText = "Fortress tutorial in development...";
+
+            FocusEntity.SetHealthToMax();
+        }
+
+        public override void KillPlayer()
+        {
+            var spawner = CurrentBoard.GetEntityByTag(Config.SpawnerTag).First();
+            var respawnLocation = spawner.Location + Vector2Int.Up;
+
+            CurrentBoard.TryMoveEntity(FocusEntity,respawnLocation);
+            FocusEntity.SetHealthToMax();
         }
 
 

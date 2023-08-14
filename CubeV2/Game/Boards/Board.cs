@@ -87,7 +87,18 @@ namespace CubeV2
 
             return TilesVector[offset.X, offset.Y];
         }
-        
+        public bool TryDamageTile(Vector2Int offset,int amount)
+        {
+            if (ContainsLocation(offset))
+            {
+                TilesVector[offset.X, offset.Y].Damage(amount);
+                return true;
+            }
+
+            return false;
+        }
+
+
         public List<(Tile,Vector2Int)> GetSurroundings(Vector2Int location,int range)
         {
             var output = new List<(Tile,Vector2Int)>();
@@ -330,6 +341,11 @@ namespace CubeV2
         public IEnumerable<Entity> GetActiveEntityByTag(string tag)
         {
             return ActiveEntities.Where(e => e.HasTag(tag));
+        }
+
+        public IEnumerable<Entity> GetEntityByTag(string tag)
+        {
+            return Entities.Values.Where(e => e.HasTag(tag));
         }
     }
 

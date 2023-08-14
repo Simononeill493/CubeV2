@@ -137,15 +137,26 @@ namespace CubeV2
             //DisplayText = "Wins: " + wins + "/" + iterations + " (" + (wins / (float)iterations) + "%)";
         }
 
-        public static (int Current,int Max) GetPlayerEnergy()
+        public static float GetPlayerEnergyPercentage()
         {
             if (_game != null && _game.CurrentBoard != null && _game.FocusEntity != null)
             {
-                return (_game.FocusEntity.GetCurrentEnergy(), _game.FocusEntity.MaxEnergy);
+                return _game.FocusEntity.GetEnergyPercentage();
             }
 
-            return (0,1);
+            return 0;
         }
+
+        public static float GetPlayerHealthPercentage()
+        {
+            if (_game != null && _game.CurrentBoard != null && _game.FocusEntity != null)
+            {
+                return _game.FocusEntity.GetHealthPercentage();
+            }
+
+            return 0;
+        }
+
 
         public static Vector2Int GetFocusedTileCoordinates()
         {

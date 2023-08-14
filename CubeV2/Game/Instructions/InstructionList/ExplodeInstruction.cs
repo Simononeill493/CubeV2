@@ -10,6 +10,8 @@ namespace CubeV2
     {
         public class ExplodeInstruction : Instruction
         {
+            public const int ExplosionDamage = 25;
+
             public override string Name => "Explode";
 
             public override int VariableCount => 0;
@@ -21,11 +23,16 @@ namespace CubeV2
             {
                 AnimationTracker.StartAnimation(DrawUtils.ExplosionGif, caller.Location.ToVector2(), TimeSpan.FromSeconds(0.03));
 
+                foreach (var adjacent in caller.Location.GetAdjacentPoints())
+                {
+                    board.TryDamageTile(adjacent, ExplosionDamage);
+                }
+
                 board.TryRemoveFromBoard(caller, force: true);
                 return 0;
             }
 
-            public override Instruction GenerateNew() => new DestroySelfInstruction();
+            public override Instruction GenerateNew() => new ExplodeInstruction();
         }
 
 

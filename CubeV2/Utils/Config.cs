@@ -16,6 +16,7 @@ namespace CubeV2
 
         public const bool KnowAllInstructionsByDefault = true;
         public const bool InfiniteEnergy = true;
+        public const bool InfiniteHealth = false;
 
 
         public const bool EnableFogOfWar = false;
@@ -103,10 +104,13 @@ namespace CubeV2
         public const string OutputSelectorGridName = "OutputSelectorGrid";
 
         public const string EnergyBarName = "EnergyBar";
+        public const string HealthBarName = "HealthBar";
+
         public const string DisplayTextName = "DisplayText";
 
         public const string CollectedGoalTag = "EnteredGoal";
         public const string PlayerTag = "Player";
+        public const string SpawnerTag = "Spawner";
         public const string IndestructibleTag = "Indestructible";
 
         public const string IntegerTextBoxName = "IntegerTextBox";
@@ -148,6 +152,7 @@ namespace CubeV2
         public static Vector2 SimulateButtonOffset;
 
         public static Vector2 EnergyBarSize;
+        public static Vector2 HealthBarSize;
 
 
         private static void _loadPositioning()
@@ -172,6 +177,7 @@ namespace CubeV2
             SimulateButtonOffset = new Vector2(1120, 0);
 
             EnergyBarSize = new Vector2(500, 20);
+            HealthBarSize = new Vector2(500, 20);
 
         }
 

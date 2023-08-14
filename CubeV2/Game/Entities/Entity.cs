@@ -19,11 +19,19 @@ namespace CubeV2
         public int CreationTime;
 
         public int MaxEnergy;
-        public int GetCurrentEnergy() => Config.InfiniteEnergy ? MaxEnergy : _currentEnergy;
-
         private int _currentEnergy;
+
+        public int GetCurrentEnergy() => Config.InfiniteEnergy ? MaxEnergy : _currentEnergy;
         public string GetEnergyOverMaxAsText() => Config.InfiniteEnergy ? "INF" : GetCurrentEnergy() + "/" + MaxEnergy;
-        public float GetEnergyPercentage() => (MaxEnergy == 0 || Config.InfiniteEnergy) ? 1 : GetCurrentEnergy() / MaxEnergy;
+        public float GetEnergyPercentage() => (MaxEnergy == 0 || Config.InfiniteEnergy) ? 1 : GetCurrentEnergy() / (float)MaxEnergy;
+
+        public int MaxHealth;
+        private int _currentHealth;
+
+        public int GetCurrentHealth() => Config.InfiniteHealth ? MaxHealth : _currentHealth;
+        public string GetHealthOverMaxAsText() => Config.InfiniteHealth ? "INF" : GetCurrentHealth() + "/" + MaxHealth;
+        public float GetHealthPercentage() => (MaxHealth == 0 || Config.InfiniteHealth) ? 1 : GetCurrentHealth() / (float)MaxHealth;
+
 
         public bool ShowHarvestMeter = false;
         protected int _maxHarvestCount;
@@ -121,6 +129,9 @@ namespace CubeV2
             }
         }
 
+
+
+
         public bool HasEnergy(int amount)
         {
             return (Config.InfiniteEnergy) || (_currentEnergy >= amount);
@@ -144,6 +155,31 @@ namespace CubeV2
             }
         }
         public void SetEnergyToMax() => _currentEnergy = MaxEnergy;
+
+        public bool AllHealthDepleted => (!Config.InfiniteHealth) && MaxHealth > 0 && _currentHealth < 1;
+        public bool HasHealth(int amount)
+        {
+            return (Config.InfiniteHealth) || (_currentHealth >= amount);
+        }
+        public void TakeHealth(int amount)
+        {
+            _currentHealth -= amount;
+            if(_currentHealth<0)
+            {
+                _currentHealth = 0;
+            }
+        }
+        public void GiveHealth(int amount)
+        {
+            _currentHealth += amount;
+
+            if (_currentHealth > MaxHealth)
+            {
+                _currentHealth = MaxHealth;
+            }
+        }
+        public void SetHealthToMax() => _currentHealth = MaxHealth;
+
 
         public void Rotate(int rotation)
         {

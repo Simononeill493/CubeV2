@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,26 +34,13 @@ namespace CubeV2
 
             AnimationMovementTracker.EntityMovementTracker = new Dictionary<string, MovementCounter>();
 
-            AnimationMiscTracker.LaserActive = false;
-            AnimationMiscTracker.LaserDirection = (Vector2Int.Zero, Vector2Int.Zero);
+            AnimationLaserTracker.LaserActive = false;
+            AnimationLaserTracker.LaserLocation = (Vector2.Zero, Vector2.Zero);
         }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
-            if (AnimationMiscTracker.LaserActive)
-            {
-                var positions = AnimationMiscTracker.LaserDirection;
-
-                DrawUtils.DrawLine
-                (
-                    spriteBatch, 
-                    position + _tileSizeTopOffset + (positions.Item1* _tileSizePadded), 
-                    position + _tileSizeCenterOffset + (positions.Item2 * _tileSizePadded),
-                    3,
-                    Color.Red, 
-                    Layer
-                );
-            }
+            AnimationLaserTracker.Draw(spriteBatch, position, _tileSizeTopOffset, _tileSizeCenterOffset, _tileSizePadded, Layer);
 
             var boardOffsetScaled = (GameInterface.CameraOffset * Config.TileBaseSize) * GameInterface.CameraScale;
 
@@ -110,9 +98,9 @@ namespace CubeV2
         }
 
 
-        internal static void StartAnimation(string gifName, Vector2 boardPositionUnscaled, TimeSpan stepLength)
+        internal static void StartAnimation(string gifName, Vector2 boardPositionUnscaled, TimeSpan frameLength)
         {
-            Animations.Add(new BoardAnimation(DrawUtils.GifDict[gifName], boardPositionUnscaled, CurrentTime, stepLength));
+            Animations.Add(new BoardAnimation(DrawUtils.GifDict[gifName], boardPositionUnscaled, CurrentTime, frameLength));
         }
 
 
@@ -145,10 +133,34 @@ namespace CubeV2
     }
 
 
-    public static class AnimationMiscTracker
+    public static class AnimationLaserTracker
     {
         public static bool LaserActive;
-        public static (Vector2Int, Vector2Int) LaserDirection;
+        public static (Vector2, Vector2) LaserLocation;
+
+        public static void SetLaserLocation(Vector2Int playerLocation,Vector2Int targetLocation)
+        {
+            LaserLocation = (playerLocation.ToVector2(), targetLocation.ToVector2());
+        }
+
+        public static void Draw(SpriteBatch spriteBatch, Vector2 position, Vector2Int tileSizeTopOffset, Vector2Int tileSizeCenterOffset, Vector2Int tileSizePadded, float layer)
+        {
+            if (LaserActive)
+            {
+                Vector2 laserStart = (position + tileSizeTopOffset + (LaserLocation.Item1 * tileSizePadded));
+                Vector2 laserEnd = position + tileSizeCenterOffset + (LaserLocation.Item2 * tileSizePadded);
+
+                DrawUtils.DrawLine
+                (
+                    spriteBatch,
+                    laserStart,
+                    laserEnd,
+                    3,
+                    Color.Red,
+                    layer
+                );
+            }
+        }
     }
 
     public static class AnimationMovementTracker

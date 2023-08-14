@@ -38,7 +38,7 @@ internal class EntityAIDatabase
 
     private static void TurretSetAI(EntityTemplate turret)
     {
-        turret.DefaultUpdateRate = 40;
+        turret.DefaultUpdateRate = 20;
 
         var find = new PingRangeInstruction(EntityDatabase.Get(EntityDatabase.ManualPlayerName), 8);
         find.OutputTargetVariables[0] = 0;
@@ -55,7 +55,7 @@ internal class EntityAIDatabase
 
     private static void MissileSetAI(EntityTemplate missile)
     {
-        missile.DefaultUpdateRate = 3;
+        missile.DefaultUpdateRate = 2;
 
         var actOnAge = new IfInstruction(new AgeVariable(), new IntegerVariable(25));
         actOnAge.Operator = IOperator.MoreThan;

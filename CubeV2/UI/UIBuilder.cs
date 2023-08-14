@@ -89,13 +89,20 @@ namespace CubeV2
             displayText.AddAppearance(new TextAppearance(new Color(255, 58, 200), DrawUtils.UILayer1, () => GameInterface.DisplayText));
             //displayText.SetEnabledCondition(() => GameInterface.IsGameWon);
 
+            var healthBar = new UIElement(Config.HealthBarName);
+            healthBar.SetOffset(new Vector2(0, 25));
+            healthBar.AddAppearance(new HealthBarAppearance(Config.HealthBarSize, DrawUtils.UILayer1, DrawUtils.UILayer2));
+
             var energyBar = new UIElement(Config.EnergyBarName);
-            energyBar.SetOffset(new Vector2(0, 25));
+            energyBar.SetOffset(new Vector2(600, 25));
             energyBar.AddAppearance(new EnergyBarAppearance(Config.EnergyBarSize, DrawUtils.UILayer1, DrawUtils.UILayer2));
+
+
+
 
             var topBarContainer = new UIElement("TopBar");
             topBarContainer.SetOffset(new Vector2(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X + 30, 10));
-            topBarContainer.AddChildren(energyBar, displayText);
+            topBarContainer.AddChildren(healthBar,energyBar, displayText);
 
             return topBarContainer;
         }
