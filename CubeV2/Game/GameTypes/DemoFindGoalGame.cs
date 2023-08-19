@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CubeV2
 {
@@ -42,5 +43,14 @@ namespace CubeV2
 
             return templateTemplate;
         }
+
+        public override void RespawnPlayer()
+        {
+            throw new NotImplementedException();
+        }
+
     }
+
+
+
 }

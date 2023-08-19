@@ -56,16 +56,40 @@ namespace CubeV2
 
         public void Tick(UserInput input)
         {
+            _executeEntityInstructions(input);
+            _deleteDoomedEntities();
+
+            Clock++;
+        }
+
+        private void _executeEntityInstructions(UserInput input)
+        {
             var entities = ActiveEntities.ToList();
             foreach (var entity in entities)
             {
-                if (entity != null && !entity.Doomed && (Clock % entity.UpdateRate == 0))
+                if (entity != null && !entity.MarkedForDeletion && (Clock % entity.UpdateRate == 0))
                 {
-                    entity.ExecuteInstructions(this,input);
+                    entity.ExecuteInstructions(this, input);
+                }
+            }
+        }
+
+        private void _deleteDoomedEntities()
+        {
+            var toRemove = new List<Entity>();
+            foreach (var entity in Entities.Values)
+            {
+                if(entity.MarkedForDeletion)
+                {
+                    toRemove.Add(entity);
                 }
             }
 
-            Clock++;
+            foreach(var e in toRemove)
+            {
+                _tryClearThisTile(e.Location);
+                e.Deleted = true;
+            }
         }
 
         public Tile TryGetTile(int index)
@@ -154,28 +178,20 @@ namespace CubeV2
             return true;
         }
 
-        internal bool TryClearThisTile(Vector2Int targetLocation)
+        private bool _tryClearThisTile(Vector2Int targetLocation)
         {
             var tile = TryGetTile(targetLocation);
-            if(tile!=null && tile.Contents!=null)
+            if(tile!=null)
             {
-                return TryRemoveFromBoard(tile.Contents);
+                if(tile.Contents!=null)
+                {
+                    _removeFromBoard(tile.Contents);
+                }
+                return true;
             }
 
             return false;
         }
-
-        public bool TryRemoveFromBoard(Entity entity,bool force = false)
-        {
-            if(entity.HasTag(Config.IndestructibleTag) && !force)
-            {
-                return false;
-            }
-
-            _removeFromBoard(entity);
-            return true;
-        }
-
 
         private void _removeFromBoard(Entity entity)
         {
@@ -196,8 +212,8 @@ namespace CubeV2
                 _removeEntityFromActiveList(entity);
             }
 
-            entity.Doomed = true;
-            entity.OnDoom(this,entityFormerLocation);
+            entity.MarkForDeletion();
+            entity.WhenMarkedForDeletion(this,entityFormerLocation);
         }
         public void RemoveEntityFromCurrentTile(Entity entity)
         {

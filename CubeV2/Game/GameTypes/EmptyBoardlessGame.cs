@@ -1,4 +1,5 @@
 ﻿using CubeV2;
+using System;
 
 public class EmptyBoardlessGame : Game
 {
@@ -6,4 +7,10 @@ public class EmptyBoardlessGame : Game
     {
         return null;
     }
+
+    public override void RespawnPlayer()
+    {
+        throw new NotImplementedException();
+    }
+
 }

@@ -18,12 +18,10 @@ namespace CubeV2
         public const bool InfiniteEnergy = true;
         public const bool InfiniteHealth = false;
 
-
-        public const bool EnableFogOfWar = false;
-
+        public const int PlayerRangeLimit = 5;
         public const bool EnableRangeLimits = true;
         public const bool EnablePlayerRangeOverlay = true;
-        public const int PlayerRangeLimit = 5;
+        public const bool EnableFogOfWar = false;
 
         public const bool AllowCameraMovement = true;
         public const bool AllowCameraZoom = true;
@@ -111,7 +109,7 @@ namespace CubeV2
         public const string CollectedGoalTag = "EnteredGoal";
         public const string PlayerTag = "Player";
         public const string SpawnerTag = "Spawner";
-        public const string IndestructibleTag = "Indestructible";
+        //public const string IndestructibleTag = "Indestructible";
 
         public const string IntegerTextBoxName = "IntegerTextBox";
 

@@ -30,7 +30,7 @@ namespace CubeV2
 
         public void Harvest()
         {
-            GameInterface._game.CurrentBoard.TryRemoveFromBoard(this, force: true);
+            MarkForDeletion();
         }
     }
 }

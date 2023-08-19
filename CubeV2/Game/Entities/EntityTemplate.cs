@@ -10,8 +10,10 @@ namespace CubeV2
         protected static int _sessionEntityCount;
 
         public List<string> DefaultTags = new List<string>();
+
+        public bool CanBeDamaged = true;
+        public int DefaultMaxHealth = 1;
         public int DefaultMaxEnergy = -1;
-        public int DefaultMaxHealth = -1;
         public int DefaultUpdateRate = 1;
 
         public string DisplaySprite;
@@ -38,15 +40,14 @@ namespace CubeV2
             {
                 entity.MaxEnergy = DefaultMaxEnergy;
             }
-            if (DefaultMaxHealth > -1)
-            {
-                entity.MaxHealth = DefaultMaxHealth;
-            }
-
             else
             {
                 entity.MaxEnergy = Config.GlobalDefaultMaxEnergy;
             }
+            entity.CanBeDamaged = CanBeDamaged;
+            entity.MaxHealth = DefaultMaxHealth;
+            entity.SetHealthToMax();
+
 
             return entity;
         }
@@ -98,6 +99,7 @@ namespace CubeV2
         public HarvestableEntityTemplate(string id,int harvestCount) : base(id) 
         {
             HarvestCount = harvestCount;
+            CanBeDamaged = false;
         }
 
         protected override Entity _createEntity()

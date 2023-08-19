@@ -50,9 +50,9 @@ namespace CubeV2
         {
             CurrentBoard.Tick(input);
 
-            if(FocusEntity.AllHealthDepleted)
+            if(FocusEntity.Deleted)
             {
-                KillPlayer();
+                RespawnPlayer();
             }
         }
 
@@ -69,7 +69,7 @@ namespace CubeV2
 
         public abstract BoardTemplateTemplate CreateTemplateTemplate();
 
-        public virtual void KillPlayer() { }
+        public abstract void RespawnPlayer();
         public virtual void CustomSetUpBoard(Board b) { }
     }
 }

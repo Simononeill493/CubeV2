@@ -28,7 +28,7 @@ namespace CubeV2
                     board.TryDamageTile(adjacent, ExplosionDamage);
                 }
 
-                board.TryRemoveFromBoard(caller, force: true);
+                caller.MarkForDeletion();
                 return 0;
             }
 

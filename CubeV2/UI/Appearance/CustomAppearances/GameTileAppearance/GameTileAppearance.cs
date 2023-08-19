@@ -69,8 +69,14 @@ namespace CubeV2
             if (entity.ShowHarvestMeter)
             {
                 //Harvest meter
-                DrawUtils.DrawHarvestMeter(spriteBatch, entity.GetHarvestPercentage(), position, GameInterface.CameraScale, _spriteMeterLayer, _spriteMeterLayer2);
+                DrawUtils.DrawMeter(spriteBatch, entity.GetHarvestPercentage(), position, GameInterface.CameraScale, _spriteMeterLayer, _spriteMeterLayer2);
             }
+            else if (entity.ShowDamageMeter)
+            {
+                //Harvest meter
+                DrawUtils.DrawMeter(spriteBatch, entity.GetHealthPercentage(), position, GameInterface.CameraScale, _spriteMeterLayer, _spriteMeterLayer2);
+            }
+
         }
     }
 }

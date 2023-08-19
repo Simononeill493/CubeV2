@@ -23,7 +23,7 @@
                 return 0;
             }
 
-            board.TryRemoveFromBoard(tile.Contents, force: true);
+            tile.Contents.MarkForDeletion();
             return 0;
         }
 

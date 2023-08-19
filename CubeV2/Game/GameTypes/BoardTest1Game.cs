@@ -106,5 +106,10 @@ namespace CubeV2
 
             return templateTemplate;
         }
+
+        public override void RespawnPlayer()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

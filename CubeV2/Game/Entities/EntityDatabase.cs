@@ -44,7 +44,7 @@ namespace CubeV2
             _masterList = new Dictionary<string, EntityTemplate>();
 
             _masterList[ManualPlayerName] = new ManualPlayerTemplate(ManualPlayerName);
-            _masterList[ManualPlayerName].DefaultTags = new List<string>() { Config.PlayerTag, Config.IndestructibleTag };
+            _masterList[ManualPlayerName].DefaultTags = new List<string>() { Config.PlayerTag };
             _masterList[ManualPlayerName].DefaultMaxEnergy = 1000;
             _masterList[ManualPlayerName].DefaultMaxHealth = 100;
 
@@ -52,11 +52,7 @@ namespace CubeV2
             _masterList[AutoPlayerName].DefaultTags = new List<string>() { Config.PlayerTag };
 
             _masterList[Ally1Name] = new EntityTemplate(Ally1Name) { DisplaySprite = DrawUtils.Ally1Sprite, DefaultMaxEnergy = 10000 };
-            _masterList[Ally1Name].DefaultTags = new List<string>() { Config.IndestructibleTag };
-
             _masterList[Ally2Name] = new EntityTemplate(Ally2Name) { DisplaySprite = DrawUtils.Ally2Sprite, DefaultMaxEnergy = 50 };
-            _masterList[Ally2Name].DefaultTags = new List<string>() { Config.IndestructibleTag };
-
 
             _masterList[Ally3Name] = new EntityTemplate(Ally3Name) { DisplaySprite = DrawUtils.Ally3Sprite,DefaultMaxEnergy = 50 };
             _masterList[Ally4Name] = new EntityTemplate(Ally4Name) { DisplaySprite = DrawUtils.Ally4Sprite,DefaultMaxEnergy = 50 };
@@ -64,6 +60,8 @@ namespace CubeV2
 
             _masterList[RockName] = new RockTemplate(RockName);
             _masterList[RockName].DefaultMaxEnergy = 0;
+            _masterList[RockName].DefaultMaxHealth = 150;
+
 
             _masterList[BrokenRockName] = new CollectableEntityTemplate(BrokenRockName) { DisplaySprite = DrawUtils.BrokenRockSprite };
 
@@ -73,7 +71,6 @@ namespace CubeV2
             _masterList[GoalName] = new GoalTemplate(GoalName);
 
             _masterList[PortalName] = new EntityTemplate(PortalName) { DisplaySprite = DrawUtils.PortalSprite };
-            _masterList[PortalName].DefaultTags = new List<string>() { Config.IndestructibleTag };
             _masterList[PortalName].DefaultMaxEnergy = 100;
 
             _masterList[CraftingTableName] = new EntityTemplate(CraftingTableName) { DisplaySprite = DrawUtils.CraftingTableSprite };
@@ -85,13 +82,12 @@ namespace CubeV2
             _masterList[RespawnerName].DefaultTags = new List<string>() { Config.SpawnerTag };
 
             _masterList[StoneWallName] = new EntityTemplate(StoneWallName) { DisplaySprite = DrawUtils.StoneWallSprite };
+            _masterList[StoneWallName].DefaultMaxHealth = 1000;
 
-            _masterList[MissileName] = new EntityTemplate(MissileName) { DisplaySprite = DrawUtils.MissileSprite };
+            _masterList[MissileName] = new EntityTemplate(MissileName) { DisplaySprite = DrawUtils.MissileSprite, CanBeDamaged = false };
+
             _masterList[TurretName] = new EntityTemplate(TurretName) { DisplaySprite = DrawUtils.TurretSprite };
-
-
-
-
+            _masterList[TurretName].DefaultMaxHealth = 300;
         }
 
 

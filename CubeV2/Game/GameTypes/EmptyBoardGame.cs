@@ -1,4 +1,5 @@
 ﻿using CubeV2;
+using System;
 
 internal class EmptyBoardGame : Game
 {
@@ -16,4 +17,10 @@ internal class EmptyBoardGame : Game
         var templateTemplate = new FullyRandomTemplateTemplate() { Width = 16, Height = 16 };
         return templateTemplate;
     }
+
+    public override void RespawnPlayer()
+    {
+        throw new NotImplementedException();
+    }
+
 }

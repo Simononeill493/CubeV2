@@ -199,7 +199,7 @@ namespace CubeV2
             DrawSprite(spriteBatch, sprite, position + rotationOffset, scale, rotation, Vector2.Zero, layer,flips);
         }
 
-        internal static void DrawHarvestMeter(SpriteBatch spriteBatch, float percentage, Vector2 position, int cameraScale, float spriteMeterLayer, float spriteMeterLayer2)
+        internal static void DrawMeter(SpriteBatch spriteBatch, float percentage, Vector2 position, int cameraScale, float spriteMeterLayer, float spriteMeterLayer2)
         {
             var widthMeter = percentage * Config.TileBaseSize.X * cameraScale;
             var widthBox = Config.TileBaseSize.X * cameraScale;

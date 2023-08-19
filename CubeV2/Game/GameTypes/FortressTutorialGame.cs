@@ -28,13 +28,15 @@ namespace CubeV2
             FocusEntity.SetHealthToMax();
         }
 
-        public override void KillPlayer()
+        public override void RespawnPlayer()
         {
+            FocusEntity.RestoreFromDeletion();
+            FocusEntity.SetHealthToMax();
+
             var spawner = CurrentBoard.GetEntityByTag(Config.SpawnerTag).First();
             var respawnLocation = spawner.Location + Vector2Int.Up;
 
-            CurrentBoard.TryMoveEntity(FocusEntity,respawnLocation);
-            FocusEntity.SetHealthToMax();
+            CurrentBoard.TryAddEntityToBoard(FocusEntity,respawnLocation);
         }
 
 

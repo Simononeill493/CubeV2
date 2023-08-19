@@ -1,4 +1,6 @@
-﻿namespace CubeV2
+﻿using System;
+
+namespace CubeV2
 {
     public class PushDestroyInstruction : Instruction
     {
@@ -7,10 +9,12 @@
         public override int OutputCount => 0;
         public override int BaseEnergyCost { get; } = Config.BaseHitCost;
 
-        public override Instruction GenerateNew() => new PushDestroyInstruction();
+        public override Instruction GenerateNew() => throw new NotImplementedException();
 
         public override int Run(Entity caller, Board board)
         {
+            throw new NotImplementedException();
+
             var direction = Variables[0]?.Convert(caller,board, IVariableType.RelativeDirection);
             if (direction == null)
             {

@@ -18,7 +18,7 @@ namespace CubeV2
             _masterList = new List<Instruction>();
 
             _masterList.Add(new MoveInstruction());
-            _masterList.Add(new PushDestroyInstruction());
+            //_masterList.Add(new PushDestroyInstruction());
             _masterList.Add(new PingInstruction());
             _masterList.Add(new PushScanInstruction());
             _masterList.Add(new TurnInstruction());

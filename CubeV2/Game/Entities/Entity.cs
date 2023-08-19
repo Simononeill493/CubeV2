@@ -7,7 +7,14 @@ namespace CubeV2
 {
     public class Entity
     {
-        public bool Doomed = false;
+        public void MarkForDeletion() => MarkedForDeletion = true;
+        public bool MarkedForDeletion { get; private set; }
+        public bool Deleted = false;
+        public void RestoreFromDeletion()
+        {
+            MarkedForDeletion = false;
+            Deleted = false;
+        }
 
         public string TemplateID { get; }
         public string EntityID { get; }
@@ -27,6 +34,7 @@ namespace CubeV2
 
         public int MaxHealth;
         private int _currentHealth;
+        public bool ShowDamageMeter = false;
 
         public int GetCurrentHealth() => Config.InfiniteHealth ? MaxHealth : _currentHealth;
         public string GetHealthOverMaxAsText() => Config.InfiniteHealth ? "INF" : GetCurrentHealth() + "/" + MaxHealth;
@@ -81,7 +89,7 @@ namespace CubeV2
                     _executeInstruction(instruction, currentBoard);
                 }
 
-                if (trueInstructionCount++ >= Config.MaxInstructionJumpsPerTick || Doomed)
+                if (trueInstructionCount++ >= Config.MaxInstructionJumpsPerTick || MarkedForDeletion)
                 {
                     break;
                 }
@@ -156,17 +164,26 @@ namespace CubeV2
         }
         public void SetEnergyToMax() => _currentEnergy = MaxEnergy;
 
-        public bool AllHealthDepleted => (!Config.InfiniteHealth) && MaxHealth > 0 && _currentHealth < 1;
+        public bool CanBeDamaged = true;
+        
         public bool HasHealth(int amount)
         {
             return (Config.InfiniteHealth) || (_currentHealth >= amount);
         }
         public void TakeHealth(int amount)
         {
+            if(!CanBeDamaged | Config.InfiniteHealth)
+            {
+                return;
+            }
+
             _currentHealth -= amount;
-            if(_currentHealth<0)
+            ShowDamageMeter = true;
+
+            if(_currentHealth<=0)
             {
                 _currentHealth = 0;
+                MarkForDeletion();
             }
         }
         public void GiveHealth(int amount)
@@ -178,7 +195,7 @@ namespace CubeV2
                 _currentHealth = MaxHealth;
             }
         }
-        public void SetHealthToMax() => _currentHealth = MaxHealth;
+        public void SetHealthToMax() => GiveHealth(MaxHealth);
 
 
         public void Rotate(int rotation)
@@ -206,7 +223,8 @@ namespace CubeV2
         public bool TryPushEnergy(Board board, RelativeDirection direction, int amount) => TryPushEnergy(board, DirectionUtils.ToCardinal(Orientation, direction), amount);
         public bool TryPullEnergy(Board board, RelativeDirection direction) => TryPullEnergy(board, DirectionUtils.ToCardinal(Orientation, direction));
         public CapturedTileVariable TryPushScan(Board board, RelativeDirection direction) => TryPushScan(board, DirectionUtils.ToCardinal(Orientation, direction));
-        public void PushDestroy(Board board, RelativeDirection direction) => PushDestroy(board, DirectionUtils.ToCardinal(Orientation, direction));
+        //public void PushDestroy(Board board, RelativeDirection direction) => PushDestroy(board, DirectionUtils.ToCardinal(Orientation, direction));
+        public void PushDestroy(Board board, RelativeDirection direction) => throw new NotImplementedException();
 
         public bool TryMove(Board board,CardinalDirection direction)
         {
@@ -307,13 +325,13 @@ namespace CubeV2
             return null;
         }
 
-        public void PushDestroy(Board board, CardinalDirection direction)
+        /*public void PushDestroy(Board board, CardinalDirection direction)
         {
             var targetLocation = Location + direction.ToVector();
             board.TryClearThisTile(targetLocation);
-        }
+        }*/
 
-        public virtual void OnDoom(Board board,Vector2Int formerLocation) {}
+        public virtual void WhenMarkedForDeletion(Board board,Vector2Int formerLocation) {}
         public virtual bool TryBeCollected(Entity collector) => false;
         public virtual bool TryLeftPress() => false;
     }
