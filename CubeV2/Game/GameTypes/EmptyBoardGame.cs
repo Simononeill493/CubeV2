@@ -22,5 +22,10 @@ internal class EmptyBoardGame : Game
     {
         throw new NotImplementedException();
     }
+    public override void OnPlayerDeath()
+    {
+        throw new NotImplementedException();
+    }
+
 
 }

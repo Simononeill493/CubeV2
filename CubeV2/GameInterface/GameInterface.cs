@@ -45,10 +45,10 @@ namespace CubeV2
 
         public static void InitializeFortressTutorial()
         {
-            var demoPlayer = EntityDatabase.Get(EntityDatabase.ManualPlayerName);
+            var playerTemplate = EntityDatabase.Get(EntityDatabase.ManualPlayerName);
             _focusedTemplate = EntityDatabase.Get(EntityDatabase.Ally2Name);
 
-            _game = new FortressTurorialGame(demoPlayer);
+            _game = new FortressTurorialGame(playerTemplate);
             StartBoard(Config.BoardMasterUpdateRate);
         }
 
@@ -114,7 +114,11 @@ namespace CubeV2
                 CenterCameraOnPlayer();
             }
 
-            RevealMapToPlayer();
+            if(Config.EnableFogOfWar)
+            {
+                RevealMapToPlayer();
+            }
+
 
             if (IsGameWon)
             {

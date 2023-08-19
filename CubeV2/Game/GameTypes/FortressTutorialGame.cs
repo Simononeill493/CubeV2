@@ -15,23 +15,29 @@ namespace CubeV2
         public FortressTurorialGame(EntityTemplate player) : base()
         {
             _playerTemplate = player;
+            SetFocusEntity(_playerTemplate.GenerateEntity());
 
             SetTemplateTemplate(CreateTemplateTemplate());
             ResetBoardTemplate();
             ResetBoard();
         }
 
-        public override void CustomSetUpBoard(Board b)
+        public override void OnPlayerDeath()
+        {
+            RespawnPlayer();
+        }
+
+        public override void OnSetBoard(Board b)
         {
             GameInterface.DisplayText = "Fortress tutorial in development...";
-
-            FocusEntity.SetHealthToMax();
+            RespawnPlayer();
         }
 
         public override void RespawnPlayer()
         {
             FocusEntity.RestoreFromDeletion();
             FocusEntity.SetHealthToMax();
+            FocusEntity.Location = Vector2Int.MinusOne;
 
             var spawner = CurrentBoard.GetEntityByTag(Config.SpawnerTag).First();
             var respawnLocation = spawner.Location + Vector2Int.Up;
@@ -47,12 +53,10 @@ namespace CubeV2
             var height = lines.Length;
 
             var templateTemplate = new FortressTutorialTemplateTemplate() { Width = width, Height = height };
-            templateTemplate.StaticEntities[new Vector2Int(0, 12)] = _playerTemplate;
 
             var wall = EntityDatabase.Get(EntityDatabase.StoneWallName);
             var rock = EntityDatabase.Get(EntityDatabase.RockName);
 
-            //var player = EntityDatabase.GetTemplate(EntityDatabase.ManualPlayerName);
             var respawner =  EntityDatabase.Get(EntityDatabase.RespawnerName);
             var craftingTable= EntityDatabase.Get(EntityDatabase.CraftingTableName);
             var turret = EntityDatabase.Get(EntityDatabase.TurretName);
@@ -75,10 +79,6 @@ namespace CubeV2
                     {
                         templateTemplate.StaticEntities[position] = rock;
                     }
-                    /*else if (tile == 'P')//Player
-                    {
-                        templateTemplate.StaticEntities[position] = player;
-                    }*/
                     else if (tile == 'T')//Respawner
                     {
                         templateTemplate.StaticEntities[position] = respawner;

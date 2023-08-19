@@ -32,6 +32,7 @@ namespace CubeV2
             _masterList.Add(new CreateInstruction());
             _masterList.Add(new CountSurroundingsInstruction());
             _masterList.Add(new PingRangeInstruction());
+            _masterList.Add(new ExplodeInstruction());
 
             //_masterList.Add(new AdminTakeEnergyInstruction());
             //_masterList.Add(new AdminDropEnergyInstruction());

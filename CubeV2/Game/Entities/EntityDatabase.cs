@@ -52,7 +52,7 @@ namespace CubeV2
             _masterList[AutoPlayerName].DefaultTags = new List<string>() { Config.PlayerTag };
 
             _masterList[Ally1Name] = new EntityTemplate(Ally1Name) { DisplaySprite = DrawUtils.Ally1Sprite, DefaultMaxEnergy = 10000 };
-            _masterList[Ally2Name] = new EntityTemplate(Ally2Name) { DisplaySprite = DrawUtils.Ally2Sprite, DefaultMaxEnergy = 50 };
+            _masterList[Ally2Name] = new EntityTemplate(Ally2Name) { DisplaySprite = DrawUtils.Ally2Sprite, DefaultMaxEnergy = 50, DefaultMaxHealth = 50 };
 
             _masterList[Ally3Name] = new EntityTemplate(Ally3Name) { DisplaySprite = DrawUtils.Ally3Sprite,DefaultMaxEnergy = 50 };
             _masterList[Ally4Name] = new EntityTemplate(Ally4Name) { DisplaySprite = DrawUtils.Ally4Sprite,DefaultMaxEnergy = 50 };
@@ -73,21 +73,21 @@ namespace CubeV2
             _masterList[PortalName] = new EntityTemplate(PortalName) { DisplaySprite = DrawUtils.PortalSprite };
             _masterList[PortalName].DefaultMaxEnergy = 100;
 
-            _masterList[CraftingTableName] = new EntityTemplate(CraftingTableName) { DisplaySprite = DrawUtils.CraftingTableSprite };
+            _masterList[CraftingTableName] = new EntityTemplate(CraftingTableName) { DisplaySprite = DrawUtils.CraftingTableSprite, CanBeDamaged = false };
 
             _masterList[PickaxeFlowerName] = new HarvestableEntityTemplate(PickaxeFlowerName, 30) { DisplaySprite = DrawUtils.PickaxeFlowerSprite };
             _masterList[LaserFlowerName] = new HarvestableEntityTemplate(LaserFlowerName,100) { DisplaySprite = DrawUtils.WeaponFlowerSprite };
 
-            _masterList[RespawnerName] = new EntityTemplate(RespawnerName) { DisplaySprite = DrawUtils.RespawnerSprite };
+            _masterList[RespawnerName] = new EntityTemplate(RespawnerName) { DisplaySprite = DrawUtils.RespawnerSprite, CanBeDamaged = false };
             _masterList[RespawnerName].DefaultTags = new List<string>() { Config.SpawnerTag };
 
             _masterList[StoneWallName] = new EntityTemplate(StoneWallName) { DisplaySprite = DrawUtils.StoneWallSprite };
-            _masterList[StoneWallName].DefaultMaxHealth = 1000;
+            _masterList[StoneWallName].DefaultMaxHealth = 500;
 
             _masterList[MissileName] = new EntityTemplate(MissileName) { DisplaySprite = DrawUtils.MissileSprite, CanBeDamaged = false };
 
-            _masterList[TurretName] = new EntityTemplate(TurretName) { DisplaySprite = DrawUtils.TurretSprite };
-            _masterList[TurretName].DefaultMaxHealth = 300;
+            _masterList[TurretName] = new EntityTemplate(TurretName) { DisplaySprite = DrawUtils.TurretSprite, CanBeDamaged = true };
+            _masterList[TurretName].DefaultMaxHealth = 150;
         }
 
 

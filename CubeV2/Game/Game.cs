@@ -31,14 +31,12 @@ namespace CubeV2
             BoardAnimator.Reset();
 
             CurrentBoard = b;
-            SetFocusEntity(CurrentBoard.GetActiveEntityByTag(Config.PlayerTag).FirstOrDefault());
-            CustomSetUpBoard(b);
+            OnSetBoard(b);
         }
 
         public void UnsetBoard()
         {
             CurrentBoard = null;
-            ClearFocusEntity();
         }
 
         public void ResetBoard()
@@ -52,7 +50,7 @@ namespace CubeV2
 
             if(FocusEntity.Deleted)
             {
-                RespawnPlayer();
+                OnPlayerDeath();
             }
         }
 
@@ -69,7 +67,8 @@ namespace CubeV2
 
         public abstract BoardTemplateTemplate CreateTemplateTemplate();
 
+        public abstract void OnPlayerDeath();
         public abstract void RespawnPlayer();
-        public virtual void CustomSetUpBoard(Board b) { }
+        public virtual void OnSetBoard(Board b) { }
     }
 }

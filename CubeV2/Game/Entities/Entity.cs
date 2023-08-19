@@ -178,9 +178,12 @@ namespace CubeV2
             }
 
             _currentHealth -= amount;
-            ShowDamageMeter = true;
+            if(_currentHealth < MaxHealth*0.9)
+            {
+                ShowDamageMeter = true;
+            }
 
-            if(_currentHealth<=0)
+            if (_currentHealth<=0)
             {
                 _currentHealth = 0;
                 MarkForDeletion();

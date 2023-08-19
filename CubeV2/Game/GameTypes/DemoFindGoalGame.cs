@@ -5,6 +5,7 @@ namespace CubeV2
 {
     internal class DemoFindGoalGame : Game
     {
+
         private EntityTemplate _playerTemplate; 
 
         public DemoFindGoalGame (EntityTemplate player) : base()
@@ -18,7 +19,7 @@ namespace CubeV2
             WinCondition = new FindGoalWinCondition(EntityDatabase.AutoPlayerName);
         }
 
-        public override void CustomSetUpBoard(Board b)
+        public override void OnSetBoard(Board b)
         {
             foreach (var entity in b.ActiveEntities)
             {
@@ -48,6 +49,13 @@ namespace CubeV2
         {
             throw new NotImplementedException();
         }
+
+        public override void OnPlayerDeath()
+        {
+            throw new NotImplementedException();
+        }
+
+
 
     }
 

@@ -12,5 +12,10 @@ public class EmptyBoardlessGame : Game
     {
         throw new NotImplementedException();
     }
+    public override void OnPlayerDeath()
+    {
+        throw new NotImplementedException();
+    }
+
 
 }

@@ -18,7 +18,7 @@ namespace CubeV2
         public const bool InfiniteEnergy = true;
         public const bool InfiniteHealth = false;
 
-        public const int PlayerRangeLimit = 5;
+        public const int PlayerRangeLimit = 4;
         public const bool EnableRangeLimits = true;
         public const bool EnablePlayerRangeOverlay = true;
         public const bool EnableFogOfWar = false;
@@ -33,7 +33,7 @@ namespace CubeV2
 
         public const string FortressTutorialWorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\New tutorial\\NewTutorialMap.txt";//28 14
 
-        public const int EntityMaxInstructionsPerSet = 7;
+        public const int EntityMaxInstructionsPerSet = 9;
         public const int EntityMaxVariables = 3;
         public const int GlobalDefaultMaxEnergy = 100;
 
