@@ -118,8 +118,8 @@ namespace CubeV2
             _loadPositioning();
         }
 
-        public static Vector2 ScreenSize = new Vector2(1900, 850);
-        public static Vector2 GameUIGridMaxSize = new Vector2(1376, 704);
+        public static Vector2 ScreenSize = new Vector2(1900, 1000);
+        public static Vector2 GameUIGridMaxSize = new Vector2(1650, 880);
 
 
         public static Vector2 InstructionPanelSize;

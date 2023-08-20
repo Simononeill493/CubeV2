@@ -5,30 +5,53 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
-namespace CubeV2
+namespace CubeV2.Camera
 {
-    public partial class GameInterface
+    public partial class GameCamera
     {
-        public static int CameraScale;
-        public static Vector2Int CameraTileSize { get; private set; }
-        public static Vector2 _cameraTileSizeFloat { get; private set; }
+        public static int Scale;
 
-        public static Vector2Int CameraOffset = new Vector2Int(0, 0);
-        public static Vector2Int CameraSize = new Vector2Int(0, 0);
+        public static Vector2Int IndexOffset = new Vector2Int(0, 0);
+        public static Vector2Int PixelOffsetFromGrid = new Vector2Int(0, 0);
 
-        public static (Vector2Int realLocation, int realIndex) UITileGetRealTile(int index)
+        public static void CenterCameraOnPlayer()
         {
-            var realLocation = BoardUtils.IndexToXY(index, CameraSize.X) + CameraOffset;
-            var realIndex = BoardUtils.XYToIndex(realLocation, _game.CurrentBoard._width);
+            SetCameraOffset(GameInterface._game.FocusEntity.Location - CameraGridSize / 2);
+        }
+
+        public static bool IsPlayerInCamera()
+        {
+            return new Rectangle(IndexOffset.X, IndexOffset.Y, CameraGridSize.X, CameraGridSize.Y).Contains(GameInterface._game.FocusEntity.Location.ToVector2());
+            //return true;
+        }
+
+
+        public static (Vector2Int boardLocation, int realIndex) GetBoardLocationFromCameraIndex(int index)
+        {
+            var realLocation = BoardUtils.IndexToXY(index, CameraGridSize.X) + IndexOffset;
+            var realIndex = BoardUtils.XYToIndex(realLocation, GameInterface._game.CurrentBoard._width);
+
+            return (realLocation, realIndex);
+            //return (Vector2Int.MinusOne, -1);
+        }
+
+
+        public static Vector2Int TileSizeInt { get; private set; }
+        public static Vector2 TileSizeFloat { get; private set; }
+
+
+        public static Vector2Int CameraGridSize = new Vector2Int(0, 0);
+
+        public static (Vector2Int boardLocation, int realIndex) GetGameTileFromCameraIndex(int index)
+        {
+            var realLocation = BoardUtils.IndexToXY(index, CameraGridSize.X) + IndexOffset;
+            var realIndex = BoardUtils.XYToIndex(realLocation, GameInterface._game.CurrentBoard._width);
 
             return (realLocation, realIndex);
         }
 
-        public static void CenterCameraOnPlayer()
-        {
-            SetCameraOffset(_game.FocusEntity.Location - CameraSize/2);
-        }
 
         public static void SetCameraConfig(int scale)
         {
@@ -49,31 +72,28 @@ namespace CubeV2
                 return;
             }
 
-            CameraScale = scale;
-            _cameraTileSizeFloat = CameraScale * Config.TileBaseSize;
-            CameraTileSize = new Vector2Int(_cameraTileSizeFloat);
-            CameraSize = size;
+            Scale = scale;
+            TileSizeFloat = Scale * Config.TileBaseSize;
+            TileSizeInt = new Vector2Int(TileSizeFloat);
+            CameraGridSize = size;
 
             var gameGrid = (UIGrid)AllUIElements.GetUIElement(Config.GameGridName);
-            gameGrid.Arrange(CameraSize, CameraTileSize, Config.GameUIGridPadding);
+            gameGrid.Arrange(CameraGridSize, TileSizeInt, Config.GameUIGridPadding);
         }
 
         public static void SetCameraOffset(Vector2Int offset)
         {
             if (Config.AllowCameraMovement)
             {
-                CameraOffset = offset;
+                IndexOffset = offset;
             }
         }
 
-        public static bool IsPlayerInCamera()
-        {
-            return new Rectangle(CameraOffset.X,CameraOffset.Y,CameraSize.X,CameraSize.Y).Contains(_game.FocusEntity.Location.ToVector2());
-        }
 
         public static void RevealMapToPlayer()
         {
-            var location = _game.FocusEntity.Location;
+            throw new NotImplementedException();
+            /*var location = _game.FocusEntity.Location;
             _game.CurrentBoard.TryGetTile(location).Seen = true;
 
             for(int x= location.X - Config.PlayerVisualRadius; x< location.X + Config.PlayerVisualRadius;x++)
@@ -98,7 +118,7 @@ namespace CubeV2
                     Done: continue;
                 }
 
-            }
-        }
+            }*/
     }
+}
 }

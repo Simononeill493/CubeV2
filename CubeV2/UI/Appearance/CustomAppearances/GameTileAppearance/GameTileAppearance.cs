@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CubeV2.Camera;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -25,18 +26,18 @@ namespace CubeV2
 
         }
 
-        public override Vector2 Size => GameInterface._cameraTileSizeFloat;
+        public override Vector2 Size => GameCamera.TileSizeFloat;
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
-            var loc = GameInterface.UITileGetRealTile(Index).realLocation;
+            var loc = GameCamera.GetBoardLocationFromCameraIndex(Index).boardLocation;
             var tile = GameInterface._game.CurrentBoard.TryGetTile(loc);
             if(tile!=null)
             {
                 if(tile.Seen)
                 {
                     //Tile background
-                    DrawUtils.DrawTileSprite(spriteBatch, tile.Sprite, tile.Orientation,position, GameInterface.CameraScale, Layer, tile.Flips);
+                    DrawUtils.DrawTileSprite(spriteBatch, tile.Sprite, tile.Orientation,position, GameCamera.Scale, Layer, tile.Flips);
                     
                     if (tile.Contents != null)
                     {
@@ -46,13 +47,13 @@ namespace CubeV2
                 else
                 {
                     //Covered by fog of war
-                    DrawUtils.DrawRect(spriteBatch, position,GameInterface._cameraTileSizeFloat, Config.PlayerFogColor, Layer);
+                    DrawUtils.DrawRect(spriteBatch, position, GameCamera.TileSizeFloat, Config.PlayerFogColor, Layer);
                 }
             }
             else
             {
                 //Tile doesn't exist
-                DrawUtils.DrawRect(spriteBatch, position, GameInterface._cameraTileSizeFloat, Color.Black, Layer);
+                DrawUtils.DrawRect(spriteBatch, position, GameCamera.TileSizeFloat, Color.Black, Layer);
             }
         }
 
@@ -60,21 +61,21 @@ namespace CubeV2
         {
             if (entity.IsActive && AnimationMovementTracker.IsMoving(entity))
             {
-                position -= (AnimationMovementTracker.GetMovementOffsetUnscaled(entity) * GameInterface.CameraScale);
+                position -= (AnimationMovementTracker.GetMovementOffsetUnscaled(entity) * GameCamera.Scale);
             }
 
             //Entity
-            DrawUtils.DrawTileSprite(spriteBatch, entity.Sprite, entity.Orientation, position, GameInterface.CameraScale, _spriteLayer, SpriteEffects.None);
+            DrawUtils.DrawTileSprite(spriteBatch, entity.Sprite, entity.Orientation, position, GameCamera.Scale, _spriteLayer, SpriteEffects.None);
             
             if (entity.ShowHarvestMeter)
             {
                 //Harvest meter
-                DrawUtils.DrawMeter(spriteBatch, entity.GetHarvestPercentage(), position, GameInterface.CameraScale, _spriteMeterLayer, _spriteMeterLayer2);
+                DrawUtils.DrawMeter(spriteBatch, entity.GetHarvestPercentage(), position, GameCamera.Scale, _spriteMeterLayer, _spriteMeterLayer2);
             }
             else if (entity.ShowDamageMeter)
             {
                 //Harvest meter
-                DrawUtils.DrawMeter(spriteBatch, entity.GetHealthPercentage(), position, GameInterface.CameraScale, _spriteMeterLayer, _spriteMeterLayer2);
+                DrawUtils.DrawMeter(spriteBatch, entity.GetHealthPercentage(), position, GameCamera.Scale, _spriteMeterLayer, _spriteMeterLayer2);
             }
 
         }

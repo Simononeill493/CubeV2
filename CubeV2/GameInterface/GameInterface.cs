@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using CubeV2.Camera;
 
 namespace CubeV2
 {
@@ -72,7 +73,7 @@ namespace CubeV2
         }
         public static void StartBoard(TimeSpan updateRate)
         {
-            SetCameraConfig(Config.DefaultZoomLevel);
+            GameCamera.SetCameraConfig(Config.DefaultZoomLevel);
 
             _boardRunning = true;
             BoardUpdateRate = updateRate;
@@ -109,14 +110,14 @@ namespace CubeV2
 
             _game.TickBoard(input);
 
-            if(!IsPlayerInCamera())
+            if(!GameCamera.IsPlayerInCamera())
             {
-                CenterCameraOnPlayer();
+                GameCamera.CenterCameraOnPlayer();
             }
 
             if(Config.EnableFogOfWar)
             {
-                RevealMapToPlayer();
+                GameCamera.RevealMapToPlayer();
             }
 
 

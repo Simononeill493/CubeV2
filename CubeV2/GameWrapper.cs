@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CubeV2.Camera;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -6,6 +7,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.PortableExecutable;
+
 
 namespace CubeV2
 {
@@ -37,6 +39,7 @@ namespace CubeV2
 
         protected override void Initialize()
         {
+            this.Window.Position = new Point(5, 30);
             // TODO: Add your initialization logic here
             _ui = UIBuilder.GenerateUI();
             //GameInterface.InitializeEmptyGame();
@@ -145,7 +148,7 @@ namespace CubeV2
             {
                 var cursorTile = AllUIElements.GetUIElement(Config.CursorOverlayTileName);
 
-                var gridShrinkFactor = GameInterface.CameraTileSize;
+                var gridShrinkFactor = GameCamera.TileSizeInt;
                 var startPos = new Vector2Int(input.MousePos - gameGrid._position);
 
                 var rescaledPos = (startPos / gridShrinkFactor) * gridShrinkFactor;
@@ -159,7 +162,7 @@ namespace CubeV2
             if (focusEntity!=null)
             {
                 var rangeOverlay = AllUIElements.GetUIElement(Config.OperationalRangeOverlayTileName);
-                var offset = ((focusEntity.Location - GameInterface.CameraOffset - (Config.PlayerRangeLimit)) * GameInterface._cameraTileSizeFloat);
+                var offset = ((focusEntity.Location - GameCamera.IndexOffset - (Config.PlayerRangeLimit)) * GameCamera.TileSizeFloat);
 
                 rangeOverlay.SetOffset(offset);
             }
@@ -168,7 +171,7 @@ namespace CubeV2
 
         private void _universalKeybindings(UserInput input)
         {
-            if (input.IsKeyDown(Keys.Escape) & (input.IsKeyDown(Keys.LeftShift) | (input.IsKeyDown(Keys.RightShift))))
+            if (input.IsKeyDown(Keys.Escape))
             {
                 Exit();
             }

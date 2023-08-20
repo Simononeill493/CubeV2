@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using CubeV2.Camera;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -121,25 +122,25 @@ namespace CubeV2
             var arrowsDirection = DirectionUtils.GetArrowsDirection(input);
             if (arrowsDirection.AnyPressed && Config.AllowCameraMovement)
             {
-                CameraOffset += arrowsDirection.Direction.ToVector();
+                GameCamera.IndexOffset += arrowsDirection.Direction.ToVector();
             }
 
             if(Config.AllowCameraZoom)
             {
                 if (input.IsKeyJustReleased(Keys.OemPlus) | input.IsButtonJustReleased(Buttons.RightShoulder))
                 {
-                    SetCameraConfig(CameraScale + 1);
-                    CenterCameraOnPlayer();
+                    GameCamera.SetCameraConfig(GameCamera.Scale + 1);
+                    GameCamera.CenterCameraOnPlayer();
                 }
                 if (input.IsKeyJustReleased(Keys.OemMinus) | input.IsButtonJustReleased(Buttons.LeftShoulder))
                 {
-                    SetCameraConfig(CameraScale - 1);
-                    CenterCameraOnPlayer();
+                    GameCamera.SetCameraConfig(GameCamera.Scale - 1);
+                    GameCamera.CenterCameraOnPlayer();
                 }
             }
             if (input.IsKeyJustReleased(Keys.Enter))
             {
-                CenterCameraOnPlayer();
+                GameCamera.CenterCameraOnPlayer();
             }
         }
         

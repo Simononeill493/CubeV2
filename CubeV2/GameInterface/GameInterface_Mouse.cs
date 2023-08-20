@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using CubeV2.Camera;
 
 namespace CubeV2
 {
@@ -11,7 +12,7 @@ namespace CubeV2
     {
         public static void TryLeftClickTile(int uiIndex)
         {
-            (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
+            (var tile, var location, var actualIndex) = _getBoardTileFromCameraIndex(uiIndex);
             if (tile != null)
             {
                 LeftClickTile(tile, location, actualIndex);
@@ -20,7 +21,7 @@ namespace CubeV2
 
         public static void TryRightClickTile(int uiIndex)
         {
-            (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
+            (var tile, var location, var actualIndex) = _getBoardTileFromCameraIndex(uiIndex);
             if (tile != null)
             {
                 RightClickTile(tile, location, actualIndex);
@@ -29,7 +30,7 @@ namespace CubeV2
 
         public static void TryLeftPressTile(int uiIndex)
         {
-            (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
+            (var tile, var location, var actualIndex) = _getBoardTileFromCameraIndex(uiIndex);
             if (tile != null)
             {
                 LeftPressTile(tile, location, actualIndex);
@@ -38,7 +39,7 @@ namespace CubeV2
 
         public static void TryRightPressTile(int uiIndex)
         {
-            (var tile, var location, var actualIndex) = _getBoardDetailsFromIndex(uiIndex);
+            (var tile, var location, var actualIndex) = _getBoardTileFromCameraIndex(uiIndex);
             if (tile != null)
             {
                 RightPressTile(tile, location, actualIndex);
@@ -110,7 +111,7 @@ namespace CubeV2
                 if (tile.Contents.TryLeftPress())
                 {
                     AnimationLaserTracker.LaserActive = true;
-                    AnimationLaserTracker.SetLaserLocation((_game.FocusEntity.Location - CameraOffset), (tileLocation - CameraOffset));
+                    AnimationLaserTracker.SetLaserLocation((_game.FocusEntity.Location - GameCamera.IndexOffset), (tileLocation - GameCamera.IndexOffset));
 
                     return;
                 }
@@ -172,9 +173,9 @@ namespace CubeV2
             _manualInstructionBuffer.Enqueue(destroy);
         }
 
-        private static (Tile tile, Vector2Int location,int actualIndex) _getBoardDetailsFromIndex(int index)
+        private static (Tile tile, Vector2Int location,int actualIndex) _getBoardTileFromCameraIndex(int index)
         {
-            (Vector2Int realLocation,int realIndex) = UITileGetRealTile(index);
+            (Vector2Int realLocation,int realIndex) = GameCamera.GetBoardLocationFromCameraIndex(index);
             var tile = _game.CurrentBoard.TryGetTile(realLocation);
 
             if (tile != null)

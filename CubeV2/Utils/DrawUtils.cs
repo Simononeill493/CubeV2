@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using CubeV2.Camera;
+using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -223,36 +224,36 @@ namespace CubeV2
                     break;
                 case Orientation.TopRight:
                     rotation = (float)(rotBase * 1);
-                    rotationOffset = new Vector2(8, -4) * GameInterface.CameraScale;
+                    rotationOffset = new Vector2(8, -4) * GameCamera.Scale;
                     break;
                 case Orientation.Right:
                     rotation = (float)(rotBase * 2);
-                    rotationOffset = new Vector2(16, 0) * GameInterface.CameraScale;
+                    rotationOffset = new Vector2(16, 0) * GameCamera.Scale;
 
                     break;
                 case Orientation.BottomRight:
                     rotation = (float)(rotBase * 3);
-                    rotationOffset = new Vector2(19, 8) * GameInterface.CameraScale;
+                    rotationOffset = new Vector2(19, 8) * GameCamera.Scale;
 
                     break;
                 case Orientation.Bottom:
                     rotation = (float)(rotBase * 4);
-                    rotationOffset = new Vector2(16, 16) * GameInterface.CameraScale;
+                    rotationOffset = new Vector2(16, 16) * GameCamera.Scale;
 
                     break;
                 case Orientation.BottomLeft:
                     rotation = (float)(rotBase * 5);
-                    rotationOffset = new Vector2(8, 20) * GameInterface.CameraScale;
+                    rotationOffset = new Vector2(8, 20) * GameCamera.Scale;
 
                     break;
                 case Orientation.Left:
                     rotation = (float)(rotBase * 6);
-                    rotationOffset = new Vector2(0, 16) * GameInterface.CameraScale;
+                    rotationOffset = new Vector2(0, 16) * GameCamera.Scale;
 
                     break;
                 case Orientation.TopLeft:
                     rotation = (float)(rotBase * 7);
-                    rotationOffset = new Vector2(-3, 8) * GameInterface.CameraScale;
+                    rotationOffset = new Vector2(-3, 8) * GameCamera.Scale;
                     break;
                 default:
                     throw new Exception();

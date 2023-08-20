@@ -21,7 +21,9 @@ namespace CubeV2
         public static UIElement MakeGameBoardAndOverlays()
         {
             var gameBoard = _makeGameBoard();
-            gameBoard.SetOffset(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X, 60);
+            //gameBoard.SetOffset(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X, 60);
+            gameBoard.SetOffset(Config.SelectorPanelSize.X, 60);
+
             gameBoard.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Board);
 
             var cursorOverlayTile = new UIElement(Config.CursorOverlayTileName);
@@ -109,28 +111,18 @@ namespace CubeV2
 
         public static UIElement MakeSidePanels()
         {
-            var instructionPanel = MakeInstructionPanel();
-            var selectorPanel = MakeSelectorPanel();
+            //var instructionPanel = MakeInstructionPanel(Config.InstructionPanelOffset);
+            //var selectorPanel = MakeSelectorPanel(Config.SelectorPanelOffset);
+            var selectorPanel = MakeSelectorPanel(Config.InstructionPanelOffset);
 
             var sidePanelContainer = new UIElement("SidePanelContainer");
-            sidePanelContainer.AddChildren(instructionPanel, selectorPanel);
+            //sidePanelContainer.AddChildren(instructionPanel, selectorPanel);
+            sidePanelContainer.AddChildren(selectorPanel);
+
             return sidePanelContainer;
         }
 
-        public static UIElement MakeInstructionPanel()
-        {
-            var instructionTiles = _makeInstructionTiles();
-            instructionTiles.SetOffset(Config.InstructionPanelSize.X / 2 - Config.InstructionTileSize.X / 2, Config.InstructionTileTopPadding);
 
-            var instructionSetManager = _makeInstructionSetManager();
-            instructionSetManager.SetOffset(65, 10);
-
-            var instructionPanel = UIElementMaker.MakeRectangle(Config.InstructionPanelName, Config.InstructionPanelSize, Config.InstructionPanelOffset, Config.InstructionPanelColor, DrawUtils.UILayer1);
-            instructionPanel.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Editor);
-            instructionPanel.AddChildren(instructionTiles, instructionSetManager);
-
-            return instructionPanel;
-        }
 
         private static UIElement _makeInstructionSetManager()
         {
@@ -215,15 +207,32 @@ namespace CubeV2
             return tileViewerContainer;
         }
 
-        public static UIElement MakeSelectorPanel()
+        public static UIElement MakeInstructionPanel(Vector2 offset)
         {
+            var instructionPanel = UIElementMaker.MakeRectangle(Config.InstructionPanelName, Config.InstructionPanelSize, offset, Config.InstructionPanelColor, DrawUtils.UILayer1);
+            instructionPanel.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Editor);
+
+            var instructionTiles = _makeInstructionTiles();
+            instructionTiles.SetOffset(Config.InstructionPanelSize.X / 2 - Config.InstructionTileSize.X / 2, Config.InstructionTileTopPadding);
+
+            var instructionSetManager = _makeInstructionSetManager();
+            instructionSetManager.SetOffset(65, 10);
+            instructionPanel.AddChildren(instructionTiles, instructionSetManager);
+
+            return instructionPanel;
+        }
+
+        public static UIElement MakeSelectorPanel(Vector2 offset)
+        {
+            var selectorPanel = UIElementMaker.MakeRectangle(Config.SelectorPanelName, Config.SelectorPanelSize, offset, Config.SelectorPanelColor, DrawUtils.UILayer1);
+            selectorPanel.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Editor);
+
             var listContainer = new UIElement("SelectorPanelListContainer");
             listContainer.SetOffset(20, 20);
-            listContainer.AddChildren(_makeListOfInstructions(), _makeListOfVariableCategories(), _makeOutputSelectorGrid(), _makeTileViewer(),_makeGenericVariableList(),_makeIntegerVariableMaker());
-
-            var selectorPanel = UIElementMaker.MakeRectangle(Config.SelectorPanelName, Config.SelectorPanelSize, Config.SelectorPanelOffset, Config.SelectorPanelColor, DrawUtils.UILayer1);
-            selectorPanel.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Editor);
+            listContainer.AddChildren(_makeListOfInstructions(), _makeListOfVariableCategories(), _makeOutputSelectorGrid(), _makeTileViewer(), _makeGenericVariableList(), _makeIntegerVariableMaker());
             selectorPanel.AddChildren(listContainer);
+
+
             return selectorPanel;
         }
 

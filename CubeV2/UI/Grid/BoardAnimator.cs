@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CubeV2.Camera;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -42,9 +43,9 @@ namespace CubeV2
         {
             AnimationLaserTracker.Draw(spriteBatch, position, _tileSizeTopOffset, _tileSizeCenterOffset, _tileSizePadded, Layer);
 
-            var boardOffsetScaled = (GameInterface.CameraOffset * Config.TileBaseSize) * GameInterface.CameraScale;
+            var boardOffsetScaled = (GameCamera.IndexOffset * Config.TileBaseSize) * GameCamera.Scale;
 
-            AnimationTracker.Draw(spriteBatch, gameTime.TotalGameTime, position,boardOffsetScaled, GameInterface.CameraScale, DrawUtils.BoardAnimationLayer);
+            AnimationTracker.Draw(spriteBatch, gameTime.TotalGameTime, position,boardOffsetScaled, GameCamera.Scale, DrawUtils.BoardAnimationLayer);
         }
 
         public void Arrange(Vector2 size,int indexWidth,int indexHeight,int tileWidth,int tileHeight,int padding)
@@ -97,13 +98,10 @@ namespace CubeV2
             }
         }
 
-
         internal static void StartAnimation(string gifName, Vector2 boardPositionUnscaled, TimeSpan frameLength)
         {
             Animations.Add(new BoardAnimation(DrawUtils.GifDict[gifName], boardPositionUnscaled, CurrentTime, frameLength));
         }
-
-
 
         public class BoardAnimation
         {
@@ -129,9 +127,7 @@ namespace CubeV2
                 _gif.Draw(spriteBatch, frame, actualPosition, Vector2.One * scale, 0, Vector2.Zero, layer, Color.White * _transparency);
             }
         }
-
     }
-
 
     public static class AnimationLaserTracker
     {

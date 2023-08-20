@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CubeV2.Camera;
+using Microsoft.Xna.Framework;
 
 namespace CubeV2
 {
@@ -6,7 +7,7 @@ namespace CubeV2
     {
         public class CursorOverlayAppearance : RectangleAppearance
         {
-            public override Vector2 Size => GameInterface._cameraTileSizeFloat;
+            public override Vector2 Size => GameCamera.TileSizeFloat;
             public CursorOverlayAppearance(Color color, float layer) : base(0, 0, color, layer){}
         }
 
