@@ -90,6 +90,7 @@ namespace CubeV2
         public const float GameLayer9 = 0.21f;
         public const float BoardAnimationLayer = 0.209f;
 
+        public const float UILayerBackground = 0.191f;
         public const float UILayer1 = 0.19f;
         public const float UILayer2 = 0.18f;
         public const float UILayer3 = 0.17f;
@@ -171,9 +172,11 @@ namespace CubeV2
 
         public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position, float scale, float rotation, Vector2 rotationOrigin, float layer, SpriteEffects flips = SpriteEffects.None) => DrawSprite(spriteBatch, spriteName, position, scale, rotation, rotationOrigin, layer, Color.White,flips);
 
+        public static int SpritesDrawn;
         public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position,float scale, float rotation, Vector2 rotationOrigin,float layer,Color color,SpriteEffects flips = SpriteEffects.None)
         {
             spriteBatch.Draw(SpritesDict[spriteName], position, null, color, rotation, rotationOrigin, scale, flips, layer);
+            //SpritesDrawn++;
         }
 
         public static void DrawString(SpriteBatch spriteBatch,SpriteFont font,string text,Vector2 position,Color color,float scale,float layer)
@@ -202,10 +205,10 @@ namespace CubeV2
 
         internal static void DrawMeter(SpriteBatch spriteBatch, float percentage, Vector2 position, int cameraScale, float spriteMeterLayer, float spriteMeterLayer2)
         {
-            var widthMeter = percentage * Config.TileBaseSize.X * cameraScale;
-            var widthBox = Config.TileBaseSize.X * cameraScale;
+            var widthMeter = percentage * Config.TileBaseSizeFloat.X * cameraScale;
+            var widthBox = Config.TileBaseSizeFloat.X * cameraScale;
 
-            var height = (Config.TileBaseSize.Y) / 4 * cameraScale;
+            var height = (Config.TileBaseSizeFloat.Y) / 4 * cameraScale;
 
             DrawRect(spriteBatch, position, new Vector2(widthBox, height), Color.Black,spriteMeterLayer);
             DrawRect(spriteBatch, position, new Vector2(widthMeter, height), Color.Red, spriteMeterLayer2);

@@ -167,7 +167,7 @@ namespace CubeV2
 
 
 
-        public static (CardinalDirection Direction, bool AnyPressed) GetWASDDirection(UserInput input)
+        public static (CardinalDirection Direction, bool AnyPressed) GetWASDDirection(this UserInput input)
         {
             return KeysDownToDirection(
                 input.IsKeyDown(Keys.W) | input.IsButtonDown(Buttons.LeftThumbstickUp), 
@@ -176,7 +176,7 @@ namespace CubeV2
                 input.IsKeyDown(Keys.D) | input.IsButtonDown(Buttons.LeftThumbstickRight));
         }
 
-        public static (CardinalDirection Direction, bool AnyPressed) GetArrowsDirection(UserInput input)
+        public static (CardinalDirection Direction, bool AnyPressed) GetArrowsDirection(this UserInput input)
         {
             return KeysDownToDirection(
                 input.IsKeyDown(Keys.Up) | input.IsButtonDown(Buttons.RightThumbstickUp), 

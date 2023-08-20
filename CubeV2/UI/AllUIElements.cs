@@ -10,6 +10,8 @@ namespace CubeV2
     {
         private static Dictionary<string, UIElement> _uIElements = new Dictionary<string, UIElement>();
 
+        public static UIGameGrid GetGameGrid() => (UIGameGrid)GetUIElement(Config.GameGridName);
+
         public static void AddUIElement(UIElement element, string id)
         {
             if (_uIElements.ContainsKey(id))

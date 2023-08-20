@@ -73,7 +73,7 @@ namespace CubeV2
         }
         public static void StartBoard(TimeSpan updateRate)
         {
-            GameCamera.SetCameraConfig(Config.DefaultZoomLevel);
+            GameCamera.SetScale(Config.DefaultCameraScale);
 
             _boardRunning = true;
             BoardUpdateRate = updateRate;
@@ -89,6 +89,7 @@ namespace CubeV2
 
             if (_boardRunning)
             {
+                //_update(input);
                 TimeSinceLastUpdate += gameTime.ElapsedGameTime;
                 if (TimeSinceLastUpdate >= BoardUpdateRate)
                 {

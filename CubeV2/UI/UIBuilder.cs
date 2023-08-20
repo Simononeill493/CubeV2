@@ -22,15 +22,8 @@ namespace CubeV2
         {
             var gameBoard = _makeGameBoard();
             //gameBoard.SetOffset(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X, 60);
-            gameBoard.SetOffset(Config.SelectorPanelSize.X, 60);
-
+            gameBoard.SetOffset(Config.SelectorPanelSize.X, 0);
             gameBoard.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Board);
-
-            var cursorOverlayTile = new UIElement(Config.CursorOverlayTileName);
-            cursorOverlayTile.AddAppearance(new CursorOverlayAppearance(Color.White * 0.5f, DrawUtils.GameLayer7));
-
-            cursorOverlayTile.AddEnabledCondition(() => AllUIElements.GetUIElement(Config.GameGridName).MouseOver);
-            gameBoard.AddChildren(cursorOverlayTile);
 
             if (Config.EnablePlayerRangeOverlay)
             {
@@ -89,22 +82,24 @@ namespace CubeV2
         {
             var displayText = new UIElement(Config.DisplayTextName);
             displayText.AddAppearance(new TextAppearance(new Color(255, 58, 200), DrawUtils.UILayer1, () => GameInterface.DisplayText));
+            displayText.SetOffset(10, 10);
             //displayText.SetEnabledCondition(() => GameInterface.IsGameWon);
 
             var healthBar = new UIElement(Config.HealthBarName);
-            healthBar.SetOffset(new Vector2(0, 25));
+            healthBar.SetOffset(new Vector2(10, 35));
             healthBar.AddAppearance(new HealthBarAppearance(Config.HealthBarSize, DrawUtils.UILayer1, DrawUtils.UILayer2));
 
             var energyBar = new UIElement(Config.EnergyBarName);
-            energyBar.SetOffset(new Vector2(600, 25));
+            energyBar.SetOffset(new Vector2(10, 70));
             energyBar.AddAppearance(new EnergyBarAppearance(Config.EnergyBarSize, DrawUtils.UILayer1, DrawUtils.UILayer2));
 
 
 
 
             var topBarContainer = new UIElement("TopBar");
-            topBarContainer.SetOffset(new Vector2(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X + 30, 10));
+            topBarContainer.SetOffset(new Vector2(Config.ScreenSize.X - (Config.HealthBarSize.X + 80), 10));
             topBarContainer.AddChildren(healthBar,energyBar, displayText);
+            topBarContainer.AddAppearance(new RectangleAppearance(570, 100, Color.Black, DrawUtils.UILayerBackground));
 
             return topBarContainer;
         }
@@ -158,7 +153,9 @@ namespace CubeV2
         {
             var appearanceFactory = new GameTileAppearanceFactory(DrawUtils.GameLayer1, DrawUtils.GameLayer2,DrawUtils.GameLayer4,DrawUtils.GameLayer5);
 
-            var gameGrid = new UIGameGrid(Config.GameGridName,Config.GameUIGridMaxGridWidth,Config.GameUIGridMaxGridHeight, appearanceFactory);
+
+
+            var gameGrid = new UIGameGrid(Config.GameGridName,Config.GameUIGridMaxGridIndexWidth,Config.GameUIGridMaxGridIndexHeight, appearanceFactory);
             //gameGrid.Arrange(Config.GameUIGridDefaultWidth, Config.GameUIGridDefaultHeight, (int)gameTileSize.X, (int)gameTileSize.Y, Config.GameUIGridPadding);
             //gameGrid.Arrange(GameInterface.CameraSize.X, GameInterface.CameraSize.Y, (int)gameTileSize.X*2, (int)gameTileSize.Y*2, Config.GameUIGridPadding);
 
@@ -266,7 +263,7 @@ namespace CubeV2
             var appearanceFactory = new VariableTileAppearanceFactoryGrid(DrawUtils.UILayer2, DrawUtils.UILayer3,3);
 
             var listOfVariables = new UIGrid("ListOfVariables", gridSize, appearanceFactory);
-            listOfVariables.Arrange(gridSize, new Vector2Int(Config.TileBaseSize * Config.VariableSelectionTileScale), 5);
+            listOfVariables.Arrange(gridSize, Config.TileBaseSizeInt * Config.VariableSelectionTileScale, 5);
             listOfVariables.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedVariableFromGrid(index);
             listOfVariables.AddEnabledCondition(GenericVariableListEnabled);
 
@@ -397,9 +394,9 @@ namespace CubeV2
         private static UIElement _makeInstructionVariableTile(int instructionIndex,int variableIndex)
         {
             var variableTile = new UIElement(Config.InstructionVariableTileName + "_" + instructionIndex + "_" + variableIndex);
-            variableTile.SetOffset((Config.TileBaseSize.X * Config.InstructionTileVariableScale + 20) * variableIndex, 20);
+            variableTile.SetOffset((Config.TileBaseSizeFloat.X * Config.InstructionTileVariableScale + 20) * variableIndex, 20);
 
-            var tileBackground = new RectangleAppearance(Config.TileBaseSize * Config.InstructionTileVariableScale, Config.InstructionTileAssignedVariableColor, DrawUtils.UILayer3);
+            var tileBackground = new RectangleAppearance(Config.TileBaseSizeFloat * Config.InstructionTileVariableScale, Config.InstructionTileAssignedVariableColor, DrawUtils.UILayer3);
             tileBackground.OverrideColor(() => (GameInterface.IsFocusedOnVariable(instructionIndex,variableIndex)  ? Config.InstructionTileAssignedVariableHighlightColor : Config.InstructionTileAssignedVariableColor));
 
             var appearance = new VariableTileAppearance_InInstruction(instructionIndex, variableIndex, Config.InstructionTileVariableScale, DrawUtils.UILayer4);

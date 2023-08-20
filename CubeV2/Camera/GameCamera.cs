@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CubeV2.Utils;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -6,27 +7,67 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace CubeV2.Camera
 {
     public partial class GameCamera
     {
-        public static int Scale;
+        public static int Scale { get; private set; }
+        public static Vector2Int TileSizeInt { get; private set; }
+        public static Vector2 TileSizeFloat { get; private set; }
 
-        public static Vector2Int IndexOffset = new Vector2Int(0, 0);
-        public static Vector2Int PixelOffsetFromGrid = new Vector2Int(0, 0);
+        public static Vector2Int PixelOffset { get; private set; } = new Vector2Int(0, 0);
+        public static Vector2Int IndexOffset { get; private set; } = new Vector2Int(0, 0);
+        public static Vector2Int SubTileOffset { get; private set; } = new Vector2Int(0, 0);
+
+
+        public static Vector2Int CameraGridSize = new Vector2Int(0, 0);
+
+        public static void SetScale(int scale)
+        {
+            if(scale < Config.MinimumCameraScale | scale > Config.MaximumCameraScale)
+            {
+                return;
+            }
+
+            var potentialTileSize = _getTileSizeForScale(scale);
+            if(!_isTileSizeValid(potentialTileSize))
+            {
+                return;
+            }
+
+            Scale = scale;
+            TileSizeFloat = Scale * Config.TileBaseSizeFloat;
+            TileSizeInt = new Vector2Int(TileSizeFloat);
+            CameraGridSize = (Config.GameUIGridMaxSize / potentialTileSize).Ceiled() + Vector2Int.Two;
+
+            AllUIElements.GetGameGrid().Arrange(CameraGridSize, TileSizeInt, Config.GameUIGridPadding);
+        }
+
+        public static void SetPixelOffset(Vector2 pixelOffset)
+        {
+            //Console.WriteLine("PixelOffset change: " + (pixelOffset-PixelOffset).ToStringRounded(10));
+
+            PixelOffset = pixelOffset.Rounded();
+
+            IndexOffset = PixelOffset / TileSizeInt;
+            SubTileOffset = (PixelOffset - (IndexOffset * Config.TileBaseSizeInt * Scale)) % TileSizeInt;
+
+            //Console.WriteLine("\n\nPixelOffset " + PixelOffset.ToStringRounded(3) + "\n" + IndexOffset + "\n" + SubTileOffset.ToStringRounded(3));
+        }
+
 
         public static void CenterCameraOnPlayer()
         {
-            SetCameraOffset(GameInterface._game.FocusEntity.Location - CameraGridSize / 2);
+            //SetCameraOffset(GameInterface._game.FocusEntity.Location - CameraGridSize / 2);
         }
 
         public static bool IsPlayerInCamera()
         {
-            return new Rectangle(IndexOffset.X, IndexOffset.Y, CameraGridSize.X, CameraGridSize.Y).Contains(GameInterface._game.FocusEntity.Location.ToVector2());
-            //return true;
+            //return new Rectangle(IndexOffset.X, IndexOffset.Y, CameraGridSize.X, CameraGridSize.Y).Contains(GameInterface._game.FocusEntity.Location.ToVector2());
+            return true;
         }
-
 
         public static (Vector2Int boardLocation, int realIndex) GetBoardLocationFromCameraIndex(int index)
         {
@@ -36,59 +77,6 @@ namespace CubeV2.Camera
             return (realLocation, realIndex);
             //return (Vector2Int.MinusOne, -1);
         }
-
-
-        public static Vector2Int TileSizeInt { get; private set; }
-        public static Vector2 TileSizeFloat { get; private set; }
-
-
-        public static Vector2Int CameraGridSize = new Vector2Int(0, 0);
-
-        public static (Vector2Int boardLocation, int realIndex) GetGameTileFromCameraIndex(int index)
-        {
-            var realLocation = BoardUtils.IndexToXY(index, CameraGridSize.X) + IndexOffset;
-            var realIndex = BoardUtils.XYToIndex(realLocation, GameInterface._game.CurrentBoard._width);
-
-            return (realLocation, realIndex);
-        }
-
-
-        public static void SetCameraConfig(int scale)
-        {
-            var potentialTileSize = scale * (Config.TileBaseSize + new Vector2(Config.GameUIGridPadding, Config.GameUIGridPadding));
-            if (potentialTileSize.X > Config.GameUIGridMaxSize.X || potentialTileSize.X < 1 || potentialTileSize.Y > Config.GameUIGridMaxSize.Y || potentialTileSize.Y < 1)
-            {
-                return;
-            }
-
-            var maxSizeAtThisScale = Config.GameUIGridMaxSize / potentialTileSize;
-            SetCameraConfig(scale, new Vector2Int(maxSizeAtThisScale));
-        }
-
-        public static void SetCameraConfig(int scale, Vector2Int size)
-        {
-            if (scale < 1)
-            {
-                return;
-            }
-
-            Scale = scale;
-            TileSizeFloat = Scale * Config.TileBaseSize;
-            TileSizeInt = new Vector2Int(TileSizeFloat);
-            CameraGridSize = size;
-
-            var gameGrid = (UIGrid)AllUIElements.GetUIElement(Config.GameGridName);
-            gameGrid.Arrange(CameraGridSize, TileSizeInt, Config.GameUIGridPadding);
-        }
-
-        public static void SetCameraOffset(Vector2Int offset)
-        {
-            if (Config.AllowCameraMovement)
-            {
-                IndexOffset = offset;
-            }
-        }
-
 
         public static void RevealMapToPlayer()
         {
@@ -119,6 +107,24 @@ namespace CubeV2.Camera
                 }
 
             }*/
+        }
+
+
+        private static bool _isTileSizeValid(Vector2 potentialTileSize)
+        {
+            if (potentialTileSize.X > Config.GameUIGridMaxSize.X || potentialTileSize.Y > Config.GameUIGridMaxSize.Y || potentialTileSize.X < 1 || potentialTileSize.Y < 1)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static Vector2 _getTileSizeForScale(int scale)
+        {
+            var potentialTileSize = scale * (Config.TileBaseSizeFloat + new Vector2(Config.GameUIGridPadding, Config.GameUIGridPadding));
+            return potentialTileSize;
+        }
     }
 }
-}
+

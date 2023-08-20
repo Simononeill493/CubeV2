@@ -19,13 +19,16 @@ namespace CubeV2
         public const bool InfiniteHealth = false;
 
         public const int PlayerRangeLimit = 4;
-        public const bool EnableRangeLimits = true;
+        public const bool EnableRangeLimits = false;
         public const bool EnablePlayerRangeOverlay = true;
         public const bool EnableFogOfWar = false;
 
-        public const bool AllowCameraMovement = true;
+        public const bool AllowManualCameraMovement = true;
         public const bool AllowCameraZoom = true;
-        public const int DefaultZoomLevel = 2;
+        public const int DefaultCameraScale = 3;
+        public const int MinimumCameraScale = 2;
+        public const int MaximumCameraScale = 5;
+        public const float CameraPixelsPerSecond = 400.0f;
 
 
         public const string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\CircuitMap.txt";//30 14
@@ -54,11 +57,13 @@ namespace CubeV2
         //public const int GameGridWidth = 10;
         //public const int GameGridHeight = 10;
         //public const int GameGridHeight = 10;
-        public const int GameUIGridMaxGridWidth = 100;
-        public const int GameUIGridMaxGridHeight = 50;
+        public const int GameUIGridMaxGridIndexWidth = 65;
+        public const int GameUIGridMaxGridIndexHeight = 40;
         public const int GameUIGridPadding = 0;
 
-        public static Vector2 TileBaseSize = new Vector2(16,16);
+        public static Vector2 TileBaseSizeFloat = new Vector2(16,16);
+        public static Vector2Int TileBaseSizeInt = new Vector2Int(16, 16);
+
         public const int VariableSelectionTileScale = 3;
         public const int InstructionTileVariableScale = 3;
 
@@ -91,7 +96,6 @@ namespace CubeV2
         public const string SimulateButtonName = "SimulateButton";
 
         public const string GameGridName = "GameGrid";
-        public const string CursorOverlayTileName = "CursorOverlayTile";
         public const string OperationalRangeOverlayTileName = "OperationalRangeOverlayTile";
 
 
@@ -119,7 +123,7 @@ namespace CubeV2
         }
 
         public static Vector2 ScreenSize = new Vector2(1900, 1000);
-        public static Vector2 GameUIGridMaxSize = new Vector2(1650, 880);
+        public static Vector2 GameUIGridMaxSize = new Vector2(1650, 1000);
 
 
         public static Vector2 InstructionPanelSize;

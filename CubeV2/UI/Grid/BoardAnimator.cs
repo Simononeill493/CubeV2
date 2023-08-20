@@ -1,13 +1,17 @@
 ﻿using CubeV2.Camera;
+using CubeV2.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static CubeV2.UIBuilder;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace CubeV2
 {
@@ -27,28 +31,30 @@ namespace CubeV2
         private int _tileHeight;
         private int _padding;
 
-        public BoardAnimator(float layer) : base(layer) {}
+        public BoardAnimator(float layer) : base(layer) { }
 
         public static void Reset()
         {
-            AnimationTracker.Animations = new List<AnimationTracker.BoardAnimation>();
-
-            AnimationMovementTracker.EntityMovementTracker = new Dictionary<string, MovementCounter>();
-
+            AnimationCursorTracker.CursorVisible = false;
+            AnimationCameraTracker.CameraMoving = false;
             AnimationLaserTracker.LaserActive = false;
             AnimationLaserTracker.LaserLocation = (Vector2.Zero, Vector2.Zero);
+
+            AnimationGifTracker.Animations = new List<AnimationGifTracker.BoardAnimation>();
+            AnimationMovementTracker.EntityMovementTracker = new Dictionary<string, MovementCounter>();
         }
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
+            AnimationCameraTracker.AnimateCameraMovement(gameTime.ElapsedGameTime);
+            var boardOffsetScaled = ((GameCamera.IndexOffset * Config.TileBaseSizeFloat) * GameCamera.Scale);
+
+            AnimationGifTracker.Draw(spriteBatch, gameTime.TotalGameTime, position - GameCamera.SubTileOffset, boardOffsetScaled, GameCamera.Scale, DrawUtils.BoardAnimationLayer);
             AnimationLaserTracker.Draw(spriteBatch, position, _tileSizeTopOffset, _tileSizeCenterOffset, _tileSizePadded, Layer);
-
-            var boardOffsetScaled = (GameCamera.IndexOffset * Config.TileBaseSize) * GameCamera.Scale;
-
-            AnimationTracker.Draw(spriteBatch, gameTime.TotalGameTime, position,boardOffsetScaled, GameCamera.Scale, DrawUtils.BoardAnimationLayer);
+            AnimationCursorTracker.Draw(spriteBatch);
         }
 
-        public void Arrange(Vector2 size,int indexWidth,int indexHeight,int tileWidth,int tileHeight,int padding)
+        public void Arrange(Vector2 size, int indexWidth, int indexHeight, int tileWidth, int tileHeight, int padding)
         {
             _size = size;
             _indexWidth = indexWidth;
@@ -58,13 +64,44 @@ namespace CubeV2
             _padding = padding;
 
             _tileSize = new Vector2Int(_tileWidth, _tileHeight);
-            _tileSizePadded = new Vector2Int(_tileWidth+_padding, _tileHeight+_padding);
+            _tileSizePadded = new Vector2Int(_tileWidth + _padding, _tileHeight + _padding);
             _tileSizeTopOffset = new Vector2Int(_tileWidth / 2, 0);
             _tileSizeCenterOffset = _tileSize / 2;
         }
     }
 
-    public static class AnimationTracker
+    public static class AnimationCursorTracker
+    {
+        public static bool CursorVisible = false;
+        public static Vector2 GridLocation = Vector2.One;
+        public static Vector2 MousePos = Vector2.One;
+
+        public static void Draw(SpriteBatch spriteBatch)
+        {
+            var gridOffset = (MousePos - GridLocation) + GameCamera.SubTileOffset;
+            var index = (gridOffset/GameCamera.TileSizeInt).Floored();
+
+            var rescaledPos = GridLocation + (index * GameCamera.TileSizeInt);
+            var finalOffset = rescaledPos - GameCamera.SubTileOffset;
+
+            if (CursorVisible)
+            {
+                DrawUtils.DrawRect(spriteBatch, finalOffset, GameCamera.TileSizeFloat, Color.White * 0.5f, DrawUtils.GameLayer7);
+            }
+
+            //Console.WriteLine(gridOffset + "\t" + index.Floored());
+            // Console.WriteLine(gridOffset + "\t" + rescaledPos);
+            //Console.WriteLine((index * GameCamera.TileSizeInt));
+            //Console.WriteLine(rescaledPos + "\t" + GameCamera.SubTileOffset);
+
+
+            //var rescaledPos = (startPos / gridShrinkFactor) * GameCamera.TileSizeInt;
+            //cursorTile.SetOffset(rescaledPos.ToVector2() - GameCamera.SubTileOffset);
+        }
+    }
+
+
+    public static class AnimationGifTracker
     {
         public static List<BoardAnimation> Animations;
         public static TimeSpan CurrentTime;
@@ -122,9 +159,24 @@ namespace CubeV2
 
             public void Draw(SpriteBatch spriteBatch,int frame,Vector2 position,Vector2 cameraOffset,int scale,float layer)
             {
-                Vector2 actualPosition = position-cameraOffset + (_boardPositionUnscaled * scale *Config.TileBaseSize);
+                Vector2 actualPosition = position-cameraOffset + (_boardPositionUnscaled * scale *Config.TileBaseSizeFloat);
 
                 _gif.Draw(spriteBatch, frame, actualPosition, Vector2.One * scale, 0, Vector2.Zero, layer, Color.White * _transparency);
+            }
+        }
+    }
+
+    public static class AnimationCameraTracker
+    {
+        public static bool CameraMoving = false;
+        public static Vector2Int MovementDirection = Vector2Int.Zero;
+
+        public static void AnimateCameraMovement(TimeSpan delta)
+        {
+            if (CameraMoving)
+            {
+                float pixelsMoved = (float)(delta / TimeSpan.FromSeconds(1)) * Config.CameraPixelsPerSecond;
+                GameCamera.SetPixelOffset(GameCamera.PixelOffset + (MovementDirection * pixelsMoved));
             }
         }
     }
@@ -143,8 +195,8 @@ namespace CubeV2
         {
             if (LaserActive)
             {
-                Vector2 laserStart = (position + tileSizeTopOffset + (LaserLocation.Item1 * tileSizePadded));
-                Vector2 laserEnd = position + tileSizeCenterOffset + (LaserLocation.Item2 * tileSizePadded);
+                Vector2 laserStart = (position + tileSizeTopOffset + (LaserLocation.Item1 * tileSizePadded)) - GameCamera.SubTileOffset;
+                Vector2 laserEnd = position + tileSizeCenterOffset + (LaserLocation.Item2 * tileSizePadded) - GameCamera.SubTileOffset;
 
                 DrawUtils.DrawLine
                 (
@@ -175,7 +227,7 @@ namespace CubeV2
             var movementData = EntityMovementTracker[entity.EntityID];
             var movementPercentage = movementData.Remaining / movementData.Total;
 
-            var offset = movementData.Direction * Config.TileBaseSize.X * (float)movementPercentage;
+            var offset = movementData.Direction * Config.TileBaseSizeFloat.X * (float)movementPercentage;
 
             return offset;
         }

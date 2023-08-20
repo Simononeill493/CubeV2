@@ -21,7 +21,7 @@ namespace CubeV2
 
             public override int Run(Entity caller, Board board)
             {
-                AnimationTracker.StartAnimation(DrawUtils.ExplosionGif, caller.Location.ToVector2(), TimeSpan.FromSeconds(0.03));
+                AnimationGifTracker.StartAnimation(DrawUtils.ExplosionGif, caller.Location.ToVector2(), TimeSpan.FromSeconds(0.03));
 
                 foreach (var adjacent in caller.Location.GetAdjacentPoints())
                 {

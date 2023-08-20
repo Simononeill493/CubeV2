@@ -30,6 +30,7 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
+            position = position - GameCamera.SubTileOffset;
             var loc = GameCamera.GetBoardLocationFromCameraIndex(Index).boardLocation;
             var tile = GameInterface._game.CurrentBoard.TryGetTile(loc);
             if(tile!=null)
@@ -53,7 +54,7 @@ namespace CubeV2
             else
             {
                 //Tile doesn't exist
-                DrawUtils.DrawRect(spriteBatch, position, GameCamera.TileSizeFloat, Color.Black, Layer);
+                //DrawUtils.DrawRect(spriteBatch, position, GameCamera.TileSizeFloat, Color.Black, Layer);
             }
         }
 

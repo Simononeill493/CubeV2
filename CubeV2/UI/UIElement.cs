@@ -123,9 +123,12 @@ namespace CubeV2
             _enabledConditions.Add(condition);
 
             //TODO: uhmmmmm this is bad
-            foreach (var child in _children)
+            if(_hasChildren)
             {
-                child.AddEnabledCondition(condition);
+                foreach (var child in _children)
+                {
+                    child.AddEnabledCondition(condition);
+                }
             }
         }
 
@@ -160,10 +163,17 @@ namespace CubeV2
         public void SetOffset(Vector2 offset) => _offset = offset;
         public void SetOffset(float width, float height) => SetOffset(new Vector2(width, height));
 
-        private List<UIElement> _children = new List<UIElement>();
+        private List<UIElement> _children;
+        private bool _hasChildren = false;
         public void AddChildren(params UIElement[] children) => AddChildren(children.ToList());
         public void AddChildren(List<UIElement> children)
         {
+            if(!_hasChildren)
+            {
+                _children = new List<UIElement>();
+                _hasChildren = true;
+            }
+
             //TODO: ehehehehe...
             if (!_alwaysEnabled)
             {
@@ -184,9 +194,12 @@ namespace CubeV2
                 _position = _offset + parentOffset;
                 Appearance.Draw(spriteBatch, _position,gameTime);
 
-                foreach (var child in _children)
+                if(_hasChildren)
                 {
-                    child.Draw(spriteBatch, parentOffset + _offset,gameTime);
+                    foreach (var child in _children)
+                    {
+                        child.Draw(spriteBatch, parentOffset + _offset, gameTime);
+                    }
                 }
             }
         }

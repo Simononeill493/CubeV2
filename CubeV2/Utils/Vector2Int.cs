@@ -12,6 +12,8 @@ namespace CubeV2
     {
         public static Vector2Int Zero => new Vector2Int(0, 0);
         public static Vector2Int One => new Vector2Int(1, 1);
+        public static Vector2Int Two => new Vector2Int(2, 2);
+
         public static Vector2Int MinusOne = new Vector2Int(-1, -1);
 
         public static Vector2Int Up => new Vector2Int(0, -1);
@@ -54,6 +56,8 @@ namespace CubeV2
         public static Vector2Int operator -(Vector2Int a, Vector2Int b) => new Vector2Int(a.X - b.X, a.Y - b.Y);
         public static Vector2Int operator *(Vector2Int a, Vector2Int b) => new Vector2Int(a.X * b.X, a.Y * b.Y);
         public static Vector2Int operator /(Vector2Int a, Vector2Int b) => new Vector2Int(a.X / b.X, a.Y / b.Y);
+        public static Vector2Int operator %(Vector2Int a, Vector2Int b) => new Vector2Int(a.X % b.X, a.Y % b.Y);
+
 
         public static Vector2 operator +(Vector2Int a, Vector2 b) => new Vector2(a.X + b.X, a.Y + b.Y);
         public static Vector2 operator +(Vector2 a, Vector2Int b) => new Vector2(a.X + b.X, a.Y + b.Y);
@@ -61,6 +65,9 @@ namespace CubeV2
         public static Vector2 operator -(Vector2 a, Vector2Int b) => new Vector2(a.X - b.X, a.Y - b.Y);
         public static Vector2 operator *(Vector2Int a, Vector2 b) => new Vector2(a.X * b.X, a.Y * b.Y);
         public static Vector2 operator *(Vector2 a, Vector2Int b) => new Vector2(a.X * b.X, a.Y * b.Y);
+
+        public static Vector2 operator %(Vector2 a, Vector2Int b) => new Vector2(a.X % b.X, a.Y % b.Y);
+
 
         public static Vector2 operator /(Vector2Int a, Vector2 b) => new Vector2(a.X / b.X, a.Y / b.Y);
         public static Vector2 operator /(Vector2 a, Vector2Int b) => new Vector2(a.X / b.X, a.Y / b.Y);

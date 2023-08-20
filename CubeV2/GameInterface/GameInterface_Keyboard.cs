@@ -119,22 +119,23 @@ namespace CubeV2
                 TogglePauseBoard();
             }
 
-            var arrowsDirection = DirectionUtils.GetArrowsDirection(input);
-            if (arrowsDirection.AnyPressed && Config.AllowCameraMovement)
+            var arrowsDirection = input.GetArrowsDirection();
+            AnimationCameraTracker.CameraMoving = arrowsDirection.AnyPressed && Config.AllowManualCameraMovement;
+            if (AnimationCameraTracker.CameraMoving)
             {
-                GameCamera.IndexOffset += arrowsDirection.Direction.ToVector();
+                AnimationCameraTracker.MovementDirection = arrowsDirection.Direction.ToVector();
             }
 
             if(Config.AllowCameraZoom)
             {
                 if (input.IsKeyJustReleased(Keys.OemPlus) | input.IsButtonJustReleased(Buttons.RightShoulder))
                 {
-                    GameCamera.SetCameraConfig(GameCamera.Scale + 1);
+                    GameCamera.SetScale(GameCamera.Scale + 1);
                     GameCamera.CenterCameraOnPlayer();
                 }
                 if (input.IsKeyJustReleased(Keys.OemMinus) | input.IsButtonJustReleased(Buttons.LeftShoulder))
                 {
-                    GameCamera.SetCameraConfig(GameCamera.Scale - 1);
+                    GameCamera.SetScale(GameCamera.Scale - 1);
                     GameCamera.CenterCameraOnPlayer();
                 }
             }

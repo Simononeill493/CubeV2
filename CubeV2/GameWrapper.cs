@@ -34,7 +34,10 @@ namespace CubeV2
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            _previousInput = new UserInput(Mouse.GetState(), Mouse.GetState(), Keyboard.GetState(), Keyboard.GetState(), GamePad.GetState(0), GamePad.GetState(0));
+            //this.IsFixedTimeStep = true;//false;
+            //this.TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d); //60);
+
+            _previousInput = new UserInput(Mouse.GetState(), Mouse.GetState(), Keyboard.GetState(), Keyboard.GetState(), GamePad.GetState(0), GamePad.GetState(0),TimeSpan.Zero);
         }
 
         protected override void Initialize()
@@ -64,7 +67,8 @@ namespace CubeV2
 
         protected override void Update(GameTime gameTime)
         {
-            var input = new UserInput(Mouse.GetState(), _previousInput.MouseState, Keyboard.GetState(), _previousInput.KeyboardState, GamePad.GetState(0),_previousInput.ControllerState);
+            //Console.WriteLine("UpdateDelta:" + gameTime.ElapsedGameTime);
+            var input = new UserInput(Mouse.GetState(), _previousInput.MouseState, Keyboard.GetState(), _previousInput.KeyboardState, GamePad.GetState(0),_previousInput.ControllerState,gameTime.ElapsedGameTime);
 
             _universalKeybindings(input);
 
@@ -124,13 +128,9 @@ namespace CubeV2
                 }
             }
 
-            var gameGrid = AllUIElements.GetUIElement(Config.GameGridName);
-
-            _setCursorTilePosition(input, gameGrid);
-            if (Config.EnablePlayerRangeOverlay)
-            {
-                _setOperationalRangeOverlayPosition(gameGrid);
-            }
+            var gameGrid = (UIGameGrid)AllUIElements.GetUIElement(Config.GameGridName);
+            _setCursorPosition(input, gameGrid);
+            _setOperationalRangeOverlayPosition(gameGrid);
 
             // TODO: Add your update logic here
 
@@ -142,22 +142,28 @@ namespace CubeV2
 
         }
 
-        private void _setCursorTilePosition(UserInput input,UIElement gameGrid)
+        private void _setCursorPosition(UserInput input,UIGameGrid gameGrid)
         {
             if (gameGrid.MouseOver)
             {
-                var cursorTile = AllUIElements.GetUIElement(Config.CursorOverlayTileName);
-
-                var gridShrinkFactor = GameCamera.TileSizeInt;
-                var startPos = new Vector2Int(input.MousePos - gameGrid._position);
-
-                var rescaledPos = (startPos / gridShrinkFactor) * gridShrinkFactor;
-                cursorTile.SetOffset(rescaledPos.ToVector2());
+                AnimationCursorTracker.GridLocation = gameGrid._position;
+                AnimationCursorTracker.MousePos = input.MousePos;
+                AnimationCursorTracker.CursorVisible = true;
             }
+            else
+            {
+                AnimationCursorTracker.CursorVisible = false;
+            }
+
         }
 
         private void _setOperationalRangeOverlayPosition(UIElement gameGrid)
         {
+            if(!Config.EnablePlayerRangeOverlay)
+            {
+                return;
+            }
+
             var focusEntity = GameInterface._game.FocusEntity;
             if (focusEntity!=null)
             {
@@ -177,9 +183,13 @@ namespace CubeV2
             }
         }
 
+
         protected override void Draw(GameTime gameTime)
         {
-            AnimationTracker.Update(gameTime.TotalGameTime);
+            //Console.WriteLine("DrawDelta:" + gameTime.ElapsedGameTime);
+            //return;
+
+            AnimationGifTracker.Update(gameTime.TotalGameTime);
             AnimationMovementTracker.TickEntityMovement(gameTime.ElapsedGameTime);
 
             if (DoDraw)
@@ -192,6 +202,10 @@ namespace CubeV2
 
                 base.Draw(gameTime);
             }
+
+
+            //Console.WriteLine("Sprites:" + DrawUtils.SpritesDrawn);
+            //DrawUtils.SpritesDrawn = 0;
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CubeV2.Camera;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +25,11 @@ namespace CubeV2
             AddAppearance(_boardAnimator);
 
             OnArrange += SendBoardSizesToAnimator;
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, Vector2 parentOffset, GameTime gameTime)
+        {
+            base.Draw(spriteBatch, parentOffset - (GameCamera.Scale * Config.TileBaseSizeFloat), gameTime);
         }
 
         private void SendBoardSizesToAnimator()
