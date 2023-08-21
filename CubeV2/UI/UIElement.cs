@@ -206,18 +206,17 @@ namespace CubeV2
 
         public bool MouseOver;
 
-        public void CheckMouseOver(Vector2 mousePos)
+        public virtual void CheckMouseOver(Vector2 mousePos)
         {
             if(Enabled)
             {
-                var size = Appearance.Size;
-                MouseOver = new Rectangle((int)_position.X, (int)_position.Y, (int)size.X, (int)size.Y).Contains(mousePos);
-    
+                MouseOver = UserInput.IsMouseInArea(_position, Appearance.Size, mousePos);
                 return;
             }
 
             MouseOver = false;
         }
+
 
         public override string ToString()
         {

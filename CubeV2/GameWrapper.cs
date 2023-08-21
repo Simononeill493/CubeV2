@@ -168,7 +168,7 @@ namespace CubeV2
             if (focusEntity!=null)
             {
                 var rangeOverlay = AllUIElements.GetUIElement(Config.OperationalRangeOverlayTileName);
-                var offset = ((focusEntity.Location - GameCamera.IndexOffset - (Config.PlayerRangeLimit)) * GameCamera.TileSizeFloat);
+                var offset = ((focusEntity.Location - GameCamera.IndexOffset - (Config.PlayerRangeLimit)) * GameCamera.TileSizeFloat) - GameCamera.SubTileOffset;
 
                 rangeOverlay.SetOffset(offset);
             }

@@ -32,9 +32,30 @@ namespace CubeV2
             base.Draw(spriteBatch, parentOffset - (GameCamera.Scale * Config.TileBaseSizeFloat), gameTime);
         }
 
+        public override UIElement GenerateTile(string id)
+        {
+            return new UIGameTile(id);
+        }
+
         private void SendBoardSizesToAnimator()
         {
             _boardAnimator.Arrange(CurrentSize, _indexWidthCurrent, _indexHeightCurrent, _tileWidth, _tileHeight, _padding);
+        }
+    }
+
+    public class UIGameTile : UIElement
+    {
+        public UIGameTile(string id) : base(id) {}
+
+        public override void CheckMouseOver(Vector2 mousePos)
+        {
+            if (Enabled)
+            {
+                MouseOver = UserInput.IsMouseInArea(_position-GameCamera.SubTileOffset, Appearance.Size, mousePos);
+                return;
+            }
+
+            MouseOver = false;
         }
     }
 }

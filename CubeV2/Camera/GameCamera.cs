@@ -60,13 +60,20 @@ namespace CubeV2.Camera
 
         public static void CenterCameraOnPlayer()
         {
-            //SetCameraOffset(GameInterface._game.FocusEntity.Location - CameraGridSize / 2);
+            var playerIndexOffset = GameInterface._game.FocusEntity.Location - CameraGridSize / 2;
+            var playerPixelOffset = playerIndexOffset * TileSizeFloat;
+
+            SetPixelOffset(playerPixelOffset);
         }
 
-        public static bool IsPlayerInCamera()
+        public static bool IsPlayerFullyInCamera()
         {
-            //return new Rectangle(IndexOffset.X, IndexOffset.Y, CameraGridSize.X, CameraGridSize.Y).Contains(GameInterface._game.FocusEntity.Location.ToVector2());
-            return true;
+            //TODO unfinished and broken 
+            var rect = new Rectangle(IndexOffset.X, IndexOffset.Y, CameraGridSize.X, CameraGridSize.Y);
+            var ans = rect.Contains(GameInterface._game.FocusEntity.Location.ToVector2());
+
+            Console.WriteLine(rect + "\t" + GameInterface._game.FocusEntity.Location + "\t" + ans);
+            return ans;
         }
 
         public static (Vector2Int boardLocation, int realIndex) GetBoardLocationFromCameraIndex(int index)

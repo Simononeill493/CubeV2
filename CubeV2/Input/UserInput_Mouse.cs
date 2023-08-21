@@ -71,5 +71,12 @@ namespace CubeV2
             ScrollDifference = MouseState.ScrollWheelValue - oldMouseState.ScrollWheelValue;
             ScrollDirection += ScrollDifference > 0 ? 1 : ScrollDifference < 0 ? -1 : 0;
         }
+
+        public bool IsMouseInArea(Vector2 position, Vector2 size) => IsMouseInArea(position, size, MousePos);
+
+        public static bool IsMouseInArea(Vector2 position,Vector2 size,Vector2 mousePos)
+        {
+            return new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y).Contains(mousePos);
+        }
     }
 }

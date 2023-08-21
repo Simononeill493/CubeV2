@@ -47,7 +47,7 @@ namespace CubeV2
             {
                 for (int x = 0; x < maxIndexWidth; x++)
                 {
-                    var tile = new UIElement(_generateTileID(id, x, y));
+                    var tile = GenerateTile(_generateTileID(id, x, y));
 
                     int indexCaptured = index;
                     tile.AddLeftClickAction((input) => { TileLeftClicked?.Invoke(input, indexCaptured); });
@@ -64,6 +64,11 @@ namespace CubeV2
 
             _indexWidthMax = maxIndexWidth;
             _indexHeightMax = maxIndexHeight;
+        }
+
+        public virtual UIElement GenerateTile(string id)
+        {
+            return new UIElement(id);
         }
 
         public void Arrange(Vector2Int size, Vector2Int tileSize, int internalPadding) => Arrange(size.X, size.Y, tileSize.X, tileSize.Y, internalPadding);
