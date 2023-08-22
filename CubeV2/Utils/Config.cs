@@ -59,6 +59,8 @@ namespace CubeV2
         //public const int GameGridHeight = 10;
         public const int GameUIGridMaxGridIndexWidth = 65;
         public const int GameUIGridMaxGridIndexHeight = 40;
+        public static Vector2Int GameUIGridIndexPadding = new Vector2Int(2,2);
+
         public const int GameUIGridPadding = 0;
 
         public static Vector2 TileBaseSizeFloat = new Vector2(16,16);
@@ -96,7 +98,6 @@ namespace CubeV2
         public const string SimulateButtonName = "SimulateButton";
 
         public const string GameGridName = "GameGrid";
-        public const string OperationalRangeOverlayTileName = "OperationalRangeOverlayTile";
 
 
         public const string ListOfInstructionsName = "InstructionSelectorGrid";
@@ -122,9 +123,11 @@ namespace CubeV2
             _loadPositioning();
         }
 
-        public static Vector2 ScreenSize = new Vector2(1900, 1000);
-        public static Vector2 GameUIGridMaxSize = new Vector2(1650, 1000);
+        //public static Vector2 ScreenSize = new Vector2(1900, 1000);
+        //public static Vector2 GameUIGridMaxSize = new Vector2(1650, 1000);
 
+        public static Vector2 ScreenSize = new Vector2(1600, 800);
+        public static Vector2 GameUIGridMaxSize = new Vector2(1350, 800);
 
         public static Vector2 InstructionPanelSize;
         public static Vector2 InstructionPanelOffset;

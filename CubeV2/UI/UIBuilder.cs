@@ -10,7 +10,7 @@ namespace CubeV2
         {
             var gameTopBar = MakeGameTopBar();
             var gameBottomBar = MakeGameBottomBar();
-            var gameBoard = MakeGameBoardAndOverlays();
+            var gameBoard = MakeGameBoard();
             var gameSidePanels = MakeSidePanels();
 
             var topLevel = new UIElement(Config.UITopLevelName);
@@ -18,20 +18,12 @@ namespace CubeV2
             return topLevel;
         }
 
-        public static UIElement MakeGameBoardAndOverlays()
+        public static UIElement MakeGameBoard()
         {
             var gameBoard = _makeGameBoard();
             //gameBoard.SetOffset(Config.InstructionPanelSize.X + Config.SelectorPanelSize.X, 60);
             gameBoard.SetOffset(Config.SelectorPanelSize.X, 0);
             gameBoard.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Board);
-
-            if (Config.EnablePlayerRangeOverlay)
-            {
-                var operationalRangeOverlayTile = new UIElement(Config.OperationalRangeOverlayTileName);
-                operationalRangeOverlayTile.AddAppearance(new OperationalRangeOverlayAppearance(Color.White * 0.05f, DrawUtils.GameLayer6));
-                operationalRangeOverlayTile.AddEnabledCondition(() => GameInterface._game.FocusEntity != null);
-                gameBoard.AddChildren(operationalRangeOverlayTile);
-            }
 
             return gameBoard;
         }
@@ -152,9 +144,6 @@ namespace CubeV2
         private static UIGrid _makeGameBoard()
         {
             var appearanceFactory = new GameTileAppearanceFactory(DrawUtils.GameLayer1, DrawUtils.GameLayer2,DrawUtils.GameLayer4,DrawUtils.GameLayer5);
-
-
-
             var gameGrid = new UIGameGrid(Config.GameGridName,Config.GameUIGridMaxGridIndexWidth,Config.GameUIGridMaxGridIndexHeight, appearanceFactory);
             //gameGrid.Arrange(Config.GameUIGridDefaultWidth, Config.GameUIGridDefaultHeight, (int)gameTileSize.X, (int)gameTileSize.Y, Config.GameUIGridPadding);
             //gameGrid.Arrange(GameInterface.CameraSize.X, GameInterface.CameraSize.Y, (int)gameTileSize.X*2, (int)gameTileSize.Y*2, Config.GameUIGridPadding);

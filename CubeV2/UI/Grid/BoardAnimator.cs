@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading;
@@ -17,6 +18,8 @@ namespace CubeV2
 {
     internal class BoardAnimator : Appearance
     {
+        public static Vector2 BoardLocation;
+
         public override Vector2 Size => _size;
 
         private Vector2 _size;
@@ -52,6 +55,8 @@ namespace CubeV2
             AnimationGifTracker.Draw(spriteBatch, gameTime.TotalGameTime, position - GameCamera.SubTileOffset, boardOffsetScaled, GameCamera.Scale, DrawUtils.BoardAnimationLayer);
             AnimationLaserTracker.Draw(spriteBatch, position, _tileSizeTopOffset, _tileSizeCenterOffset, _tileSizePadded, Layer);
             AnimationCursorTracker.Draw(spriteBatch);
+            AnimationRangeOverlayTracker.Draw(spriteBatch);
+
         }
 
         public void Arrange(Vector2 size, int indexWidth, int indexHeight, int tileWidth, int tileHeight, int padding)
@@ -70,33 +75,42 @@ namespace CubeV2
         }
     }
 
+    public static class AnimationRangeOverlayTracker
+    {
+        public static bool OverlayVisible = false;
+
+        public static void Draw(SpriteBatch spriteBatch)
+        {
+            var player = GameInterface._game.FocusEntity;
+
+            if (Config.EnablePlayerRangeOverlay && player != null)
+            {
+                var gridIndexActual = (player.Location - GameCamera.IndexOffset) - new Vector2Int(Config.PlayerRangeLimit, Config.PlayerRangeLimit);
+                var offset = (gridIndexActual * GameCamera.TileSizeFloat) + BoardAnimator.BoardLocation - GameCamera.SubTileOffset;
+                var size = GameCamera.TileSizeFloat * ((Config.PlayerRangeLimit * 2) + 1);
+
+                DrawUtils.DrawRect(spriteBatch, offset, size, Color.White * 0.05f, DrawUtils.GameLayer6);
+            }
+        }
+    }
+
     public static class AnimationCursorTracker
     {
         public static bool CursorVisible = false;
-        public static Vector2 GridLocation = Vector2.One;
         public static Vector2 MousePos = Vector2.One;
 
         public static void Draw(SpriteBatch spriteBatch)
         {
-            var gridOffset = (MousePos - GridLocation) + GameCamera.SubTileOffset;
-            var index = (gridOffset/GameCamera.TileSizeInt).Floored();
-
-            var rescaledPos = GridLocation + (index * GameCamera.TileSizeInt);
-            var finalOffset = rescaledPos - GameCamera.SubTileOffset;
-
             if (CursorVisible)
             {
+                var gridOffset = (MousePos - BoardAnimator.BoardLocation) + GameCamera.SubTileOffset;
+                var index = (gridOffset / GameCamera.TileSizeInt).Floored();
+
+                var rescaledPos = BoardAnimator.BoardLocation + (index * GameCamera.TileSizeInt);
+                var finalOffset = rescaledPos - GameCamera.SubTileOffset;
+
                 DrawUtils.DrawRect(spriteBatch, finalOffset, GameCamera.TileSizeFloat, Color.White * 0.5f, DrawUtils.GameLayer7);
             }
-
-            //Console.WriteLine(gridOffset + "\t" + index.Floored());
-            // Console.WriteLine(gridOffset + "\t" + rescaledPos);
-            //Console.WriteLine((index * GameCamera.TileSizeInt));
-            //Console.WriteLine(rescaledPos + "\t" + GameCamera.SubTileOffset);
-
-
-            //var rescaledPos = (startPos / gridShrinkFactor) * GameCamera.TileSizeInt;
-            //cursorTile.SetOffset(rescaledPos.ToVector2() - GameCamera.SubTileOffset);
         }
     }
 

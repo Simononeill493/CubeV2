@@ -128,11 +128,9 @@ namespace CubeV2
                 }
             }
 
-            var gameGrid = (UIGameGrid)AllUIElements.GetUIElement(Config.GameGridName);
-            _setCursorPosition(input, gameGrid);
-            _setOperationalRangeOverlayPosition(gameGrid);
-
-            // TODO: Add your update logic here
+            var gameGrid = AllUIElements.GetGameGrid();
+            BoardAnimator.BoardLocation = gameGrid._position;
+            _setCursorPosition(input, gameGrid.MouseOver);
 
             base.Update(gameTime);
             GameInterface.TryUpdate(input,gameTime);
@@ -142,38 +140,17 @@ namespace CubeV2
 
         }
 
-        private void _setCursorPosition(UserInput input,UIGameGrid gameGrid)
+        private void _setCursorPosition(UserInput input,bool isMouseOverGrid)
         {
-            if (gameGrid.MouseOver)
+            if (isMouseOverGrid)
             {
-                AnimationCursorTracker.GridLocation = gameGrid._position;
                 AnimationCursorTracker.MousePos = input.MousePos;
                 AnimationCursorTracker.CursorVisible = true;
-            }
-            else
-            {
-                AnimationCursorTracker.CursorVisible = false;
-            }
-
-        }
-
-        private void _setOperationalRangeOverlayPosition(UIElement gameGrid)
-        {
-            if(!Config.EnablePlayerRangeOverlay)
-            {
                 return;
             }
 
-            var focusEntity = GameInterface._game.FocusEntity;
-            if (focusEntity!=null)
-            {
-                var rangeOverlay = AllUIElements.GetUIElement(Config.OperationalRangeOverlayTileName);
-                var offset = ((focusEntity.Location - GameCamera.IndexOffset - (Config.PlayerRangeLimit)) * GameCamera.TileSizeFloat) - GameCamera.SubTileOffset;
-
-                rangeOverlay.SetOffset(offset);
-            }
+            AnimationCursorTracker.CursorVisible = false;
         }
-
 
         private void _universalKeybindings(UserInput input)
         {

@@ -21,7 +21,6 @@ namespace CubeV2.Camera
         public static Vector2Int IndexOffset { get; private set; } = new Vector2Int(0, 0);
         public static Vector2Int SubTileOffset { get; private set; } = new Vector2Int(0, 0);
 
-
         public static Vector2Int CameraGridSize = new Vector2Int(0, 0);
 
         public static void SetScale(int scale)
@@ -40,23 +39,20 @@ namespace CubeV2.Camera
             Scale = scale;
             TileSizeFloat = Scale * Config.TileBaseSizeFloat;
             TileSizeInt = new Vector2Int(TileSizeFloat);
-            CameraGridSize = (Config.GameUIGridMaxSize / potentialTileSize).Ceiled() + Vector2Int.Two;
+            CameraGridSize = (Config.GameUIGridMaxSize / potentialTileSize).Ceiled() + Config.GameUIGridIndexPadding;
 
             AllUIElements.GetGameGrid().Arrange(CameraGridSize, TileSizeInt, Config.GameUIGridPadding);
         }
 
         public static void SetPixelOffset(Vector2 pixelOffset)
         {
-            //Console.WriteLine("PixelOffset change: " + (pixelOffset-PixelOffset).ToStringRounded(10));
-
             PixelOffset = pixelOffset.Rounded();
-
             IndexOffset = PixelOffset / TileSizeInt;
             SubTileOffset = (PixelOffset - (IndexOffset * Config.TileBaseSizeInt * Scale)) % TileSizeInt;
 
-            //Console.WriteLine("\n\nPixelOffset " + PixelOffset.ToStringRounded(3) + "\n" + IndexOffset + "\n" + SubTileOffset.ToStringRounded(3));
+            //Console.WriteLine("\n\nPixelOffset " + PixelOffset + "\n" + IndexOffset + "\n" + SubTileOffset);
+            //Console.WriteLine("PixelOffset change: " + (pixelOffset-PixelOffset).ToStringRounded(10));
         }
-
 
         public static void CenterCameraOnPlayer()
         {
@@ -72,7 +68,7 @@ namespace CubeV2.Camera
             var rect = new Rectangle(IndexOffset.X, IndexOffset.Y, CameraGridSize.X, CameraGridSize.Y);
             var ans = rect.Contains(GameInterface._game.FocusEntity.Location.ToVector2());
 
-            Console.WriteLine(rect + "\t" + GameInterface._game.FocusEntity.Location + "\t" + ans);
+            //Console.WriteLine(rect + "\t" + GameInterface._game.FocusEntity.Location + "\t" + ans);
             return ans;
         }
 
