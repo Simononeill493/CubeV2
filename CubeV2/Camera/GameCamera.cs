@@ -25,11 +25,9 @@ namespace CubeV2.Camera
         private static Vector2 _mapTopLeftOffset = Vector2.Zero;
         private static Vector2 _mapBottomRightOffset = Vector2.Zero;
 
-        //private static Vector2 _cameraBorderTopLeftOffset = Vector2.Zero;
-        //private static Vector2 _cameraBorderBottomRightOffset = Vector2.Zero;
-
-
         public static Vector2Int CameraGridSize = Vector2Int.Zero;
+        private static Vector2Int _cameraBorderIndexSize = Vector2Int.One;
+
 
         public static void SetScale(int scale)
         {
@@ -53,9 +51,7 @@ namespace CubeV2.Camera
 
             _mapTopLeftOffset = -(Config.GameUIGridIndexPadding / 2 * TileSizeFloat);
             _mapBottomRightOffset = (_mapActualSizePixels - (Config.GameBoardScreenSpaceAllocated + (Config.GameUIGridIndexPadding / 2 * TileSizeInt)));
-
-            //_cameraBorderTopLeftOffset = -(Config.GameUIGridIndexCameraBorder * TileSizeFloat);
-            //_cameraBorderBottomRightOffset= (_mapActualSizePixels - (Config.GameBoardScreenSpaceAllocated + (Config.GameUIGridIndexCameraBorder * TileSizeFloat)));
+            _cameraBorderIndexSize = (CameraGridSize * Config.CameraBorderScreenPercentage).Rounded();
 
             AllUIElements.GetGameGrid().Arrange(CameraGridSize, TileSizeInt, Config.GameUIGridPadding);
         }
@@ -86,24 +82,24 @@ namespace CubeV2.Camera
 
             var offsetTopLeftSprite = _getPlayerCameraBorderOffset();
             var offsetBottomRightSprite = offsetTopLeftSprite + TileSizeFloat;
-            var cameraBorderSize = Config.GameUIGridIndexCameraBorder * TileSizeInt.SingleValue;
+            var cameraBorderSize = _cameraBorderIndexSize * TileSizeInt;
 
-            if (offsetBottomRightSprite.X > Config.GameBoardScreenSpaceAllocated.X - cameraBorderSize)
+            if (offsetBottomRightSprite.X > Config.GameBoardScreenSpaceAllocated.X - cameraBorderSize.X)
             {
-                change.X = (int)(offsetBottomRightSprite.X - Config.GameBoardScreenSpaceAllocated.X + cameraBorderSize);
+                change.X = (int)(offsetBottomRightSprite.X - Config.GameBoardScreenSpaceAllocated.X + cameraBorderSize.X);
             }
-            if (offsetBottomRightSprite.Y > Config.GameBoardScreenSpaceAllocated.Y - cameraBorderSize)
+            if (offsetBottomRightSprite.Y > Config.GameBoardScreenSpaceAllocated.Y - cameraBorderSize.Y)
             {
-                change.Y = (int)(offsetBottomRightSprite.Y - Config.GameBoardScreenSpaceAllocated.Y + cameraBorderSize);
+                change.Y = (int)(offsetBottomRightSprite.Y - Config.GameBoardScreenSpaceAllocated.Y + cameraBorderSize.Y);
             }
 
-            if (offsetTopLeftSprite.X < cameraBorderSize)
+            if (offsetTopLeftSprite.X < cameraBorderSize.X)
             {
-                change.X = (int)offsetTopLeftSprite.X - cameraBorderSize;
+                change.X = (int)offsetTopLeftSprite.X - cameraBorderSize.X;
             }
-            if (offsetTopLeftSprite.Y < cameraBorderSize)
+            if (offsetTopLeftSprite.Y < cameraBorderSize.Y)
             {
-                change.Y = (int)offsetTopLeftSprite.Y - cameraBorderSize;
+                change.Y = (int)offsetTopLeftSprite.Y - cameraBorderSize.Y;
             }
 
             if (change != Vector2Int.Zero)

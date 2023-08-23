@@ -1,6 +1,6 @@
 ﻿namespace CubeV2
 {
-    internal class AdminDestroyInstruction : Instruction
+    internal class AdminDestroyInstruction : AdminInstruction
     {
         public override string Name => "AdminDestroy";
         public override int VariableCount => 1;

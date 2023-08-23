@@ -146,7 +146,7 @@ namespace CubeV2
             dropEnergy.Variables[0] = new LocationVariable(tileLocation);
             dropEnergy.Variables[1] = new IntegerVariable(10);
 
-            _manualInstructionBuffer.Enqueue(dropEnergy);
+            _game.FocusEntity.ManualInstructionBuffer.Enqueue(dropEnergy);
         }
         private static void _manualTakeEmergy(Vector2Int tileLocation)
         {
@@ -154,7 +154,7 @@ namespace CubeV2
             takeEnergy.Variables[0] = new LocationVariable(tileLocation);
             takeEnergy.Variables[1] = new IntegerVariable(10);
 
-            _manualInstructionBuffer.Enqueue(takeEnergy);
+            _game.FocusEntity.ManualInstructionBuffer.Enqueue(takeEnergy);
 
         }
         private static void _manualCreateEntity(Vector2Int tileLocation)
@@ -163,14 +163,14 @@ namespace CubeV2
             create.Variables[0] = new LocationVariable(tileLocation);
             create.Variables[1] = new EntityTypeVariable(EntityDatabase.Get(EntityDatabase.Ally2Name));
 
-            _manualInstructionBuffer.Enqueue(create);
+            _game.FocusEntity.ManualInstructionBuffer.Enqueue(create);
         }
         private static void _manualDestroyEntity(Vector2Int tileLocation)
         {
             var destroy = new AdminDestroyInstruction();
             destroy.Variables[0] = new LocationVariable(tileLocation);
 
-            _manualInstructionBuffer.Enqueue(destroy);
+            _game.FocusEntity.ManualInstructionBuffer.Enqueue(destroy);
         }
 
         private static (Tile tile, Vector2Int location,int actualIndex) _getBoardTileFromCameraIndex(int index)

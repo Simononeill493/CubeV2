@@ -37,7 +37,7 @@ namespace CubeV2
 
         public override BoardTemplate GenerateTemplate()
         {
-            var template = new BoardTemplate();
+            var template = new FortressTutorialTemplate();
             template.Width = Width;
             template.Height = Height;
             template.Entities = new Dictionary<Vector2Int, EntityTemplate>();

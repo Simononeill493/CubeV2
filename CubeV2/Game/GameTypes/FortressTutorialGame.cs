@@ -15,7 +15,7 @@ namespace CubeV2
         public FortressTurorialGame(EntityTemplate player) : base()
         {
             _playerTemplate = player;
-            SetFocusEntity(_playerTemplate.GenerateEntity());
+            SetFocusEntity((ManualPlayerEntity)_playerTemplate.GenerateEntity());
 
             SetTemplateTemplate(CreateTemplateTemplate());
             ResetBoardTemplate();

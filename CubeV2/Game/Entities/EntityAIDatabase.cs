@@ -12,7 +12,7 @@ internal class EntityAIDatabase
     public static void Load()
     {
         EntityDatabase.Get(EntityDatabase.ManualPlayerName).MakeInstructable();
-        EntityDatabase.Get(EntityDatabase.ManualPlayerName).DefaultUpdateRate = 1;
+        EntityDatabase.Get(EntityDatabase.ManualPlayerName).DefaultUpdateRate = 2;
 
         EntityDatabase.Get(EntityDatabase.AutoPlayerName).MakeInstructable();
 
@@ -38,14 +38,15 @@ internal class EntityAIDatabase
 
     private static void TurretSetAI(EntityTemplate turret)
     {
-        turret.DefaultUpdateRate = 12;
+        turret.DefaultUpdateRate = 15;
+        turret.AddDefaultVariable(0,IVariableType.Integer, 8);
 
-        var find = new PingRangeInstruction(EntityDatabase.Get(EntityDatabase.ManualPlayerName), 4);
-        find.OutputTargetVariables[0] = 0;
+        var find = new PingRangeInstruction(new EntityTypeVariable(EntityDatabase.Get(EntityDatabase.ManualPlayerName)), new StoredVariableVariable(0));
+        find.OutputTargetVariables[0] = 1;
         find.IndexFound = 1;
         find.IndexNotFound = 3;
 
-        var turn = new TurnInstruction(new StoredVariableVariable(0));
+        var turn = new TurnInstruction(new StoredVariableVariable(1));
         var shoot = new CreateInstruction(RelativeDirection.Forward,EntityDatabase.Get(EntityDatabase.MissileName));
 
         turret.Instructions[0][0] = find;
@@ -55,7 +56,7 @@ internal class EntityAIDatabase
 
     private static void MissileSetAI(EntityTemplate missile)
     {
-        missile.DefaultUpdateRate = 2;
+        missile.DefaultUpdateRate = 3;
 
         var actOnAge = new IfInstruction(new AgeVariable(), new IntegerVariable(25));
         actOnAge.Operator = IOperator.MoreThan;

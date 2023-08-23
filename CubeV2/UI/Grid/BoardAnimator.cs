@@ -187,7 +187,7 @@ namespace CubeV2
         {
             if (CameraMoving)
             {
-                float pixelsMoved = (float)(delta / TimeSpan.FromSeconds(1)) * Config.CameraPixelsPerSecond;
+                float pixelsMoved = (float)(delta / TimeSpan.FromSeconds(1)) * Config.CameraMovementPixelsPerSecond;
                 GameCamera.SetPixelOffset(GameCamera.PixelOffset + (MovementDirection * pixelsMoved));
             }
 

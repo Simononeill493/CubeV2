@@ -8,6 +8,8 @@ namespace CubeV2
 {
     public class ManualPlayerEntity : Entity
     {
+        public Queue<Instruction> ManualInstructionBuffer = new Queue<Instruction>();
+
         private static MoveInstruction _keyboardMoveInstruction;
         private static PushDestroyInstruction _keyboardHitInstruction;
         private static PullEnergyInstruction _keyboardSapInstruction;
@@ -37,9 +39,9 @@ namespace CubeV2
                     _executeInstruction(_keyboardSapInstruction, currentBoard);
                 }
 
-                if (input.ManualClickInstruction != null)
+                if (ManualInstructionBuffer.Any())
                 {
-                    _executeInstruction(input.ManualClickInstruction, currentBoard);
+                    _executeInstruction(ManualInstructionBuffer.Dequeue(), currentBoard);
                 }
             }
 

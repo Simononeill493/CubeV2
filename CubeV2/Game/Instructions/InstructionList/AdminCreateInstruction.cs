@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CubeV2
 {
-    internal class AdminCreateInstruction : Instruction
+    internal class AdminCreateInstruction : AdminInstruction
     {
         public override string Name => "AdminCreate";
         public override int VariableCount => 2;

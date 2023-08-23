@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CubeV2
 {
-    internal class AdminDropEnergyInstruction : Instruction
+    internal class AdminDropEnergyInstruction : AdminInstruction
     {
         public override string Name => "AdminDropEnergy";
         public override int VariableCount => 2;
@@ -17,6 +17,8 @@ namespace CubeV2
 
         public override int Run(Entity caller, Board board)
         {
+            throw new NotImplementedException();
+
             var location = Variables[0]?.Convert(caller, board, IVariableType.IntTuple);
             if (location == null)
             {

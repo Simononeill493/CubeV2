@@ -8,7 +8,7 @@ namespace CubeV2
 {
     public partial class UserInput
     {
-        public Instruction ManualClickInstruction;
+        //public Instruction ManualClickInstruction;
         //public Instruction ManualWASDInstruction;
         //public Instruction ManualArrowInstruction;
     }

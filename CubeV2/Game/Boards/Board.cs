@@ -69,12 +69,14 @@ namespace CubeV2
             var entities = ActiveEntities.ToList();
             foreach (var entity in entities)
             {
-                if (entity != null && !entity.MarkedForDeletion && (Clock % entity.UpdateRate == 0))
+                if (entity != null && !entity.MarkedForDeletion && ((Clock % (entity.UpdateRate + entity.UpdateOffset)== 0)))
                 {
                     entity.ExecuteInstructions(this, input);
                 }
             }
         }
+
+
 
         private void _deleteDoomedEntities()
         {

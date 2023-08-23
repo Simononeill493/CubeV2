@@ -22,7 +22,6 @@ namespace CubeV2
         public static Game _game;
         private static bool _boardRunning;
 
-        private static Queue<Instruction> _manualInstructionBuffer = new Queue<Instruction>();
 
         public static void InitializeEmptyBoardGame() => _game = new EmptyBoardGame();
         public static void InitializeBoardlessGame() => _game = new EmptyBoardlessGame();
@@ -66,8 +65,6 @@ namespace CubeV2
         }
         public static void ResetBoard()
         {
-            _manualInstructionBuffer.Clear();
-
             _game.ResetBoard();
             DisplayText = "Board Reset!";
         }
@@ -102,12 +99,6 @@ namespace CubeV2
         private static void _update(UserInput input)
         {
             TimeSinceLastUpdate = TimeSpan.Zero;
-
-            if (_manualInstructionBuffer.Any())
-            {
-                //Console.WriteLine("Instruction was removed from queue.");
-                input.ManualClickInstruction = _manualInstructionBuffer.Dequeue();
-            }
 
             _game.TickBoard(input);
 

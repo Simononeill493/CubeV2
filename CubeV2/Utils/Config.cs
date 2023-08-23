@@ -11,7 +11,7 @@ namespace CubeV2
 {
     internal class Config
     {
-        public static TimeSpan BoardMasterUpdateRate = TimeSpan.FromSeconds(0.075);
+        public static TimeSpan BoardMasterUpdateRate = TimeSpan.FromSeconds(0.06);
 
 
         public const bool KnowAllInstructionsByDefault = true;
@@ -24,11 +24,17 @@ namespace CubeV2
         public const bool EnableFogOfWar = false;
 
         public const bool AllowManualCameraMovement = true;
+        public const float CameraMovementPixelsPerSecond = 400.0f;
+        public const float CameraBorderScreenPercentage = 0.25f;
+
+        //public const int CameraBorderIndexSize = 6;
+
+
         public const bool AllowCameraZoom = true;
-        public const int DefaultCameraScale = 3;
-        public const int MinimumCameraScale = 2;
+        public const int MinimumCameraScale = 3;
+        public const int DefaultCameraScale = 4;
         public const int MaximumCameraScale = 5;
-        public const float CameraPixelsPerSecond = 400.0f;
+
 
 
         public const string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\CircuitMap.txt";//30 14
@@ -59,7 +65,6 @@ namespace CubeV2
         //public const int GameGridHeight = 10;
         public const int GameUIGridMaxGridIndexWidth = 65;
         public const int GameUIGridMaxGridIndexHeight = 40;
-        public static int GameUIGridIndexCameraBorder = 4;
 
         public static Vector2Int GameUIGridIndexPadding = new Vector2Int(2,2);
 
@@ -124,11 +129,11 @@ namespace CubeV2
             _loadPositioning();
         }
 
-        //public static Vector2 ScreenSize = new Vector2(1900, 1000);
-        //public static Vector2 GameUIGridMaxSize = new Vector2(1650, 1000);
+        public static Vector2 ScreenSize = new Vector2(1900, 1000);
+        public static Vector2 GameBoardScreenSpaceAllocated = new Vector2(1650, 1000);
 
-        public static Vector2 ScreenSize = new Vector2(1700, 800);
-        public static Vector2 GameBoardScreenSpaceAllocated = new Vector2(1450, 800);
+        //public static Vector2 ScreenSize = new Vector2(1700, 800);
+        //public static Vector2 GameBoardScreenSpaceAllocated = new Vector2(1450, 800);
 
         public static Vector2 InstructionPanelSize;
         public static Vector2 InstructionPanelOffset;

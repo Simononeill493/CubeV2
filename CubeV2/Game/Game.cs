@@ -18,12 +18,12 @@ namespace CubeV2
 
         public List<Instruction> KnownInstructions = new List<Instruction>();
 
-        public Entity FocusEntity { get; private set; }
+        public ManualPlayerEntity FocusEntity { get; private set; }
         public Board CurrentBoard { get; private set; }
         public BoardTemplate CurrentTemplate { get; private set; }
         public BoardTemplateTemplate CurrentTemplateTemplate { get; private set; }
 
-        public void SetFocusEntity(Entity p) => FocusEntity = p;
+        public void SetFocusEntity(ManualPlayerEntity p) => FocusEntity = p;
         public void ClearFocusEntity() => FocusEntity = null;
 
         public void SetBoard(Board b) 
@@ -42,6 +42,8 @@ namespace CubeV2
         public void ResetBoard()
         {
             SetBoard(CurrentTemplate.GenerateBoard());
+
+            FocusEntity?.ManualInstructionBuffer.Clear();
         }
 
         public void TickBoard(UserInput input)

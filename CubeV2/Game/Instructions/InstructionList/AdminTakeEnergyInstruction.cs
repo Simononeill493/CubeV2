@@ -1,6 +1,8 @@
-﻿namespace CubeV2
+﻿using System;
+
+namespace CubeV2
 {
-    internal class AdminTakeEnergyInstruction : Instruction
+    internal class AdminTakeEnergyInstruction : AdminInstruction
     {
         public override string Name => "AdminTakeEnergy";
         public override int VariableCount => 2;
@@ -11,6 +13,8 @@
 
         public override int Run(Entity caller, Board board)
         {
+            throw new NotImplementedException();
+
             var location = Variables[0]?.Convert(caller, board, IVariableType.IntTuple);
             if (location == null)
             {

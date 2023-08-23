@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace CubeV2
 {
@@ -130,13 +131,20 @@ namespace CubeV2
             {
                 if (input.IsKeyJustReleased(Keys.OemPlus) | input.IsButtonJustReleased(Buttons.RightShoulder))
                 {
-                    GameCamera.SetScale(GameCamera.Scale + 1);
-                    GameCamera.CenterCameraOnPlayer();
+                    if (GameCamera.Scale + 1 <= Config.MaximumCameraScale)
+                    {
+                        GameCamera.SetScale(GameCamera.Scale + 1);
+                        GameCamera.CenterCameraOnPlayer();
+                    }
+
                 }
                 if (input.IsKeyJustReleased(Keys.OemMinus) | input.IsButtonJustReleased(Buttons.LeftShoulder))
                 {
-                    GameCamera.SetScale(GameCamera.Scale - 1);
-                    GameCamera.CenterCameraOnPlayer();
+                    if (GameCamera.Scale - 1 >= Config.MinimumCameraScale)
+                    {
+                        GameCamera.SetScale(GameCamera.Scale - 1);
+                        GameCamera.CenterCameraOnPlayer();
+                    }
                 }
             }
             if (input.IsKeyJustReleased(Keys.Enter))

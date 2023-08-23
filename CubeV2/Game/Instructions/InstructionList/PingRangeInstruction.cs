@@ -22,6 +22,12 @@ namespace CubeV2
 
         public PingRangeInstruction() { }
 
+        public PingRangeInstruction(IVariable target, IVariable range)
+        {
+            Variables[0] = target;
+            Variables[1] = range;
+        }
+
         public PingRangeInstruction(EntityTemplate target,int range)
         {
             Variables[0] = new EntityTypeVariable(target);

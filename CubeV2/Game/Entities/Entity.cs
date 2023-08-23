@@ -23,6 +23,8 @@ namespace CubeV2
         public string Sprite;
 
         public int UpdateRate = 1;
+        public int UpdateOffset = 0;
+
         public int CreationTime;
 
         public int MaxEnergy;

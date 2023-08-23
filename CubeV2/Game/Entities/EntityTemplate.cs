@@ -10,6 +10,7 @@ namespace CubeV2
         protected static int _sessionEntityCount;
 
         public List<string> DefaultTags = new List<string>();
+        public List<(int index,IVariableType variableType,object contents)> DefaultVariables = new List<(int,IVariableType, object)>();
 
         public bool CanBeDamaged = true;
         public int DefaultMaxHealth = 1;
@@ -48,8 +49,31 @@ namespace CubeV2
             entity.MaxHealth = DefaultMaxHealth;
             entity.SetHealthToMax();
 
+            _setDefaultVariables(entity);
+
 
             return entity;
+        }
+
+        public void AddDefaultVariable(int index,IVariableType variableType,object contents)
+        {
+            DefaultVariables.Add((index, variableType, contents));
+        }
+
+        private void _setDefaultVariables(Entity e)
+        {
+            foreach(var variable in DefaultVariables)
+            {
+                switch(variable.variableType)
+                {
+                    case IVariableType.Integer:
+                        e.Variables[variable.index] = new IntegerVariable((int)variable.contents);
+                        continue;
+                    default:
+                        throw new NotImplementedException("Creating a default variable of type " + variable.variableType + " is not implemented");
+                }
+            }
+
         }
 
         protected virtual Entity _createEntity()
