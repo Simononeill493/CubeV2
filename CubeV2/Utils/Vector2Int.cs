@@ -78,6 +78,32 @@ namespace CubeV2
         public static Vector2 operator *(Vector2Int a, float b) => new Vector2(a.X * b, a.Y * b);
         public static Vector2 operator /(Vector2Int a, float b) => new Vector2(a.X / b, a.Y / b);
 
+        public Vector2Int Clamped(Vector2Int low, Vector2Int high)
+        {
+            var output = new Vector2Int(X, Y);
+
+            if (output.X > high.X)
+            {
+                output.X = high.X;
+            }
+            if (output.Y > high.Y)
+            {
+                output.Y = high.Y;
+            }
+
+            if (output.X < low.X)
+            {
+                output.X = low.X;
+            }
+            if (output.Y < low.Y)
+            {
+                output.Y = low.Y;
+            }
+
+            return output;
+        }
+
+
         public Vector2 ToVector2() => new Vector2(X, Y);
 
         public static bool operator ==(Vector2Int a, Vector2Int b) => a.Equals(b);

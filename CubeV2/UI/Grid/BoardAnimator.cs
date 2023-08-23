@@ -190,6 +190,8 @@ namespace CubeV2
                 float pixelsMoved = (float)(delta / TimeSpan.FromSeconds(1)) * Config.CameraPixelsPerSecond;
                 GameCamera.SetPixelOffset(GameCamera.PixelOffset + (MovementDirection * pixelsMoved));
             }
+
+            GameCamera.TryFollowPlayerWithCamera();
         }
     }
 
@@ -234,12 +236,12 @@ namespace CubeV2
 
         public static bool IsMoving(Entity e) => EntityMovementTracker.ContainsKey(e.EntityID);
 
-        public static Vector2 GetMovementOffsetUnscaled(Entity entity)
+        public static Vector2 GetMovementOffset(Entity entity,int scale)
         {
             var movementData = EntityMovementTracker[entity.EntityID];
             var movementPercentage = movementData.Remaining / movementData.Total;
 
-            var offset = movementData.Direction * Config.TileBaseSize.X * (float)movementPercentage;
+            var offset = movementData.Direction * Config.TileBaseSize.X * scale * (float)movementPercentage;
 
             return offset;
         }

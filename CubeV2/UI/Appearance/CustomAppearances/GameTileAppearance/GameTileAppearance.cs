@@ -62,7 +62,7 @@ namespace CubeV2
         {
             if (entity.IsActive && AnimationMovementTracker.IsMoving(entity))
             {
-                position -= (AnimationMovementTracker.GetMovementOffsetUnscaled(entity) * GameCamera.Scale);
+                position -= (AnimationMovementTracker.GetMovementOffset(entity,GameCamera.Scale));
             }
 
             //Entity

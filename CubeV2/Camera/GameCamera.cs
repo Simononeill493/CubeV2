@@ -25,6 +25,10 @@ namespace CubeV2.Camera
         private static Vector2 _mapTopLeftOffset = Vector2.Zero;
         private static Vector2 _mapBottomRightOffset = Vector2.Zero;
 
+        //private static Vector2 _cameraBorderTopLeftOffset = Vector2.Zero;
+        //private static Vector2 _cameraBorderBottomRightOffset = Vector2.Zero;
+
+
         public static Vector2Int CameraGridSize = Vector2Int.Zero;
 
         public static void SetScale(int scale)
@@ -46,8 +50,12 @@ namespace CubeV2.Camera
             CameraGridSize = (Config.GameBoardScreenSpaceAllocated / potentialTileSize).Ceiled() + Config.GameUIGridIndexPadding;
 
             _mapActualSizePixels = GameInterface._game.CurrentBoard.Size * TileSizeInt;
-            _mapTopLeftOffset = -TileSizeFloat;
+
+            _mapTopLeftOffset = -(Config.GameUIGridIndexPadding / 2 * TileSizeFloat);
             _mapBottomRightOffset = (_mapActualSizePixels - (Config.GameBoardScreenSpaceAllocated + (Config.GameUIGridIndexPadding / 2 * TileSizeInt)));
+
+            //_cameraBorderTopLeftOffset = -(Config.GameUIGridIndexCameraBorder * TileSizeFloat);
+            //_cameraBorderBottomRightOffset= (_mapActualSizePixels - (Config.GameBoardScreenSpaceAllocated + (Config.GameUIGridIndexCameraBorder * TileSizeFloat)));
 
             AllUIElements.GetGameGrid().Arrange(CameraGridSize, TileSizeInt, Config.GameUIGridPadding);
         }
@@ -57,8 +65,6 @@ namespace CubeV2.Camera
             PixelOffset = pixelOffset.Clamped(_mapTopLeftOffset, _mapBottomRightOffset).Rounded();
             IndexOffset = PixelOffset / TileSizeInt;
             SubTileOffset = (PixelOffset - (IndexOffset * TileSizeInt)) % TileSizeInt;
-
-
 
 
             //Console.WriteLine("PixelOffset " + PixelOffset + "\t" + (_mapActualSizePixels - (Config.GameBoardScreenSpaceAllocated + (Config.GameUIGridIndexPadding / 2 * TileSizeInt))));
@@ -74,14 +80,52 @@ namespace CubeV2.Camera
             SetPixelOffset(playerPixelOffset);
         }
 
-        public static bool IsPlayerFullyInCamera()
+        public static bool TryFollowPlayerWithCamera()
         {
-            //TODO unfinished and broken 
-            var rect = new Rectangle(IndexOffset.X, IndexOffset.Y, CameraGridSize.X, CameraGridSize.Y);
-            var ans = rect.Contains(GameInterface._game.FocusEntity.Location.ToVector2());
+            var change = Vector2Int.Zero;
 
-            //Console.WriteLine(rect + "\t" + GameInterface._game.FocusEntity.Location + "\t" + ans);
-            return ans;
+            var offsetTopLeftSprite = _getPlayerCameraBorderOffset();
+            var offsetBottomRightSprite = offsetTopLeftSprite + TileSizeFloat;
+            var cameraBorderSize = Config.GameUIGridIndexCameraBorder * TileSizeInt.SingleValue;
+
+            if (offsetBottomRightSprite.X > Config.GameBoardScreenSpaceAllocated.X - cameraBorderSize)
+            {
+                change.X = (int)(offsetBottomRightSprite.X - Config.GameBoardScreenSpaceAllocated.X + cameraBorderSize);
+            }
+            if (offsetBottomRightSprite.Y > Config.GameBoardScreenSpaceAllocated.Y - cameraBorderSize)
+            {
+                change.Y = (int)(offsetBottomRightSprite.Y - Config.GameBoardScreenSpaceAllocated.Y + cameraBorderSize);
+            }
+
+            if (offsetTopLeftSprite.X < cameraBorderSize)
+            {
+                change.X = (int)offsetTopLeftSprite.X - cameraBorderSize;
+            }
+            if (offsetTopLeftSprite.Y < cameraBorderSize)
+            {
+                change.Y = (int)offsetTopLeftSprite.Y - cameraBorderSize;
+            }
+
+            if (change != Vector2Int.Zero)
+            {
+                SetPixelOffset(PixelOffset + change.ToVector2());
+                return true;
+            }
+
+            return false;
+        }
+
+        private static Vector2Int _getPlayerCameraBorderOffset()
+        {
+            var player = GameInterface._game.FocusEntity;
+            var offset = player.Location * TileSizeInt;
+
+            if(AnimationMovementTracker.IsMoving(player))
+            {
+                offset -= AnimationMovementTracker.GetMovementOffset(player, Scale).Rounded();
+            }
+
+            return offset - PixelOffset + _mapTopLeftOffset.Rounded();
         }
 
         public static (Vector2Int boardLocation, int realIndex) GetBoardLocationFromCameraIndex(int index)

@@ -59,6 +59,8 @@ namespace CubeV2
         //public const int GameGridHeight = 10;
         public const int GameUIGridMaxGridIndexWidth = 65;
         public const int GameUIGridMaxGridIndexHeight = 40;
+        public static int GameUIGridIndexCameraBorder = 4;
+
         public static Vector2Int GameUIGridIndexPadding = new Vector2Int(2,2);
 
         public const int GameUIGridPadding = 0;

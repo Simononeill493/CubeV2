@@ -111,16 +111,10 @@ namespace CubeV2
 
             _game.TickBoard(input);
 
-            if(!GameCamera.IsPlayerFullyInCamera())
-            {
-                //GameCamera.CenterCameraOnPlayer();
-            }
-
             if(Config.EnableFogOfWar)
             {
                 GameCamera.RevealMapToPlayer();
             }
-
 
             if (IsGameWon)
             {
