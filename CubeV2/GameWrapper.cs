@@ -129,7 +129,8 @@ namespace CubeV2
             }
 
             var gameGrid = AllUIElements.GetGameGrid();
-            BoardAnimator.BoardLocation = gameGrid._position;
+            UIGameGrid.BoardPosition = gameGrid._position;
+
             _setCursorPosition(input, gameGrid.MouseOver);
 
             base.Update(gameTime);

@@ -14,14 +14,18 @@ namespace CubeV2.Camera
     public partial class GameCamera
     {
         public static int Scale { get; private set; }
-        public static Vector2Int TileSizeInt { get; private set; }
         public static Vector2 TileSizeFloat { get; private set; }
+        public static Vector2Int TileSizeInt { get; private set; }
+        private static Vector2Int _mapActualSizePixels = Vector2Int.Zero;
 
         public static Vector2Int PixelOffset { get; private set; } = new Vector2Int(0, 0);
         public static Vector2Int IndexOffset { get; private set; } = new Vector2Int(0, 0);
         public static Vector2Int SubTileOffset { get; private set; } = new Vector2Int(0, 0);
 
-        public static Vector2Int CameraGridSize = new Vector2Int(0, 0);
+        private static Vector2 _mapTopLeftOffset = Vector2.Zero;
+        private static Vector2 _mapBottomRightOffset = Vector2.Zero;
+
+        public static Vector2Int CameraGridSize = Vector2Int.Zero;
 
         public static void SetScale(int scale)
         {
@@ -37,19 +41,27 @@ namespace CubeV2.Camera
             }
 
             Scale = scale;
-            TileSizeFloat = Scale * Config.TileBaseSizeFloat;
+            TileSizeFloat = Scale * Config.TileBaseSize;
             TileSizeInt = new Vector2Int(TileSizeFloat);
-            CameraGridSize = (Config.GameUIGridMaxSize / potentialTileSize).Ceiled() + Config.GameUIGridIndexPadding;
+            CameraGridSize = (Config.GameBoardScreenSpaceAllocated / potentialTileSize).Ceiled() + Config.GameUIGridIndexPadding;
+
+            _mapActualSizePixels = GameInterface._game.CurrentBoard.Size * TileSizeInt;
+            _mapTopLeftOffset = -TileSizeFloat;
+            _mapBottomRightOffset = (_mapActualSizePixels - (Config.GameBoardScreenSpaceAllocated + (Config.GameUIGridIndexPadding / 2 * TileSizeInt)));
 
             AllUIElements.GetGameGrid().Arrange(CameraGridSize, TileSizeInt, Config.GameUIGridPadding);
         }
 
         public static void SetPixelOffset(Vector2 pixelOffset)
         {
-            PixelOffset = pixelOffset.Rounded();
+            PixelOffset = pixelOffset.Clamped(_mapTopLeftOffset, _mapBottomRightOffset).Rounded();
             IndexOffset = PixelOffset / TileSizeInt;
-            SubTileOffset = (PixelOffset - (IndexOffset * Config.TileBaseSizeInt * Scale)) % TileSizeInt;
+            SubTileOffset = (PixelOffset - (IndexOffset * TileSizeInt)) % TileSizeInt;
 
+
+
+
+            //Console.WriteLine("PixelOffset " + PixelOffset + "\t" + (_mapActualSizePixels - (Config.GameBoardScreenSpaceAllocated + (Config.GameUIGridIndexPadding / 2 * TileSizeInt))));
             //Console.WriteLine("\n\nPixelOffset " + PixelOffset + "\n" + IndexOffset + "\n" + SubTileOffset);
             //Console.WriteLine("PixelOffset change: " + (pixelOffset-PixelOffset).ToStringRounded(10));
         }
@@ -115,7 +127,7 @@ namespace CubeV2.Camera
 
         private static bool _isTileSizeValid(Vector2 potentialTileSize)
         {
-            if (potentialTileSize.X > Config.GameUIGridMaxSize.X || potentialTileSize.Y > Config.GameUIGridMaxSize.Y || potentialTileSize.X < 1 || potentialTileSize.Y < 1)
+            if (potentialTileSize.X > Config.GameBoardScreenSpaceAllocated.X || potentialTileSize.Y > Config.GameBoardScreenSpaceAllocated.Y || potentialTileSize.X < 1 || potentialTileSize.Y < 1)
             {
                 return false;
             }
@@ -125,7 +137,7 @@ namespace CubeV2.Camera
 
         private static Vector2 _getTileSizeForScale(int scale)
         {
-            var potentialTileSize = scale * (Config.TileBaseSizeFloat + new Vector2(Config.GameUIGridPadding, Config.GameUIGridPadding));
+            var potentialTileSize = scale * (Config.TileBaseSize + new Vector2(Config.GameUIGridPadding, Config.GameUIGridPadding));
             return potentialTileSize;
         }
     }

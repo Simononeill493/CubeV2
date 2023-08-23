@@ -18,8 +18,6 @@ namespace CubeV2
 {
     internal class BoardAnimator : Appearance
     {
-        public static Vector2 BoardLocation;
-
         public override Vector2 Size => _size;
 
         private Vector2 _size;
@@ -50,7 +48,7 @@ namespace CubeV2
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
             AnimationCameraTracker.AnimateCameraMovement(gameTime.ElapsedGameTime);
-            var boardOffsetScaled = ((GameCamera.IndexOffset * Config.TileBaseSizeFloat) * GameCamera.Scale);
+            var boardOffsetScaled = GameCamera.IndexOffset * GameCamera.TileSizeFloat;
 
             AnimationGifTracker.Draw(spriteBatch, gameTime.TotalGameTime, position - GameCamera.SubTileOffset, boardOffsetScaled, GameCamera.Scale, DrawUtils.BoardAnimationLayer);
             AnimationLaserTracker.Draw(spriteBatch, position, _tileSizeTopOffset, _tileSizeCenterOffset, _tileSizePadded, Layer);
@@ -86,7 +84,7 @@ namespace CubeV2
             if (Config.EnablePlayerRangeOverlay && player != null)
             {
                 var gridIndexActual = (player.Location - GameCamera.IndexOffset) - new Vector2Int(Config.PlayerRangeLimit, Config.PlayerRangeLimit);
-                var offset = (gridIndexActual * GameCamera.TileSizeFloat) + BoardAnimator.BoardLocation - GameCamera.SubTileOffset;
+                var offset = (gridIndexActual * GameCamera.TileSizeFloat) + UIGameGrid.BoardPosition - GameCamera.SubTileOffset;
                 var size = GameCamera.TileSizeFloat * ((Config.PlayerRangeLimit * 2) + 1);
 
                 DrawUtils.DrawRect(spriteBatch, offset, size, Color.White * 0.05f, DrawUtils.GameLayer6);
@@ -103,10 +101,10 @@ namespace CubeV2
         {
             if (CursorVisible)
             {
-                var gridOffset = (MousePos - BoardAnimator.BoardLocation) + GameCamera.SubTileOffset;
+                var gridOffset = (MousePos - UIGameGrid.BoardPosition) + GameCamera.SubTileOffset;
                 var index = (gridOffset / GameCamera.TileSizeInt).Floored();
 
-                var rescaledPos = BoardAnimator.BoardLocation + (index * GameCamera.TileSizeInt);
+                var rescaledPos = UIGameGrid.BoardPosition + (index * GameCamera.TileSizeInt);
                 var finalOffset = rescaledPos - GameCamera.SubTileOffset;
 
                 DrawUtils.DrawRect(spriteBatch, finalOffset, GameCamera.TileSizeFloat, Color.White * 0.5f, DrawUtils.GameLayer7);
@@ -173,7 +171,7 @@ namespace CubeV2
 
             public void Draw(SpriteBatch spriteBatch,int frame,Vector2 position,Vector2 cameraOffset,int scale,float layer)
             {
-                Vector2 actualPosition = position-cameraOffset + (_boardPositionUnscaled * scale *Config.TileBaseSizeFloat);
+                Vector2 actualPosition = position-cameraOffset + (_boardPositionUnscaled * scale *Config.TileBaseSize);
 
                 _gif.Draw(spriteBatch, frame, actualPosition, Vector2.One * scale, 0, Vector2.Zero, layer, Color.White * _transparency);
             }
@@ -241,7 +239,7 @@ namespace CubeV2
             var movementData = EntityMovementTracker[entity.EntityID];
             var movementPercentage = movementData.Remaining / movementData.Total;
 
-            var offset = movementData.Direction * Config.TileBaseSizeFloat.X * (float)movementPercentage;
+            var offset = movementData.Direction * Config.TileBaseSize.X * (float)movementPercentage;
 
             return offset;
         }

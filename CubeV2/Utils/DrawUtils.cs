@@ -205,10 +205,10 @@ namespace CubeV2
 
         internal static void DrawMeter(SpriteBatch spriteBatch, float percentage, Vector2 position, int cameraScale, float spriteMeterLayer, float spriteMeterLayer2)
         {
-            var widthMeter = percentage * Config.TileBaseSizeFloat.X * cameraScale;
-            var widthBox = Config.TileBaseSizeFloat.X * cameraScale;
+            var widthMeter = percentage * Config.TileBaseSize.X * cameraScale;
+            var widthBox = Config.TileBaseSize.X * cameraScale;
 
-            var height = (Config.TileBaseSizeFloat.Y) / 4 * cameraScale;
+            var height = (Config.TileBaseSize.Y) / 4 * cameraScale;
 
             DrawRect(spriteBatch, position, new Vector2(widthBox, height), Color.Black,spriteMeterLayer);
             DrawRect(spriteBatch, position, new Vector2(widthMeter, height), Color.Red, spriteMeterLayer2);

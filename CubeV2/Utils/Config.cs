@@ -63,8 +63,7 @@ namespace CubeV2
 
         public const int GameUIGridPadding = 0;
 
-        public static Vector2 TileBaseSizeFloat = new Vector2(16,16);
-        public static Vector2Int TileBaseSizeInt = new Vector2Int(16, 16);
+        public static Vector2 TileBaseSize = new Vector2(16,16);
 
         public const int VariableSelectionTileScale = 3;
         public const int InstructionTileVariableScale = 3;
@@ -126,8 +125,8 @@ namespace CubeV2
         //public static Vector2 ScreenSize = new Vector2(1900, 1000);
         //public static Vector2 GameUIGridMaxSize = new Vector2(1650, 1000);
 
-        public static Vector2 ScreenSize = new Vector2(1600, 800);
-        public static Vector2 GameUIGridMaxSize = new Vector2(1350, 800);
+        public static Vector2 ScreenSize = new Vector2(1700, 800);
+        public static Vector2 GameBoardScreenSpaceAllocated = new Vector2(1450, 800);
 
         public static Vector2 InstructionPanelSize;
         public static Vector2 InstructionPanelOffset;

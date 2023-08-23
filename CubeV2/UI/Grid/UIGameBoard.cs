@@ -11,6 +11,8 @@ namespace CubeV2
 {
     internal class UIGameGrid : UIGrid
     {
+        public static Vector2 BoardPosition;
+
         private BoardAnimator _boardAnimator;
 
         public UIGameGrid(string id, int maxWidth, int maxHeight, TileAppearanceFactory appearanceFactory) : base(id, maxWidth, maxHeight, appearanceFactory) 
@@ -29,7 +31,7 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 parentOffset, GameTime gameTime)
         {
-            base.Draw(spriteBatch, parentOffset - (GameCamera.Scale * Config.TileBaseSizeFloat), gameTime);
+            base.Draw(spriteBatch, parentOffset - GameCamera.TileSizeFloat, gameTime);
         }
 
         public override UIElement GenerateTile(string id)

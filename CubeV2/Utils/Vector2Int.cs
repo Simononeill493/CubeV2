@@ -86,6 +86,18 @@ namespace CubeV2
         public int Max => Math.Max(X, Y);
         public int Min => Math.Min(X, Y);
         public int Product => X * Y;
+        public int SingleValue 
+        { 
+            get 
+            { 
+                if(X==Y)
+                {
+                    return X;
+                }
+
+                throw new Exception("Tried to get single value from a Vector2Int with two different values");
+            } 
+        }
 
 
         public int ManhattanDistance(Vector2Int other)

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CubeV2.Utils;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Threading;
 
@@ -252,7 +253,7 @@ namespace CubeV2
             var appearanceFactory = new VariableTileAppearanceFactoryGrid(DrawUtils.UILayer2, DrawUtils.UILayer3,3);
 
             var listOfVariables = new UIGrid("ListOfVariables", gridSize, appearanceFactory);
-            listOfVariables.Arrange(gridSize, Config.TileBaseSizeInt * Config.VariableSelectionTileScale, 5);
+            listOfVariables.Arrange(gridSize, Config.TileBaseSize.Rounded() * Config.VariableSelectionTileScale, 5);
             listOfVariables.TileLeftClicked += (input, index) => GameInterface.AssignValueToFocusedVariableFromGrid(index);
             listOfVariables.AddEnabledCondition(GenericVariableListEnabled);
 
@@ -383,9 +384,9 @@ namespace CubeV2
         private static UIElement _makeInstructionVariableTile(int instructionIndex,int variableIndex)
         {
             var variableTile = new UIElement(Config.InstructionVariableTileName + "_" + instructionIndex + "_" + variableIndex);
-            variableTile.SetOffset((Config.TileBaseSizeFloat.X * Config.InstructionTileVariableScale + 20) * variableIndex, 20);
+            variableTile.SetOffset((Config.TileBaseSize.X * Config.InstructionTileVariableScale + 20) * variableIndex, 20);
 
-            var tileBackground = new RectangleAppearance(Config.TileBaseSizeFloat * Config.InstructionTileVariableScale, Config.InstructionTileAssignedVariableColor, DrawUtils.UILayer3);
+            var tileBackground = new RectangleAppearance(Config.TileBaseSize * Config.InstructionTileVariableScale, Config.InstructionTileAssignedVariableColor, DrawUtils.UILayer3);
             tileBackground.OverrideColor(() => (GameInterface.IsFocusedOnVariable(instructionIndex,variableIndex)  ? Config.InstructionTileAssignedVariableHighlightColor : Config.InstructionTileAssignedVariableColor));
 
             var appearance = new VariableTileAppearance_InInstruction(instructionIndex, variableIndex, Config.InstructionTileVariableScale, DrawUtils.UILayer4);

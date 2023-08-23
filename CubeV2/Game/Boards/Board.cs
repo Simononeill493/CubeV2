@@ -14,8 +14,10 @@ namespace CubeV2
         private List<Tile> TilesLinear = new List<Tile>();
 
         private Tile[,] TilesVector;
+
         public int _width { get; }
         public int _height { get; }
+        public Vector2Int Size => new Vector2Int(_width, _height);
 
         public Board(int width, int height)
         {
