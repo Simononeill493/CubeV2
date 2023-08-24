@@ -60,7 +60,7 @@ namespace CubeV2
 
             _masterList[RockName] = new RockTemplate(RockName);
             _masterList[RockName].DefaultMaxEnergy = 0;
-            _masterList[RockName].DefaultMaxHealth = 150;
+            _masterList[RockName].DefaultMaxHealth = 75;
 
 
             _masterList[BrokenRockName] = new CollectableEntityTemplate(BrokenRockName) { DisplaySprite = DrawUtils.BrokenRockSprite };
@@ -82,7 +82,7 @@ namespace CubeV2
             _masterList[RespawnerName].DefaultTags = new List<string>() { Config.SpawnerTag };
 
             _masterList[StoneWallName] = new EntityTemplate(StoneWallName) { DisplaySprite = DrawUtils.StoneWallSprite };
-            _masterList[StoneWallName].DefaultMaxHealth = 500;
+            _masterList[StoneWallName].DefaultMaxHealth = 750;
 
             _masterList[MissileName] = new EntityTemplate(MissileName) { DisplaySprite = DrawUtils.MissileSprite, CanBeDamaged = false };
 

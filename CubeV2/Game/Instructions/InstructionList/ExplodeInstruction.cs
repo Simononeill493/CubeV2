@@ -10,7 +10,8 @@ namespace CubeV2
     {
         public class ExplodeInstruction : Instruction
         {
-            public const int ExplosionDamage = 25;
+            public const int ExplosionDamageMin = 25;
+            public const int ExplosionDamageMax = 35;
 
             public override string Name => "Explode";
 
@@ -25,7 +26,7 @@ namespace CubeV2
 
                 foreach (var adjacent in caller.Location.GetAdjacentPoints())
                 {
-                    board.TryDamageTile(adjacent, ExplosionDamage);
+                    board.TryDamageTile(adjacent, RandomUtils.RandomNumber(25,45));
                 }
 
                 caller.MarkForDeletion();

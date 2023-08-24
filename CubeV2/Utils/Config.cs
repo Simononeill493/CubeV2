@@ -24,8 +24,8 @@ namespace CubeV2
         public const bool EnableFogOfWar = false;
 
         public const bool AllowManualCameraMovement = true;
-        public const float CameraMovementPixelsPerSecond = 400.0f;
-        public const float CameraBorderScreenPercentage = 0.25f;
+        public const float CameraMovementPixelsPerSecond = 1000.0f;
+        public const float CameraBorderScreenPercentage = 0.23f;
 
         //public const int CameraBorderIndexSize = 6;
 
@@ -40,7 +40,8 @@ namespace CubeV2
         public const string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\CircuitMap.txt";//30 14
         public const int BoardTest1StartingEnergy = 100;
 
-        public const string FortressTutorialWorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\New tutorial\\NewTutorialMap.txt";//28 14
+        public const string FortressTutorialMapPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\New tutorial\\StageMockupSurface.png";//28 14
+        public const string FortressTutorialGroundSpritesPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\New tutorial\\StageMockupGround.png";//28 14
 
         public const int EntityMaxInstructionsPerSet = 9;
         public const int EntityMaxVariables = 3;

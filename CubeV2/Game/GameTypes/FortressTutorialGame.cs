@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -48,66 +49,75 @@ namespace CubeV2
 
         public override BoardTemplateTemplate CreateTemplateTemplate()
         {
-            var lines = File.ReadAllLines(Config.FortressTutorialWorldPath);
-            var width = lines[0].Length;
-            var height = lines.Length;
-
-            var templateTemplate = new FortressTutorialTemplateTemplate() { Width = width, Height = height };
-
-            var wall = EntityDatabase.Get(EntityDatabase.StoneWallName);
-            var rock = EntityDatabase.Get(EntityDatabase.RockName);
-
-            var respawner =  EntityDatabase.Get(EntityDatabase.RespawnerName);
-            var craftingTable= EntityDatabase.Get(EntityDatabase.CraftingTableName);
-            var turret = EntityDatabase.Get(EntityDatabase.TurretName);
-            var goal = EntityDatabase.Get(EntityDatabase.GoalName);
-            var laserFlower = EntityDatabase.Get(EntityDatabase.LaserFlowerName);
-            var pickaxeFlower = EntityDatabase.Get(EntityDatabase.PickaxeFlowerName);
-
-            for (int y = 0; y < lines.Length; y++)
-            {
-                for (int x = 0; x < lines[y].Length; x++)
-                {
-                    var position = new Vector2Int(x, y);
-                    var tile = lines[y][x];
-
-                    if (tile == 'W')//Wall
-                    {
-                        templateTemplate.StaticEntities[position] = wall;
-                    }
-                    else if (tile == 'R')//Rock
-                    {
-                        templateTemplate.StaticEntities[position] = rock;
-                    }
-                    else if (tile == 'T')//Respawner
-                    {
-                        templateTemplate.StaticEntities[position] = respawner;
-                    }
-                    else if (tile == 'C')//Crafting table
-                    {
-                        templateTemplate.StaticEntities[position] = craftingTable;
-                    }
-                    else if (tile == 'E')//Turret
-                    {
-                        templateTemplate.StaticEntities[position] = turret;
-                    }
-                    else if (tile == 'G')//Goal
-                    {
-                        templateTemplate.StaticEntities[position] = goal;
-                    }
-                    else if (tile == 'L')//Laser Flower
-                    {
-                        templateTemplate.StaticEntities[position] = laserFlower;
-                    }
-                    else if (tile == 'M')//Pickaxe flower
-                    {
-                        templateTemplate.StaticEntities[position] = pickaxeFlower;
-                    }
-
-
-                }
-            }
+            var templateTemplate = _loadMapFromPNG(Config.FortressTutorialMapPath);
+            _setGroundSpritesFromPNG(Config.FortressTutorialGroundSpritesPath, templateTemplate);
             return templateTemplate;
         }
+
+        private FortressTutorialTemplateTemplate _loadMapFromPNG(string path)
+        {
+            var image = new Bitmap(path);
+            var map = new FortressTutorialTemplateTemplate() { Width = image.Width, Height = image.Height };
+
+            var blank = Color.FromArgb(0,0,0,0);
+
+            var colorsToTemplates = new Dictionary<Color, EntityTemplate>();
+            colorsToTemplates[Color.FromArgb(89, 89, 89)] = EntityDatabase.Get(EntityDatabase.StoneWallName);
+            colorsToTemplates[Color.FromArgb(0, 0, 0)] = EntityDatabase.Get(EntityDatabase.RockName);
+            colorsToTemplates[Color.FromArgb(255, 145, 0)] = EntityDatabase.Get(EntityDatabase.RespawnerName);
+            colorsToTemplates[Color.FromArgb(221, 126, 0)] = EntityDatabase.Get(EntityDatabase.CraftingTableName);
+            colorsToTemplates[Color.FromArgb(157, 0, 255)] = EntityDatabase.Get(EntityDatabase.TurretName);
+            colorsToTemplates[Color.FromArgb(255, 251, 0)] = EntityDatabase.Get(EntityDatabase.GoalName);
+            colorsToTemplates[Color.FromArgb(0, 97, 255)] = EntityDatabase.Get(EntityDatabase.LaserFlowerName);
+            colorsToTemplates[Color.FromArgb(255, 103, 0)] = EntityDatabase.Get(EntityDatabase.PickaxeFlowerName);
+
+            for (int y = 0; y < map.Height; y++)
+            {
+                for (int x = 0; x < map.Width; x++)
+                {
+                    var tileColor = image.GetPixel(x, y);
+                    if (colorsToTemplates.ContainsKey(tileColor))
+                    {
+                        map.StaticEntities[new Vector2Int(x, y)] = colorsToTemplates[tileColor];
+                    }
+                    else if (!tileColor.Equals(blank))
+                    {
+                        Console.WriteLine("Unknown color in map file. Position: {" + x + " " + y + "}");
+                    }
+                }
+            }
+            return map;
+        }
+
+        private void _setGroundSpritesFromPNG(string path,FortressTutorialTemplateTemplate map)
+        {
+            var image = new Bitmap(path);
+
+            if(image.Width!= map.Width || image.Height!= map.Height)
+            {
+                throw new Exception("Ground sprite image dimensions are {" + image.Width + " " + image.Height + "}. Required dimensions are {" + map.Width + " " + map.Height + "}.");
+            }
+
+            var colorsToSprites = new Dictionary<Color, string>();
+            colorsToSprites[Color.FromArgb(172,172,172)] = DrawUtils.FortressFloor;
+            colorsToSprites[Color.FromArgb(255,255,255)] = DrawUtils.GrassGround;
+
+            for (int y = 0; y < map.Height; y++)
+            {
+                for (int x = 0; x < map.Width; x++)
+                {
+                    var tileColor = image.GetPixel(x, y);
+                    if (colorsToSprites.ContainsKey(tileColor))
+                    {
+                        map.GroundSprites[new Vector2Int(x, y)] = colorsToSprites[tileColor];
+                    }
+                    else
+                    {
+                        map.GroundSprites[new Vector2Int(x, y)] = DrawUtils.VoidSprite;
+                    }
+                }
+            }
+        }
+
     }
 }

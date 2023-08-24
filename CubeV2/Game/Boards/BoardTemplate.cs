@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CubeV2
 {
     public class BoardTemplate
     {
-        public Dictionary<Vector2Int, EntityTemplate> Entities = new Dictionary<Vector2Int, EntityTemplate>();
+        public Dictionary<Vector2Int, EntityTemplate> EntitiesToPlace = new Dictionary<Vector2Int, EntityTemplate>();
+
         public int Width;
         public int Height;
 
@@ -13,28 +13,34 @@ namespace CubeV2
         {
             var board = new Board(Width, Height);
 
-            var entitiesGenerated = new List<(Entity,Vector2Int)>();
-            foreach (var entity in Entities)
+            var generatedEntities = new Dictionary<Vector2Int, Entity>();
+            foreach (var entity in EntitiesToPlace)
             {
-                entitiesGenerated.Add((entity.Value.GenerateEntity(), entity.Key));
+                generatedEntities[entity.Key] = entity.Value.GenerateEntity();
             }
 
-            PrepareEntities(entitiesGenerated);
+            OnEntitiesGenerated(generatedEntities);
 
-            foreach(var entity in entitiesGenerated)
+            foreach(var entity in generatedEntities)
             {
-                board.TryAddEntityToBoard(entity.Item1, entity.Item2);
+                board.TryAddEntityToBoard(entity.Value, entity.Key);
             }
+
+            OnBoardGenerated(board);
 
             return board;
         }
 
-        public virtual void PrepareEntities(List<(Entity e, Vector2Int location)> entities) { }
+        public virtual void OnEntitiesGenerated(Dictionary<Vector2Int, Entity> entitiesGenerated) { }
+        public virtual void OnBoardGenerated(Board b) { }
+
     }
 
     public class FortressTutorialTemplate : BoardTemplate
     {
-        public override void PrepareEntities(List<(Entity e, Vector2Int location)> entities)
+        public Dictionary<Vector2Int, string> GroundSprites = new Dictionary<Vector2Int, string>();
+
+        public override void OnEntitiesGenerated(Dictionary<Vector2Int, Entity> generatedEntities)
         {
             var shortRangeTurrets = new List<Vector2Int>();
             shortRangeTurrets.Add(new Vector2Int(86, 20));
@@ -42,15 +48,26 @@ namespace CubeV2
             shortRangeTurrets.Add(new Vector2Int(54, 14));
             shortRangeTurrets.Add(new Vector2Int(55, 14));
 
-            foreach (var entity in entities)
+            foreach (var entity in generatedEntities)
             {
-                entity.e.UpdateOffset = RandomUtils.RandomNumber(0, entity.e.UpdateRate);
+                entity.Value.UpdateOffset = RandomUtils.RandomNumber(0, entity.Value.UpdateRate);
 
-                if(shortRangeTurrets.Contains(entity.location))
+                if(shortRangeTurrets.Contains(entity.Key))
                 {
-                    entity.e.Variables[0] = new IntegerVariable(4);
+                    entity.Value.Variables[0] = new IntegerVariable(4);
                 }
             }
+        }
+
+        public override void OnBoardGenerated(Board b)
+        {
+            foreach(var groundSprite in GroundSprites)
+            {
+                var tile = b.TryGetTile(groundSprite.Key);
+                tile.Sprite = groundSprite.Value;
+            }
+
+            base.OnBoardGenerated(b);
         }
 
     }

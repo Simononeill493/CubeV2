@@ -37,6 +37,7 @@ namespace CubeV2
         public const string CircuitGround2 = "Ground2";
 
         public const string GrassGround = "GrassGround";
+        public const string FortressFloor = "FortressFloor";
 
         public const string PlayerSprite = "Player";
         public const string RockSprite1 = "WhiteWall";
@@ -122,6 +123,7 @@ namespace CubeV2
             SpritesDict[CircuitGround1] = content.Load<Texture2D>(CircuitGround1);
             SpritesDict[CircuitGround2] = content.Load<Texture2D>(CircuitGround2);
             SpritesDict[GrassGround] = content.Load<Texture2D>(GrassGround);
+            SpritesDict[FortressFloor] = content.Load<Texture2D>(FortressFloor);
 
             SpritesDict[PlayerSprite] = content.Load<Texture2D>(PlayerSprite);
             SpritesDict[RockSprite1] = content.Load<Texture2D>(RockSprite1);
@@ -208,7 +210,7 @@ namespace CubeV2
             var horizontalPadding = Config.TileBaseSize.X / 8;
 
             var widthBox = Config.TileBaseSize.X - (horizontalPadding * 2);
-            var widthMeter = widthBox * percentage;
+            var widthMeter = (float)Math.Ceiling(widthBox * percentage);
 
             var height = (Config.TileBaseSize.Y / 8);
             position.X += horizontalPadding * cameraScale;

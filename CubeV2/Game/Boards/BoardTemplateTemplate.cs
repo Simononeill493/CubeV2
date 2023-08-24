@@ -20,11 +20,11 @@ namespace CubeV2
             var template = new BoardTemplate();
             template.Width = Width;
             template.Height = Height;
-            template.Entities = new Dictionary<Vector2Int, EntityTemplate>();
+            template.EntitiesToPlace = new Dictionary<Vector2Int, EntityTemplate>();
 
             foreach(var kvp in StaticEntities)
             {
-                template.Entities.Add(kvp.Key, kvp.Value);
+                template.EntitiesToPlace.Add(kvp.Key, kvp.Value);
             }
 
             return template;
@@ -34,18 +34,15 @@ namespace CubeV2
     public class FortressTutorialTemplateTemplate : BoardTemplateTemplate
     {
         public Dictionary<Vector2Int, EntityTemplate> StaticEntities = new Dictionary<Vector2Int, EntityTemplate>();
+        public Dictionary<Vector2Int, string> GroundSprites = new Dictionary<Vector2Int, string>();
 
         public override BoardTemplate GenerateTemplate()
         {
             var template = new FortressTutorialTemplate();
             template.Width = Width;
             template.Height = Height;
-            template.Entities = new Dictionary<Vector2Int, EntityTemplate>();
-
-            foreach (var kvp in StaticEntities)
-            {
-                template.Entities.Add(kvp.Key, kvp.Value);
-            }
+            template.GroundSprites = new Dictionary<Vector2Int, string>(GroundSprites);
+            template.EntitiesToPlace = new Dictionary<Vector2Int, EntityTemplate>(StaticEntities);
 
             return template;
         }
@@ -71,7 +68,7 @@ namespace CubeV2
             var template = new BoardTemplate();
             template.Width = Width;
             template.Height = Height;
-            template.Entities = entitiesDict;
+            template.EntitiesToPlace = entitiesDict;
 
             return template;
         }
