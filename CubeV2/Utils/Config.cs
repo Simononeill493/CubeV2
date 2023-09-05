@@ -40,8 +40,8 @@ namespace CubeV2
         public const string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\CircuitMap.txt";//30 14
         public const int BoardTest1StartingEnergy = 100;
 
-        public const string FortressTutorialMapPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\New tutorial\\StageMockupSurface.png";//28 14
-        public const string FortressTutorialGroundSpritesPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\New tutorial\\StageMockupGround.png";//28 14
+        public const string FortressTutorialMapPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\misc\\StageMockupSurface.png";//28 14
+        public const string FortressTutorialGroundSpritesPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\misc\\StageMockupGround.png";//28 14
 
         public const int EntityMaxInstructionsPerSet = 9;
         public const int EntityMaxVariables = 3;
