@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CubeV2
 {
+    using SAME;
     using System.Linq;
     using System.Runtime.CompilerServices;
 
@@ -22,7 +23,7 @@ namespace CubeV2
 
             public CreateInstruction() : base() { }
 
-            public CreateInstruction(RelativeDirection direction,EntityTemplate template) : base()
+            public CreateInstruction(RelativeDirection direction, EntityTemplate template) : base()
             {
                 Variables[0] = new RelativeDirectionVariable(direction);
                 Variables[1] = new EntityTypeVariable(template);
@@ -38,7 +39,7 @@ namespace CubeV2
             public override int Run(Entity caller, Board board)
             {
                 var direction = Variables[0]?.Convert(caller, board, IVariableType.RelativeDirection);
-                if(direction!=null)
+                if (direction != null)
                 {
                     var targetTemplate = Variables[1]?.Convert(caller, board, IVariableType.EntityType);
                     if (targetTemplate != null)
@@ -46,10 +47,10 @@ namespace CubeV2
                         var entity = ((EntityTemplate)targetTemplate).GenerateEntity();
                         entity.Orientation = caller.Orientation;
 
-                        var trueDirection = DirectionUtils.ToCardinal(caller.Orientation,(RelativeDirection)direction);
+                        var trueDirection = DirectionUtils.ToCardinal(caller.Orientation, (RelativeDirection)direction);
                         var location = caller.Location + trueDirection.ToVector();
 
-                        if (board.TryAddEntityToBoard(entity,location))
+                        if (board.TryAddEntityToBoard(entity, location))
                         {
                             return Config.BaseCreateCost;
 

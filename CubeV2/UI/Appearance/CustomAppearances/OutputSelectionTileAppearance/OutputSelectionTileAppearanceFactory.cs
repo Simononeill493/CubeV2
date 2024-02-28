@@ -1,11 +1,13 @@
 ﻿
+using SAME;
+
 namespace CubeV2
 {
     internal class OutputSelectionTileAppearanceFactory : TileAppearanceFactory
     {
         private int _spriteScale;
 
-        public OutputSelectionTileAppearanceFactory(int scale, float bg,float fg) : base(bg,fg)
+        public OutputSelectionTileAppearanceFactory(int scale, float bg, float fg) : base(bg, fg)
         {
             _spriteScale = scale;
         }

@@ -1,4 +1,6 @@
-﻿namespace CubeV2
+﻿using SAME;
+
+namespace CubeV2
 {
     public class TurnInstruction : Instruction
     {
@@ -24,7 +26,7 @@
         public override int Run(Entity caller, Board board)
         {
             var orientation = Variables[0]?.Convert(caller, board, IVariableType.Orientation);
-            if(orientation!=null)
+            if (orientation != null)
             {
                 caller.SetOrientation((Orientation)orientation);
             }

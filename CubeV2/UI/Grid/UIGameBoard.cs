@@ -1,6 +1,7 @@
 ﻿using CubeV2.Camera;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,12 @@ namespace CubeV2
 {
     internal class UIGameGrid : UIGrid
     {
+        public static UIGameGrid GetGameGrid() => (UIGameGrid)AllUIElements.GetUIElement(Config.GameGridName);
         public static Vector2 BoardPosition;
 
         private BoardAnimator _boardAnimator;
 
-        public UIGameGrid(string id, int maxWidth, int maxHeight, TileAppearanceFactory appearanceFactory) : base(id, maxWidth, maxHeight, appearanceFactory) 
+        public UIGameGrid(string id, int maxWidth, int maxHeight, TileAppearanceFactory appearanceFactory) : base(id, maxWidth, maxHeight, appearanceFactory)
         {
             TileLeftClicked += (i, index) => GameInterface.TryLeftClickTile(index);
             TileRightClicked += (i, index) => GameInterface.TryRightClickTile(index);
@@ -23,7 +25,7 @@ namespace CubeV2
             TileLeftPressed += (i, index) => GameInterface.TryLeftPressTile(index);
             TileRightPressed += (i, index) => GameInterface.TryRightPressTile(index);
 
-            _boardAnimator = new BoardAnimator(DrawUtils.GameLayer3);
+            _boardAnimator = new BoardAnimator(CubeDrawUtils.GameLayer3);
             AddAppearance(_boardAnimator);
 
             OnArrange += SendBoardSizesToAnimator;
@@ -47,13 +49,13 @@ namespace CubeV2
 
     public class UIGameTile : UIElement
     {
-        public UIGameTile(string id) : base(id) {}
+        public UIGameTile(string id) : base(id) { }
 
         public override void CheckMouseOver(Vector2 mousePos)
         {
             if (Enabled)
             {
-                MouseOver = UserInput.IsMouseInArea(_position-GameCamera.SubTileOffset, Appearance.Size, mousePos);
+                MouseOver = UserInput.IsMouseInArea(_position - GameCamera.SubTileOffset, Appearance.Size, mousePos);
                 return;
             }
 

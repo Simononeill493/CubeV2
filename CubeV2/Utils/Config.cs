@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using Microsoft.Xna.Framework;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,8 +41,8 @@ namespace CubeV2
         public const string BoardTest1WorldPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\CircuitMap.txt";//30 14
         public const int BoardTest1StartingEnergy = 100;
 
-        public const string FortressTutorialMapPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\misc\\StageMockupSurface.png";//28 14
-        public const string FortressTutorialGroundSpritesPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\misc\\StageMockupGround.png";//28 14
+        public const string FortressTutorialMapPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\new tutorial\\StageMockupSurface.png";//28 14
+        public const string FortressTutorialGroundSpritesPath = "C:\\Users\\Simon\\Desktop\\CubeV2\\new tutorial\\StageMockupGround.png";//28 14
 
         public const int EntityMaxInstructionsPerSet = 9;
         public const int EntityMaxVariables = 3;
@@ -67,11 +68,11 @@ namespace CubeV2
         public const int GameUIGridMaxGridIndexWidth = 65;
         public const int GameUIGridMaxGridIndexHeight = 40;
 
-        public static Vector2Int GameUIGridIndexPadding = new Vector2Int(2,2);
+        public static Vector2Int GameUIGridIndexPadding = new Vector2Int(2, 2);
 
         public const int GameUIGridPadding = 0;
 
-        public static Vector2 TileBaseSize = new Vector2(16,16);
+        public static Vector2 TileBaseSize = new Vector2(16, 16);
 
         public const int VariableSelectionTileScale = 3;
         public const int InstructionTileVariableScale = 3;
@@ -125,7 +126,7 @@ namespace CubeV2
 
         public const string IntegerTextBoxName = "IntegerTextBox";
 
-        public static void Load() 
+        public static void Load()
         {
             _loadPositioning();
         }
@@ -184,7 +185,7 @@ namespace CubeV2
             SimulateButtonSize = new Vector2(200, 60);
 
             GoButtonOffset = new Vector2(740, 0);
-            ResetButtonOffset = new Vector2(860,0);
+            ResetButtonOffset = new Vector2(860, 0);
             RerollButtonOffset = new Vector2(1000, 0);
             SimulateButtonOffset = new Vector2(1120, 0);
 

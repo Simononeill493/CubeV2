@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace CubeV2
 
         private float _frontLayer;
 
-        public EnergyBarAppearance(Vector2 size, float backLayer,float frontLayer) : base(backLayer)
+        public EnergyBarAppearance(Vector2 size, float backLayer, float frontLayer) : base(backLayer)
         {
             Size = size;
             _frontLayer = frontLayer;

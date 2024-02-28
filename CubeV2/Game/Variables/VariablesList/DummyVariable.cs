@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, int scale, float layer)
         {
-            DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, "_null", position, Color.Black, scale - 2, layer);
+            DrawUtils.DrawString(spriteBatch, DrawUtils.DefaultFont, "_null", position, Color.Black, scale - 2, layer);
         }
 
         public override bool IsEmpty(Entity caller, Board board)

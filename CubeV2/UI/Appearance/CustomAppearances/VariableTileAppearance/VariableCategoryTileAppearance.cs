@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 
 namespace CubeV2
 {
@@ -32,7 +33,7 @@ namespace CubeV2
         private int _scale;
         public override Vector2 Size => Vector2.Zero;
 
-        public VariableCategoryTileAppearance(int gridIndex, int scale, float layer) : base(gridIndex, layer) 
+        public VariableCategoryTileAppearance(int gridIndex, int scale, float layer) : base(gridIndex, layer)
         {
             _scale = scale;
         }
@@ -42,7 +43,7 @@ namespace CubeV2
             var variable = GetSource();
             if (variable != null)
             {
-                spriteBatch.DrawString(DrawUtils.PressStart2PFont, variable.Name, position, Color.Black);
+                spriteBatch.DrawString(DrawUtils.DefaultFont, variable.Name, position, Color.Black);
             }
         }
 

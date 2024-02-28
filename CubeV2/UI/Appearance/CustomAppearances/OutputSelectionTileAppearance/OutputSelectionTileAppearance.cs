@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
-            DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, Index.ToString(), position, Color.Magenta, _scale, Layer);
+            DrawUtils.DrawString(spriteBatch, DrawUtils.DefaultFont, Index.ToString(), position, Color.Magenta, _scale, Layer);
         }
     }
 

@@ -1,7 +1,7 @@
 ﻿using CubeV2.Camera;
-using CubeV2.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -50,7 +50,7 @@ namespace CubeV2
             AnimationCameraTracker.AnimateCameraMovement(gameTime.ElapsedGameTime);
             var boardOffsetScaled = GameCamera.IndexOffset * GameCamera.TileSizeFloat;
 
-            AnimationGifTracker.Draw(spriteBatch, gameTime.TotalGameTime, position - GameCamera.SubTileOffset, boardOffsetScaled, GameCamera.Scale, DrawUtils.BoardAnimationLayer);
+            AnimationGifTracker.Draw(spriteBatch, gameTime.TotalGameTime, position - GameCamera.SubTileOffset, boardOffsetScaled, GameCamera.Scale, CubeDrawUtils.BoardAnimationLayer);
             AnimationLaserTracker.Draw(spriteBatch, position, _tileSizeTopOffset, _tileSizeCenterOffset, _tileSizePadded, Layer);
             AnimationCursorTracker.Draw(spriteBatch);
             AnimationRangeOverlayTracker.Draw(spriteBatch);
@@ -87,7 +87,7 @@ namespace CubeV2
                 var offset = (gridIndexActual * GameCamera.TileSizeFloat) + UIGameGrid.BoardPosition - GameCamera.SubTileOffset;
                 var size = GameCamera.TileSizeFloat * ((Config.PlayerRangeLimit * 2) + 1);
 
-                DrawUtils.DrawRect(spriteBatch, offset, size, Color.White * 0.05f, DrawUtils.GameLayer6);
+                DrawUtils.DrawRect(spriteBatch, offset, size, Color.White * 0.05f, CubeDrawUtils.GameLayer6);
             }
         }
     }
@@ -107,7 +107,7 @@ namespace CubeV2
                 var rescaledPos = UIGameGrid.BoardPosition + (index * GameCamera.TileSizeInt);
                 var finalOffset = rescaledPos - GameCamera.SubTileOffset;
 
-                DrawUtils.DrawRect(spriteBatch, finalOffset, GameCamera.TileSizeFloat, Color.White * 0.5f, DrawUtils.GameLayer7);
+                DrawUtils.DrawRect(spriteBatch, finalOffset, GameCamera.TileSizeFloat, Color.White * 0.5f, CubeDrawUtils.GameLayer7);
             }
         }
     }
@@ -123,25 +123,25 @@ namespace CubeV2
             CurrentTime = currentTime;
         }
 
-        public static void Draw(SpriteBatch spriteBatch, TimeSpan currentTime, Vector2 position,Vector2 cameraOffset, int scale, float layer)
+        public static void Draw(SpriteBatch spriteBatch, TimeSpan currentTime, Vector2 position, Vector2 cameraOffset, int scale, float layer)
         {
             var toRemove = new List<BoardAnimation>();
 
-            foreach(var animation in Animations)
+            foreach (var animation in Animations)
             {
                 var elapsed = currentTime - animation._startTime;
                 var frame = elapsed / animation._stepLength;
 
-                if(frame>= animation._gif.NumFrames)
+                if (frame >= animation._gif.NumFrames)
                 {
                     toRemove.Add(animation);
                     continue;
                 }
 
-                animation.Draw(spriteBatch, (int)frame, position,cameraOffset, scale, layer);
+                animation.Draw(spriteBatch, (int)frame, position, cameraOffset, scale, layer);
             }
 
-            foreach(var finishedAnimation in toRemove)
+            foreach (var finishedAnimation in toRemove)
             {
                 Animations.Remove(finishedAnimation);
             }
@@ -149,7 +149,7 @@ namespace CubeV2
 
         internal static void StartAnimation(string gifName, Vector2 boardPositionUnscaled, TimeSpan frameLength)
         {
-            Animations.Add(new BoardAnimation(DrawUtils.GifDict[gifName], boardPositionUnscaled, CurrentTime, frameLength));
+            Animations.Add(new BoardAnimation(CubeDrawUtils.GifDict[gifName], boardPositionUnscaled, CurrentTime, frameLength));
         }
 
         public class BoardAnimation
@@ -169,9 +169,9 @@ namespace CubeV2
                 _stepLength = stepLength;
             }
 
-            public void Draw(SpriteBatch spriteBatch,int frame,Vector2 position,Vector2 cameraOffset,int scale,float layer)
+            public void Draw(SpriteBatch spriteBatch, int frame, Vector2 position, Vector2 cameraOffset, int scale, float layer)
             {
-                Vector2 actualPosition = position-cameraOffset + (_boardPositionUnscaled * scale *Config.TileBaseSize);
+                Vector2 actualPosition = position - cameraOffset + (_boardPositionUnscaled * scale * Config.TileBaseSize);
 
                 _gif.Draw(spriteBatch, frame, actualPosition, Vector2.One * scale, 0, Vector2.Zero, layer, Color.White * _transparency);
             }
@@ -200,7 +200,7 @@ namespace CubeV2
         public static bool LaserActive;
         public static (Vector2, Vector2) LaserLocation;
 
-        public static void SetLaserLocation(Vector2Int playerLocation,Vector2Int targetLocation)
+        public static void SetLaserLocation(Vector2Int playerLocation, Vector2Int targetLocation)
         {
             LaserLocation = (playerLocation.ToVector2(), targetLocation.ToVector2());
         }
@@ -229,14 +229,14 @@ namespace CubeV2
     {
         public static Dictionary<string, MovementCounter> EntityMovementTracker;
 
-        public static void AddEntityMovement(string id,int updateRate,Vector2Int approachVector)
+        public static void AddEntityMovement(string id, int updateRate, Vector2Int approachVector)
         {
             EntityMovementTracker[id] = new MovementCounter(approachVector, updateRate * Config.BoardMasterUpdateRate);
         }
 
         public static bool IsMoving(Entity e) => EntityMovementTracker.ContainsKey(e.EntityID);
 
-        public static Vector2 GetMovementOffset(Entity entity,int scale)
+        public static Vector2 GetMovementOffset(Entity entity, int scale)
         {
             var movementData = EntityMovementTracker[entity.EntityID];
             var movementPercentage = movementData.Remaining / movementData.Total;
@@ -250,7 +250,7 @@ namespace CubeV2
         {
             var toRemove = new List<string>();
 
-            foreach(var kvp in EntityMovementTracker)
+            foreach (var kvp in EntityMovementTracker)
             {
                 kvp.Value.Remaining -= timeSinceLastDraw;
                 if (kvp.Value.Remaining <= TimeSpan.Zero)
@@ -259,7 +259,7 @@ namespace CubeV2
                 }
             }
 
-            foreach(var e in toRemove)
+            foreach (var e in toRemove)
             {
                 EntityMovementTracker.Remove(e);
             }

@@ -1,5 +1,5 @@
-﻿using CubeV2.Utils;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,13 +31,13 @@ namespace CubeV2.Camera
 
         public static void SetScale(int scale)
         {
-            if(scale < Config.MinimumCameraScale | scale > Config.MaximumCameraScale)
+            if (scale < Config.MinimumCameraScale | scale > Config.MaximumCameraScale)
             {
                 return;
             }
 
             var potentialTileSize = _getTileSizeForScale(scale);
-            if(!_isTileSizeValid(potentialTileSize))
+            if (!_isTileSizeValid(potentialTileSize))
             {
                 return;
             }
@@ -53,7 +53,7 @@ namespace CubeV2.Camera
             _mapBottomRightOffset = (_mapActualSizePixels - (Config.GameBoardScreenSpaceAllocated + (Config.GameUIGridIndexPadding / 2 * TileSizeInt)));
             _cameraBorderIndexSize = (CameraGridSize * Config.CameraBorderScreenPercentage).Rounded();
 
-            AllUIElements.GetGameGrid().Arrange(CameraGridSize, TileSizeInt, Config.GameUIGridPadding);
+            UIGameGrid.GetGameGrid().Arrange(CameraGridSize, TileSizeInt, Config.GameUIGridPadding);
         }
 
         public static void SetPixelOffset(Vector2 pixelOffset)
@@ -116,7 +116,7 @@ namespace CubeV2.Camera
             var player = GameInterface._game.FocusEntity;
             var offset = player.Location * TileSizeInt;
 
-            if(AnimationMovementTracker.IsMoving(player))
+            if (AnimationMovementTracker.IsMoving(player))
             {
                 offset -= AnimationMovementTracker.GetMovementOffset(player, Scale).Rounded();
             }

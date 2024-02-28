@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +13,16 @@ namespace CubeV2
 {
     internal class InstructionTileAppearance : TileAppearance
     {
-        public InstructionTileAppearance(int index,float layer) : base(index,layer){}
+        public InstructionTileAppearance(int index, float layer) : base(index, layer) { }
 
         public override Vector2 Size => Config.InstructionTileSize;
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
             var instruction = GameInterface.GetInstructionFromCurrentFocus(Index);
-            if (instruction!=null)
+            if (instruction != null)
             {
-                DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, instruction.Name, position, Color.White, 1, Layer);
+                DrawUtils.DrawString(spriteBatch, DrawUtils.DefaultFont, instruction.Name, position, Color.White, 1, Layer);
             }
         }
     }

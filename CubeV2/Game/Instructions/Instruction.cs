@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAME;
+using System;
 using System.Data;
 
 namespace CubeV2
@@ -40,7 +41,7 @@ namespace CubeV2
             }
         }
 
-        public abstract int Run(Entity caller,Board board);
+        public abstract int Run(Entity caller, Board board);
 
         public abstract Instruction GenerateNew();
 
@@ -56,7 +57,7 @@ namespace CubeV2
 
             for (int j = 0; j < output.OutputCount; j++)
             {
-                output.OutputTargetVariables[j] = RandomUtils.RandomNumber(Config.InstructionMaxNumOutputs+1);
+                output.OutputTargetVariables[j] = RandomUtils.RandomNumber(Config.InstructionMaxNumOutputs + 1);
             }
 
             for (int k = 0; k < output.ControlOutputCount; k++)

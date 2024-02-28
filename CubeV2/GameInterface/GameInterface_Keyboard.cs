@@ -1,5 +1,6 @@
 ﻿using CubeV2.Camera;
 using Microsoft.Xna.Framework.Input;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -112,7 +113,7 @@ namespace CubeV2
 
             }
         }
-        
+
         private static void _processBoardKeyInput(UserInput input)
         {
             if (input.IsKeyJustPressed(Keys.Space))
@@ -127,7 +128,7 @@ namespace CubeV2
                 AnimationCameraTracker.MovementDirection = arrowsDirection.Direction.ToVector();
             }
 
-            if(Config.AllowCameraZoom)
+            if (Config.AllowCameraZoom)
             {
                 if (input.IsKeyJustReleased(Keys.OemPlus) | input.IsButtonJustReleased(Buttons.RightShoulder))
                 {
@@ -152,8 +153,8 @@ namespace CubeV2
                 GameCamera.CenterCameraOnPlayer();
             }
         }
-        
-        
+
+
         private static void _processKeyboardActions(UserInput input)
         {
             switch (PrimaryFocus)

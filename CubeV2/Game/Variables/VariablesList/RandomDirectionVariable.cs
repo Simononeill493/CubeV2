@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System.Collections.Generic;
 
 namespace CubeV2
@@ -25,7 +26,7 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, int scale, float layer)
         {
-            DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, "RD", position, Color.Black, scale / 2, layer);
+            DrawUtils.DrawString(spriteBatch, DrawUtils.DefaultFont, "RD", position, Color.Black, scale / 2, layer);
         }
 
         public override int IVariableCompare(Entity caller, Board board, IVariable other)

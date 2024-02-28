@@ -1,6 +1,6 @@
-﻿using CubeV2.Utils;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System.Threading;
 
 namespace CubeV2
@@ -31,20 +31,20 @@ namespace CubeV2
 
         public static UIElement MakeGameBottomBar()
         {
-            var goButton = UIElementMaker.MakeRectangle(Config.GoButtonName, Config.GameControlButtonSize, Config.GoButtonOffset, Color.Lime, DrawUtils.UILayer2);
-            goButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Go"));
+            var goButton = UIElementMaker.MakeRectangle(Config.GoButtonName, Config.GameControlButtonSize, Config.GoButtonOffset, Color.Lime, CubeDrawUtils.UILayer2);
+            goButton.AddAppearance(new TextAppearance(Color.Black, CubeDrawUtils.UILayer3, "Go"));
             goButton.AddLeftClickAction((i) => GameInterface.StartBoard(Config.BoardMasterUpdateRate));
 
-            var resetButton = UIElementMaker.MakeRectangle(Config.ResetButtonName, Config.GameControlButtonSize, Config.ResetButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
-            resetButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Reset"));
+            var resetButton = UIElementMaker.MakeRectangle(Config.ResetButtonName, Config.GameControlButtonSize, Config.ResetButtonOffset, Color.AliceBlue, CubeDrawUtils.UILayer2);
+            resetButton.AddAppearance(new TextAppearance(Color.Black, CubeDrawUtils.UILayer3, "Reset"));
             resetButton.AddLeftClickAction((i) => { GameInterface.ResetBoard(); GameInterface.StartBoard(Config.BoardMasterUpdateRate); });
 
-            var rerollButton = UIElementMaker.MakeRectangle(Config.RerollButtonName, Config.GameControlButtonSize, Config.RerollButtonOffset, Color.AliceBlue, DrawUtils.UILayer2);
-            rerollButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Reroll"));
+            var rerollButton = UIElementMaker.MakeRectangle(Config.RerollButtonName, Config.GameControlButtonSize, Config.RerollButtonOffset, Color.AliceBlue, CubeDrawUtils.UILayer2);
+            rerollButton.AddAppearance(new TextAppearance(Color.Black, CubeDrawUtils.UILayer3, "Reroll"));
             rerollButton.AddLeftClickAction((i) => { GameInterface.RerollBoard(); GameInterface.ResetBoard(); GameInterface.PauseBoard(); });
 
-            var simulateButton = UIElementMaker.MakeRectangle(Config.SimulateButtonName, Config.SimulateButtonSize, Config.SimulateButtonOffset, Color.White, DrawUtils.UILayer2);
-            simulateButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "Simulate"));
+            var simulateButton = UIElementMaker.MakeRectangle(Config.SimulateButtonName, Config.SimulateButtonSize, Config.SimulateButtonOffset, Color.White, CubeDrawUtils.UILayer2);
+            simulateButton.AddAppearance(new TextAppearance(Color.Black, CubeDrawUtils.UILayer3, "Simulate"));
             simulateButton.AddLeftClickAction((i) => { GameInterface.SimulateCurrentGame(i); });
 
 
@@ -59,12 +59,12 @@ namespace CubeV2
         {
             var clickActionButtonArray = new UIElement("ClickActionController");
 
-            var currentPlayerClickAction = UIElementMaker.MakeRectangle("PlayerClickActionButton", Config.GameControlButtonSize, Vector2.Zero, Color.LightGray, DrawUtils.UILayer2);
-            currentPlayerClickAction.AddAppearance(new TextAppearance(new Color(179,14,55), DrawUtils.UILayer3, ()=>PlayerActionUtils.GetDisplayMessage(GameInterface.SelectedPlayerAction)));
+            var currentPlayerClickAction = UIElementMaker.MakeRectangle("PlayerClickActionButton", Config.GameControlButtonSize, Vector2.Zero, Color.LightGray, CubeDrawUtils.UILayer2);
+            currentPlayerClickAction.AddAppearance(new TextAppearance(new Color(179, 14, 55), CubeDrawUtils.UILayer3, () => PlayerActionUtils.GetDisplayMessage(GameInterface.SelectedPlayerAction)));
 
-            var currentClickActionSubSelection = UIElementMaker.MakeRectangle("PlayerClickActionSubSelectionButton", Config.GameControlButtonSize, new Vector2(120,0), Color.White, DrawUtils.UILayer2);
-            currentClickActionSubSelection.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, "SubSelection"));
-            currentClickActionSubSelection.AddEnabledCondition(()=>PlayerActionUtils.HasSubSelection(GameInterface.SelectedPlayerAction));
+            var currentClickActionSubSelection = UIElementMaker.MakeRectangle("PlayerClickActionSubSelectionButton", Config.GameControlButtonSize, new Vector2(120, 0), Color.White, CubeDrawUtils.UILayer2);
+            currentClickActionSubSelection.AddAppearance(new TextAppearance(Color.Black, CubeDrawUtils.UILayer3, "SubSelection"));
+            currentClickActionSubSelection.AddEnabledCondition(() => PlayerActionUtils.HasSubSelection(GameInterface.SelectedPlayerAction));
 
             clickActionButtonArray.AddChildren(currentPlayerClickAction, currentClickActionSubSelection);
 
@@ -74,25 +74,25 @@ namespace CubeV2
         public static UIElement MakeGameTopBar()
         {
             var displayText = new UIElement(Config.DisplayTextName);
-            displayText.AddAppearance(new TextAppearance(new Color(255, 58, 200), DrawUtils.UILayer1, () => GameInterface.DisplayText));
+            displayText.AddAppearance(new TextAppearance(new Color(255, 58, 200), CubeDrawUtils.UILayer1, () => GameInterface.DisplayText));
             displayText.SetOffset(10, 10);
             //displayText.SetEnabledCondition(() => GameInterface.IsGameWon);
 
             var healthBar = new UIElement(Config.HealthBarName);
             healthBar.SetOffset(new Vector2(10, 35));
-            healthBar.AddAppearance(new HealthBarAppearance(Config.HealthBarSize, DrawUtils.UILayer1, DrawUtils.UILayer2));
+            healthBar.AddAppearance(new HealthBarAppearance(Config.HealthBarSize, CubeDrawUtils.UILayer1, CubeDrawUtils.UILayer2));
 
             var energyBar = new UIElement(Config.EnergyBarName);
             energyBar.SetOffset(new Vector2(10, 70));
-            energyBar.AddAppearance(new EnergyBarAppearance(Config.EnergyBarSize, DrawUtils.UILayer1, DrawUtils.UILayer2));
+            energyBar.AddAppearance(new EnergyBarAppearance(Config.EnergyBarSize, CubeDrawUtils.UILayer1, CubeDrawUtils.UILayer2));
 
 
 
 
             var topBarContainer = new UIElement("TopBar");
             topBarContainer.SetOffset(new Vector2(Config.ScreenSize.X - (Config.HealthBarSize.X + 80), 10));
-            topBarContainer.AddChildren(healthBar,energyBar, displayText);
-            topBarContainer.AddAppearance(new RectangleAppearance(570, 100, Color.Black, DrawUtils.UILayerBackground));
+            topBarContainer.AddChildren(healthBar, energyBar, displayText);
+            topBarContainer.AddAppearance(new RectangleAppearance(570, 100, Color.Black, CubeDrawUtils.UILayerBackground));
 
             return topBarContainer;
         }
@@ -115,25 +115,25 @@ namespace CubeV2
         private static UIElement _makeInstructionSetManager()
         {
             var leftArrow = new UIElement("InstructionSetLeftArrow");
-            leftArrow.AddAppearance(new RectangleAppearance(new Vector2(18,32),Color.Gray,DrawUtils.UILayer3));
-            leftArrow.AddAppearance(new SpriteAppearance(DrawUtils.UILayer4,DrawUtils.MenuArrow1) { Scale = 2, FlipHorizontal = true });
-            leftArrow.AddLeftClickAction((i) => GameInterface.FocusInstructionSet(GameInterface.FocusedInstructionSet-1));
+            leftArrow.AddAppearance(new RectangleAppearance(new Vector2(18, 32), Color.Gray, CubeDrawUtils.UILayer3));
+            leftArrow.AddAppearance(new SpriteAppearance(CubeDrawUtils.UILayer4, ()=>CubeDrawUtils.SpritesDict[CubeDrawUtils.MenuArrow1]) { Scale = 2, FlipHorizontal = true });
+            leftArrow.AddLeftClickAction((i) => GameInterface.FocusInstructionSet(GameInterface.FocusedInstructionSet - 1));
             leftArrow.SetOffset(0, 0);
 
             var rightArrow = new UIElement("InstructionSetRightArrow");
-            rightArrow.AddAppearance(new RectangleAppearance(new Vector2(18, 32), Color.Gray, DrawUtils.UILayer3));
-            rightArrow.AddAppearance(new SpriteAppearance(DrawUtils.UILayer4, DrawUtils.MenuArrow1) { Scale = 2});
+            rightArrow.AddAppearance(new RectangleAppearance(new Vector2(18, 32), Color.Gray, CubeDrawUtils.UILayer3));
+            rightArrow.AddAppearance(new SpriteAppearance(CubeDrawUtils.UILayer4, () => CubeDrawUtils.SpritesDict[CubeDrawUtils.MenuArrow1]) { Scale = 2 });
             rightArrow.AddLeftClickAction((i) => GameInterface.FocusInstructionSet(GameInterface.FocusedInstructionSet + 1));
             rightArrow.SetOffset(100, 0);
 
             var focusNumber = new UIElement("InstructionSetFocusNumber");
-            focusNumber.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, ()=>GameInterface.FocusedInstructionSet.ToString()));
+            focusNumber.AddAppearance(new TextAppearance(Color.Black, CubeDrawUtils.UILayer3, () => GameInterface.FocusedInstructionSet.ToString()));
             focusNumber.SetOffset(50, 0);
 
-            var makeNewSetButton= new UIElement("InstructionSetCreateNewButton");
-            makeNewSetButton.AddAppearance(new RectangleAppearance(new Vector2(18, 32), Color.Gray, DrawUtils.UILayer3));
-            makeNewSetButton.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer4,"+"));
-            makeNewSetButton.AddLeftClickAction((i) =>GameInterface.AddInstructionSet());
+            var makeNewSetButton = new UIElement("InstructionSetCreateNewButton");
+            makeNewSetButton.AddAppearance(new RectangleAppearance(new Vector2(18, 32), Color.Gray, CubeDrawUtils.UILayer3));
+            makeNewSetButton.AddAppearance(new TextAppearance(Color.Black, CubeDrawUtils.UILayer4, "+"));
+            makeNewSetButton.AddLeftClickAction((i) => GameInterface.AddInstructionSet());
             makeNewSetButton.SetOffset(150, 0);
 
 
@@ -144,8 +144,8 @@ namespace CubeV2
 
         private static UIGrid _makeGameBoard()
         {
-            var appearanceFactory = new GameTileAppearanceFactory(DrawUtils.GameLayer1, DrawUtils.GameLayer2,DrawUtils.GameLayer4,DrawUtils.GameLayer5);
-            var gameGrid = new UIGameGrid(Config.GameGridName,Config.GameUIGridMaxGridIndexWidth,Config.GameUIGridMaxGridIndexHeight, appearanceFactory);
+            var appearanceFactory = new GameTileAppearanceFactory(CubeDrawUtils.GameLayer1, CubeDrawUtils.GameLayer2, CubeDrawUtils.GameLayer4, CubeDrawUtils.GameLayer5);
+            var gameGrid = new UIGameGrid(Config.GameGridName, Config.GameUIGridMaxGridIndexWidth, Config.GameUIGridMaxGridIndexHeight, appearanceFactory);
             //gameGrid.Arrange(Config.GameUIGridDefaultWidth, Config.GameUIGridDefaultHeight, (int)gameTileSize.X, (int)gameTileSize.Y, Config.GameUIGridPadding);
             //gameGrid.Arrange(GameInterface.CameraSize.X, GameInterface.CameraSize.Y, (int)gameTileSize.X*2, (int)gameTileSize.Y*2, Config.GameUIGridPadding);
 
@@ -156,36 +156,36 @@ namespace CubeV2
         {
             var tileViewerContainer = new UIElement("TileViewer");
 
-            var tileDetailsPanel = UIElementMaker.MakeRectangle("TileDetailsPanel", new Vector2(210, 80), Vector2.Zero, new Color(212, 161, 161), DrawUtils.UILayer2);
+            var tileDetailsPanel = UIElementMaker.MakeRectangle("TileDetailsPanel", new Vector2(210, 80), Vector2.Zero, new Color(212, 161, 161), CubeDrawUtils.UILayer2);
 
             var tilePicture = new UIElement("TilePicture");
-            tilePicture.AddAppearance(new SpriteAppearance(DrawUtils.UILayer3, DrawUtils.CircuitGround1) { Scale = 3 });
+            tilePicture.AddAppearance(new SpriteAppearance(CubeDrawUtils.UILayer3, () => CubeDrawUtils.SpritesDict[CubeDrawUtils.CircuitGround1]) { Scale = 3 });
             tilePicture.SetOffset(25, 10);
 
             var tileCoordsText = new UIElement("TileCoordsText");
-            tileCoordsText.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3,()=>GameInterface.GetFocusedTileCoordinates().ToString()));
+            tileCoordsText.AddAppearance(new TextAppearance(Color.Black, CubeDrawUtils.UILayer3, () => GameInterface.GetFocusedTileCoordinates().ToString()));
             tileCoordsText.SetOffset(120, 10);
 
-            tileDetailsPanel.AddChildren(tilePicture,tileCoordsText);
+            tileDetailsPanel.AddChildren(tilePicture, tileCoordsText);
 
-            var contentsDetailsPanel = UIElementMaker.MakeRectangle("ContentsDetailsPanel", new Vector2(210, 150), Vector2.Zero, new Color(212, 161, 161), DrawUtils.UILayer2);
+            var contentsDetailsPanel = UIElementMaker.MakeRectangle("ContentsDetailsPanel", new Vector2(210, 150), Vector2.Zero, new Color(212, 161, 161), CubeDrawUtils.UILayer2);
             contentsDetailsPanel.AddEnabledCondition(GameInterface.FocusedTileHasEntity);
-            contentsDetailsPanel.SetOffset(0,120);
+            contentsDetailsPanel.SetOffset(0, 120);
 
             var contentsPicture = new UIElement("ContentsPicture");
-            contentsPicture.AddAppearance(new SpriteAppearance(DrawUtils.UILayer3, ()=>GameInterface.GetFocusedTileEntity().Sprite) { Scale = 3 });
+            contentsPicture.AddAppearance(new SpriteAppearance(CubeDrawUtils.UILayer3, () => CubeDrawUtils.SpritesDict[GameInterface.GetFocusedTileEntity().Sprite]) { Scale = 3 });
             contentsPicture.SetOffset(25, 10);
 
             var contentsNameText = new UIElement("TileContentsNameText");
-            contentsNameText.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer3, () => GameInterface.GetFocusedTileEntity().GetEntityName())); ;
+            contentsNameText.AddAppearance(new TextAppearance(Color.Black, CubeDrawUtils.UILayer3, () => GameInterface.GetFocusedTileEntity().GetEntityName())); ;
             contentsNameText.SetOffset(25, 80);
 
             var contentsEnergyText = new UIElement("TileContentsEnergyText");
-            contentsEnergyText.AddAppearance(new TextAppearance(Color.DarkGreen, DrawUtils.UILayer3, () => GameInterface.GetFocusedTileEntity().GetEnergyOverMaxAsText())); ;
+            contentsEnergyText.AddAppearance(new TextAppearance(Color.DarkGreen, CubeDrawUtils.UILayer3, () => GameInterface.GetFocusedTileEntity().GetEnergyOverMaxAsText())); ;
             contentsEnergyText.SetOffset(25, 100);
 
 
-            contentsDetailsPanel.AddChildren(contentsPicture,contentsNameText, contentsEnergyText);
+            contentsDetailsPanel.AddChildren(contentsPicture, contentsNameText, contentsEnergyText);
 
 
             tileViewerContainer.AddChildren(tileDetailsPanel, contentsDetailsPanel);
@@ -196,7 +196,7 @@ namespace CubeV2
 
         public static UIElement MakeInstructionPanel(Vector2 offset)
         {
-            var instructionPanel = UIElementMaker.MakeRectangle(Config.InstructionPanelName, Config.InstructionPanelSize, offset, Config.InstructionPanelColor, DrawUtils.UILayer1);
+            var instructionPanel = UIElementMaker.MakeRectangle(Config.InstructionPanelName, Config.InstructionPanelSize, offset, Config.InstructionPanelColor, CubeDrawUtils.UILayer1);
             instructionPanel.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Editor);
 
             var instructionTiles = _makeInstructionTiles();
@@ -211,7 +211,7 @@ namespace CubeV2
 
         public static UIElement MakeSelectorPanel(Vector2 offset)
         {
-            var selectorPanel = UIElementMaker.MakeRectangle(Config.SelectorPanelName, Config.SelectorPanelSize, offset, Config.SelectorPanelColor, DrawUtils.UILayer1);
+            var selectorPanel = UIElementMaker.MakeRectangle(Config.SelectorPanelName, Config.SelectorPanelSize, offset, Config.SelectorPanelColor, CubeDrawUtils.UILayer1);
             selectorPanel.AddLeftClickAction((i) => GameInterface.PrimaryFocus = PrimaryFocus.Editor);
 
             var listContainer = new UIElement("SelectorPanelListContainer");
@@ -225,7 +225,7 @@ namespace CubeV2
 
         private static UIGrid _makeListOfInstructions()
         {
-            var appearanceFactory = new InstructionSelectionTileAppearanceFactory(DrawUtils.UILayer2, DrawUtils.UILayer3);
+            var appearanceFactory = new InstructionSelectionTileAppearanceFactory(CubeDrawUtils.UILayer2, CubeDrawUtils.UILayer3);
 
             var listOfInstructions = new UIGrid(Config.ListOfInstructionsName, Config.ListOfInstructionsGridSize, appearanceFactory);
             listOfInstructions.Arrange(Config.ListOfInstructionsGridSize, new Vector2Int(Config.InstructionOptionTileSize), 5);
@@ -237,7 +237,7 @@ namespace CubeV2
 
         private static UIGrid _makeListOfVariableCategories()
         {
-            var appearanceFactory = new VariableCategoryAppearanceFactory(Config.VariableSelectionTileScale, DrawUtils.UILayer2,DrawUtils.UILayer3);
+            var appearanceFactory = new VariableCategoryAppearanceFactory(Config.VariableSelectionTileScale, CubeDrawUtils.UILayer2, CubeDrawUtils.UILayer3);
 
             var listOfVariableCategories = new UIGrid(Config.VariableCategoryListName, Config.VariableCategoryListSize, appearanceFactory);
             listOfVariableCategories.Arrange(Config.VariableCategoryListSize, new Vector2Int(Config.VariableCategoryTileSize), 3);
@@ -250,7 +250,7 @@ namespace CubeV2
         private static UIGrid _makeGenericVariableList()
         {
             var gridSize = new Vector2Int(4, 7);
-            var appearanceFactory = new VariableTileAppearanceFactoryGrid(DrawUtils.UILayer2, DrawUtils.UILayer3,3);
+            var appearanceFactory = new VariableTileAppearanceFactoryGrid(CubeDrawUtils.UILayer2, CubeDrawUtils.UILayer3, 3);
 
             var listOfVariables = new UIGrid("ListOfVariables", gridSize, appearanceFactory);
             listOfVariables.Arrange(gridSize, Config.TileBaseSize.Rounded() * Config.VariableSelectionTileScale, 5);
@@ -262,10 +262,10 @@ namespace CubeV2
 
         private static UIElement _makeIntegerVariableMaker()
         {
-            var integerTextBox = new TextBox(Config.IntegerTextBoxName,200,25,DrawUtils.UILayer2,DrawUtils.UILayer3);
+            var integerTextBox = new TextBox(Config.IntegerTextBoxName, 200, 25, CubeDrawUtils.UILayer2, CubeDrawUtils.UILayer3);
             integerTextBox.IsKeyValid = (c) => c.IsNumeric();
 
-            var doneButton = new TextBox("IntegerVariableConfirmButton", 150, 20, DrawUtils.UILayer2, DrawUtils.UILayer3);
+            var doneButton = new TextBox("IntegerVariableConfirmButton", 150, 20, CubeDrawUtils.UILayer2, CubeDrawUtils.UILayer3);
             doneButton.SetOffset(0, 75);
             doneButton.AddLeftClickAction((i) => GameInterface.TryAssignIntegerValueToFocusedVariable(integerTextBox.Text));
             doneButton.Text = "Confirm";
@@ -273,7 +273,7 @@ namespace CubeV2
 
             var integerMakerContainer = new UIElement("IntegerVariableMaker");
             integerMakerContainer.AddEnabledCondition(IntegerVariableMakerEnabled);
-            integerMakerContainer.AddChildren(integerTextBox,doneButton);
+            integerMakerContainer.AddChildren(integerTextBox, doneButton);
             return integerMakerContainer;
         }
 
@@ -281,7 +281,7 @@ namespace CubeV2
 
         private static UIGrid _makeOutputSelectorGrid()
         {
-            var appearanceFactory = new OutputSelectionTileAppearanceFactory(Config.VariableSelectionTileScale, DrawUtils.UILayer2, DrawUtils.UILayer3);
+            var appearanceFactory = new OutputSelectionTileAppearanceFactory(Config.VariableSelectionTileScale, CubeDrawUtils.UILayer2, CubeDrawUtils.UILayer3);
 
             var outputSelectorGrid = new UIGrid(Config.OutputSelectorGridName, Config.OutputSelectorGridSize, appearanceFactory);
             outputSelectorGrid.Arrange(Config.OutputSelectorGridSize, new Vector2Int(Config.InstructionOptionTileSize), 10);
@@ -295,7 +295,7 @@ namespace CubeV2
         {
             var slotContainer = new UIElement("SlotContainer");
 
-            for(int i=0;i<Config.NumInstructionTiles;i++)
+            for (int i = 0; i < Config.NumInstructionTiles; i++)
             {
                 var slot = _makeInstructionTile(i);
                 slotContainer.AddChildren(slot);
@@ -308,9 +308,9 @@ namespace CubeV2
         {
             var slot = new UIElement(Config.InstructionSlotName + '_' + instructionIndex);
 
-            var slotBackground = new RectangleAppearance(Config.InstructionTileSize, Config.InstructionTileColor, DrawUtils.UILayer2);
+            var slotBackground = new RectangleAppearance(Config.InstructionTileSize, Config.InstructionTileColor, CubeDrawUtils.UILayer2);
             slotBackground.OverrideColor(() => (GameInterface.IsFocusedOnInstruction(instructionIndex) ? Config.InstructionTileHighlightColor : Config.InstructionTileColor));
-            slot.AddAppearances(slotBackground, new InstructionTileAppearance(instructionIndex,DrawUtils.UILayer3));
+            slot.AddAppearances(slotBackground, new InstructionTileAppearance(instructionIndex, CubeDrawUtils.UILayer3));
             slot.SetOffset(0, (Config.InstructionTileInternalPadding + Config.InstructionTileSize.Y) * instructionIndex);
 
             slot.AddLeftClickAction((i) => { GameInterface.FocusInstruction(instructionIndex); });
@@ -322,9 +322,9 @@ namespace CubeV2
                 slot.AddChildren(variableTile);
             }
 
-            for(int outputIndex = 0;outputIndex < Config.InstructionMaxNumOutputs;outputIndex++)
+            for (int outputIndex = 0; outputIndex < Config.InstructionMaxNumOutputs; outputIndex++)
             {
-                var outputTile = _makeInstructionOutputTile(instructionIndex,outputIndex);
+                var outputTile = _makeInstructionOutputTile(instructionIndex, outputIndex);
                 slot.AddChildren(outputTile);
             }
 
@@ -335,13 +335,13 @@ namespace CubeV2
             }
 
             var indexText = new UIElement(slot.ID + "_indexNumber");
-            indexText.AddAppearance(new TextAppearance(Color.Black, DrawUtils.UILayer2, instructionIndex.ToString()));
+            indexText.AddAppearance(new TextAppearance(Color.Black, CubeDrawUtils.UILayer2, instructionIndex.ToString()));
             indexText.SetOffset(-20, Config.InstructionTileSize.Y / 5);
             slot.AddChildren(indexText);
 
             var deleteButton = new UIElement(slot.ID + "_deleteButton");
-            deleteButton.AddAppearance(MultiAppearance.Create(new RectangleAppearance(20, 20, Color.White, DrawUtils.UILayer4), new TextAppearance(Color.Red, DrawUtils.UILayer5, "X")));
-            deleteButton.SetOffset(-20, Config.InstructionTileSize.Y-20);
+            deleteButton.AddAppearance(MultiAppearance.Create(new RectangleAppearance(20, 20, Color.White, CubeDrawUtils.UILayer4), new TextAppearance(Color.Red, CubeDrawUtils.UILayer5, "X")));
+            deleteButton.SetOffset(-20, Config.InstructionTileSize.Y - 20);
             deleteButton.AddLeftClickAction((i) => GameInterface.RemoveInstructionAtIndex(instructionIndex));
             slot.AddChildren(deleteButton);
 
@@ -351,12 +351,12 @@ namespace CubeV2
         private static UIElement _makeInstructionOutputTile(int instructionIndex, int outputIndex)
         {
             var outputTile = new UIElement(Config.InstructionOutputTileName + "_" + instructionIndex + "_" + outputIndex);
-            outputTile.SetOffset(Config.InstructionTileSize.X+1,75+(outputIndex*50));
+            outputTile.SetOffset(Config.InstructionTileSize.X + 1, 75 + (outputIndex * 50));
 
-            var tileBackground = new RectangleAppearance(Config.OutputTileBaseSize * (Config.InstructionTileVariableScale-2), new Color(251,167,232), DrawUtils.UILayer2);
+            var tileBackground = new RectangleAppearance(Config.OutputTileBaseSize * (Config.InstructionTileVariableScale - 2), new Color(251, 167, 232), CubeDrawUtils.UILayer2);
             //tileBackground.OverrideColor(() => (GameInterface.IsFocusedOnOutput(instructionIndex,outputIndex) ? Config.InstructionTileAssignedVariableHighlightColor : Config.InstructionTileAssignedVariableColor));
-            var tileAppearance = new OutputTileAppearance(outputIndex, instructionIndex, Config.InstructionTileVariableScale-2, DrawUtils.UILayer3);
-            outputTile.AddAppearances(tileBackground,tileAppearance);
+            var tileAppearance = new OutputTileAppearance(outputIndex, instructionIndex, Config.InstructionTileVariableScale - 2, CubeDrawUtils.UILayer3);
+            outputTile.AddAppearances(tileBackground, tileAppearance);
 
             outputTile.AddLeftClickAction((i) => { GameInterface.FocusOutput(instructionIndex, outputIndex); });
             outputTile.AddEnabledCondition(() => GameInterface.OutputExists(instructionIndex, outputIndex));
@@ -369,9 +369,9 @@ namespace CubeV2
             var outputTile = new UIElement(Config.InstructionControlOutputTileName + "_" + instructionIndex + "_" + controlIndex);
             outputTile.SetOffset(Config.InstructionTileSize.X + 1, (controlIndex * 25));
 
-            var tileBackground = new RectangleAppearance(Config.OutputTileBaseSize * (Config.InstructionTileVariableScale-2), new Color(156,219,250), DrawUtils.UILayer2);
+            var tileBackground = new RectangleAppearance(Config.OutputTileBaseSize * (Config.InstructionTileVariableScale - 2), new Color(156, 219, 250), CubeDrawUtils.UILayer2);
             //tileBackground.OverrideColor(() => (GameInterface.IsFocusedOnControlOutput(instructionIndex, controlIndex) ? Config.InstructionTileAssignedVariableHighlightColor : Config.InstructionTileAssignedVariableColor));
-            var tileAppearance = new OutputControlTileAppearance(controlIndex, instructionIndex, Config.InstructionTileVariableScale-2, DrawUtils.UILayer3);
+            var tileAppearance = new OutputControlTileAppearance(controlIndex, instructionIndex, Config.InstructionTileVariableScale - 2, CubeDrawUtils.UILayer3);
             outputTile.AddAppearances(tileBackground, tileAppearance);
 
             outputTile.AddLeftClickAction((i) => { GameInterface.FocusControlOutput(instructionIndex, controlIndex); });
@@ -381,15 +381,15 @@ namespace CubeV2
             return outputTile;
         }
 
-        private static UIElement _makeInstructionVariableTile(int instructionIndex,int variableIndex)
+        private static UIElement _makeInstructionVariableTile(int instructionIndex, int variableIndex)
         {
             var variableTile = new UIElement(Config.InstructionVariableTileName + "_" + instructionIndex + "_" + variableIndex);
             variableTile.SetOffset((Config.TileBaseSize.X * Config.InstructionTileVariableScale + 20) * variableIndex, 20);
 
-            var tileBackground = new RectangleAppearance(Config.TileBaseSize * Config.InstructionTileVariableScale, Config.InstructionTileAssignedVariableColor, DrawUtils.UILayer3);
-            tileBackground.OverrideColor(() => (GameInterface.IsFocusedOnVariable(instructionIndex,variableIndex)  ? Config.InstructionTileAssignedVariableHighlightColor : Config.InstructionTileAssignedVariableColor));
+            var tileBackground = new RectangleAppearance(Config.TileBaseSize * Config.InstructionTileVariableScale, Config.InstructionTileAssignedVariableColor, CubeDrawUtils.UILayer3);
+            tileBackground.OverrideColor(() => (GameInterface.IsFocusedOnVariable(instructionIndex, variableIndex) ? Config.InstructionTileAssignedVariableHighlightColor : Config.InstructionTileAssignedVariableColor));
 
-            var appearance = new VariableTileAppearance_InInstruction(instructionIndex, variableIndex, Config.InstructionTileVariableScale, DrawUtils.UILayer4);
+            var appearance = new VariableTileAppearance_InInstruction(instructionIndex, variableIndex, Config.InstructionTileVariableScale, CubeDrawUtils.UILayer4);
             variableTile.AddAppearances(tileBackground, appearance);
 
             variableTile.AddLeftClickAction((i) => { GameInterface.FocusVariable(instructionIndex, variableIndex); });

@@ -1,4 +1,6 @@
-﻿namespace CubeV2
+﻿using SAME;
+
+namespace CubeV2
 {
     public class PushScanInstruction : Instruction
     {

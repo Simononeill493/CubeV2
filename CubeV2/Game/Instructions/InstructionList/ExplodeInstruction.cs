@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAME;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,11 +23,11 @@ namespace CubeV2
 
             public override int Run(Entity caller, Board board)
             {
-                AnimationGifTracker.StartAnimation(DrawUtils.ExplosionGif, caller.Location.ToVector2(), TimeSpan.FromSeconds(0.03));
+                AnimationGifTracker.StartAnimation(CubeDrawUtils.ExplosionGif, caller.Location.ToVector2(), TimeSpan.FromSeconds(0.03));
 
                 foreach (var adjacent in caller.Location.GetAdjacentPoints())
                 {
-                    board.TryDamageTile(adjacent, RandomUtils.RandomNumber(25,45));
+                    board.TryDamageTile(adjacent, RandomUtils.RandomNumber(25, 45));
                 }
 
                 caller.MarkForDeletion();

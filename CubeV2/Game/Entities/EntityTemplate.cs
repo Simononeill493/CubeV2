@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAME;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,7 +11,7 @@ namespace CubeV2
         protected static int _sessionEntityCount;
 
         public List<string> DefaultTags = new List<string>();
-        public List<(int index,IVariableType variableType,object contents)> DefaultVariables = new List<(int,IVariableType, object)>();
+        public List<(int index, IVariableType variableType, object contents)> DefaultVariables = new List<(int, IVariableType, object)>();
 
         public bool CanBeDamaged = true;
         public int DefaultMaxHealth = 1;
@@ -55,16 +56,16 @@ namespace CubeV2
             return entity;
         }
 
-        public void AddDefaultVariable(int index,IVariableType variableType,object contents)
+        public void AddDefaultVariable(int index, IVariableType variableType, object contents)
         {
             DefaultVariables.Add((index, variableType, contents));
         }
 
         private void _setDefaultVariables(Entity e)
         {
-            foreach(var variable in DefaultVariables)
+            foreach (var variable in DefaultVariables)
             {
-                switch(variable.variableType)
+                switch (variable.variableType)
                 {
                     case IVariableType.Integer:
                         e.Variables[variable.index] = new IntegerVariable((int)variable.contents);
@@ -89,7 +90,7 @@ namespace CubeV2
 
     public class GoalTemplate : EntityTemplate
     {
-        public GoalTemplate(string id) : base(id){ DisplaySprite = DrawUtils.GoalSprite; }
+        public GoalTemplate(string id) : base(id) { DisplaySprite = CubeDrawUtils.GoalSprite; }
 
         protected override Entity _createEntity()
         {
@@ -99,7 +100,7 @@ namespace CubeV2
 
     public class ManualPlayerTemplate : EntityTemplate
     {
-        public ManualPlayerTemplate(string id) : base(id) { DisplaySprite = DrawUtils.PlayerSprite; }
+        public ManualPlayerTemplate(string id) : base(id) { DisplaySprite = CubeDrawUtils.PlayerSprite; }
 
         protected override Entity _createEntity()
         {
@@ -119,8 +120,8 @@ namespace CubeV2
 
     public class HarvestableEntityTemplate : EntityTemplate
     {
-        public int HarvestCount; 
-        public HarvestableEntityTemplate(string id,int harvestCount) : base(id) 
+        public int HarvestCount;
+        public HarvestableEntityTemplate(string id, int harvestCount) : base(id)
         {
             HarvestCount = harvestCount;
             CanBeDamaged = false;
@@ -128,7 +129,7 @@ namespace CubeV2
 
         protected override Entity _createEntity()
         {
-            return new HarvestableEntity(TemplateID, _sessionEntityCount++.ToString(), DisplaySprite,HarvestCount);
+            return new HarvestableEntity(TemplateID, _sessionEntityCount++.ToString(), DisplaySprite, HarvestCount);
         }
     }
 
@@ -136,15 +137,15 @@ namespace CubeV2
 
     public class RockTemplate : EntityTemplate
     {
-        public RockTemplate(string id) : base(id) { DisplaySprite = DrawUtils.RockSprite1; }
+        public RockTemplate(string id) : base(id) { DisplaySprite = CubeDrawUtils.RockSprite1; }
 
         protected override Entity _createEntity()
         {
-            var sprite = DrawUtils.RockSprite1;
+            var sprite = CubeDrawUtils.RockSprite1;
 
-            if(RandomUtils.RandomNumber(5)==0)
+            if (RandomUtils.RandomNumber(5) == 0)
             {
-                sprite = DrawUtils.RockSprite2;
+                sprite = CubeDrawUtils.RockSprite2;
             }
             return new RockEntity(TemplateID, _sessionEntityCount++.ToString(), sprite);
         }
@@ -152,7 +153,7 @@ namespace CubeV2
 
     public class EnergyRockTemplate : EntityTemplate
     {
-        public EnergyRockTemplate(string id) : base(id) { DisplaySprite = DrawUtils.EnergyRockSprite; }
+        public EnergyRockTemplate(string id) : base(id) { DisplaySprite = CubeDrawUtils.EnergyRockSprite; }
 
         protected override Entity _createEntity()
         {

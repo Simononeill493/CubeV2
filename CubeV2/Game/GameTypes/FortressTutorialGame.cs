@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAME;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -43,7 +44,7 @@ namespace CubeV2
             var spawner = CurrentBoard.GetEntityByTag(Config.SpawnerTag).First();
             var respawnLocation = spawner.Location + Vector2Int.Up;
 
-            CurrentBoard.TryAddEntityToBoard(FocusEntity,respawnLocation);
+            CurrentBoard.TryAddEntityToBoard(FocusEntity, respawnLocation);
         }
 
 
@@ -59,7 +60,7 @@ namespace CubeV2
             var image = new Bitmap(path);
             var map = new FortressTutorialTemplateTemplate() { Width = image.Width, Height = image.Height };
 
-            var blank = Color.FromArgb(0,0,0,0);
+            var blank = Color.FromArgb(0, 0, 0, 0);
 
             var colorsToTemplates = new Dictionary<Color, EntityTemplate>();
             colorsToTemplates[Color.FromArgb(89, 89, 89)] = EntityDatabase.Get(EntityDatabase.StoneWallName);
@@ -89,18 +90,18 @@ namespace CubeV2
             return map;
         }
 
-        private void _setGroundSpritesFromPNG(string path,FortressTutorialTemplateTemplate map)
+        private void _setGroundSpritesFromPNG(string path, FortressTutorialTemplateTemplate map)
         {
             var image = new Bitmap(path);
 
-            if(image.Width!= map.Width || image.Height!= map.Height)
+            if (image.Width != map.Width || image.Height != map.Height)
             {
                 throw new Exception("Ground sprite image dimensions are {" + image.Width + " " + image.Height + "}. Required dimensions are {" + map.Width + " " + map.Height + "}.");
             }
 
             var colorsToSprites = new Dictionary<Color, string>();
-            colorsToSprites[Color.FromArgb(172,172,172)] = DrawUtils.FortressFloor;
-            colorsToSprites[Color.FromArgb(255,255,255)] = DrawUtils.GrassGround;
+            colorsToSprites[Color.FromArgb(172, 172, 172)] = CubeDrawUtils.FortressFloor;
+            colorsToSprites[Color.FromArgb(255, 255, 255)] = CubeDrawUtils.GrassGround;
 
             for (int y = 0; y < map.Height; y++)
             {
@@ -113,7 +114,7 @@ namespace CubeV2
                     }
                     else
                     {
-                        map.GroundSprites[new Vector2Int(x, y)] = DrawUtils.VoidSprite;
+                        map.GroundSprites[new Vector2Int(x, y)] = CubeDrawUtils.VoidSprite;
                     }
                 }
             }

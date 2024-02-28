@@ -2,6 +2,7 @@
 using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using SAME;
 
 namespace CubeV2
 {
@@ -28,7 +29,7 @@ namespace CubeV2
             Variables[1] = range;
         }
 
-        public PingRangeInstruction(EntityTemplate target,int range)
+        public PingRangeInstruction(EntityTemplate target, int range)
         {
             Variables[0] = new EntityTypeVariable(target);
             Variables[1] = new IntegerVariable(range);
@@ -40,22 +41,22 @@ namespace CubeV2
             if (range != null)
             {
                 var rangeInt = (int)range;
-                if(!caller.HasEnergy(Config.BaseRangePingCost * rangeInt))
+                if (!caller.HasEnergy(Config.BaseRangePingCost * rangeInt))
                 {
                     return 0;
                 }
 
                 var targetTemplate = Variables[0]?.Convert(caller, board, IVariableType.EntityType);
                 {
-                    if(targetTemplate!=null)
+                    if (targetTemplate != null)
                     {
                         foreach (var tile in board.GetSurroundings(caller.Location, rangeInt))
                         {
-                            if (tile.Item1.Contents != null && tile.Item1.Contents.TemplateID==((EntityTemplate)targetTemplate).TemplateID)
+                            if (tile.Item1.Contents != null && tile.Item1.Contents.TemplateID == ((EntityTemplate)targetTemplate).TemplateID)
                             {
                                 caller.InstructionOutputs[0] = new CardinalDirectionVariable(caller.Location.ApproachDirection(tile.Item1.Contents.Location));
 
-                                if(IndexFound>=0)
+                                if (IndexFound >= 0)
                                 {
                                     caller.SetInstructionCounter(IndexFound - 1);
                                 }

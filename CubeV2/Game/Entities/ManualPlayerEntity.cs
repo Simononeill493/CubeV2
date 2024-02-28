@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAME;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,9 +22,9 @@ namespace CubeV2
             _keyboardSapInstruction = new PullEnergyInstruction();
         }
 
-        public override void ExecuteInstructions(Board currentBoard,UserInput input)
+        public override void ExecuteInstructions(Board currentBoard, UserInput input)
         {
-            if(GameInterface.PrimaryFocus == PrimaryFocus.Board)
+            if (GameInterface.PrimaryFocus == PrimaryFocus.Board)
             {
                 var WASDDirection = DirectionUtils.GetWASDDirection(input);
                 if (WASDDirection.AnyPressed)
@@ -48,7 +49,7 @@ namespace CubeV2
             base.ExecuteInstructions(currentBoard, input);
 
             //GiveEnergy(1000);
-            if(GetCurrentEnergy() < 5)
+            if (GetCurrentEnergy() < 5)
             {
                 GiveEnergy(1);
             }

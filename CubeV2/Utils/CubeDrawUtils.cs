@@ -17,10 +17,11 @@ using System.Threading.Tasks;
 using static System.Formats.Asn1.AsnWriter;
 using Color = Microsoft.Xna.Framework.Color;
 using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using SAME;
 
 namespace CubeV2
 {
-    public static class DrawUtils
+    public static class CubeDrawUtils
     {
         public const string EnemySprite = "Enemy";
         public const string GoalSprite = "Goal";
@@ -99,15 +100,9 @@ namespace CubeV2
         public const float UILayer5 = 0.15f;
         public const float OverlayLayer = 0.0f;
 
-        public static Texture2D DefaultTexture;
-        public static SpriteFont PressStart2PFont;
 
-        public static void LoadContent(GraphicsDevice graphicsDevice,ContentManager content)
+        public static void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
         {
-            DefaultTexture = new Texture2D(graphicsDevice, 1, 1, false, SurfaceFormat.Color);
-            DefaultTexture.SetData(new[] { Color.White });
-            //Revisit this: this color is never used, but needs to be set for the texture to be visible??
-
             SpritesDict = new Dictionary<string, Texture2D>();
             SpritesDict[EnemySprite] = content.Load<Texture2D>(EnemySprite);
             SpritesDict[GoalSprite] = content.Load<Texture2D>(GoalSprite);
@@ -153,56 +148,28 @@ namespace CubeV2
 
             SpritesDict[MenuArrow1] = content.Load<Texture2D>(MenuArrow1);
 
-            PressStart2PFont = content.Load<SpriteFont>("PressStart2P");
 
             GifDict = new Dictionary<string, CustomGifClass>();
-            GifDict[RainGif] = new CustomGifClass(content.Load<Texture2D>(RainGif), 200,200,30);
+            GifDict[RainGif] = new CustomGifClass(content.Load<Texture2D>(RainGif), 200, 200, 30);
             GifDict[ExplosionGif] = new CustomGifClass(content.Load<Texture2D>(ExplosionGif), 16, 16, 14);
 
             _directionSpriteLookup = new Dictionary<RelativeDirection, string>
             {
-                [RelativeDirection.Forward] = DrawUtils.UpSprite,
-                [RelativeDirection.Backward] = DrawUtils.DownSprite,
-                [RelativeDirection.Left] = DrawUtils.LeftSprite,
-                [RelativeDirection.Right] = DrawUtils.RightSprite,
-                [RelativeDirection.ForwardRight] = DrawUtils.UpRightSprite,
-                [RelativeDirection.BackwardRight] = DrawUtils.DownRightSprite,
-                [RelativeDirection.ForwardLeft] = DrawUtils.UpLeftSprite,
-                [RelativeDirection.BackwardLeft] = DrawUtils.DownLeftSprite
+                [RelativeDirection.Forward] = CubeDrawUtils.UpSprite,
+                [RelativeDirection.Backward] = CubeDrawUtils.DownSprite,
+                [RelativeDirection.Left] = CubeDrawUtils.LeftSprite,
+                [RelativeDirection.Right] = CubeDrawUtils.RightSprite,
+                [RelativeDirection.ForwardRight] = CubeDrawUtils.UpRightSprite,
+                [RelativeDirection.BackwardRight] = CubeDrawUtils.DownRightSprite,
+                [RelativeDirection.ForwardLeft] = CubeDrawUtils.UpLeftSprite,
+                [RelativeDirection.BackwardLeft] = CubeDrawUtils.DownLeftSprite
             };
-        }
-
-        public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position, float scale, float rotation, Vector2 rotationOrigin, float layer, SpriteEffects flips = SpriteEffects.None) => DrawSprite(spriteBatch, spriteName, position, scale, rotation, rotationOrigin, layer, Color.White,flips);
-
-        public static int SpritesDrawn;
-        public static void DrawSprite(SpriteBatch spriteBatch, string spriteName, Vector2 position,float scale, float rotation, Vector2 rotationOrigin,float layer,Color color,SpriteEffects flips = SpriteEffects.None)
-        {
-            spriteBatch.Draw(SpritesDict[spriteName], position, null, color, rotation, rotationOrigin, scale, flips, layer);
-            //SpritesDrawn++;
-        }
-
-        public static void DrawString(SpriteBatch spriteBatch,SpriteFont font,string text,Vector2 position,Color color,float scale,float layer)
-        {
-            spriteBatch.DrawString(font, text, position, color, 0, Vector2.Zero, scale, SpriteEffects.None, layer);
-        }
-
-        public static void DrawRect(SpriteBatch spriteBatch,Vector2 position,Vector2 size,Color color,float layer)
-        {
-            spriteBatch.Draw(DefaultTexture, new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y), null, color, 0, Vector2.Zero, SpriteEffects.None, layer);
-        }
-
-        public static void DrawLine(SpriteBatch spriteBatch, Vector2 start, Vector2 end, int thickness, Color color, float layer)
-        {
-            Vector2 edge = end - start;
-            float angle = (float)Math.Atan2(edge.Y, edge.X);
-
-            spriteBatch.Draw(DefaultTexture, new Rectangle((int)start.X, (int)start.Y, (int)edge.Length(), thickness), null, color, angle, new Vector2(0, 0), SpriteEffects.None, 0);
         }
 
         public static void DrawTileSprite(SpriteBatch spriteBatch, string sprite, Orientation orientation, Vector2 position, float scale, float layer, SpriteEffects flips)
         {
             (float rotation, Vector2 rotationOffset) = _getRotationDataForOrientation(orientation);
-            DrawSprite(spriteBatch, sprite, position + rotationOffset, scale, rotation, Vector2.Zero, layer,flips);
+            DrawUtils.DrawSprite(spriteBatch, CubeDrawUtils.SpritesDict[sprite], position + rotationOffset, scale, rotation, Vector2.Zero, layer, flips);
         }
 
         internal static void DrawMeter(SpriteBatch spriteBatch, float percentage, Vector2 position, int cameraScale, float spriteMeterLayer, float spriteMeterLayer2)
@@ -215,12 +182,12 @@ namespace CubeV2
             var height = (Config.TileBaseSize.Y / 8);
             position.X += horizontalPadding * cameraScale;
 
-            DrawRect(spriteBatch, position, new Vector2(widthBox, height) * cameraScale, Color.Black,spriteMeterLayer);
-            DrawRect(spriteBatch, position, new Vector2(widthMeter, height) * cameraScale, Color.Red, spriteMeterLayer2);
+            DrawUtils.DrawRect(spriteBatch, position, new Vector2(widthBox, height) * cameraScale, Color.Black, spriteMeterLayer);
+            DrawUtils.DrawRect(spriteBatch, position, new Vector2(widthMeter, height) * cameraScale, Color.Red, spriteMeterLayer2);
         }
 
 
-        private static (float rotation,Vector2 rotationOffset) _getRotationDataForOrientation(Orientation orientation)
+        private static (float rotation, Vector2 rotationOffset) _getRotationDataForOrientation(Orientation orientation)
         {
             var rotBase = Math.PI / 4;
             float rotation = 0;
@@ -281,7 +248,7 @@ namespace CubeV2
         public int Height;
         public int NumFrames;
 
-        public CustomGifClass(Texture2D spriteSheet,int width, int height, int numFrames)
+        public CustomGifClass(Texture2D spriteSheet, int width, int height, int numFrames)
         {
             SpriteSheet = spriteSheet;
             Width = width;
@@ -289,7 +256,7 @@ namespace CubeV2
             NumFrames = numFrames;
         }
 
-        internal void Draw(SpriteBatch spriteBatch, int frame,Vector2 position, Vector2 scale, int rotation, Vector2 rotationOrigin, float layer,Color color)
+        internal void Draw(SpriteBatch spriteBatch, int frame, Vector2 position, Vector2 scale, int rotation, Vector2 rotationOrigin, float layer, Color color)
         {
             var spriteRect = new Rectangle(frame * Width, 0, Width, Height);
             spriteBatch.Draw(SpriteSheet, position, spriteRect, color, rotation, rotationOrigin, scale, SpriteEffects.None, layer);

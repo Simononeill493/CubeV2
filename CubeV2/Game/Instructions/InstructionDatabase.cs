@@ -1,4 +1,5 @@
 ﻿using CubeV2.CubeV2;
+using SAME;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -56,7 +57,7 @@ namespace CubeV2
         {
             var output = new List<Instruction>();
 
-            for(int i=0;i<count;i++)
+            for (int i = 0; i < count; i++)
             {
                 var rand = RandomUtils.GetRandom(_masterList).GenerateNewFilled();
                 output.Add(rand);

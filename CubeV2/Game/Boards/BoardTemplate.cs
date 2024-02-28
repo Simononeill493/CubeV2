@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SAME;
+using System.Collections.Generic;
 
 namespace CubeV2
 {
@@ -21,7 +22,7 @@ namespace CubeV2
 
             OnEntitiesGenerated(generatedEntities);
 
-            foreach(var entity in generatedEntities)
+            foreach (var entity in generatedEntities)
             {
                 board.TryAddEntityToBoard(entity.Value, entity.Key);
             }
@@ -52,7 +53,7 @@ namespace CubeV2
             {
                 entity.Value.UpdateOffset = RandomUtils.RandomNumber(0, entity.Value.UpdateRate);
 
-                if(shortRangeTurrets.Contains(entity.Key))
+                if (shortRangeTurrets.Contains(entity.Key))
                 {
                     entity.Value.Variables[0] = new IntegerVariable(4);
                 }
@@ -61,7 +62,7 @@ namespace CubeV2
 
         public override void OnBoardGenerated(Board b)
         {
-            foreach(var groundSprite in GroundSprites)
+            foreach (var groundSprite in GroundSprites)
             {
                 var tile = b.TryGetTile(groundSprite.Key);
                 tile.Sprite = groundSprite.Value;

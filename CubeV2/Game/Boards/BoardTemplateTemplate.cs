@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAME;
+using System;
 using System.Collections.Generic;
 
 namespace CubeV2
@@ -22,7 +23,7 @@ namespace CubeV2
             template.Height = Height;
             template.EntitiesToPlace = new Dictionary<Vector2Int, EntityTemplate>();
 
-            foreach(var kvp in StaticEntities)
+            foreach (var kvp in StaticEntities)
             {
                 template.EntitiesToPlace.Add(kvp.Key, kvp.Value);
             }

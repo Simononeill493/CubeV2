@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +14,16 @@ namespace CubeV2
     {
         static Vector2 _textOffset = new Vector2(20, 15);
 
-        public InstructionSelectionTileAppearance(int index,float layer) : base(index,layer) {}
+        public InstructionSelectionTileAppearance(int index, float layer) : base(index, layer) { }
 
         public override Vector2 Size => Config.InstructionOptionTileSize;
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
             var instructionOption = GameInterface.GetInstructionOption(Index);
-            if (instructionOption!=null)
+            if (instructionOption != null)
             {
-                DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, instructionOption.Name, position + _textOffset, Color.Black, 1, Layer);
+                DrawUtils.DrawString(spriteBatch, DrawUtils.DefaultFont, instructionOption.Name, position + _textOffset, Color.Black, 1, Layer);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿
 using CubeV2;
+using SAME;
 using System;
 using System.Collections.Generic;
 
@@ -20,7 +21,7 @@ internal class Program
 
         Testing.Go();
 
-        using var game = new CubeV2.GameWrapper();
+        using var game = new CubeV2.CubeV2GameWrapper();
         game.Run();
     }
 }

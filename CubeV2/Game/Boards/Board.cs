@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAME;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,7 +35,7 @@ namespace CubeV2
                 {
                     var tile = new Tile();
 
-                    TilesVector[x,y] = tile;
+                    TilesVector[x, y] = tile;
                     TilesLinear.Add(tile);
                 }
             }
@@ -69,7 +70,7 @@ namespace CubeV2
             var entities = ActiveEntities.ToList();
             foreach (var entity in entities)
             {
-                if (entity != null && !entity.MarkedForDeletion && ((Clock % (entity.UpdateRate + entity.UpdateOffset)== 0)))
+                if (entity != null && !entity.MarkedForDeletion && ((Clock % (entity.UpdateRate + entity.UpdateOffset) == 0)))
                 {
                     entity.ExecuteInstructions(this, input);
                 }
@@ -83,13 +84,13 @@ namespace CubeV2
             var toRemove = new List<Entity>();
             foreach (var entity in Entities.Values)
             {
-                if(entity.MarkedForDeletion)
+                if (entity.MarkedForDeletion)
                 {
                     toRemove.Add(entity);
                 }
             }
 
-            foreach(var e in toRemove)
+            foreach (var e in toRemove)
             {
                 _tryClearThisTile(e.Location);
                 e.Deleted = true;
@@ -108,14 +109,14 @@ namespace CubeV2
         }
         public Tile TryGetTile(Vector2Int offset)
         {
-            if(!ContainsLocation(offset))
+            if (!ContainsLocation(offset))
             {
                 return null;
             }
 
             return TilesVector[offset.X, offset.Y];
         }
-        public bool TryDamageTile(Vector2Int offset,int amount)
+        public bool TryDamageTile(Vector2Int offset, int amount)
         {
             if (ContainsLocation(offset))
             {
@@ -127,21 +128,21 @@ namespace CubeV2
         }
 
 
-        public List<(Tile,Vector2Int)> GetSurroundings(Vector2Int location,int range)
+        public List<(Tile, Vector2Int)> GetSurroundings(Vector2Int location, int range)
         {
-            var output = new List<(Tile,Vector2Int)>();
+            var output = new List<(Tile, Vector2Int)>();
             for (int x = location.X - range; x <= location.X + range; x++)
             {
                 for (int y = location.Y - range; y <= location.Y + range; y++)
                 {
                     var searchLoc = new Vector2Int(x, y);
-                    if(searchLoc == location)
+                    if (searchLoc == location)
                     {
                         continue;
                     }
 
                     var tile = TryGetTile(searchLoc);
-                    if(tile!=null)
+                    if (tile != null)
                     {
                         output.Add((tile, searchLoc));
                     }
@@ -163,7 +164,7 @@ namespace CubeV2
                 return false;
             }
 
-            var currentContents = TilesVector[newLocation.X,newLocation.Y].Contents;
+            var currentContents = TilesVector[newLocation.X, newLocation.Y].Contents;
             if (currentContents != null)
             {
                 if (currentContents.TryBeCollected(entity))
@@ -185,9 +186,9 @@ namespace CubeV2
         private bool _tryClearThisTile(Vector2Int targetLocation)
         {
             var tile = TryGetTile(targetLocation);
-            if(tile!=null)
+            if (tile != null)
             {
-                if(tile.Contents!=null)
+                if (tile.Contents != null)
                 {
                     _removeFromBoard(tile.Contents);
                 }
@@ -217,7 +218,7 @@ namespace CubeV2
             }
 
             entity.MarkForDeletion();
-            entity.WhenMarkedForDeletion(this,entityFormerLocation);
+            entity.WhenMarkedForDeletion(this, entityFormerLocation);
         }
         public void RemoveEntityFromCurrentTile(Entity entity)
         {
@@ -236,11 +237,11 @@ namespace CubeV2
             entity.Location = Vector2Int.MinusOne;
         }
 
-        public void AddEntityToBoard(Entity entity, int indexToAddTo) => TryAddEntityToBoard(entity, BoardUtils.IndexToXY(indexToAddTo,_width));
+        public void AddEntityToBoard(Entity entity, int indexToAddTo) => TryAddEntityToBoard(entity, BoardUtils.IndexToXY(indexToAddTo, _width));
 
         public bool TryAddEntityToBoard(Entity entity, Vector2Int tileToAddTo)
         {
-            if(!ContainsLocation(tileToAddTo))
+            if (!ContainsLocation(tileToAddTo))
             {
                 return false;
             }
@@ -255,14 +256,14 @@ namespace CubeV2
             Entities[entity.EntityID] = entity;
             entity.CreationTime = Clock;
 
-            if(!_tryAddEntityToTile(entity, tileToAddTo))
+            if (!_tryAddEntityToTile(entity, tileToAddTo))
             {
                 return false;
             }
 
             _addToEntityTypesDict(entity);
 
-            if(entity.IsActive)
+            if (entity.IsActive)
             {
                 _addEntityToActiveList(entity);
             }
@@ -279,7 +280,7 @@ namespace CubeV2
                 return false;
             }
 
-            if (TilesVector[tileToAddTo.X,tileToAddTo.Y].Contents != null)
+            if (TilesVector[tileToAddTo.X, tileToAddTo.Y].Contents != null)
             {
                 //Console.WriteLine("Warning: Entity is being moved to tile which is not empty.");
                 return false;
@@ -294,7 +295,7 @@ namespace CubeV2
 
         private void _addToEntityTypesDict(Entity entity)
         {
-            if(!EntityTypes.ContainsKey(entity.TemplateID))
+            if (!EntityTypes.ContainsKey(entity.TemplateID))
             {
                 EntityTypes[entity.TemplateID] = new List<Entity>();
             }
@@ -350,7 +351,7 @@ namespace CubeV2
 
         public List<Entity> GetEntityByTemplate(string templateID)
         {
-            if(!EntityTypes.ContainsKey(templateID))
+            if (!EntityTypes.ContainsKey(templateID))
             {
                 return new List<Entity>();
             }

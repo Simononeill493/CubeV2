@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,7 +16,7 @@ namespace CubeV2
         public override Vector2 Size => Vector2.Zero;
         private int _scale;
 
-        public VariableTileAppearance(int gridIndex, int scale,float layer) : base(gridIndex,layer)
+        public VariableTileAppearance(int gridIndex, int scale, float layer) : base(gridIndex, layer)
         {
             _scale = scale;
         }
@@ -22,7 +24,7 @@ namespace CubeV2
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
             var variable = GetSource();
-            if(variable!=null)
+            if (variable != null)
             {
                 variable.Draw(spriteBatch, position, _scale, Layer);
             }
@@ -35,7 +37,7 @@ namespace CubeV2
     public class VariableTileAppearance_ToSelect : VariableTileAppearance
     {
         public VariableTileAppearance_ToSelect(int gridIndex, int scale, float layer) : base(gridIndex, scale, layer)
-        {}
+        { }
 
         public override IVariable GetSource() => GameInterface.GetVariableFromGrid(Index);
     }
@@ -44,7 +46,7 @@ namespace CubeV2
     {
         private int _scale;
 
-        public VariableTileAppearanceFactoryGrid(float backgroundLayer, float foregroundLayer,int scale) : base(backgroundLayer, foregroundLayer)
+        public VariableTileAppearanceFactoryGrid(float backgroundLayer, float foregroundLayer, int scale) : base(backgroundLayer, foregroundLayer)
         {
             _scale = scale;
         }
@@ -58,7 +60,7 @@ namespace CubeV2
 
         public override TileAppearance CreateForeground(int index)
         {
-            return new VariableTileAppearance_ToSelect(index,_scale,_foregroundLayer);
+            return new VariableTileAppearance_ToSelect(index, _scale, _foregroundLayer);
         }
     }
 

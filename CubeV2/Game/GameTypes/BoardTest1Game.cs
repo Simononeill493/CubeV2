@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAME;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace CubeV2
 
         public override void OnSetBoard(Board b)
         {
-            foreach(var entity in b.ActiveEntities)
+            foreach (var entity in b.ActiveEntities)
             {
                 if (entity.TemplateID != EntityDatabase.PortalName)
                 {
@@ -31,7 +32,7 @@ namespace CubeV2
                 }
             }
 
-            foreach(var energyRock in b.GetEntityByTemplate(EntityDatabase.EnergyRockName))
+            foreach (var energyRock in b.GetEntityByTemplate(EntityDatabase.EnergyRockName))
             {
                 energyRock.SetEnergyToMax();
             }
@@ -57,14 +58,14 @@ namespace CubeV2
             var energyRock = EntityDatabase.Get(EntityDatabase.EnergyRockName);
             var portal = EntityDatabase.Get(EntityDatabase.PortalName);
 
-            for (int y=0;y<lines.Length;y++)
+            for (int y = 0; y < lines.Length; y++)
             {
-                for(int x = 0;x<lines[y].Length;x++)
+                for (int x = 0; x < lines[y].Length; x++)
                 {
                     var position = new Vector2Int(x, y);
                     var tile = lines[y][x];
 
-                    if(tile=='x')
+                    if (tile == 'x')
                     {
                         if (RandomUtils.RandomNumber(10) == 0)
                         {

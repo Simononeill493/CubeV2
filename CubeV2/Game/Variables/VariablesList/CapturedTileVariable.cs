@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,13 +16,13 @@ namespace CubeV2
         public Vector2Int Location;
         public Entity Contents;
 
-        public CapturedTileVariable(Vector2Int location,Entity contents)
+        public CapturedTileVariable(Vector2Int location, Entity contents)
         {
             Location = location;
             Contents = contents;
         }
 
-        public override object Convert(Entity caller,Board board, IVariableType variableType)
+        public override object Convert(Entity caller, Board board, IVariableType variableType)
         {
             switch (variableType)
             {
@@ -30,7 +31,7 @@ namespace CubeV2
                 case IVariableType.IntTuple:
                     return Location;
                 case IVariableType.EntityType:
-                    if(Contents==null)
+                    if (Contents == null)
                     {
                         return null;
                     }
@@ -42,7 +43,7 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, int scale, float layer)
         {
-            DrawUtils.DrawSprite(spriteBatch, DrawUtils.CircuitGround1, position, scale, 0, Vector2.Zero, layer);
+            DrawUtils.DrawSprite(spriteBatch, CubeDrawUtils.SpritesDict[CubeDrawUtils.CircuitGround1], position, scale, 0, Vector2.Zero, layer);
         }
 
         public override int IVariableCompare(Entity caller, Board board, IVariable other)
@@ -50,18 +51,18 @@ namespace CubeV2
             switch (other.DefaultType)
             {
                 case IVariableType.EntityType:
-                    if(Contents==null)
+                    if (Contents == null)
                     {
                         return -1;
                     }
-                    else if(((EntityTypeVariable)other)._template.TemplateID == Contents.TemplateID)
+                    else if (((EntityTypeVariable)other)._template.TemplateID == Contents.TemplateID)
                     {
                         return 0;
                     }
                     break;
                 case IVariableType.CapturedTile:
                     var otherCaptured = ((CapturedTileVariable)other);
-                    if(otherCaptured.Location == Location && otherCaptured.Contents.TemplateID == Contents.TemplateID) //TODO: ?????
+                    if (otherCaptured.Location == Location && otherCaptured.Contents.TemplateID == Contents.TemplateID) //TODO: ?????
                     {
                         return 0;
                     }

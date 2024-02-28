@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAME;
+using System;
 using System.Collections.Generic;
 
 namespace CubeV2
@@ -26,7 +27,7 @@ namespace CubeV2
         {
             var options = new List<IVariable>();
 
-            if(variableCategory.Name == VariableUtils.DirectionVariableName)
+            if (variableCategory.Name == VariableUtils.DirectionVariableName)
             {
                 foreach (var i in DirectionUtils.Relatives)
                 {

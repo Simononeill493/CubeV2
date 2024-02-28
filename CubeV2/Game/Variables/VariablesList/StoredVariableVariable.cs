@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,14 +32,14 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, int scale, float layer)
         {
-            DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, VariableIndex.ToString(), position, Color.Magenta, scale, layer);
+            DrawUtils.DrawString(spriteBatch, DrawUtils.DefaultFont, VariableIndex.ToString(), position, Color.Magenta, scale, layer);
 
         }
 
         public override int IVariableCompare(Entity caller, Board board, IVariable other)
         {
             var targetVariable = caller.Variables[VariableIndex];
-            if(targetVariable!=null)
+            if (targetVariable != null)
             {
                 return targetVariable.IVariableCompare(caller, board, other);
             }

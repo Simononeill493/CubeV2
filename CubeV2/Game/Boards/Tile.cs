@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System;
 
 namespace CubeV2
@@ -15,7 +16,7 @@ namespace CubeV2
         public Tile()
         {
 
-            Sprite = DrawUtils.GrassGround;
+            Sprite = CubeDrawUtils.GrassGround;
 
             /*
             Orientation = (Orientation)(RandomUtils.RandomNumber(4) * 2);

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System.Collections.Generic;
 
 namespace CubeV2
@@ -40,7 +41,7 @@ namespace CubeV2
                 str = "LFT";
             }
 
-            DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, str, position, Color.Green, scale / 3, layer);
+            DrawUtils.DrawString(spriteBatch, DrawUtils.DefaultFont, str, position, Color.Green, scale / 3, layer);
         }
 
         public override int IVariableCompare(Entity caller, Board board, IVariable other)

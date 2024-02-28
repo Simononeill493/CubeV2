@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using CubeV2.Camera;
+using SAME;
 
 namespace CubeV2
 {
@@ -102,7 +103,7 @@ namespace CubeV2
 
             _game.TickBoard(input);
 
-            if(Config.EnableFogOfWar)
+            if (Config.EnableFogOfWar)
             {
                 GameCamera.RevealMapToPlayer();
             }
@@ -121,7 +122,7 @@ namespace CubeV2
 
             DisplayText = "Simulating...";
 
-            var wins = GameSimulator.Simulate(_game,input,_game.CurrentTemplateTemplate, _game.WinCondition, timeout, iterations);
+            var wins = GameSimulator.Simulate(_game, input, _game.CurrentTemplateTemplate, _game.WinCondition, timeout, iterations);
 
             DisplayText = "Wins: " + wins + "/" + iterations;
 

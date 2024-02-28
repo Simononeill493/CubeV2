@@ -1,15 +1,16 @@
 ﻿
 using Microsoft.Xna.Framework;
+using SAME;
 
 namespace CubeV2
 {
     public class InstructionSelectionTileAppearanceFactory : TileAppearanceFactory
     {
-        public InstructionSelectionTileAppearanceFactory(float bg,float fg) : base(bg,fg) {}
+        public InstructionSelectionTileAppearanceFactory(float bg, float fg) : base(bg, fg) { }
 
         public override TileAppearance CreateForeground(int index)
         {
-            return new InstructionSelectionTileAppearance(index,_foregroundLayer);
+            return new InstructionSelectionTileAppearance(index, _foregroundLayer);
         }
 
         public override Appearance CreateBackground(int index, int width, int height)

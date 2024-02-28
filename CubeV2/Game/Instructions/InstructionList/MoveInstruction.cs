@@ -1,4 +1,6 @@
-﻿namespace CubeV2
+﻿using SAME;
+
+namespace CubeV2
 {
     public class MoveInstruction : Instruction
     {
@@ -17,7 +19,7 @@
 
         public override int Run(Entity caller, Board board)
         {
-            var direction = Variables[0]?.Convert(caller, board,IVariableType.RelativeDirection);
+            var direction = Variables[0]?.Convert(caller, board, IVariableType.RelativeDirection);
             if (direction != null)
             {
                 if (caller.TryMove(board, (RelativeDirection)direction))

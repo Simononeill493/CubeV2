@@ -1,4 +1,5 @@
 ﻿using CubeV2.CubeV2;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +40,7 @@ internal class EntityAIDatabase
     private static void TurretSetAI(EntityTemplate turret)
     {
         turret.DefaultUpdateRate = 15;
-        turret.AddDefaultVariable(0,IVariableType.Integer, 8);
+        turret.AddDefaultVariable(0, IVariableType.Integer, 8);
 
         var find = new PingRangeInstruction(new EntityTypeVariable(EntityDatabase.Get(EntityDatabase.ManualPlayerName)), new StoredVariableVariable(0));
         find.OutputTargetVariables[0] = 1;
@@ -47,7 +48,7 @@ internal class EntityAIDatabase
         find.IndexNotFound = 3;
 
         var turn = new TurnInstruction(new StoredVariableVariable(1));
-        var shoot = new CreateInstruction(RelativeDirection.Forward,EntityDatabase.Get(EntityDatabase.MissileName));
+        var shoot = new CreateInstruction(RelativeDirection.Forward, EntityDatabase.Get(EntityDatabase.MissileName));
 
         turret.Instructions[0][0] = find;
         turret.Instructions[0][1] = turn;

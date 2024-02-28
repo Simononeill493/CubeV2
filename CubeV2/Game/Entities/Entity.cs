@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -46,7 +47,7 @@ namespace CubeV2
         public bool ShowHarvestMeter = false;
         protected int _maxHarvestCount;
         protected int _currentHarvestCount;
-        public float GetHarvestPercentage() => (_maxHarvestCount == 0 ) ? 1 : (((float)_currentHarvestCount) / _maxHarvestCount);
+        public float GetHarvestPercentage() => (_maxHarvestCount == 0) ? 1 : (((float)_currentHarvestCount) / _maxHarvestCount);
 
         public Orientation Orientation;
         public Vector2Int Location = Vector2Int.MinusOne;
@@ -106,7 +107,7 @@ namespace CubeV2
             }
 
             var energyCost = currentInstruction.Run(this, currentBoard);
-            if(currentInstruction.ControlFlowOutputs[0] >= 0 && currentInstruction.ControlOutputCount==1)
+            if (currentInstruction.ControlFlowOutputs[0] >= 0 && currentInstruction.ControlOutputCount == 1)
             {
                 SetInstructionCounter(currentInstruction.ControlFlowOutputs[0] - 1);
             }
@@ -167,25 +168,25 @@ namespace CubeV2
         public void SetEnergyToMax() => _currentEnergy = MaxEnergy;
 
         public bool CanBeDamaged = true;
-        
+
         public bool HasHealth(int amount)
         {
             return (Config.InfiniteHealth) || (_currentHealth >= amount);
         }
         public void TakeHealth(int amount)
         {
-            if(!CanBeDamaged | Config.InfiniteHealth)
+            if (!CanBeDamaged | Config.InfiniteHealth)
             {
                 return;
             }
 
             _currentHealth -= amount;
-            if(_currentHealth < MaxHealth*0.9)
+            if (_currentHealth < MaxHealth * 0.9)
             {
                 ShowDamageMeter = true;
             }
 
-            if (_currentHealth<=0)
+            if (_currentHealth <= 0)
             {
                 _currentHealth = 0;
                 MarkForDeletion();
@@ -214,7 +215,7 @@ namespace CubeV2
 
         public bool TrySwitchInstructionSet(int index)
         {
-            if (index >=0 && index < Instructions.Count)
+            if (index >= 0 && index < Instructions.Count)
             {
                 CurrentInstructionSet = index;
                 return true;
@@ -224,20 +225,20 @@ namespace CubeV2
         }
 
 
-        public bool TryMove(Board board, RelativeDirection direction) => TryMove(board,DirectionUtils.ToCardinal(Orientation, direction));
+        public bool TryMove(Board board, RelativeDirection direction) => TryMove(board, DirectionUtils.ToCardinal(Orientation, direction));
         public bool TryPushEnergy(Board board, RelativeDirection direction, int amount) => TryPushEnergy(board, DirectionUtils.ToCardinal(Orientation, direction), amount);
         public bool TryPullEnergy(Board board, RelativeDirection direction) => TryPullEnergy(board, DirectionUtils.ToCardinal(Orientation, direction));
         public CapturedTileVariable TryPushScan(Board board, RelativeDirection direction) => TryPushScan(board, DirectionUtils.ToCardinal(Orientation, direction));
         //public void PushDestroy(Board board, RelativeDirection direction) => PushDestroy(board, DirectionUtils.ToCardinal(Orientation, direction));
         public void PushDestroy(Board board, RelativeDirection direction) => throw new NotImplementedException();
 
-        public bool TryMove(Board board,CardinalDirection direction)
+        public bool TryMove(Board board, CardinalDirection direction)
         {
             var approachVector = direction.ToVector();
             var newLocation = Location + approachVector;
 
             var didMoveWork = board.TryMoveEntity(this, newLocation);
-            if(didMoveWork)
+            if (didMoveWork)
             {
                 AnimationMovementTracker.AddEntityMovement(EntityID, UpdateRate, approachVector);
             }
@@ -336,7 +337,7 @@ namespace CubeV2
             board.TryClearThisTile(targetLocation);
         }*/
 
-        public virtual void WhenMarkedForDeletion(Board board,Vector2Int formerLocation) {}
+        public virtual void WhenMarkedForDeletion(Board board, Vector2Int formerLocation) { }
         public virtual bool TryBeCollected(Entity collector) => false;
         public virtual bool TryLeftPress() => false;
     }

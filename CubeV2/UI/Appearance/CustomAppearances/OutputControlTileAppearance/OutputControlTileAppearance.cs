@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace CubeV2
         private int _instructionIndex;
         private static Color TextColor = new Color(10, 68, 234);
 
-        public OutputControlTileAppearance(int gridIndex, int instructionIndex, int scale,float layer) : base(gridIndex,layer)
+        public OutputControlTileAppearance(int gridIndex, int instructionIndex, int scale, float layer) : base(gridIndex, layer)
         {
             _scale = scale;
             _instructionIndex = instructionIndex;
@@ -24,14 +25,14 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, GameTime gameTime)
         {
-            if(GameInterface.ControlOutputExists(_instructionIndex, Index))
+            if (GameInterface.ControlOutputExists(_instructionIndex, Index))
             {
                 var instruction = GameInterface.GetInstructionFromCurrentFocus(_instructionIndex);
                 var targetIndex = instruction.ControlFlowOutputs[Index];
 
-                if(targetIndex >= 0)
+                if (targetIndex >= 0)
                 {
-                    DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, targetIndex.ToString(), position, TextColor, _scale, Layer);
+                    DrawUtils.DrawString(spriteBatch, DrawUtils.DefaultFont, targetIndex.ToString(), position, TextColor, _scale, Layer);
                 }
             }
         }

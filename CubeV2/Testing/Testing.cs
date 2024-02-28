@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +12,17 @@ namespace CubeV2
     {
         public static void Go()
         {
-            var captureRender = GameWrapper.DoDraw;
-            GameWrapper.DoDraw = false;
+            var captureRender = CubeV2GameWrapper.DoDraw;
+            CubeV2GameWrapper.DoDraw = false;
 
             var testBoard = new Board(3, 3);
-            var testEntity = new Entity("Test", "Test",null);
+            var testEntity = new Entity("Test", "Test", null);
             testEntity.MaxEnergy = 100;
             testEntity.SetEnergyToMax();
 
             testBoard.TryAddEntityToBoard(testEntity, new Vector2Int(0, 0));
 
-            if (testBoard.TryGetTile(Vector2Int.Zero).Contents!=testEntity)
+            if (testBoard.TryGetTile(Vector2Int.Zero).Contents != testEntity)
             {
                 throw new Exception("Test failed.");
             }
@@ -31,7 +32,7 @@ namespace CubeV2
                 throw new Exception("Test failed.");
             }
 
-            testEntity.Instructions[0][0] =  new MoveInstruction(RelativeDirection.BackwardRight);
+            testEntity.Instructions[0][0] = new MoveInstruction(RelativeDirection.BackwardRight);
 
             GameInterface.InitializeBoardlessGame();
             GameInterface.ManualSetNewBoard(testBoard);
@@ -66,7 +67,7 @@ namespace CubeV2
             }
 
             GameInterface.ManualUnsetBoard();
-            GameWrapper.DoDraw = captureRender;
+            CubeV2GameWrapper.DoDraw = captureRender;
         }
     }
 }

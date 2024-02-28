@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAME;
+using System;
 
 namespace CubeV2
 {
@@ -15,13 +16,13 @@ namespace CubeV2
         {
             throw new NotImplementedException();
 
-            var direction = Variables[0]?.Convert(caller,board, IVariableType.RelativeDirection);
+            var direction = Variables[0]?.Convert(caller, board, IVariableType.RelativeDirection);
             if (direction == null)
             {
                 return 0;
             }
 
-            caller.PushDestroy(board,(RelativeDirection)direction);
+            caller.PushDestroy(board, (RelativeDirection)direction);
             return Config.BaseHitCost;
         }
     }

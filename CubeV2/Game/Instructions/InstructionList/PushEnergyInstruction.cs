@@ -1,4 +1,6 @@
-﻿namespace CubeV2
+﻿using SAME;
+
+namespace CubeV2
 {
     internal class PushEnergyInstruction : Instruction
     {
@@ -15,9 +17,9 @@
             if (direction != null)
             {
                 var amount = Variables[1]?.Convert(caller, board, IVariableType.Integer);
-                if(amount!=null)
+                if (amount != null)
                 {
-                    if (caller.TryPushEnergy(board, (RelativeDirection)direction,(int)amount))
+                    if (caller.TryPushEnergy(board, (RelativeDirection)direction, (int)amount))
                     {
                         return 0;
                     }

@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using CubeV2.Camera;
+using SAME;
 
 namespace CubeV2
 {
@@ -50,11 +51,11 @@ namespace CubeV2
 
         private static void _processMouseActions(UserInput input)
         {
-            if (input.ScrollDifference!=0)
+            if (input.ScrollDifference != 0)
             {
                 ScrollWheelTurned(input.ScrollDirection);
             }
-            if(input.MouseLeftJustReleased)
+            if (input.MouseLeftJustReleased)
             {
                 MouseLeftReleased();
             }
@@ -74,7 +75,7 @@ namespace CubeV2
         }
 
 
-        public static void LeftClickTile(Tile tile, Vector2Int tileLocation,int actualIndex)
+        public static void LeftClickTile(Tile tile, Vector2Int tileLocation, int actualIndex)
         {
             var distance = _game.FocusEntity.Location.EuclideanDistance(tileLocation);
             if (!Config.EnableRangeLimits || distance <= Config.PlayerRangeLimit)
@@ -173,9 +174,9 @@ namespace CubeV2
             _game.FocusEntity.ManualInstructionBuffer.Enqueue(destroy);
         }
 
-        private static (Tile tile, Vector2Int location,int actualIndex) _getBoardTileFromCameraIndex(int index)
+        private static (Tile tile, Vector2Int location, int actualIndex) _getBoardTileFromCameraIndex(int index)
         {
-            (Vector2Int realLocation,int realIndex) = GameCamera.GetBoardLocationFromCameraIndex(index);
+            (Vector2Int realLocation, int realIndex) = GameCamera.GetBoardLocationFromCameraIndex(index);
             var tile = _game.CurrentBoard.TryGetTile(realLocation);
 
             if (tile != null)

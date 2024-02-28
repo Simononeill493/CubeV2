@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System.Collections.Generic;
 
 namespace CubeV2
@@ -32,12 +33,12 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, int scale, float layer)
         {
-            DrawUtils.DrawSprite(spriteBatch, Direction.Sprite(), position, scale, 0,Vector2.Zero, layer);
+            DrawUtils.DrawSprite(spriteBatch, CubeDrawUtils.SpritesDict[Direction.Sprite()], position, scale, 0, Vector2.Zero, layer);
         }
 
         public override int IVariableCompare(Entity caller, Board board, IVariable other)
         {
-            var otherConverted = other.Convert(caller,null, IVariableType.RelativeDirection);
+            var otherConverted = other.Convert(caller, null, IVariableType.RelativeDirection);
             if (otherConverted != null)
             {
                 return Direction - (RelativeDirection)otherConverted;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.SqlTypes;
@@ -26,7 +27,7 @@ namespace CubeV2
         public void SetFocusEntity(ManualPlayerEntity p) => FocusEntity = p;
         public void ClearFocusEntity() => FocusEntity = null;
 
-        public void SetBoard(Board b) 
+        public void SetBoard(Board b)
         {
             BoardAnimator.Reset();
 
@@ -50,7 +51,7 @@ namespace CubeV2
         {
             CurrentBoard.Tick(input);
 
-            if(FocusEntity.Deleted)
+            if (FocusEntity.Deleted)
             {
                 OnPlayerDeath();
             }

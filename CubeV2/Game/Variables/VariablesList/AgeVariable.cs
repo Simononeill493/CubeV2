@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SAME;
 using System.Collections.Generic;
 
 namespace CubeV2
@@ -23,7 +24,7 @@ namespace CubeV2
             }
         }
 
-        public override int IVariableCompare(Entity caller, Board board,IVariable other)
+        public override int IVariableCompare(Entity caller, Board board, IVariable other)
         {
             var otherConverted = other.Convert(caller, null, IVariableType.Integer);
             if (otherConverted != null)
@@ -37,7 +38,7 @@ namespace CubeV2
 
         public override void Draw(SpriteBatch spriteBatch, Vector2 position, int scale, float layer)
         {
-            DrawUtils.DrawString(spriteBatch, DrawUtils.PressStart2PFont, "AGE", position, Color.Black, scale - 2, layer);
+            DrawUtils.DrawString(spriteBatch, DrawUtils.DefaultFont, "AGE", position, Color.Black, scale - 2, layer);
         }
 
         public override bool IsEmpty(Entity caller, Board board) => false;
